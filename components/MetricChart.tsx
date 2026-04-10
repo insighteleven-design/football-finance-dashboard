@@ -50,8 +50,8 @@ export default function MetricChart({ clubs }: Props) {
         </select>
       </div>
 
-      <ResponsiveContainer width="100%" height={360}>
-        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 80, left: 110, bottom: 0 }}>
+      <ResponsiveContainer width="100%" height={data.length * 34}>
+        <BarChart data={data} layout="vertical" margin={{ top: 4, right: 80, left: 110, bottom: 4 }}>
           <XAxis
             type="number"
             tickFormatter={(v) => fmt(v, isRatio)}
