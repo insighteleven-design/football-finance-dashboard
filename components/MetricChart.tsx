@@ -50,7 +50,9 @@ export default function MetricChart({ clubs }: Props) {
         </select>
       </div>
 
-      <ResponsiveContainer width="100%" height={data.length * 34}>
+      {/* Parent div must have an explicit pixel height for ResponsiveContainer to expand into */}
+      <div style={{ height: Math.max(600, data.length * 36) }}>
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 4, right: 80, left: 110, bottom: 4 }}>
           <XAxis
             type="number"
@@ -62,10 +64,11 @@ export default function MetricChart({ clubs }: Props) {
           <YAxis
             type="category"
             dataKey="name"
+            interval={0}
             tick={{ fontSize: 11, fill: "#6b7280" }}
             axisLine={false}
             tickLine={false}
-            width={105}
+            width={115}
           />
           <Tooltip
             formatter={(v) => [fmt(v as number, isRatio), metric.label]}
@@ -85,6 +88,7 @@ export default function MetricChart({ clubs }: Props) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 }
