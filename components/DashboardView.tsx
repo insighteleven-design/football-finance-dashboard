@@ -8,13 +8,23 @@ import MetricChart from "./MetricChart";
 type Filter = Division | "all";
 
 const FILTERS: { value: Filter; label: string }[] = [
-  { value: "all",             label: "All Clubs" },
-  { value: "premier-league",  label: "Premier League" },
-  { value: "championship",    label: "Championship" },
+  { value: "all",            label: "All Clubs" },
+  { value: "premier-league", label: "Premier League" },
+  { value: "championship",   label: "Championship" },
+  { value: "league-one",     label: "League One" },
+  { value: "league-two",     label: "League Two" },
 ];
 
-export default function DashboardView({ clubs }: { clubs: ClubFinancials[] }) {
-  const [active, setActive] = useState<Filter>("premier-league");
+export default function DashboardView({
+  clubs,
+  initialDivision = "premier-league",
+}: {
+  clubs: ClubFinancials[];
+  initialDivision?: string;
+}) {
+  const [active, setActive] = useState<Filter>(
+    (FILTERS.find((f) => f.value === initialDivision)?.value ?? "premier-league") as Filter
+  );
 
   const visible = active === "all" ? clubs : clubs.filter((c) => c.division === active);
 
@@ -51,7 +61,7 @@ export default function DashboardView({ clubs }: { clubs: ClubFinancials[] }) {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-semibold text-gray-900">
-            {active === "all" ? "All Clubs" : active === "premier-league" ? "Premier League" : "Championship"}
+            {FILTERS.find(f => f.value === active)?.label ?? "All Clubs"}
             <span className="ml-2 text-sm font-normal text-gray-400">{visible.length} clubs</span>
           </h2>
           <span className="text-xs text-gray-400 hidden sm:block">

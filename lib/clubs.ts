@@ -1,4 +1,6 @@
-export type Division = "premier-league" | "championship";
+export type Division = "premier-league" | "championship" | "league-one" | "league-two";
+
+export type DataConfidence = "high" | "medium" | "low";
 
 export interface ClubFinancials {
   slug: string;
@@ -12,6 +14,8 @@ export interface ClubFinancials {
   cash: number | null;
   fiscal_year_end: string;
   wage_ratio: number | null;
+  /** "high" = web-validated, "medium" = extracted from accounts, "low" = abbreviated/no data */
+  data_confidence: DataConfidence;
 }
 
 export const METRICS: { key: keyof ClubFinancials; label: string; description: string }[] = [
@@ -24,7 +28,9 @@ export const METRICS: { key: keyof ClubFinancials; label: string; description: s
   { key: "wage_ratio",       label: "Wage Ratio",        description: "Wage bill as % of revenue" },
 ];
 
-type RawEntry = Omit<ClubFinancials, "slug" | "name" | "division" | "wage_ratio">;
+type RawEntry = Omit<ClubFinancials, "slug" | "name" | "division" | "wage_ratio" | "data_confidence"> & {
+  data_confidence?: DataConfidence;
+};
 
 const plRaw: Record<string, RawEntry> = {
   arsenal:        { revenue: 690.30, wage_bill: 346.80, operating_profit:  -38.51, pre_tax_profit:  -1.30, net_debt:  292.59, cash:   32.53, fiscal_year_end: "2025-05-31" },
@@ -77,6 +83,63 @@ const chRaw: Record<string, RawEntry> = {
   west_brom:     { revenue:  30.35, wage_bill:  37.05, operating_profit:  -20.25, pre_tax_profit:  -17.00, net_debt:   71.85, cash:   0.47, fiscal_year_end: "2025-06-30" },
 };
 
+// League One 2024/25 — from Companies House annual accounts
+const l1Raw: Record<string, RawEntry> = {
+  barnsley:       { revenue:   10.28, wage_bill:   11.46, operating_profit:    -6.28, pre_tax_profit:    -6.58, net_debt:   -0.88, cash:    0.88, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  birmingham:     { revenue:   35.64, wage_bill:    35.7, operating_profit:   -39.42, pre_tax_profit:   -34.56, net_debt:  183.16, cash:   14.23, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  blackpool:      { revenue:    10.9, wage_bill:   10.97, operating_profit:     -8.4, pre_tax_profit:     -5.6, net_debt:   16.45, cash:    1.42, fiscal_year_end: "2025-06-30" },
+  bolton:         { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    null, fiscal_year_end: "2024-09-30" },
+  bristol_rovers: { revenue:    8.11, wage_bill:    8.91, operating_profit:    -6.47, pre_tax_profit:     -7.9, net_debt:   -0.77, cash:    1.31, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  burton:         { revenue:    6.41, wage_bill:    8.23, operating_profit:    -8.58, pre_tax_profit:    -8.34, net_debt:   -0.66, cash:    0.67, fiscal_year_end: "2025-06-30" },
+  cambridge:      { revenue:    9.25, wage_bill:    6.66, operating_profit:    -3.74, pre_tax_profit:    -3.74, net_debt:   -0.26, cash:     0.3, fiscal_year_end: "2025-06-30" },
+  charlton:       { revenue:   11.17, wage_bill:   15.71, operating_profit:   -16.83, pre_tax_profit:   -15.39, net_debt:   31.45, cash:    0.46, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  crawley:        { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   10.58, cash:    0.06, fiscal_year_end: "2025-06-30" },
+  exeter:         { revenue:    8.21, wage_bill:    6.88, operating_profit:    -4.39, pre_tax_profit:     0.53, net_debt:   -0.35, cash:    0.35, fiscal_year_end: "2025-06-30" },
+  huddersfield:   { revenue:   10.63, wage_bill:   16.89, operating_profit:   -20.06, pre_tax_profit:   -22.39, net_debt:   79.35, cash:    3.23, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  leyton_orient:  { revenue:    9.43, wage_bill:    null, operating_profit:    -4.62, pre_tax_profit:    -4.61, net_debt:     0.9, cash:    0.74, fiscal_year_end: "2025-06-30" },
+  lincoln:        { revenue:    8.48, wage_bill:    7.53, operating_profit:    -2.87, pre_tax_profit:    -2.88, net_debt:   -0.99, cash:    1.61, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  mansfield:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    0.13, fiscal_year_end: "2025-06-30" },
+  northampton:    { revenue:    7.54, wage_bill:    6.22, operating_profit:     -3.0, pre_tax_profit:     -3.0, net_debt:   13.32, cash:     0.2, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  peterborough:   { revenue:   15.92, wage_bill:    8.52, operating_profit:     4.22, pre_tax_profit:     2.91, net_debt:   17.64, cash:    0.15, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  reading:        { revenue:    9.81, wage_bill:   12.41, operating_profit:    -3.76, pre_tax_profit:    -3.88, net_debt:  103.85, cash:    0.27, fiscal_year_end: "2025-06-30" },
+  rotherham:      { revenue:   19.17, wage_bill:   12.95, operating_profit:     -1.7, pre_tax_profit:     -1.7, net_debt:   -0.02, cash:    0.97, fiscal_year_end: "2024-06-30", data_confidence: "high" },
+  shrewsbury:     { revenue:    7.21, wage_bill:    5.35, operating_profit:    -0.92, pre_tax_profit:    -0.93, net_debt:    1.25, cash:    0.07, fiscal_year_end: "2025-06-30" },
+  stevenage:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    0.21, cash:    0.17, fiscal_year_end: "2025-05-31" },
+  stockport:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    0.61, cash:    0.48, fiscal_year_end: "2025-06-30" },
+  wigan:          { revenue:    7.25, wage_bill:     8.9, operating_profit:    -7.97, pre_tax_profit:     -0.4, net_debt:   18.73, cash:     0.6, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  wrexham:        { revenue:   33.34, wage_bill:   19.95, operating_profit:   -14.85, pre_tax_profit:   -15.24, net_debt:   -2.66, cash:    3.32, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  wycombe:        { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   18.69, cash:    1.79, fiscal_year_end: "2025-06-30" },
+};
+
+// League Two 2024/25 — from Companies House annual accounts
+// Note: Fleetwood Town has no Companies House accounts (post-administration); all nulls
+const l2Raw: Record<string, RawEntry> = {
+  accrington:     { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    5.65, cash:    0.16, fiscal_year_end: "2025-06-30" },
+  afc_wimbledon:  { revenue:    9.78, wage_bill:    5.74, operating_profit:     -1.4, pre_tax_profit:     -1.3, net_debt:   -1.26, cash:    1.34, fiscal_year_end: "2025-06-30" },
+  barrow:         { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    null, fiscal_year_end: "2025-04-30" },
+  bradford:       { revenue:    8.69, wage_bill:    null, operating_profit:    -2.98, pre_tax_profit:    -2.99, net_debt:     5.4, cash:    0.17, fiscal_year_end: "2025-06-30" },
+  bromley:        { revenue:    5.27, wage_bill:    null, operating_profit:    -1.06, pre_tax_profit:    -1.09, net_debt:    0.42, cash:     0.5, fiscal_year_end: "2024-12-31" },
+  carlisle:       { revenue:     6.9, wage_bill:    7.01, operating_profit:    -5.15, pre_tax_profit:    -5.12, net_debt:    0.05, cash:    0.19, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  cheltenham:     { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    0.13, cash:    0.55, fiscal_year_end: "2025-05-31" },
+  chesterfield:   { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    null, fiscal_year_end: "2024-11-30" },
+  colchester:     { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   40.02, cash:    0.15, fiscal_year_end: "2025-06-30" },
+  crewe:          { revenue:     5.2, wage_bill:    null, operating_profit:    -1.16, pre_tax_profit:    -1.16, net_debt:    4.56, cash:     0.1, fiscal_year_end: "2025-06-30" },
+  doncaster:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    0.26, cash:    null, fiscal_year_end: "2025-05-31" },
+  fleetwood:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    null, fiscal_year_end: "2025-06-30" },
+  gillingham:     { revenue:    7.53, wage_bill:    6.77, operating_profit:    -5.72, pre_tax_profit:    -5.74, net_debt:    6.99, cash:    0.08, fiscal_year_end: "2025-06-30", data_confidence: "high" },
+  grimsby:        { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    0.87, cash:    0.44, fiscal_year_end: "2025-06-30" },
+  harrogate:      { revenue:    4.06, wage_bill:    3.53, operating_profit:    -2.17, pre_tax_profit:    -2.17, net_debt:     6.3, cash:    0.11, fiscal_year_end: "2025-06-30" },
+  mk_dons:        { revenue:    5.72, wage_bill:    5.22, operating_profit:     -3.7, pre_tax_profit:     -2.2, net_debt:    null, cash:    0.33, fiscal_year_end: "2024-06-30" },
+  morecambe:      { revenue:    4.94, wage_bill:    3.51, operating_profit:    -0.92, pre_tax_profit:    -1.19, net_debt:    2.18, cash:     0.1, fiscal_year_end: "2024-05-31" },
+  newport:        { revenue:    null, wage_bill:    null, operating_profit:    -0.76, pre_tax_profit:     null, net_debt:    0.06, cash:    0.03, fiscal_year_end: "2025-06-30" },
+  notts_county:   { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:    null, cash:    0.79, fiscal_year_end: "2025-06-30" },
+  port_vale:      { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   19.53, cash:    0.17, fiscal_year_end: "2025-06-30" },
+  salford:        { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   20.41, cash:    0.07, fiscal_year_end: "2025-06-30" },
+  swindon:        { revenue:    null, wage_bill:    null, operating_profit:     null, pre_tax_profit:     null, net_debt:   10.49, cash:    0.01, fiscal_year_end: "2025-05-31" },
+  tranmere:       { revenue:    5.76, wage_bill:    5.17, operating_profit:     -2.8, pre_tax_profit:    -2.92, net_debt:     2.3, cash:    0.38, fiscal_year_end: "2025-06-30" },
+  walsall:        { revenue:    8.23, wage_bill:    5.88, operating_profit:    -1.34, pre_tax_profit:    -1.97, net_debt:    9.61, cash:     0.0, fiscal_year_end: "2025-05-31", data_confidence: "high" },
+};
+
 const NAMES: Record<string, string> = {
   // Premier League
   arsenal: "Arsenal",             aston_villa: "Aston Villa",
@@ -102,22 +165,59 @@ const NAMES: Record<string, string> = {
   sheff_wed: "Sheffield Wed",     stoke: "Stoke City",
   sunderland: "Sunderland",       swansea: "Swansea City",
   watford: "Watford",             west_brom: "West Brom",
+  // League One
+  barnsley: "Barnsley",           birmingham: "Birmingham City",
+  blackpool: "Blackpool",         bolton: "Bolton Wanderers",
+  bristol_rovers: "Bristol Rovers", burton: "Burton Albion",
+  cambridge: "Cambridge Utd",     charlton: "Charlton Athletic",
+  crawley: "Crawley Town",        exeter: "Exeter City",
+  huddersfield: "Huddersfield",   leyton_orient: "Leyton Orient",
+  lincoln: "Lincoln City",        mansfield: "Mansfield Town",
+  northampton: "Northampton",     peterborough: "Peterborough Utd",
+  reading: "Reading",             rotherham: "Rotherham Utd",
+  shrewsbury: "Shrewsbury Town",  stevenage: "Stevenage",
+  stockport: "Stockport County",  wigan: "Wigan Athletic",
+  wrexham: "Wrexham",             wycombe: "Wycombe Wanderers",
+  // League Two
+  accrington: "Accrington Stanley", afc_wimbledon: "AFC Wimbledon",
+  barrow: "Barrow",               bradford: "Bradford City",
+  bromley: "Bromley",             carlisle: "Carlisle Utd",
+  cheltenham: "Cheltenham Town",  chesterfield: "Chesterfield",
+  colchester: "Colchester Utd",   crewe: "Crewe Alexandra",
+  doncaster: "Doncaster Rovers",  fleetwood: "Fleetwood Town",
+  gillingham: "Gillingham",       grimsby: "Grimsby Town",
+  harrogate: "Harrogate Town",    mk_dons: "MK Dons",
+  morecambe: "Morecambe",         newport: "Newport County",
+  notts_county: "Notts County",   port_vale: "Port Vale",
+  salford: "Salford City",        swindon: "Swindon Town",
+  tranmere: "Tranmere Rovers",    walsall: "Walsall",
 };
 
-function makeClubs(raw: Record<string, RawEntry>, division: Division): ClubFinancials[] {
-  return Object.entries(raw).map(([slug, d]) => ({
-    slug,
-    name: NAMES[slug],
-    division,
-    ...d,
-    wage_ratio:
-      d.revenue && d.wage_bill ? Math.round((d.wage_bill / d.revenue) * 1000) / 10 : null,
-  }));
+function makeClubs(
+  raw: Record<string, RawEntry>,
+  division: Division,
+  defaultConfidence: DataConfidence = "high"
+): ClubFinancials[] {
+  return Object.entries(raw).map(([slug, d]) => {
+    const noData = d.revenue === null && d.wage_bill === null && d.pre_tax_profit === null;
+    const confidence = d.data_confidence ?? (noData ? "low" : defaultConfidence);
+    return {
+      slug,
+      name: NAMES[slug],
+      division,
+      ...d,
+      wage_ratio:
+        d.revenue && d.wage_bill ? Math.round((d.wage_bill / d.revenue) * 1000) / 10 : null,
+      data_confidence: confidence,
+    };
+  });
 }
 
 export const clubs: ClubFinancials[] = [
-  ...makeClubs(plRaw, "premier-league"),
-  ...makeClubs(chRaw, "championship"),
+  ...makeClubs(plRaw, "premier-league", "high"),
+  ...makeClubs(chRaw, "championship",   "high"),
+  ...makeClubs(l1Raw, "league-one",     "medium"),
+  ...makeClubs(l2Raw, "league-two",     "medium"),
 ];
 
 export function getClub(slug: string): ClubFinancials | undefined {
