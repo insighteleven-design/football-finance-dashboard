@@ -91,7 +91,16 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       {/* Club header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{club.name}</h1>
+        <div className="flex items-center gap-3 mb-1">
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{club.name}</h1>
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+            club.division === "premier-league"
+              ? "bg-purple-50 text-purple-700 border-purple-200"
+              : "bg-sky-50 text-sky-700 border-sky-200"
+          }`}>
+            {club.division === "premier-league" ? "Premier League" : "Championship"}
+          </span>
+        </div>
         <p className="text-sm text-gray-500 mt-1">
           Financial year ending <span className="text-gray-700 font-medium">{fyDate}</span>
         </p>
