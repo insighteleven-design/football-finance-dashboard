@@ -1,22 +1,19 @@
+import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
-import DashboardView from "@/components/DashboardView";
+import ClubVsClub from "@/components/ClubVsClub";
 
-export default async function ComparePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ division?: string }>;
-}) {
-  const { division } = await searchParams;
-
+export default function ComparePage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900 tracking-tight">Division Comparison</h1>
+        <h1 className="text-xl font-bold text-gray-900 tracking-tight">Club Comparison</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Revenue, wages and profitability across all clubs · click a column header to sort
+          Search for two clubs to compare their financials side by side · link is shareable
         </p>
       </div>
-      <DashboardView clubs={clubs} initialDivision={division ?? "premier-league"} />
+      <Suspense fallback={<div className="text-sm text-gray-400">Loading…</div>}>
+        <ClubVsClub allClubs={clubs} />
+      </Suspense>
     </div>
   );
 }

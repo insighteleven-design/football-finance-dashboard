@@ -22,13 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <nav className="flex items-center gap-0.5">
               <Link href="/" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors">
-                Search
+                Home
               </Link>
               <Link href="/compare" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors">
                 Compare
-              </Link>
-              <Link href="/compare/clubs" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors whitespace-nowrap">
-                Club vs Club
               </Link>
             </nav>
 
