@@ -2,6 +2,9 @@ import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { clubs, getClub, fmt, type ClubFinancials } from "@/lib/clubs";
+import { deepDive } from "@/lib/deepDive";
+import RevenueBreakdownSection from "@/components/RevenueBreakdownSection";
+import DebtProfileSection from "@/components/DebtProfileSection";
 
 export function generateStaticParams() {
   return clubs.map((c) => ({ slug: c.slug }));
@@ -114,6 +117,8 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const club = getClub(slug);
   if (!club) notFound();
 
+  const dd = deepDive[slug] ?? null;
+
   const fyDate = new Date(club.fiscal_year_end).toLocaleDateString("en-GB", {
     day: "numeric", month: "long", year: "numeric",
   });
@@ -168,13 +173,15 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
         </div>
         <div className="px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs Division Average</p>
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+            vs {DIVISION_LABELS[club.compare_division ?? club.division]} Average
+          </p>
         </div>
 
         {/* Metric rows */}
         {ALL_METRICS.map((m) => {
           const val = club[m.key] as number | null;
-          const stats = divisionStats(club.division, m.key);
+          const stats = divisionStats(club.compare_division ?? club.division, m.key);
           const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
 
           const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : 1;
@@ -246,6 +253,19 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             </Fragment>
           );
         })}
+      </div>
+
+      {/* Deep-dive sections */}
+      <div className="mt-4 space-y-2">
+        <RevenueBreakdownSection
+          breakdown={dd?.revenue_breakdown ?? null}
+          totalRevenue={club.revenue}
+        />
+        <DebtProfileSection
+          debt={dd?.debt_profile ?? null}
+          fiscalYearEnd={club.fiscal_year_end}
+          netDebt={club.net_debt}
+        />
       </div>
     </div>
   );
