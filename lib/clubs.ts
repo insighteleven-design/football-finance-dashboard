@@ -81,7 +81,7 @@ const chRaw: Record<string, RawEntry> = {
   oxford_utd:     { revenue:  19.00, wage_bill:  21.66, operating_profit:  -17.46, pre_tax_profit:  -17.48, net_debt:   -0.21, cash:    0.24, fiscal_year_end: "2025-06-30" },
   portsmouth:     { revenue:  24.57, wage_bill:  17.43, operating_profit:   -1.45, pre_tax_profit:   -4.36, net_debt:    6.15, cash:    2.04, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
   preston:        { revenue:  18.88, wage_bill:  25.67, operating_profit:  -16.02, pre_tax_profit:  -15.98, net_debt:    null, cash:    2.37, fiscal_year_end: "2025-06-30" },
-  qpr:            { revenue:  28.00, wage_bill:  27.50, operating_profit:   -1.67, pre_tax_profit:  -20.30, net_debt:    6.14, cash:    0.07, fiscal_year_end: "2025-05-31" },
+  qpr:            { revenue:  28.00, wage_bill:  27.50, operating_profit:  -20.70, pre_tax_profit:  -20.30, net_debt:    6.14, cash:    0.07, fiscal_year_end: "2025-05-31" },
   sheff_utd:      { revenue:  79.33, wage_bill:  45.97, operating_profit:  -16.64, pre_tax_profit:    2.59, net_debt:   53.68, cash:    2.78, fiscal_year_end: "2025-06-30" },
   sheff_wed:      { revenue:  26.34, wage_bill:  21.81, operating_profit:   -9.26, pre_tax_profit:  -10.01, net_debt:    6.85, cash:    0.16, fiscal_year_end: "2024-07-31" },
   southampton:    { revenue: 157.52, wage_bill: 113.96, operating_profit:  -62.25, pre_tax_profit:  -53.90, net_debt:   -9.35, cash:    9.35, fiscal_year_end: "2025-06-30", compare_division: "premier-league" },
