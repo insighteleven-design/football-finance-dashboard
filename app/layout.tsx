@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,14 +14,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col antialiased">
         <header className="border-b border-[#2a2a2a] bg-[#0a0a0a] sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-8">
-            <Link href="/" className="flex flex-col shrink-0 group">
-              <div className="flex items-baseline gap-0.5">
-                <span className="text-[#888888] font-light tracking-[0.05em] text-sm leading-none">Insight</span>
-                <span className="text-white font-bold tracking-[0.02em] text-sm leading-none">Eleven</span>
-              </div>
-              <span className="text-[9px] text-[#444444] tracking-[0.2em] uppercase font-light mt-0.5">
-                Intelligence
-              </span>
+            <Link href="/" className="shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Insight Eleven"
+                width={0}
+                height={36}
+                className="w-auto h-9"
+                priority
+              />
             </Link>
 
             <nav className="flex items-center gap-0.5">
