@@ -18,8 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Image
                 src="/logo.png"
                 alt="Insight Eleven"
-                width={0}
-                height={36}
+                width={1601}
+                height={234}
                 className="w-auto h-9"
                 priority
               />
