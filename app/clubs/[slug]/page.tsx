@@ -1,10 +1,9 @@
-import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { clubs, getClub, fmt, type ClubFinancials } from "@/lib/clubs";
+import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
 import { deepDive } from "@/lib/deepDive";
-import RevenueBreakdownSection from "@/components/RevenueBreakdownSection";
-import DebtProfileSection from "@/components/DebtProfileSection";
+import { fixedAssets } from "@/lib/fixedAssets";
+import MetricsGrid from "@/components/MetricsGrid";
 
 export function generateStaticParams() {
   return clubs.map((c) => ({ slug: c.slug }));
@@ -16,38 +15,6 @@ const DIVISION_LABELS: Record<string, string> = {
   "league-one":     "League One",
   "league-two":     "League Two",
 };
-
-const ALL_METRICS: {
-  key: keyof ClubFinancials;
-  label: string;
-  isRatio?: boolean;
-  diverging?: boolean;
-  higherBetter: boolean | null;
-}[] = [
-  { key: "revenue",          label: "Revenue",          higherBetter: true },
-  { key: "wage_bill",        label: "Wage Bill",        higherBetter: false },
-  { key: "wage_ratio",       label: "Wage Ratio",       isRatio: true, higherBetter: false },
-  { key: "operating_profit", label: "Operating Profit", diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit",   diverging: true, higherBetter: true },
-  { key: "net_debt",         label: "Net Debt",         diverging: true, higherBetter: false },
-];
-
-function divisionStats(division: string, key: keyof ClubFinancials) {
-  const vals = clubs
-    .filter((c) => c.division === division && c[key] !== null)
-    .map((c) => c[key] as number);
-  if (!vals.length) return null;
-  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
-  const sorted = [...vals].sort((a, b) => b - a);
-  return { avg, maxAbs, sorted, count: vals.length };
-}
-
-/** Green = better than division average, red = worse — for all metrics, all bar types */
-function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): string {
-  if (higherBetter === null) return "#aaaaaa"; // wage bill — neutral
-  return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
-}
 
 function HealthBadges({ club }: { club: ClubFinancials }) {
   const issues: string[] = [];
@@ -79,46 +46,15 @@ function HealthBadges({ club }: { club: ClubFinancials }) {
   );
 }
 
-function StandardBar({ pct, color }: { pct: number; color: string }) {
-  return (
-    <div className="flex-1 h-7 bg-[#eeeeee] overflow-hidden">
-      <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
-    </div>
-  );
-}
-
-/** Diverging bar — negative extends left, positive extends right. Single `color` prop for the fill. */
-function DivergingBar({ value, scale, color }: {
-  value: number;
-  scale: number;
-  color: string;
-}) {
-  const pct = Math.min((Math.abs(value) / scale) * 100, 100);
-  const isPositive = value >= 0;
-
-  return (
-    <div className="flex-1 flex h-7">
-      <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
-        {!isPositive && (
-          <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
-        )}
-      </div>
-      <div className="w-px bg-[#e0e0e0] shrink-0" />
-      <div className="flex-1 overflow-hidden bg-[#eeeeee]">
-        {isPositive && (
-          <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
-        )}
-      </div>
-    </div>
-  );
-}
-
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const club = getClub(slug);
   if (!club) notFound();
 
   const dd = deepDive[slug] ?? null;
+  const stadium = fixedAssets[slug] ?? null;
+  const compareDivision = club.compare_division ?? club.division;
+  const compareLabel = DIVISION_LABELS[compareDivision];
 
   const fyDate = new Date(club.fiscal_year_end).toLocaleDateString("en-GB", {
     day: "numeric", month: "long", year: "numeric",
@@ -166,108 +102,54 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         </div>
       </div>
 
-      {/* Split grid — CSS grid ensures left/right rows align precisely */}
-      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
+      {/* Metrics grid (client component — handles inline expand for revenue & debt) */}
+      <MetricsGrid
+        club={club}
+        compareDivision={compareDivision}
+        compareLabel={compareLabel}
+        breakdown={dd?.revenue_breakdown ?? null}
+        debt={dd?.debt_profile ?? null}
+      />
 
-        {/* Column headers */}
-        <div className="px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
-        </div>
-        <div className="px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
-            vs {DIVISION_LABELS[club.compare_division ?? club.division]} Average
-          </p>
-        </div>
-
-        {/* Metric rows */}
-        {ALL_METRICS.map((m) => {
-          const val = club[m.key] as number | null;
-          const stats = divisionStats(club.compare_division ?? club.division, m.key);
-          const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
-
-          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : 1;
-          const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-          const avgPct = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
-
-          // Bar colour: green = better than division avg, red = worse, for ALL metrics
-          const barColor = val !== null && stats
-            ? vsAvgColor(val, stats.avg, m.higherBetter)
-            : "#cccccc";
-
-          return (
-            <Fragment key={m.key as string}>
-              {/* Left cell — plain figures, no colour coding */}
-              <div className="px-6 py-5 border-b border-r border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
-                {val !== null ? (
-                  <p className="text-2xl font-light tabular-nums text-[#111111]">
-                    {fmt(val, m.isRatio)}
-                  </p>
-                ) : (
-                  <p className="text-2xl font-light text-[#cccccc]">—</p>
-                )}
-                {stats && rank !== null && (
-                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">
-                    #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
-                  </p>
-                )}
+      {/* Fixed Assets */}
+      {stadium && (
+        <div className="mt-4 border border-[#e0e0e0] bg-white">
+          <div className="px-6 py-4 border-b border-[#e0e0e0]">
+            <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Ground &amp; Fixed Assets</p>
+          </div>
+          <div className="px-6 py-5">
+            <div className="flex flex-wrap gap-8">
+              <div>
+                <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Stadium</p>
+                <p className="text-sm text-[#111111]">{stadium.stadium_name}</p>
               </div>
-
-              {/* Right cell — bar charts with green/red vs division average */}
-              <div className="px-6 py-5 border-b border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
-
-                {/* Club bar */}
-                <div className="mb-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging ? (
-                      <DivergingBar
-                        value={val ?? 0}
-                        scale={scale / 2}
-                        color={val !== null ? barColor : "#cccccc"}
-                      />
-                    ) : (
-                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
-                    )}
-                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
-                      {fmt(val, m.isRatio)}
-                    </span>
-                  </div>
-                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+              {stadium.capacity && (
+                <div>
+                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Capacity</p>
+                  <p className="text-sm text-[#111111]">{stadium.capacity.toLocaleString()}</p>
                 </div>
-
-                {/* Division avg bar */}
-                <div className="mt-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging && stats ? (
-                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
-                    ) : (
-                      <StandardBar pct={avgPct} color="#cccccc" />
-                    )}
-                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
-                      {stats ? fmt(stats.avg, m.isRatio) : "—"}
-                    </span>
-                  </div>
-                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">Division avg</p>
+              )}
+              {stadium.ownership && (
+                <div>
+                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Ownership</p>
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium border ${
+                      stadium.ownership === "owned"
+                        ? "border-[#4a9a6a] text-[#4a9a6a]"
+                        : "border-[#E8A838] text-[#E8A838]"
+                    }`}
+                  >
+                    {stadium.ownership === "owned" ? "Freehold" : "Leased"}
+                  </span>
                 </div>
-              </div>
-            </Fragment>
-          );
-        })}
-      </div>
-
-      {/* Deep-dive sections */}
-      <div className="mt-4 space-y-2">
-        <RevenueBreakdownSection
-          breakdown={dd?.revenue_breakdown ?? null}
-          totalRevenue={club.revenue}
-        />
-        <DebtProfileSection
-          debt={dd?.debt_profile ?? null}
-          fiscalYearEnd={club.fiscal_year_end}
-          netDebt={club.net_debt}
-        />
-      </div>
+              )}
+            </div>
+            {stadium.notes && (
+              <p className="text-[11px] text-[#999999] mt-4 leading-relaxed">{stadium.notes}</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
