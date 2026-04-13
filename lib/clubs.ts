@@ -130,7 +130,7 @@ const l1Raw: Record<string, RawEntry> = {
 const l2Raw: Record<string, RawEntry> = {
   accrington:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    5.65, cash:    0.16, fiscal_year_end: "2025-06-30" },
   barnet:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-06-30" },
-  barrow:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-04-30", data_confidence: "abridged" },
+  barrow:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    0.05, fiscal_year_end: "2025-05-31", data_confidence: "abridged" },
   bristol_rovers: { revenue:   8.11, wage_bill:   8.91, operating_profit:   -6.47, pre_tax_profit:   -7.90, net_debt:   -0.77, cash:    1.31, fiscal_year_end: "2025-06-30", data_confidence: "high" },
   bromley:        { revenue:   5.27, wage_bill:   null, operating_profit:   -1.06, pre_tax_profit:   -1.09, net_debt:    0.42, cash:    0.50, fiscal_year_end: "2024-12-31" },
   cambridge:      { revenue:   9.25, wage_bill:   6.66, operating_profit:   -3.74, pre_tax_profit:   -3.74, net_debt:   -0.26, cash:    0.30, fiscal_year_end: "2025-06-30" },
