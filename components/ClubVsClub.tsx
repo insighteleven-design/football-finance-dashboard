@@ -11,11 +11,17 @@ const DIVISION_LABELS: Record<Division, string> = {
   "league-two":     "League Two",
 };
 
-const CLUB_COLORS = ["#333333", "#888888"];
-const CLUB_LABEL_COLORS = ["text-[#111111]", "text-[#888888]"];
+const MAX_CLUBS = 4;
+
+// Fixed per-club colours — consistent across all charts and tags
+const CLUB_COLORS = ["#4A90D9", "#E05252", "#E8A838", "#9B59B6"];
+
+// Light-tint tag backgrounds for each club colour
 const CLUB_TAG_STYLES = [
-  { borderColor: "#999999", backgroundColor: "#ffffff", color: "#111111" },
-  { borderColor: "#cccccc", backgroundColor: "#f5f5f5", color: "#666666" },
+  { borderColor: "#4A90D9", backgroundColor: "#EBF3FC", color: "#4A90D9" },
+  { borderColor: "#E05252", backgroundColor: "#FCEAEA", color: "#E05252" },
+  { borderColor: "#E8A838", backgroundColor: "#FDF5E6", color: "#E8A838" },
+  { borderColor: "#9B59B6", backgroundColor: "#F5EEF8", color: "#9B59B6" },
 ];
 
 const COMPARE_METRICS: {
@@ -131,7 +137,7 @@ function ClubSearch({
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => { if (results.length > 0) setOpen(true); }}
           onKeyDown={handleKeyDown}
-          placeholder={disabled ? "2 clubs selected" : "Search for a club…"}
+          placeholder={disabled ? `${MAX_CLUBS} clubs selected` : "Search for a club…"}
           disabled={disabled}
           autoComplete="off"
           className="flex-1 text-sm text-[#111111] placeholder-[#aaaaaa] bg-transparent outline-none min-w-0"
@@ -160,79 +166,69 @@ function ClubSearch({
   );
 }
 
-/** Standard left-to-right bar (revenue, wages, wage ratio) */
+/** Standard left-to-right bar */
 function StandardBarRow({
   club,
   value,
   pct,
-  colorStyle,
-  labelColor,
-  isRatio,
+  clubColor,
 }: {
   club: ClubFinancials;
   value: number | null;
   pct: number;
-  colorStyle: string;
-  labelColor: string;
-  isRatio?: boolean;
+  clubColor: string;
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className={`text-xs w-32 shrink-0 truncate ${labelColor}`}>{club.name}</span>
+      <span className="text-xs w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
       <div className="flex-1 h-8 bg-[#eeeeee] overflow-hidden">
-        <div className="h-full" style={{ width: `${pct}%`, backgroundColor: colorStyle }} />
+        <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
       </div>
-      <span className="text-sm font-light tabular-nums text-[#111111] w-16 text-right shrink-0">
-        {fmt(value, isRatio)}
+      <span className="text-sm font-light tabular-nums w-16 text-right shrink-0" style={{ color: clubColor }}>
+        {fmt(value)}
       </span>
     </div>
   );
 }
 
-/**
- * Diverging bar — negative extends left, positive extends right.
- * `barColor` is pre-computed by the caller and used for both bar fill and value text,
- * so the colour always reflects the metric's semantics (vs-avg for OP/PTP, sign-based for net_debt).
- */
+/** Diverging bar — negative extends left, positive extends right */
 function DivergingBarRow({
   club,
   value,
   scale,
-  labelColor,
+  clubColor,
   isRatio,
-  barColor,
 }: {
   club: ClubFinancials;
   value: number | null;
   scale: number;
-  labelColor: string;
+  clubColor: string;
   isRatio?: boolean;
-  barColor: string;
 }) {
   const isPositive = value !== null && value >= 0;
   const pct = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
 
   return (
     <div className="flex items-center gap-3">
-      <span className={`text-xs w-32 shrink-0 truncate ${labelColor}`}>{club.name}</span>
+      <span className="text-xs w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
       <div className="flex-1 flex h-8">
         {/* Negative (left) side */}
         <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
           {value !== null && !isPositive && (
-            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: barColor }} />
+            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
           )}
         </div>
         <div className="w-px bg-[#e0e0e0] shrink-0" />
         {/* Positive (right) side */}
         <div className="flex-1 overflow-hidden bg-[#eeeeee]">
           {value !== null && isPositive && (
-            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: barColor }} />
+            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
           )}
         </div>
       </div>
       <span
         className="text-sm font-light tabular-nums w-16 text-right shrink-0"
-        style={{ color: value !== null ? barColor : "#aaaaaa" }}
+        style={{ color: value !== null ? clubColor : "#aaaaaa" }}
       >
         {fmt(value, isRatio)}
       </span>
@@ -243,37 +239,15 @@ function DivergingBarRow({
 function MetricSection({
   metric,
   clubs,
-  allClubs,
 }: {
   metric: (typeof COMPARE_METRICS)[0];
   clubs: ClubFinancials[];
-  allClubs: ClubFinancials[];
 }) {
   const vals = clubs.map((c) => c[metric.key] as number | null);
   const absMax = Math.max(
     ...vals.filter((v): v is number => v !== null).map(Math.abs),
     0.01
   );
-
-  function getDivAvg(club: ClubFinancials): number | null {
-    const divVals = allClubs
-      .filter((c) => c.division === club.division && c[metric.key] !== null)
-      .map((c) => c[metric.key] as number);
-    if (!divVals.length) return null;
-    return divVals.reduce((a, b) => a + b, 0) / divVals.length;
-  }
-
-  function getDivergingBarColor(club: ClubFinancials, value: number | null): string {
-    if (value === null) return "#cccccc";
-    if (metric.key === "net_debt") {
-      // Positive = in debt (bad = red), negative = net cash (good = green)
-      return value >= 0 ? "#9a4a4a" : "#4a9a6a";
-    }
-    // OP/PTP: green if above division average, red if below
-    const avg = getDivAvg(club);
-    if (avg === null) return "#cccccc";
-    return value > avg ? "#4a9a6a" : "#9a4a4a";
-  }
 
   return (
     <div className="py-6 border-b border-[#e0e0e0] last:border-0">
@@ -283,6 +257,7 @@ function MetricSection({
       <div className="space-y-3">
         {clubs.map((club, i) => {
           const value = club[metric.key] as number | null;
+          const clubColor = CLUB_COLORS[i];
           if (metric.diverging) {
             return (
               <DivergingBarRow
@@ -290,9 +265,8 @@ function MetricSection({
                 club={club}
                 value={value}
                 scale={absMax}
-                labelColor={CLUB_LABEL_COLORS[i]}
+                clubColor={clubColor}
                 isRatio={metric.isRatio}
-                barColor={getDivergingBarColor(club, value)}
               />
             );
           }
@@ -303,9 +277,7 @@ function MetricSection({
               club={club}
               value={value}
               pct={pct}
-              colorStyle={CLUB_COLORS[i]}
-              labelColor={CLUB_LABEL_COLORS[i]}
-              isRatio={metric.isRatio}
+              clubColor={clubColor}
             />
           );
         })}
@@ -321,7 +293,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
   const initialSlugs = (searchParams.get("clubs") ?? "")
     .split(",")
     .filter((s) => s && allClubs.some((c) => c.slug === s))
-    .slice(0, 2);
+    .slice(0, MAX_CLUBS);
 
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(initialSlugs);
 
@@ -336,7 +308,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
   );
 
   function addClub(slug: string) {
-    if (selectedSlugs.includes(slug) || selectedSlugs.length >= 2) return;
+    if (selectedSlugs.includes(slug) || selectedSlugs.length >= MAX_CLUBS) return;
     const next = [...selectedSlugs, slug];
     setSelectedSlugs(next);
     updateUrl(next);
@@ -382,14 +354,16 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
           </div>
         ))}
 
-        <div className="w-72">
-          <ClubSearch
-            allClubs={allClubs}
-            selectedSlugs={selectedSlugs}
-            onAdd={addClub}
-            disabled={selectedSlugs.length >= 2}
-          />
-        </div>
+        {selectedSlugs.length < MAX_CLUBS && (
+          <div className="w-72">
+            <ClubSearch
+              allClubs={allClubs}
+              selectedSlugs={selectedSlugs}
+              onAdd={addClub}
+              disabled={false}
+            />
+          </div>
+        )}
 
         {selectedClubs.length >= 2 && (
           <button
@@ -404,26 +378,26 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
         )}
       </div>
 
-      {/* Empty state */}
+      {/* States */}
       {selectedClubs.length === 0 && (
         <div className="text-center py-24">
-          <p className="text-[#bbbbbb] text-sm tracking-[0.05em]">Search for two clubs above to compare their financials</p>
+          <p className="text-[#bbbbbb] text-sm tracking-[0.05em]">Search for clubs above to compare their financials — up to {MAX_CLUBS} at once</p>
         </div>
       )}
 
       {selectedClubs.length === 1 && (
-        <p className="text-sm text-[#aaaaaa] mb-4">Add one more club to start comparing</p>
+        <p className="text-sm text-[#aaaaaa] mb-4">Add at least one more club to start comparing</p>
       )}
 
       {/* Bar charts */}
       {selectedClubs.length >= 2 && (
         <div className="border border-[#e0e0e0] bg-white px-6">
           {/* Legend */}
-          <div className="flex gap-6 pt-5 pb-4 border-b border-[#e0e0e0] mb-2">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 pt-5 pb-4 border-b border-[#e0e0e0] mb-2">
             {selectedClubs.map((club, i) => (
               <div key={club.slug} className="flex items-center gap-2">
-                <div className="w-3 h-3" style={{ backgroundColor: CLUB_COLORS[i] }} />
-                <span className={`text-xs ${CLUB_LABEL_COLORS[i]}`}>{club.name}</span>
+                <div className="w-3 h-3 shrink-0" style={{ backgroundColor: CLUB_COLORS[i] }} />
+                <span className="text-xs" style={{ color: CLUB_COLORS[i] }}>{club.name}</span>
               </div>
             ))}
             <span className="text-[10px] text-[#cccccc] ml-auto self-center tracking-[0.05em]">
@@ -436,7 +410,6 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
               key={metric.key as string}
               metric={metric}
               clubs={selectedClubs}
-              allClubs={allClubs}
             />
           ))}
         </div>

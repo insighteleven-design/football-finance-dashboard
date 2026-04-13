@@ -41,28 +41,10 @@ function divisionStats(division: string, key: keyof ClubFinancials) {
   return { avg, maxAbs, sorted, count: vals.length };
 }
 
-/** Bar fill color for standard (non-diverging) metrics based on vs-average comparison */
-function clubBarColor(
-  key: keyof ClubFinancials,
-  value: number,
-  avg: number,
-  higherBetter: boolean | null
-): string {
-  if (higherBetter === null) return "#aaaaaa"; // neutral — wage bill
-  const better = higherBetter ? value > avg : value < avg;
-  return better ? "#4a9a6a" : "#9a4a4a";
-}
-
-/** Value text color class for standard metrics */
-function valueTextColor(
-  key: keyof ClubFinancials,
-  value: number,
-  avg: number,
-  higherBetter: boolean | null
-): string {
-  if (higherBetter === null) return "text-[#111111]";
-  const better = higherBetter ? value > avg : value < avg;
-  return better ? "text-[#4a9a6a]" : "text-[#9a4a4a]";
+/** Green = better than division average, red = worse — for all metrics, all bar types */
+function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): string {
+  if (higherBetter === null) return "#aaaaaa"; // wage bill — neutral
+  return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
 }
 
 function HealthBadges({ club }: { club: ClubFinancials }) {
@@ -103,11 +85,7 @@ function StandardBar({ pct, color }: { pct: number; color: string }) {
   );
 }
 
-/**
- * Diverging bar — negative side extends left, positive extends right.
- * A single `color` prop controls the fill; the caller decides what color
- * to use based on the metric's semantics (vs-avg for OP/PTP, sign-based for net_debt).
- */
+/** Diverging bar — negative extends left, positive extends right. Single `color` prop for the fill. */
 function DivergingBar({ value, scale, color }: {
   value: number;
   scale: number;
@@ -118,15 +96,12 @@ function DivergingBar({ value, scale, color }: {
 
   return (
     <div className="flex-1 flex h-7">
-      {/* Negative (left) side */}
       <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
         {!isPositive && (
           <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
         )}
       </div>
-      {/* Centre divider */}
       <div className="w-px bg-[#e0e0e0] shrink-0" />
-      {/* Positive (right) side */}
       <div className="flex-1 overflow-hidden bg-[#eeeeee]">
         {isPositive && (
           <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
@@ -200,39 +175,22 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           const stats = divisionStats(club.division, m.key);
           const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
 
-          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats?.avg ?? 0), 0.01) : 1;
-
+          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : 1;
           const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
           const avgPct = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
 
-          // Colors for standard (non-diverging) bars
+          // Bar colour: green = better than division avg, red = worse, for ALL metrics
           const barColor = val !== null && stats
-            ? clubBarColor(m.key, val, stats.avg, m.higherBetter)
+            ? vsAvgColor(val, stats.avg, m.higherBetter)
             : "#cccccc";
-          const txtColor = val !== null && stats
-            ? valueTextColor(m.key, val, stats.avg, m.higherBetter)
-            : "text-[#cccccc]";
-
-          // Color for diverging bar fill and value text
-          let divBarColor = "#cccccc";
-          if (m.diverging && val !== null && stats) {
-            if (m.key === "net_debt") {
-              // Sign-based: positive = in debt (red), negative = net cash (green)
-              divBarColor = val >= 0 ? "#9a4a4a" : "#4a9a6a";
-            } else {
-              // OP/PTP: green if better than division average, red if worse
-              divBarColor = val > stats.avg ? "#4a9a6a" : "#9a4a4a";
-            }
-          }
 
           return (
             <Fragment key={m.key as string}>
-              {/* Left cell — figure */}
+              {/* Left cell — plain figures, no colour coding */}
               <div className="px-6 py-5 border-b border-r border-[#e0e0e0] bg-white">
                 <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
                 {val !== null ? (
-                  <p className={`text-2xl font-light tabular-nums ${m.diverging ? "" : txtColor}`}
-                     style={m.diverging && val !== null && stats ? { color: divBarColor } : undefined}>
+                  <p className="text-2xl font-light tabular-nums text-[#111111]">
                     {fmt(val, m.isRatio)}
                   </p>
                 ) : (
@@ -245,7 +203,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 )}
               </div>
 
-              {/* Right cell — bars */}
+              {/* Right cell — bar charts with green/red vs division average */}
               <div className="px-6 py-5 border-b border-[#e0e0e0] bg-white">
                 <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
 
@@ -256,7 +214,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                       <DivergingBar
                         value={val ?? 0}
                         scale={scale / 2}
-                        color={val !== null ? divBarColor : "#cccccc"}
+                        color={val !== null ? barColor : "#cccccc"}
                       />
                     ) : (
                       <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
@@ -272,11 +230,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <div className="mt-2">
                   <div className="flex items-center gap-2 mb-1">
                     {m.diverging && stats ? (
-                      <DivergingBar
-                        value={stats.avg}
-                        scale={scale / 2}
-                        color="#cccccc"
-                      />
+                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
                     ) : (
                       <StandardBar pct={avgPct} color="#cccccc" />
                     )}
