@@ -42,68 +42,374 @@ export interface ClubDeepDive {
 
 export const deepDive: Record<string, ClubDeepDive> = {
   "arsenal": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 110.7,
+      "broadcasting": 270.76,
+      "commercial": 261.37
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 325.08,
+        "interest_rate": null,
+        "repayment_date": "Repayable on two years notice",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0,
+        "facility_type": "Revolving Credit Facility",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": 282.8,
+      "bond_debt": {
+        "amount": 0.05,
+        "maturity": "Repayable at par value of \u00a314.4 million after 118 years"
+      },
+      "other_debt": null,
+      "total_debt_notes": "The company has a \u00a3100 million undrawn working capital facility with Barclays Bank. KSE UK Inc. provides a loan repayable on two years notice (\u00a3325.1m shown in creditors due after more than one year); certain direct costs of original loan financing have been capitalised and are being amortised over the estimated term. The A and B debentures are interest free and repayable at par value of \u00a314.4 million after 118 years."
+    }
   },
   "aston_villa": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 127.89,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 20.45,
+        "facility_type": "Overdraft",
+        "repayment_date": null,
+        "security": "Barclays Bank Plc overdraft facility"
+      },
+      "transfer_payables": 169.98,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Amounts owed to group undertakings (\u00a3127.89m within one year) are unsecured, bear no interest, and are repayable on demand. A capital contribution of \u00a393.5m was recognised during the period on conversion of an intercompany bridging loan from NSWE Sports Limited. The bank overdraft of \u00a320.45m is from Barclays Bank Plc. Trade creditors due after more than one year of \u00a361.84m relate to transfer fees. Maximum un-provided contingent liability for player registrations is \u00a3117.88m."
+    }
   },
   "bournemouth": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 11.41,
+      "broadcasting": 148.0,
+      "commercial": 22.31
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0,
+        "interest_rate": "0%",
+        "repayment_date": "2032-12-12",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 48.91,
+        "facility_type": "Revolving Credit Facility",
+        "repayment_date": "2029-12-13",
+        "security": "Assets of the company"
+      },
+      "transfer_payables": 144.97,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Shareholder loans from Black Knight Football Club UK Limited were fully converted to A ordinary shares on 6 December 2024 and 24 June 2025, reducing the balance from \u00a389.78m to \u00a3Nil. Bank loans comprise a \u00a350m Goldman Sachs credit facility at 7.65% interest, of which \u00a350m was drawn down, used partly to repay a \u00a329.4m existing bank loan and \u00a36.4m of shareholder loans. Financial covenants on the Goldman Sachs facility must be adhered to quarterly and all covenants have been complied with through the report date."
+    }
   },
   "brentford": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 12.38,
+      "broadcasting": 139.55,
+      "commercial": 19.36
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 61.1,
+        "interest_rate": "0% (discounted at 12.5% under FRS 102)",
+        "repayment_date": "Repayable after a continually rolling notice period of 367 days, if called",
+        "secured": true
+      },
+      "bank_debt": {
+        "amount": 70.47,
+        "facility_type": "Bank loans and overdraft",
+        "repayment_date": null,
+        "security": "Overdraft secured by floating charge over future Premier League media rights incomes; bank loans from Macquarie Bank and OLB Bank for transfer fee repayment"
+      },
+      "transfer_payables": 97.41,
+      "bond_debt": null,
+      "other_debt": "Bees United interest-free loans of \u00a30.50m, of which \u00a30.40m is secured by legal charges over freehold property, repayable on demand.",
+      "total_debt_notes": "Third-party net debt increased to \u00a371.0m (2024: \u00a329.8m) due to new financing to assist with player trading. Post year-end, the club entered a new \u00a3100m facility with Macquarie Bank (\u00a375m term loan and \u00a325m RCF), repaying the Barclays overdraft; new minority equity investment from Gary Lubner and Sir Matthew Vaughn resulted in repayment of all preference share capital (\u00a324.6m) and partial repayment of shareholder loans (\u00a315.4m)."
+    }
   },
   "brighton": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 27.53,
+      "broadcasting": 150.64,
+      "commercial": 22.41
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 336.07,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date - repayable on demand",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": 151.69,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The club shows net liabilities of \u00a329.4m and net current liabilities of \u00a3249.6m. Funding is provided by Chairman Tony Bloom via interest-free loans and equity conversion through the parent company Brighton & Hove Albion Holdings Limited, with a committed letter of support for non-recall of existing loans and provision of additional funding if required."
+    }
   },
   "burnley": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 8.87,
+      "broadcasting": 110.56,
+      "commercial": 14.13
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 92.19,
+        "facility_type": "Term Loan",
+        "repayment_date": "2028-01",
+        "security": "Fixed and floating charges over the assets of the Company and its fellow group undertakings, Longside Properties Limited"
+      },
+      "transfer_payables": 87.27,
+      "bond_debt": null,
+      "other_debt": "Other loans of \u00a320.20m including a \u00a330m unsecured facility bearing interest at 12.75% which was converted to a secured facility on 1 September 2024; also proceeds of factored debts totalling \u00a320.20m (\u00a312.78m within one year, \u00a37.42m after one year).",
+      "total_debt_notes": "Total loans and overdrafts are \u00a3112.39m (bank loans \u00a392.19m, other loans \u00a320.20m), with \u00a382.45m payable within one year and \u00a329.94m payable after one year. Bank loans bear interest between 8.5% fixed and SONIA + 7.5%, with principal repayment due January 2028."
+    }
   },
   "chelsea": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 76.43,
+      "broadcasting": 163.08,
+      "commercial": 175.51
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1641.87,
+        "interest_rate": "0%",
+        "repayment_date": "On demand",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": 541.92,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Amounts due to group undertakings of \u00a31,641.9m are interest free and repayable on demand, though the parent company directors have confirmed no intention to demand repayment within the next year. The prior year balance sheet was restated to reclassify \u00a31,273.6m of group balances from non-current to current liabilities. Trade creditors (transfer payables) of \u00a3322.6m fall due within one year and \u00a3219.3m after more than one year. Contingent transfer fee liabilities of up to \u00a374.2m may also become payable."
+    }
   },
   "crystal_palace": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 13.81,
+      "broadcasting": 145.45,
+      "commercial": 26.04
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 108.94,
+        "interest_rate": "Interest free (current portion); 5% (long-term loan of \u00a37.655m)",
+        "repayment_date": "Repayable on demand (current portion); 14 January 2040 (\u00a37.655m loan)",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 0.23,
+        "facility_type": "Term Loan",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": 66.53,
+      "bond_debt": null,
+      "other_debt": "Advances under funding agreement of \u00a348.05m secured on central funds due from the Premier League; finance leases of \u00a31.04m.",
+      "total_debt_notes": "The company relies on a mixture of shareholder equity, related party loans (interest-free and repayable on demand from parent CPFC 2010 Limited and ultimate parent Palace Holdco UK Limited), Premier League advance funding secured on future distributions, and a \u00a37.655m fixed-rate 5% unsecured loan from Palace Holdco UK Limited repayable in 2040. A capital raise of close to \u00a338m from existing shareholders was completed in January 2025."
+    }
   },
   "everton": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 19.15,
+      "broadcasting": 129.22,
+      "commercial": 38.54
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 450.75,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 593.77,
+        "facility_type": "Multiple facilities",
+        "repayment_date": null,
+        "security": "Fixed and floating charge on the assets of the Club"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The \u00a3450.75m interest-free shareholder loan from Bluesky Capital Limited (controlled by Mr Moshiri) was classified as equity under FRS 102 as it had no agreed repayment date. Bank borrowings of \u00a3593.77m comprise a five-year facility of \u00a3150m, a three-year facility of \u00a330m, a three-year \u20ac18.5m facility, a three-year $49.89m facility, a 34-month facility of \u00a3160.13m, and a one-year \u00a3200m facility. Post year-end, The Friedkin Group acquired 94.1% of shares, the shareholder loan was converted to equity, and all existing borrowings were fully repaid via a comprehensive refinancing with a new five-year JP Morgan Chase revolving credit facility."
+    }
   },
   "fulham": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 18.39,
+      "broadcasting": 134.51,
+      "commercial": 27.79
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 44.4,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 0,
+        "facility_type": null,
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": 72.12,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "At 30 June 2024 the club owed \u00a344.4m to its immediate parent Fulham Football Leisure Limited on undocumented, interest-free, repayable-on-demand loan facilities; post year-end on 18 October 2024 \u00a375.3m of shareholder loans were converted to equity via a share issue of 44,397,524 shares. Post year-end on 16 July 2024 a \u00a3125m loan facility was taken out with JPMorgan Chase Bank (SONIA + 3.625%, secured against company assets, repayable within 5 years) for the Riverside Stand development, plus the group has a \u00a346.5m unsecured loan from its immediate parent with no fixed repayment date."
+    }
   },
   "leeds": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 30.63,
+      "broadcasting": 53.64,
+      "commercial": 43.28
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 26.73,
+        "interest_rate": "5% (waived during year on one loan); 0% on another",
+        "repayment_date": "Loan of \u00a322.45m repayable April 2026; \u00a34.28m repayable on demand",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 36.84,
+        "facility_type": "Other loans",
+        "repayment_date": null,
+        "security": "Secured on parachute payments of the 2024/25 season"
+      },
+      "transfer_payables": 141.98,
+      "bond_debt": {
+        "amount": 22.45,
+        "maturity": "April 2026"
+      },
+      "other_debt": "Finance lease obligations totalling \u00a31.01m (\u00a30.34m within one year, \u00a30.67m after one year).",
+      "total_debt_notes": "The \u00a322.45m ISE-listed loan attracts 6% interest and is repayable April 2026. A shareholder loan of \u00a343.6m (originally \u00a36.6m advanced plus \u00a335m in-year) at 5% interest was converted into a capital contribution of \u00a3140.74m during the year alongside other shareholder capital injections. Net debt at year end was \u00a355.29m. Transfer fee creditors of \u00a373.92m fall due within one year and \u00a368.06m after more than one year."
+    }
   },
   "liverpool": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 115.59,
+      "broadcasting": 263.66,
+      "commercial": 323.47
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 217.92,
+        "interest_rate": "Interest free",
+        "repayment_date": "On demand",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 69.0,
+        "facility_type": "Revolving Credit Facility",
+        "repayment_date": "2029",
+        "security": null
+      },
+      "transfer_payables": 188.8,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "On 24 September 2024, the Group refinanced its credit facility (previously due July 2025) into a new \u00a3350.0 million revolving credit facility for a term of five years available for general corporate purposes including working capital and letters of credit. At year end \u00a369.0 million was drawn. The intercompany loan of \u00a3217.9 million is due to group undertaking FSG Football Group, LLC and is interest-free and repayable on demand; deferred loan costs of \u00a31.66 million reduce the net bank debt carrying amount to \u00a367.34 million."
+    }
   },
   "man_city": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 75.08,
+      "broadcasting": 278.63,
+      "commercial": 340.38
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 102.03,
+        "facility_type": "Term Loan",
+        "repayment_date": "2030-07",
+        "security": "100% of the Group's assets"
+      },
+      "transfer_payables": 423.04,
+      "bond_debt": null,
+      "other_debt": "Amounts owed to group undertakings of \u00a3233.96m (\u00a3131.93m current, \u00a3102.03m non-current due July 2030 to City Football Group USA LLC via Quoted Eurobond). Lease liabilities of \u00a369.67m relating to the Etihad Stadium lease.",
+      "total_debt_notes": "In July 2021, the Group completed a $650m term loan with an additional $270m term loan completed in June 2024; Barclays as collateral agent holds a charge over 100% of Group assets. In July 2024, City Football Group USA LLC transferred $140m to support North Stand construction via a Quoted Eurobond at Adjusted Term SOFR plus applicable rate."
+    }
   },
   "man_united": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 162.12,
+      "broadcasting": 166.05,
+      "commercial": 272.49
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 323.77,
+        "facility_type": "Secured Term Loan and Revolving Credit Facility",
+        "repayment_date": "Term loan repayable 6 August 2029; Revolving facilities expire 31 December 2029",
+        "security": "Secured against substantially all assets of Red Football Limited, Red Football Junior Limited, Manchester United Limited, MU Finance Limited, MU RAML Limited and the Company"
+      },
+      "transfer_payables": 446.58,
+      "bond_debt": {
+        "amount": 307.74,
+        "maturity": "2027-06-25"
+      },
+      "other_debt": "Accrued interest on senior secured notes and revolving facilities of \u00a35.12 million.",
+      "total_debt_notes": "Total borrowings are \u00a3636.64m comprising $425m senior secured notes at 3.79% fixed coupon maturing June 2027, a $225m secured term loan at SOFR plus 1.25-1.75% margin repayable August 2029, and \u00a3160m drawn under revolving facilities (total available \u00a3350m post year-end amendment). The Red Football Limited group must maintain consolidated EBITDA of not less than \u00a365m on a rolling 12-month basis."
+    }
   },
   "newcastle": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 50.1,
+      "broadcasting": 183.79,
+      "commercial": 83.57
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 49.72,
+        "facility_type": "Term Loan and Revolving Credit Facility",
+        "repayment_date": "July 2025",
+        "security": "Assignment of Premier League Central distributions and Group ticketing revenues and a floating charge over the assets of the Group"
+      },
+      "transfer_payables": 160.35,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The Group operates a \u00a350m term loan facility with HSBC and a \u00a325m revolving working capital facility with HSBC UK Bank Plc and Deutsche Bank AG, both bearing interest at SONIA + 2.9%. The RCF was undrawn at 30 June 2024. The facilities expire in July 2025 and the Club is negotiating a 4-year extension. Net debt at year end was \u00a334.29m."
+    }
   },
   "nottm_forest": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 20.25,
+      "broadcasting": 158.6,
+      "commercial": 42.9
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 98.42,
+        "facility_type": "Term Loan",
+        "repayment_date": "3 years from facility dates with provision to extend",
+        "security": "First priority fixed and floating charge debenture over the entirety of the business and assets of the company and Nottingham Forest Women's Football Club Limited together with a Parent Security Deed over the entirety of the business and assets of NF Football Investments Limited"
+      },
+      "transfer_payables": 112.85,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The club has two main loan facilities: a \u00a328.2m facility from October 2023 at 8.20% over 3 years to bring forward player sale proceeds, and an \u00a380m facility from December 2024 at 8.75% for 3 years (extendable by 2 years) from a Luxembourg-based institution to refinance a previous \u00a355m facility and provide working capital. During the year, the parent company NF Football Investments Limited converted \u00a389m of debt to equity (\u00a372m in January 2025 and \u00a317m in June 2025)."
+    }
   },
   "sunderland": {
     "revenue_breakdown": null,
@@ -122,64 +428,329 @@ export const deepDive: Record<string, ClubDeepDive> = {
     "debt_profile": null
   },
   "birmingham": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 10.31,
+      "broadcasting": 3.53,
+      "commercial": 21.81
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 188.32,
+        "interest_rate": "11.90%",
+        "repayment_date": "Due within one year",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": 21.13,
+      "bond_debt": null,
+      "other_debt": "Preference shares of \u00a30.02m classified as debt; lease liabilities of \u00a39.06m.",
+      "total_debt_notes": "The club has a loan facility from Knighthead (via parent BCL) of up to \u00a3150m at 11.90% fixed interest, extended via Deeds of Amendment in October 2024 and July 2025. At 30 June 2025, \u00a390.2m had been drawn under this facility, with total amounts owed to parent company of \u00a3188.3m shown as current liabilities due within one year. The company needs approximately \u00a359m of additional funding from Knighthead for the period July 2025 to December 2026."
+    }
   },
   "blackburn": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 4.46,
+      "broadcasting": 11.5,
+      "commercial": 7.73
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 138.76,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 12.83,
+        "facility_type": "Overdraft",
+        "repayment_date": "2026-05-20",
+        "security": "Corporate guarantee from holding company Venkys London Limited, 2.0% over BOE base rate"
+      },
+      "transfer_payables": 5.09,
+      "bond_debt": null,
+      "other_debt": "Hire purchase creditors totalling \u00a30.42m (\u00a30.22m within one year, \u00a30.20m after one year).",
+      "total_debt_notes": "The \u00a3138.76m owed to parent company Venky's London Limited is interest-free with no fixed repayment date; VLL has confirmed it will not recall the amount within 12 months. A material uncertainty exists around the parent group VHPL's ability to freely remit funds from India due to ongoing Directorate of Enforcement proceedings, though a No Objection Certificate for \u00a315m was granted in March 2024."
+    }
   },
   "bristol_city": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 7.3,
+      "broadcasting": 12.76,
+      "commercial": 3.99
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 17.68,
+        "interest_rate": "3%",
+        "repayment_date": "No fixed date",
+        "secured": true
+      },
+      "bank_debt": {
+        "amount": 3.1,
+        "facility_type": "Overdraft",
+        "repayment_date": "On demand",
+        "security": "Limited guarantee given by S P Lansdown"
+      },
+      "transfer_payables": 6.98,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The \u00a317.68m loan from Pula Sport Limited is secured by a floating charge over the undertakings and assets of the company with no fixed repayment date. During the year, \u00a37.5m of debt was converted to equity via a debt-to-equity swap. The bank overdraft facility is at 1.75% plus base rate."
+    }
   },
   "charlton": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 5.0,
+      "broadcasting": 2.55,
+      "commercial": 3.62
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 25.87,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Other loans (ex-director loans from Staprix NV) totalling \u00a36.04m due after more than one year, recognised at present value under FRS 102.",
+      "total_debt_notes": "The club is debt-free in terms of external bank borrowing; the balance sheet primarily reflects shareholder investment via unsecured, interest-free, on-demand intercompany loans from group companies (\u00a325.87m within one year). A further \u00a36.04m relates to legacy ex-director loans from Staprix NV carried at present value with a contingent consideration payable if promoted to the Premier League before September 2030."
+    }
   },
   "coventry": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 12.2,
+      "broadcasting": 12.19,
+      "commercial": 9.76
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 49.75,
+        "interest_rate": "0%",
+        "repayment_date": "2027-02-28",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": 16.48,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.02m (\u00a30.02m due within one year).",
+      "total_debt_notes": "The club's primary debt is a \u00a349.75m interest-free, unsecured credit facility from parent company CovCityCo Ltd maturing 28 February 2027, increased from \u00a330m in the prior year. Transfer fee creditors total \u00a316.48m split between amounts due within one year (\u00a39.50m in trade creditors and transfer fees) and after one year (\u00a36.15m)."
+    }
   },
   "derby": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 9.59,
+      "broadcasting": 11.99,
+      "commercial": 10.29
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 63.08,
+        "interest_rate": "0%",
+        "repayment_date": "On demand",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": 6.04,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company is primarily funded by its ultimate parent, Clowes Developments (UK) Limited, with \u00a363.08m owed to group companies classified within creditors due within one year, non-interest bearing and repayable on demand. The directors have obtained written confirmation from the ultimate parent of their intention to provide continued financial support. It is intended that some of this amount will be capitalised into equity."
+    }
   },
   "hull": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 7.16,
+      "broadcasting": 12.55,
+      "commercial": 6.12
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 57.39,
+        "interest_rate": "8%",
+        "repayment_date": null,
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Other loans (from Allamhouse) of \u00a319.08m at 0% interest, non-repayable unless promoted to Premier League.",
+      "total_debt_notes": "Total loans and overdrafts are \u00a376.46m, comprising \u00a357.39m from ACM BV Group at 8% interest (unsecured) and \u00a319.08m from Allamhouse at 0% interest which is non-repayable unless promoted to Premier League. Post year-end, \u20ac16.75m of loan balances were converted into equity via share premium."
+    }
   },
   "ipswich": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 11.25,
+      "broadcasting": 107.55,
+      "commercial": 36.62
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0.05,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": 65.56,
+      "bond_debt": null,
+      "other_debt": "Redeemable preference shares of \u00a38.05m classified as liabilities, held by the parent company, carrying a 7.0% cumulative dividend (waived in the year); finance lease obligations of \u00a30.98m.",
+      "total_debt_notes": "Loans from related parties reduced from \u00a30.39m to \u00a30.05m during the year via \u00a30.34m repayment with \u00a35k interest charged. The company remains reliant on parent company financial support with a letter of support for at least 12 months; \u00a344.5m cash in advance of share issue was received during the year."
+    }
   },
   "leicester": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 18.39,
+      "broadcasting": 54.19,
+      "commercial": 31.25
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 170.83,
+        "interest_rate": "1% to 6%",
+        "repayment_date": "Various - within one year on demand, between one and five years in instalments October/December 2025",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 55.14,
+        "facility_type": "Term Loan and Discounting Facilities",
+        "repayment_date": "Various - August 2024 to September 2025",
+        "security": "Premier League receivables and transfer fee receivables"
+      },
+      "transfer_payables": 76.59,
+      "bond_debt": null,
+      "other_debt": "Hire purchase obligations of \u00a323.68m relating to the stadium, repayable on 30 June 2026 with 8% interest, owed to K Power Holdings Company Limited.",
+      "total_debt_notes": "The Club owed \u00a3100.12m to parent King Power International Limited at year end including \u00a336.5m subordinated loans plus \u00a34.17m interest; a further \u00a332.68m subordinated loan was owed to chairman Aiyawatt Srivaddhanaprabha. The Macquarie Bank facility of \u00a380m secured on Premier League receivables was fully repaid in August 2024 and replaced with a new three-year agreement in September 2024, alongside short-term discounting facilities secured on transfer fee receivables."
+    }
   },
   "middlesbrough": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 8.69,
+      "broadcasting": 12.22,
+      "commercial": 10.86
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 18.66,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date - repayable on demand but letter of support states will not be recalled within 12 months",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 11.54,
+        "facility_type": "Loan facility secured against player trading receivables",
+        "repayment_date": "Multiple tranches: 31 July 2025, 15 August 2025, 15 January 2026",
+        "security": "Future player trading receivables"
+      },
+      "transfer_payables": 22.78,
+      "bond_debt": null,
+      "other_debt": "Director's loan of \u00a32.49m (interest free, fully repaid post year end on 30 September 2025).",
+      "total_debt_notes": "The club has net current liabilities of \u00a340.25m and relies on continuing financial support from The Gibson O'Neill Company Limited, the ultimate parent undertaking, which has provided a formal letter of support. Bank loan facilities bear interest at SONIA plus 4.00%, 6.86%, and SFOR plus 4.69% across three tranches."
+    }
   },
   "millwall": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 7.26,
+      "broadcasting": 12.59,
+      "commercial": 4.01
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 177.63,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": 1.57,
+      "bond_debt": null,
+      "other_debt": "\u00a30.53m unsecured loan notes (2013 Unsecured Loan Notes of \u00a3525,000 held by Directors and associates) with repayment extended to 1 July 2027, and \u00a30.06m preference shares classified as debt.",
+      "total_debt_notes": "The company is funded primarily via its parent Millwall Holdings Limited and principal shareholder Chestnut Hill Ventures LLC (CHV). A \u00a320m CHV facility (\u00a310m drawn) has been extended to 1 July 2027 with interest suspended; amounts owed to group undertakings of \u00a3177.6m are interest-free with no fixed repayment terms. The auditors have highlighted a material uncertainty regarding going concern due to dependence on continued shareholder funding."
+    }
   },
   "norwich": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 10.57,
+      "broadcasting": 11.86,
+      "commercial": 16.85
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 43.53,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 10.43,
+        "facility_type": "Short term loan",
+        "repayment_date": "2026-09",
+        "security": "Secured on future contracted player receivables"
+      },
+      "transfer_payables": 20.21,
+      "bond_debt": null,
+      "other_debt": "Preference shares classified as financial liabilities totalling \u00a311.42m (A, B and C preference shares) plus other loans of \u00a32.46m within one year.",
+      "total_debt_notes": "Norfolk FB Holdings LLC converted outstanding loans of \u00a356.6m into D and E preference shares in October 2024, with D shares subsequently converted to ordinary shares in March 2025, giving Norfolk ~85% ownership. During the period Norfolk provided further debt financing of \u00a329.8m; outstanding director/shareholder loans fell from \u00a365.39m to \u00a343.53m due to the conversion."
+    }
   },
   "oxford_utd": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 3.63,
+      "broadcasting": 11.45,
+      "commercial": 3.92
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 58.04,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.02,
+        "facility_type": "Term Loan",
+        "repayment_date": "Repayable by instalments",
+        "security": null
+      },
+      "transfer_payables": 3.11,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.01m and Football League defined benefit pension scheme liability of \u00a30.17m.",
+      "total_debt_notes": "The club has net liabilities of \u00a359.49m, driven primarily by \u00a358.04m owed to group undertakings (parent company). Shareholders have confirmed continued financial support through 31 December 2026."
+    }
   },
   "portsmouth": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 8.19,
+      "broadcasting": 11.56,
+      "commercial": 4.81
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 8.0,
+        "interest_rate": "Applicable Federal Rate (US IRS Section 7872(e)(2))",
+        "repayment_date": "Repayable on demand, but owners have no intention to demand repayment until balance sheet reflects ability to repay",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": 0.93,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations totalling \u00a30.19m.",
+      "total_debt_notes": "The club remains free from external bank debt. Owners (Tornante Group) have invested \u00a345m total to date, of which \u00a337m converted to share capital and \u00a38m via loan instrument; a further \u00a39m was provided after balance sheet date. No loan capital repayments or interest have been paid to date."
+    }
   },
   "preston": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 5.39,
+      "broadcasting": 11.82,
+      "commercial": 1.67
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": null,
+      "transfer_payables": 4.85,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company has net current liabilities of \u00a34.791m and is reliant on continued financial support from its intermediate parent company Deepdale PNE Holdings Limited and ultimately Grovemoor Limited. There is no bank debt; creditors due after more than one year of \u00a3615k are trade creditors (player transfer fees). The group has engaged Rothschild & Co to consider future ownership models and investment."
+    }
   },
   "qpr": {
     "revenue_breakdown": null,
@@ -218,76 +789,351 @@ export const deepDive: Record<string, ClubDeepDive> = {
     "debt_profile": null
   },
   "afc_wimbledon": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 5.86,
+      "broadcasting": null,
+      "commercial": null
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 0.03,
+        "facility_type": "Term Loan",
+        "repayment_date": "2030-05",
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.05m relating to TV equipment at the stadium.",
+      "total_debt_notes": "The company has a small unsecured \u00a350,000 loan from The Co-operative Bank Plc at 2.5% per annum expiring May 2030, of which \u00a330,350 remains outstanding. Amounts owed to group undertakings total \u00a316.78m (current) and are interest free and repayable on demand. The Plough Lane Bond debt repayment is noted as a key financial risk with bonds regularly maturing."
+    }
   },
   "barnsley": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 3.86,
+      "broadcasting": 3.27,
+      "commercial": 3.13
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1.85,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": 1.36,
+      "bond_debt": null,
+      "other_debt": "Other creditors due after more than one year of \u00a32.02m (including \u00a30.52m long-term transfer fee creditors and amounts due to Oakwell Holdings Limited, a related party).",
+      "total_debt_notes": "The club has \u00a31.85m owed to Oakwell Holdings Limited (a company with mutual directors) included in other creditors. Shareholders funded operating cash shortfalls with \u00a35.36m in new equity during the year. Contingent liabilities for player transfer add-ons total up to \u00a30.64m."
+    }
   },
   "blackpool": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 4.03,
+      "broadcasting": null,
+      "commercial": null
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 17.88,
+        "interest_rate": "0%",
+        "repayment_date": null,
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Director loan from Mr S P Sadler of \u00a315.95m (interest-free) included within other creditors.",
+      "total_debt_notes": "The group is primarily funded by interest-free, unsecured loans from Seaside Holdings Ltd (the ultimate parent company), totalling \u00a317.88m as of 30 June 2025, with a cumulative total funding received of \u00a336.15m. Additionally, \u00a315.95m is owed to director Mr S P Sadler as an interest-free loan. The group has net liabilities of \u00a318.02m."
+    }
   },
   "bolton": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 5.5,
+        "interest_rate": "5% increasing to 6% from 1 September 2023",
+        "repayment_date": "Four equal instalments of \u00a31,375,000 from 1 August 2025 annually",
+        "secured": true
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": {
+        "amount": 4.57,
+        "maturity": "Fixed term of 5 years from June 2023"
+      },
+      "other_debt": "\u00a320.15m received from shareholders classified as other creditors at year end pending EFL approval for share issuance, subsequently converted to equity post year end.",
+      "total_debt_notes": "Other borrowings of \u00a35.96m (2024: \u00a36.26m) are secured by fixed and floating charges over land and buildings and include negative pledges, with interest at 5-6% and capital repayable in four annual instalments of \u00a31.375m from August 2025. Bonds of \u00a34.568m raised from the public in June 2023 are unsecured, with 8.5% annual interest from June 2024 and a 5-year term."
+    }
   },
   "bradford": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 5.4,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.17,
+        "facility_type": "Overdraft",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Creditors due after more than one year of \u00a35.40m are classified as 'Other creditors' likely representing owner/related party loans. Bank and other loans and overdrafts due within one year total \u00a30.17m. The club has a significant net liabilities position of \u00a35.48m with accumulated losses of \u00a38.48m on the profit and loss account."
+    }
   },
   "burton": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 0.9,
+      "broadcasting": 2.86,
+      "commercial": 2.65
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 10.0,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.02,
+        "facility_type": "Term Loan",
+        "repayment_date": null,
+        "security": "Fixed and floating charge over Company's property and assets, plus Director personal guarantees and Government security for 80%"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The \u00a310m owed to parent company Nordic Football Group UK Limited was subsequently waived post-balance sheet date via an agreement releasing the company from its obligation to repay loans amounting to \u00a38.7m. The bank loan is a \u00a3400k Coronavirus Business Interruption Loan (CBIL) at 3.08% per annum, nearly fully repaid with \u00a316,667 remaining."
+    }
   },
   "cardiff": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 5.95,
+      "broadcasting": 12.95,
+      "commercial": 6.86
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 97.0,
+        "interest_rate": "0% to 7%",
+        "repayment_date": "No fixed date",
+        "secured": true
+      },
+      "bank_debt": null,
+      "transfer_payables": 4.31,
+      "bond_debt": null,
+      "other_debt": "Loans from other connected parties (SCP Tormen Finance Inc) of \u00a337.30m bearing interest between 6%-12% per annum, secured over assets and undertaking of the principal trading company.",
+      "total_debt_notes": "The majority shareholder loans of \u00a389.27m comprise \u00a347.42m interest-bearing (7%, convertible at 15.69p per share) and \u00a341.85m non-interest bearing. The company also owes \u00a3154.99m to group undertakings (interest free, repayable on demand) and has net current liabilities of \u00a3308.4m with a material uncertainty over going concern reliant on a non-legally binding letter of support from the ultimate controlling party."
+    }
   },
   "doncaster": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0.26,
+        "interest_rate": null,
+        "repayment_date": "No fixed date",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company has net liabilities of \u00a30.26m. Its principal creditor is Westferry Limited (parent company, Isle of Man) with \u00a30.07m owed within one year, and a former director D O'Brien is owed \u00a30.19m due after more than one year, with informal arrangements that neither will demand repayment until the company is financially able. The company was not trading during the year."
+    }
   },
   "exeter": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 2.17,
+      "broadcasting": 2.72,
+      "commercial": 3.32
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0.95,
+        "interest_rate": "0%",
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The club owed \u00a3947,306 to its controlling party, Exeter City AFC Supporters Society Limited, with no interest charged. This is classified within other creditors due after more than one year (\u00a3961,653 total). The club needed emergency loans of \u00a3400k and \u00a3200k from the Supporters' Trust post year-end to meet payroll obligations, and also factored \u00a3985k of future transfer fee receivables from Close Brothers Leasing in December 2025. A material uncertainty regarding going concern exists due to reliance on the Supporters' Trust and contingent transfer income."
+    }
   },
   "huddersfield": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 3.5,
+      "broadcasting": 3.53,
+      "commercial": 3.6
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 59.88,
+        "interest_rate": "0%",
+        "repayment_date": "Repayable on demand",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Other loans of \u00a322.70m comprising non-interest bearing loans of \u00a321.2m (discounted to \u00a318.5m carrying amount) with repayment conditional on specific events including promotion to the Premier League, plus a \u00a315m loan at discounted cost of \u00a313.4m with repayment conditional on future events. Secured by debenture dated 3 July 2019 creating fixed and floating charges over all assets.",
+      "total_debt_notes": "Total borrowings are \u00a382.58m (\u00a359.88m from parent entity Town FC LLC and \u00a322.70m other loans). Of the other loans, \u00a321.2m have been discounted as financing transactions at 5% plus base rate, with repayments contingent on promotion to the Premier League and other trigger events, all deemed within 5 years. A debenture security charge was satisfied after year end."
+    }
   },
   "leyton_orient": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1.65,
+        "interest_rate": "0%",
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Eagle Investments 2017 Limited owns 99.66% of equity and has funded the company since 2017 through a non-interest-bearing loan facility. During the year, 90,541,356 shares of \u00a30.25 each totalling \u00a322,635,339 were allotted in consideration of the release and discharge of loans made by Eagle, converting the large accumulating debt into equity. Creditors due after more than one year fell from \u00a319.80m to \u00a31.65m as a result."
+    }
   },
   "lincoln": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 2.85,
+      "broadcasting": 2.28,
+      "commercial": 3.35
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": {
+        "amount": 0.62,
+        "maturity": null
+      },
+      "other_debt": "Deferred capital grants totalling \u00a32.11 million (\u00a30.02m current, \u00a32.09m non-current) relating to the Stacey West Community Hub project.",
+      "total_debt_notes": "The club has no bank debt or owner loans. Actual long-term debt relates to bonds issued to fans for capital projects amounting to \u00a3537k at year-end with a further \u00a379k included in current liabilities. All additional funding was provided by shareholders through the issue of 9.9 million shares for \u00a33.6 million."
+    }
   },
   "luton": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 6.13,
+      "broadcasting": 56.2,
+      "commercial": 4.49
+    },
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": null,
+      "transfer_payables": 7.84,
+      "bond_debt": null,
+      "other_debt": "Related party balance of \u00a33.27m owed to a fellow group undertaking at the reporting date.",
+      "total_debt_notes": "The club has no bank debt or owner loans. Creditors due after more than one year consist of \u00a34.07m in trade creditors, which relates to player transfer fee obligations. The club remains in good financial health with net assets in excess of \u00a345m and strong liquidity."
+    }
   },
   "mansfield": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0.25,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company is funded by interest-free loans repayable on demand from its subsidiary Mansfield Town Football Club Limited, John Radford MTFC Stadium Ltd (a company under common control), and group undertakings totalling \u00a3247,935. The company is reliant upon the support of its creditors and the directors confirm ongoing support for at least 12 months."
+    }
   },
   "northampton": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 13.52,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "All other loans of \u00a313.52m are owed to related parties (Belle De Jour Limited \u00a39.38m and Sole Intention Limited \u00a34.14m), are unsecured, interest free and have no fixed repayment terms. The owners have stated they will not call upon these loans for 12 months from signing the accounts. The company has net liabilities of \u00a310.71m and relies on continued owner funding to operate as a going concern."
+    }
   },
   "peterborough": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 10.4,
+        "interest_rate": "Mixed: some interest-free, some at 18% (no further interest since Dec 2022), some at 12%",
+        "repayment_date": "Loan to Old Kent Road Financial Ltd repayable over 4 years from Nov 2023; Kelgary loans dependent on DMA Holdings payments to Old Kent Road Financial Ltd",
+        "secured": true
+      },
+      "bank_debt": {
+        "amount": 0,
+        "facility_type": "Term Loan (Recovery Loan Scheme)",
+        "repayment_date": "2024-08-31",
+        "security": "Fixed and floating charges over the assets and property of the company"
+      },
+      "transfer_payables": null,
+      "bond_debt": {
+        "amount": 2.5,
+        "maturity": "5 years from June 2022 (approximately June 2027)"
+      },
+      "other_debt": "Other loans of \u00a37.15m include \u00a33.79m secured working capital loans at 14%-16%, \u00a30.65m unsecured loans at 10%, and a \u00a30.81m Funding Agreement secured by deed of indemnity and guarantee.",
+      "total_debt_notes": "Total borrowings of \u00a317.55m (2024: \u00a319.76m), of which \u00a313.43m falls due within one year including \u00a34.51m classified as current due to loan defaults despite longer contractual terms. The company has net liabilities of \u00a313.53m with material going concern uncertainty mitigated by a letter of support from beneficial owner Darragh MacAnthony. Post year-end, \u00a33.05m of loans were agreed to be converted to equity."
+    }
   },
   "plymouth": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 5.93,
+      "broadcasting": 11.33,
+      "commercial": 11.57
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 2.63,
+        "interest_rate": "2%",
+        "repayment_date": "2035",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Pension deficit loan of \u00a30.10m relating to the Football League Limited defined benefit scheme, no longer running.",
+      "total_debt_notes": "The club is increasingly reliant on shareholder debt from Mr S Hallett to finance infrastructure investment, with a loan facility of up to \u00a312.5m at 2% interest. Since the balance sheet date, Mr Hallett provided further loans of \u00a39.81m bringing total shareholder funding significantly higher. Net funds moved from \u00a310.23m positive to \u00a30.07m net debt position during the year."
+    }
   },
   "port_vale": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 19.65,
+        "interest_rate": "0%",
+        "repayment_date": "Not within next 12 months",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.06,
+        "facility_type": null,
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The club owes \u00a319.65m to its parent company via an interest-free loan repayable in over 12 months, with total advances during the year of \u00a34.75m. Loans and borrowings total \u00a30.06m (\u00a30.01m due within one year, \u00a30.04m due after one year). The shareholders' deficit stands at \u00a317.24m, with going concern supported by Mr and Mrs Shanahan and the parent undertaking."
+    }
   },
   "reading": {
     "revenue_breakdown": null,
@@ -315,47 +1161,213 @@ export const deepDive: Record<string, ClubDeepDive> = {
   },
   "accrington": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 5.81,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Government grants with deferred income totalling \u00a30.69m, secured by a legal charge over the company's property, with clawback provisions over 10-21 years.",
+      "total_debt_notes": "The club's primary debt is an unsecured, interest-free loan of \u00a35.81m from What More UK Limited (a related party under the control of the ultimate controlling party, Mr A M Holt), payable on demand. Creditors due after more than one year of \u00a30.67m relate entirely to deferred government grant income."
+    }
   },
   "barnet": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 3.26,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 0.3,
+        "facility_type": "Overdraft",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Secured other loans of \u00a30.59m included within creditors, secured by fixed and floating charge over all property of the company with a negative pledge. Long-term other creditors of \u00a30.62m due after more than one year.",
+      "total_debt_notes": "The company has net liabilities of \u00a32.32m and relies on continuing financial support from director/shareholder A A Kleanthous. Amounts owed to group undertakings (\u00a33.26m) are non-interest bearing and repayable on demand. A debenture and cross guarantee has been given to Barclays Bank PLC in favour of a loan taken by another connected company."
+    }
   },
   "barrow": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": null,
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Creditors falling due after more than one year of \u00a3903,831, which includes deferred government grants of \u00a3124,815 secured by a legal charge over the freehold property held by the Football Stadia Improvement Fund Limited.",
+      "total_debt_notes": "The company has \u00a31,775,769 in creditors due within one year and \u00a3903,831 due after more than one year. Deferred government grants of \u00a3124,815 are secured by a legal charge over the freehold property. The company is reliant on ongoing owner support as the financial statements are prepared on a going concern basis given ongoing losses. 777,500 ordinary shares of \u00a31 were issued during the year for cash of \u00a3777,500."
+    }
   },
   "bristol_rovers": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 15.23,
+        "interest_rate": null,
+        "repayment_date": "Repayable only when the club is in a position to repay",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.39,
+        "facility_type": "Bank loans",
+        "repayment_date": null,
+        "security": "Fixed and floating charges over the company's assets"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.15m relating to motor vehicles with a lease-back arrangement.",
+      "total_debt_notes": "The club has net liabilities of \u00a313.21m and relies on the continued support of owner Mr Hussain AlSaeed via a funding facility provided by Dwane Sports Limited, repayable only when the club is in a position to repay. Amounts owed to group undertakings increased from \u00a37.33m to \u00a316.17m during the year."
+    }
   },
   "bromley": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 5.83,
+        "interest_rate": null,
+        "repayment_date": "No fixed date - repayable only when the club is in a position to repay",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "\u00a30.64m loan owed to The English Sports Council, secured by a floating charge over all assets of the company. Additional other loans within one year of \u00a30.07m and due after one year of \u00a30.85m.",
+      "total_debt_notes": "The company has net liabilities of \u00a35.61m and relies on continued financial support from the ultimate parent R Stanton-Gleaves UK Limited, which provides day-to-day funding and working capital through a facility. Amounts owed to group undertakings (\u00a32.74m) and to parent undertaking (\u00a33.05m due >1yr plus \u00a30.05m due <1yr) form the majority of long-term debt."
+    }
   },
   "cambridge": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 2.9,
+        "interest_rate": "0%",
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.02,
+        "facility_type": "Other borrowings",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.01m (\u00a313,863).",
+      "total_debt_notes": "The club owes \u00a32.9m to Cambridge United Sporting Club Inc (parent company, controlled by Paul Barry) with no interest charged; \u00a32.4m was received during the year as cash to purchase shares. The club also owes \u00a30.22m to Paul Barry personally, again interest-free. Other borrowings of \u00a30.02m and finance leases of \u00a30.01m represent the remaining debt."
+    }
   },
   "cheltenham": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 0.21,
+        "interest_rate": "0%",
+        "repayment_date": "Repaid 23 August 2025",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.45,
+        "facility_type": "Term Loan",
+        "repayment_date": "2027-07",
+        "security": "Fixed and floating charges over the assets of the company"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Other borrowings of \u00a30.03m relating to a loan repayable in \u00a35,000 instalments every six months at 3.5% interest.",
+      "total_debt_notes": "Total loans and borrowings are \u00a30.68m (current \u00a30.03m, non-current \u00a30.65m). Additionally, grants from the Football Trust of \u00a30.79m are included in creditors due after one year to finance stadium developments. An interest-free loan of \u00a30.10m received in 2021 and further interest-free shareholder loans of \u00a30.13m are reported at fair value; these were fully repaid on 23 August 2025 following new equity investment."
+    }
   },
   "chesterfield": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 4.13,
+      "broadcasting": 0.07,
+      "commercial": 3.26
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1.72,
+        "interest_rate": "2% - 5%",
+        "repayment_date": "\u00a31,000,000 repayable no earlier than 31 March 2032; remainder has no intended loan period",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.01,
+        "facility_type": "Bounce Back Loan",
+        "repayment_date": "Repayable over 6 years at 2.5% per annum",
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Council loans of \u00a30.83m from Chesterfield Borough Council and Derbyshire County Council repayable over 15 years at 2.2% above EU State Aid base rate; Sport England loans of \u00a31.19m repayable over 20 years at 2% per annum.",
+      "total_debt_notes": "Total loans are \u00a33.75m. A number of fixed and floating charges have been given over the assets of the Company in relation to some of the loans. The Kirk family loans total \u00a31.72m comprising a \u00a30.17m loan at 2% and a \u00a31.55m loan at 5%."
+    }
   },
   "colchester": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 40.18,
+        "interest_rate": "7.25% to 8.25% variable",
+        "repayment_date": "Repayable on demand",
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The Company owes \u00a340.18m to group undertakings (Aspire Media Group Limited and fellow subsidiaries), with interest at variable rates determined monthly decreasing from 8.25% to 7.25% during the year, repayable on demand. The parent has confirmed these amounts will not be recalled for at least 12 months. The Company has net liabilities of \u00a340.16m and a material uncertainty regarding going concern exists."
+    }
   },
   "crawley": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 10.64,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.0,
+        "facility_type": "Overdraft",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Trade creditors of \u00a30.74m and other creditors due within one year of \u00a30.34m, plus accruals and deferred income of \u00a30.79m.",
+      "total_debt_notes": "The club is entirely funded by an interest-free long-term loan from its parent company Wagmi United LLC (\u00a310.64m at 30 June 2025, up from \u00a38.27m in 2024). The company had net liabilities of \u00a311.34m and made a loss of \u00a32.68m in the year, with going concern dependent on continued financial support from Wagmi United LLC."
+    }
   },
   "crewe": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 3.3,
+        "interest_rate": "0%",
+        "repayment_date": null,
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 0.01,
+        "facility_type": "Overdraft",
+        "repayment_date": null,
+        "security": null
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Other loans of \u00a31.25 million (\u00a30.09m due within one year and \u00a31.16m due after more than one year), secured against the assets acquired.",
+      "total_debt_notes": "Directors loans of \u00a33.30m are unsecured and interest free. Bank loans are unsecured. Other loans are secured against the assets acquired. The company is financially supported by related companies and the Board of Directors to assist with cash flow, with a going concern emphasis of matter in the auditor's report."
+    }
   },
   "fleetwood": {
     "revenue_breakdown": null,
@@ -363,31 +1375,129 @@ export const deepDive: Record<string, ClubDeepDive> = {
   },
   "gillingham": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 6.97,
+        "interest_rate": "0%",
+        "repayment_date": "2-5 years",
+        "secured": true
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Hire purchase contracts totalling \u00a30.10m (\u00a30.05m due within one year, \u00a30.06m due between one and five years).",
+      "total_debt_notes": "The \u00a36.97m loan from director B D Galinson is interest-free and secured by a fixed and floating charge over freehold property and land registry title. A previous \u00a30.60m loan from Three Directors Limited (also interest-free) was repaid during the year. Deferred income of \u00a31.66m is also recorded. The club is reliant on ongoing cash injections from owners to fund operations as a going concern."
+    }
   },
   "grimsby": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1.3,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "Amounts owed to group undertakings (1878 Partners Limited, the ultimate parent company) of \u00a31.297m are classified as falling due after more than one year, down from \u00a33.529m in the prior year. The company has net liabilities of \u00a30.71m and relies on investor support for going concern. Called up share capital increased from \u00a32.38m to \u00a35.89m during the period, suggesting equity injections partly replaced intercompany debt."
+    }
   },
   "harrogate": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 6.4,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Finance lease obligations of \u00a30.00 million (\u00a33,335 total, all due within one year).",
+      "total_debt_notes": "The company's debt is almost entirely comprised of interest-free, unsecured loans from the controlling party R I Weaver (\u00a36,403,620), classified as payable within one year but with no intention to seek repayment. The company has net current liabilities of \u00a36.37m and negative total equity of \u00a31.37m, with going concern dependent on continued shareholder support."
+    }
   },
   "mk_dons": {
-    "revenue_breakdown": null,
-    "debt_profile": null
+    "revenue_breakdown": {
+      "matchday": 2.34,
+      "broadcasting": 0.14,
+      "commercial": 3.24
+    },
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 13.55,
+        "interest_rate": "0%",
+        "repayment_date": "No fixed date - repayable on demand but no intention to recall",
+        "secured": false
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company's primary debt is \u00a313.55m owed to group companies (within creditors due within one year), on which no interest is charged and no securities are held. Following acquisition of Stadium MK Group Limited by MKD Holdco Limited in August 2024, all external bank borrowings across the group were fully repaid. The parent company has issued a letter of support confirming it will provide necessary support for the foreseeable future and at least 12 months."
+    }
   },
   "newport": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 1.18,
+        "interest_rate": "0%",
+        "repayment_date": "Repayable on demand",
+        "secured": false
+      },
+      "bank_debt": {
+        "amount": 0.09,
+        "facility_type": null,
+        "repayment_date": null,
+        "security": "Secured over the company's assets"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The director provided an unsecured, interest-free, on-demand loan of \u00a31.175m (up from \u00a30.28m in 2024), which is critical to the club's going concern. Bank loans totalled \u00a385,506 (all due within one year, up from \u00a320,753 split between current and non-current in 2024), secured over the company's assets."
+    }
   },
   "notts_county": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 7.86,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": null,
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": "Financing arrangement of \u00a30.61m entered 1 January 2025, repayable over 33 months in quarterly instalments at 7.5% interest.",
+      "total_debt_notes": "Related party loans total \u00a37.86m (\u00a37.80m from entities with control/joint control/significant influence and \u00a30.06m from other related parties). Football Radar Limited, a company under common control, waived its right to demand repayment of \u00a310.75m in loans on 25 April 2025, recognised as income in the year ended 30 June 2025."
+    }
   },
   "oldham": {
     "revenue_breakdown": null,
-    "debt_profile": null
+    "debt_profile": {
+      "owner_loans": {
+        "amount": 10.65,
+        "interest_rate": null,
+        "repayment_date": null,
+        "secured": null
+      },
+      "bank_debt": {
+        "amount": 0.01,
+        "facility_type": "Term Loan",
+        "repayment_date": null,
+        "security": "Fixed and floating charge over all assets of the company in favour of HSBC UK Bank PLC"
+      },
+      "transfer_payables": null,
+      "bond_debt": null,
+      "other_debt": null,
+      "total_debt_notes": "The company has net liabilities of \u00a312.35m. Other creditors within one year of \u00a311.50m include \u00a310.65m owed to entities under common control. The company's ability to continue as a going concern is reliant on the continued support of its shareholders, who have confirmed their support for the foreseeable future."
+    }
   },
   "salford": {
     "revenue_breakdown": null,
