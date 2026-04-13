@@ -4,6 +4,7 @@ import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
 import MetricsGrid from "@/components/MetricsGrid";
+import ClubProfileTabs from "@/components/ClubProfileTabs";
 
 export function generateStaticParams() {
   return clubs.map((c) => ({ slug: c.slug }));
@@ -102,59 +103,54 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         </div>
       </div>
 
-      {/* ── Section: Financial Information ── */}
-      <div>
-        <h2 className="text-xs font-medium tracking-[0.12em] uppercase text-[#555555] pb-3 border-b border-[#e0e0e0] mb-4">
-          Financial Information
-        </h2>
-        <MetricsGrid
-          club={club}
-          compareDivision={compareDivision}
-          compareLabel={compareLabel}
-          breakdown={dd?.revenue_breakdown ?? null}
-          debt={dd?.debt_profile ?? null}
-        />
-      </div>
-
-      {/* ── Section: Ground & Fixed Assets ── */}
-      {stadium && (
-        <div className="mt-10">
-          <h2 className="text-xs font-medium tracking-[0.12em] uppercase text-[#555555] pb-3 border-b border-[#e0e0e0] mb-4">
-            Ground &amp; Fixed Assets
-          </h2>
-          <div className="border border-[#e0e0e0] bg-white px-6 py-5">
-            <div className="flex flex-wrap gap-8">
-              <div>
-                <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Stadium</p>
-                <p className="text-sm text-[#111111]">{stadium.stadium_name}</p>
+      <ClubProfileTabs
+        financial={
+          <MetricsGrid
+            club={club}
+            compareDivision={compareDivision}
+            compareLabel={compareLabel}
+            breakdown={dd?.revenue_breakdown ?? null}
+            debt={dd?.debt_profile ?? null}
+          />
+        }
+        assets={
+          stadium ? (
+            <div className="border border-[#e0e0e0] bg-white px-6 py-5">
+              <div className="flex flex-wrap gap-8">
+                <div>
+                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Stadium</p>
+                  <p className="text-sm text-[#111111]">{stadium.stadium_name}</p>
+                </div>
+                {stadium.capacity && (
+                  <div>
+                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Capacity</p>
+                    <p className="text-sm text-[#111111]">{stadium.capacity.toLocaleString()}</p>
+                  </div>
+                )}
+                {stadium.ownership && (
+                  <div>
+                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Ownership</p>
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium border ${
+                        stadium.ownership === "owned"
+                          ? "border-[#4a9a6a] text-[#4a9a6a]"
+                          : "border-[#E8A838] text-[#E8A838]"
+                      }`}
+                    >
+                      {stadium.ownership === "owned" ? "Freehold" : "Leased"}
+                    </span>
+                  </div>
+                )}
               </div>
-              {stadium.capacity && (
-                <div>
-                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Capacity</p>
-                  <p className="text-sm text-[#111111]">{stadium.capacity.toLocaleString()}</p>
-                </div>
-              )}
-              {stadium.ownership && (
-                <div>
-                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Ownership</p>
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium border ${
-                      stadium.ownership === "owned"
-                        ? "border-[#4a9a6a] text-[#4a9a6a]"
-                        : "border-[#E8A838] text-[#E8A838]"
-                    }`}
-                  >
-                    {stadium.ownership === "owned" ? "Freehold" : "Leased"}
-                  </span>
-                </div>
+              {stadium.notes && (
+                <p className="text-[11px] text-[#999999] mt-4 leading-relaxed">{stadium.notes}</p>
               )}
             </div>
-            {stadium.notes && (
-              <p className="text-[11px] text-[#999999] mt-4 leading-relaxed">{stadium.notes}</p>
-            )}
-          </div>
-        </div>
-      )}
+          ) : (
+            <p className="text-sm text-[#aaaaaa] italic">No fixed assets data available for this club.</p>
+          )
+        }
+      />
     </div>
   );
 }
