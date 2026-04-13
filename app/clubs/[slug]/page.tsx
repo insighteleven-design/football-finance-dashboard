@@ -22,7 +22,7 @@ const ALL_METRICS: {
   higherBetter: boolean | null;
 }[] = [
   { key: "revenue",          label: "Revenue",          higherBetter: true },
-  { key: "wage_bill",        label: "Wage Bill",        higherBetter: null },
+  { key: "wage_bill",        label: "Wage Bill",        higherBetter: false },
   { key: "wage_ratio",       label: "Wage Ratio",       isRatio: true, higherBetter: false },
   { key: "operating_profit", label: "Operating Profit", diverging: true, higherBetter: true },
   { key: "net_debt",         label: "Net Debt",         diverging: true, higherBetter: false },
