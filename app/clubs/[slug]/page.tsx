@@ -102,22 +102,27 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         </div>
       </div>
 
-      {/* Metrics grid (client component — handles inline expand for revenue & debt) */}
-      <MetricsGrid
-        club={club}
-        compareDivision={compareDivision}
-        compareLabel={compareLabel}
-        breakdown={dd?.revenue_breakdown ?? null}
-        debt={dd?.debt_profile ?? null}
-      />
+      {/* ── Section: Financial Information ── */}
+      <div>
+        <h2 className="text-xs font-medium tracking-[0.12em] uppercase text-[#555555] pb-3 border-b border-[#e0e0e0] mb-4">
+          Financial Information
+        </h2>
+        <MetricsGrid
+          club={club}
+          compareDivision={compareDivision}
+          compareLabel={compareLabel}
+          breakdown={dd?.revenue_breakdown ?? null}
+          debt={dd?.debt_profile ?? null}
+        />
+      </div>
 
-      {/* Fixed Assets */}
+      {/* ── Section: Ground & Fixed Assets ── */}
       {stadium && (
-        <div className="mt-4 border border-[#e0e0e0] bg-white">
-          <div className="px-6 py-4 border-b border-[#e0e0e0]">
-            <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Ground &amp; Fixed Assets</p>
-          </div>
-          <div className="px-6 py-5">
+        <div className="mt-10">
+          <h2 className="text-xs font-medium tracking-[0.12em] uppercase text-[#555555] pb-3 border-b border-[#e0e0e0] mb-4">
+            Ground &amp; Fixed Assets
+          </h2>
+          <div className="border border-[#e0e0e0] bg-white px-6 py-5">
             <div className="flex flex-wrap gap-8">
               <div>
                 <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Stadium</p>

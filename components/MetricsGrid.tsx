@@ -395,15 +395,24 @@ function DebtPanel({ debt, fiscalYearEnd, netDebt }: { debt: DebtProfile | null;
   );
 }
 
-// ─── Expand chevron ───────────────────────────────────────────────────────────
+// ─── Breakdown badge ──────────────────────────────────────────────────────────
 
-function Chevron({ open }: { open: boolean }) {
+function BreakdownBadge({ open }: { open: boolean }) {
   return (
     <span
-      className="inline-block text-[11px] text-[#cccccc] transition-transform duration-200 shrink-0"
-      style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
+      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${
+        open
+          ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]"
+          : "border-[#e0e0e0] text-[#aaaaaa]"
+      }`}
     >
-      →
+      Breakdown
+      <span
+        className="inline-block transition-transform duration-200"
+        style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
+      >
+        →
+      </span>
     </span>
   );
 }
@@ -456,7 +465,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
                 <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
-                {toggleExpand && <Chevron open={expandOpen} />}
+                {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
                 <p className="text-2xl font-light tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
