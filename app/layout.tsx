@@ -3,42 +3,44 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Football Finance",
-  description: "Financial data for every English Football League club, extracted from Companies House filings.",
+  title: "Intelligence | Insight Eleven",
+  description: "The comprehensive database of football club finances, sourced from Companies House filings.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full flex flex-col bg-white text-gray-900 antialiased">
-        <header className="border-b border-gray-100 bg-white sticky top-0 z-50">
+      <body className="min-h-full flex flex-col antialiased">
+        <header className="border-b border-[#2a2a2a] bg-[#0a0a0a] sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-8">
-            <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center shrink-0">
-                <span className="text-white text-[10px] font-black tracking-tighter">FF</span>
+            <Link href="/" className="flex flex-col shrink-0 group">
+              <div className="flex items-baseline gap-0.5">
+                <span className="text-[#888888] font-light tracking-[0.05em] text-sm leading-none">Insight</span>
+                <span className="text-white font-bold tracking-[0.02em] text-sm leading-none">Eleven</span>
               </div>
-              <span className="font-semibold text-gray-900 text-sm tracking-tight">Football Finance</span>
+              <span className="text-[9px] text-[#444444] tracking-[0.2em] uppercase font-light mt-0.5">
+                Intelligence
+              </span>
             </Link>
 
             <nav className="flex items-center gap-0.5">
-              <Link href="/" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors">
+              <Link href="/" className="px-3 py-1.5 text-sm text-[#888888] hover:text-white hover:bg-[#111111] rounded-md transition-colors">
                 Home
               </Link>
-              <Link href="/compare" className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors">
-                Compare
+              <Link href="/compare" className="px-3 py-1.5 text-sm text-[#888888] hover:text-white hover:bg-[#111111] rounded-md transition-colors whitespace-nowrap">
+                Club Comparison
               </Link>
             </nav>
-
-            <span className="text-xs text-gray-400 hidden sm:block shrink-0">Source: Companies House</span>
           </div>
         </header>
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-gray-100 py-5 mt-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 text-xs text-gray-400">
-            <span>Data from Companies House annual accounts · Figures in £m · Not financial advice</span>
-            <span>2024/25 season</span>
+        <footer className="border-t border-[#2a2a2a] py-6 mt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-xs text-[#444444]">
+              This data is for informational purposes only and does not constitute financial advice.
+            </p>
           </div>
         </footer>
       </body>

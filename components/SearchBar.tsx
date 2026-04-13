@@ -6,16 +6,16 @@ import { ClubFinancials, Division } from "@/lib/clubs";
 
 const DIVISION_LABELS: Record<Division, string> = {
   "premier-league": "Premier League",
-  "championship": "Championship",
-  "league-one": "League One",
-  "league-two": "League Two",
+  "championship":   "Championship",
+  "league-one":     "League One",
+  "league-two":     "League Two",
 };
 
 const DIVISION_COLORS: Record<Division, string> = {
-  "premier-league": "text-purple-600 bg-purple-50",
-  "championship": "text-sky-600 bg-sky-50",
-  "league-one": "text-amber-600 bg-amber-50",
-  "league-two": "text-emerald-600 bg-emerald-50",
+  "premier-league": "text-[#8888cc]",
+  "championship":   "text-[#6699bb]",
+  "league-one":     "text-[#aaaa66]",
+  "league-two":     "text-[#66aa88]",
 };
 
 function score(club: ClubFinancials, query: string): number {
@@ -27,7 +27,6 @@ function score(club: ClubFinancials, query: string): number {
   if (slug.startsWith(q)) return 80;
   if (name.includes(q)) return 70;
   if (slug.includes(q)) return 60;
-  // word match
   if (name.split(" ").some((w) => w.startsWith(q))) return 50;
   return 0;
 }
@@ -88,8 +87,14 @@ export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
 
   return (
     <div ref={containerRef} className="relative w-full max-w-xl mx-auto">
-      <div className={`flex items-center border rounded-2xl bg-white shadow-sm transition-shadow px-4 py-3 gap-3 ${open ? "shadow-md border-blue-300 ring-1 ring-blue-200" : "border-gray-200 hover:border-gray-300 hover:shadow"}`}>
-        <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div
+        className={`flex items-center border px-4 py-3 gap-3 transition-all ${
+          open
+            ? "border-white bg-[#111111]"
+            : "border-[#2a2a2a] bg-[#111111] hover:border-[#555555]"
+        }`}
+      >
+        <svg className="w-4 h-4 text-[#555555] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
         </svg>
         <input
@@ -102,14 +107,14 @@ export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
           placeholder="Search for a club…"
           autoComplete="off"
           spellCheck={false}
-          className="flex-1 text-base text-gray-900 placeholder-gray-400 bg-transparent outline-none"
+          className="flex-1 text-sm text-white placeholder-[#555555] bg-transparent outline-none"
         />
         {query.length > 0 && (
           <button
             onClick={() => { setQuery(""); setOpen(false); inputRef.current?.focus(); }}
-            className="text-gray-400 hover:text-gray-600 shrink-0"
+            className="text-[#555555] hover:text-white shrink-0 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -117,18 +122,18 @@ export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
       </div>
 
       {open && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-px bg-[#111111] border border-[#2a2a2a] shadow-2xl overflow-hidden z-50">
           {results.map((club, i) => (
             <button
               key={club.slug}
               onMouseDown={(e) => { e.preventDefault(); navigate(club); }}
               onMouseEnter={() => setHighlighted(i)}
-              className={`w-full text-left px-4 py-3 flex items-center justify-between gap-3 transition-colors ${i === highlighted ? "bg-blue-50" : "hover:bg-gray-50"} ${i > 0 ? "border-t border-gray-50" : ""}`}
+              className={`w-full text-left px-4 py-3 flex items-center justify-between gap-3 transition-colors border-t border-[#1a1a1a] first:border-t-0 ${
+                i === highlighted ? "bg-[#1a1a1a]" : "hover:bg-[#161616]"
+              }`}
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <span className="text-sm font-medium text-gray-900 truncate">{club.name}</span>
-              </div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${DIVISION_COLORS[club.division]}`}>
+              <span className="text-sm text-white">{club.name}</span>
+              <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${DIVISION_COLORS[club.division]}`}>
                 {DIVISION_LABELS[club.division]}
               </span>
             </button>
