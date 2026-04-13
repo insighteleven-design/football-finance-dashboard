@@ -11,15 +11,13 @@ const DIVISION_LABELS: Record<Division, string> = {
   "league-two":     "League Two",
 };
 
-// Two muted, dark-mode-friendly club colours
-const CLUB_COLORS = ["rgba(255,255,255,0.85)", "rgba(255,255,255,0.42)"];
-const CLUB_LABEL_COLORS = ["text-white", "text-[#888888]"];
+const CLUB_COLORS = ["#333333", "#888888"];
+const CLUB_LABEL_COLORS = ["text-[#111111]", "text-[#888888]"];
 const CLUB_TAG_STYLES = [
-  { borderColor: "#555555", backgroundColor: "#1a1a1a", color: "#ffffff" },
-  { borderColor: "#333333", backgroundColor: "#111111", color: "#888888" },
+  { borderColor: "#999999", backgroundColor: "#ffffff", color: "#111111" },
+  { borderColor: "#cccccc", backgroundColor: "#f5f5f5", color: "#666666" },
 ];
 
-// Cash removed per spec
 const COMPARE_METRICS: {
   key: keyof ClubFinancials;
   label: string;
@@ -117,13 +115,13 @@ function ClubSearch({
       <div
         className={`flex items-center border px-3 py-2 gap-2 transition-colors ${
           disabled
-            ? "opacity-40 cursor-not-allowed border-[#2a2a2a] bg-[#111111]"
+            ? "opacity-40 cursor-not-allowed border-[#e0e0e0] bg-[#f5f5f5]"
             : open
-            ? "border-white bg-[#111111]"
-            : "border-[#2a2a2a] bg-[#111111] hover:border-[#555555]"
+            ? "border-[#333333] bg-white"
+            : "border-[#e0e0e0] bg-white hover:border-[#999999]"
         }`}
       >
-        <svg className="w-4 h-4 text-[#555555] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-4 h-4 text-[#aaaaaa] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
         </svg>
         <input
@@ -136,22 +134,22 @@ function ClubSearch({
           placeholder={disabled ? "2 clubs selected" : "Search for a club…"}
           disabled={disabled}
           autoComplete="off"
-          className="flex-1 text-sm text-white placeholder-[#555555] bg-transparent outline-none min-w-0"
+          className="flex-1 text-sm text-[#111111] placeholder-[#aaaaaa] bg-transparent outline-none min-w-0"
         />
       </div>
       {open && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-px bg-[#111111] border border-[#2a2a2a] shadow-2xl overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-px bg-white border border-[#e0e0e0] shadow-lg overflow-hidden z-50">
           {results.map((club, i) => (
             <button
               key={club.slug}
               onMouseDown={(e) => { e.preventDefault(); handleSelect(club); }}
               onMouseEnter={() => setHighlighted(i)}
-              className={`w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 text-sm transition-colors border-t border-[#1a1a1a] first:border-t-0 ${
-                i === highlighted ? "bg-[#1a1a1a]" : "hover:bg-[#161616]"
+              className={`w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 text-sm transition-colors border-t border-[#f0f0f0] first:border-t-0 ${
+                i === highlighted ? "bg-[#f5f5f5]" : "hover:bg-[#fafafa]"
               }`}
             >
-              <span className="text-white">{club.name}</span>
-              <span className="text-[10px] text-[#555555] tracking-[0.08em] uppercase shrink-0">
+              <span className="text-[#111111]">{club.name}</span>
+              <span className="text-[10px] text-[#aaaaaa] tracking-[0.08em] uppercase shrink-0">
                 {DIVISION_LABELS[club.division]}
               </span>
             </button>
@@ -181,53 +179,61 @@ function StandardBarRow({
   return (
     <div className="flex items-center gap-3">
       <span className={`text-xs w-32 shrink-0 truncate ${labelColor}`}>{club.name}</span>
-      <div className="flex-1 h-8 bg-[#111111] overflow-hidden">
+      <div className="flex-1 h-8 bg-[#eeeeee] overflow-hidden">
         <div className="h-full" style={{ width: `${pct}%`, backgroundColor: colorStyle }} />
       </div>
-      <span className="text-sm font-light tabular-nums text-white w-16 text-right shrink-0">
+      <span className="text-sm font-light tabular-nums text-[#111111] w-16 text-right shrink-0">
         {fmt(value, isRatio)}
       </span>
     </div>
   );
 }
 
-/** Diverging bar row — negative extends left (red), positive extends right (green) */
+/**
+ * Diverging bar — negative extends left, positive extends right.
+ * `barColor` is pre-computed by the caller and used for both bar fill and value text,
+ * so the colour always reflects the metric's semantics (vs-avg for OP/PTP, sign-based for net_debt).
+ */
 function DivergingBarRow({
   club,
   value,
   scale,
   labelColor,
   isRatio,
+  barColor,
 }: {
   club: ClubFinancials;
   value: number | null;
   scale: number;
   labelColor: string;
   isRatio?: boolean;
+  barColor: string;
 }) {
   const isPositive = value !== null && value >= 0;
   const pct = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
-  const color = isPositive ? "#4a9a6a" : "#9a4a4a";
 
   return (
     <div className="flex items-center gap-3">
       <span className={`text-xs w-32 shrink-0 truncate ${labelColor}`}>{club.name}</span>
       <div className="flex-1 flex h-8">
         {/* Negative (left) side */}
-        <div className="flex-1 flex justify-end overflow-hidden bg-[#111111]">
+        <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
           {value !== null && !isPositive && (
-            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: barColor }} />
           )}
         </div>
-        <div className="w-px bg-[#2a2a2a] shrink-0" />
+        <div className="w-px bg-[#e0e0e0] shrink-0" />
         {/* Positive (right) side */}
-        <div className="flex-1 overflow-hidden bg-[#111111]">
+        <div className="flex-1 overflow-hidden bg-[#eeeeee]">
           {value !== null && isPositive && (
-            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+            <div className="h-full" style={{ width: `${pct}%`, backgroundColor: barColor }} />
           )}
         </div>
       </div>
-      <span className={`text-sm font-light tabular-nums w-16 text-right shrink-0 ${value !== null ? (isPositive ? "text-[#4a9a6a]" : "text-[#9a4a4a]") : "text-[#555555]"}`}>
+      <span
+        className="text-sm font-light tabular-nums w-16 text-right shrink-0"
+        style={{ color: value !== null ? barColor : "#aaaaaa" }}
+      >
         {fmt(value, isRatio)}
       </span>
     </div>
@@ -237,9 +243,11 @@ function DivergingBarRow({
 function MetricSection({
   metric,
   clubs,
+  allClubs,
 }: {
   metric: (typeof COMPARE_METRICS)[0];
   clubs: ClubFinancials[];
+  allClubs: ClubFinancials[];
 }) {
   const vals = clubs.map((c) => c[metric.key] as number | null);
   const absMax = Math.max(
@@ -247,9 +255,29 @@ function MetricSection({
     0.01
   );
 
+  function getDivAvg(club: ClubFinancials): number | null {
+    const divVals = allClubs
+      .filter((c) => c.division === club.division && c[metric.key] !== null)
+      .map((c) => c[metric.key] as number);
+    if (!divVals.length) return null;
+    return divVals.reduce((a, b) => a + b, 0) / divVals.length;
+  }
+
+  function getDivergingBarColor(club: ClubFinancials, value: number | null): string {
+    if (value === null) return "#cccccc";
+    if (metric.key === "net_debt") {
+      // Positive = in debt (bad = red), negative = net cash (good = green)
+      return value >= 0 ? "#9a4a4a" : "#4a9a6a";
+    }
+    // OP/PTP: green if above division average, red if below
+    const avg = getDivAvg(club);
+    if (avg === null) return "#cccccc";
+    return value > avg ? "#4a9a6a" : "#9a4a4a";
+  }
+
   return (
-    <div className="py-6 border-b border-[#2a2a2a] last:border-0">
-      <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#555555] mb-4">
+    <div className="py-6 border-b border-[#e0e0e0] last:border-0">
+      <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">
         {metric.label}
       </p>
       <div className="space-y-3">
@@ -264,6 +292,7 @@ function MetricSection({
                 scale={absMax}
                 labelColor={CLUB_LABEL_COLORS[i]}
                 isRatio={metric.isRatio}
+                barColor={getDivergingBarColor(club, value)}
               />
             );
           }
@@ -344,7 +373,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
             <span>{club.name}</span>
             <button
               onClick={() => removeClub(club.slug)}
-              className="opacity-50 hover:opacity-100 ml-0.5 transition-opacity"
+              className="opacity-40 hover:opacity-100 ml-0.5 transition-opacity"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -365,7 +394,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
         {selectedClubs.length >= 2 && (
           <button
             onClick={copyLink}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-[#2a2a2a] text-xs text-[#555555] hover:border-[#555555] hover:text-white transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-[#e0e0e0] text-xs text-[#999999] hover:border-[#999999] hover:text-[#111111] transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -378,32 +407,37 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
       {/* Empty state */}
       {selectedClubs.length === 0 && (
         <div className="text-center py-24">
-          <p className="text-[#333333] text-sm tracking-[0.05em]">Search for two clubs above to compare their financials</p>
+          <p className="text-[#bbbbbb] text-sm tracking-[0.05em]">Search for two clubs above to compare their financials</p>
         </div>
       )}
 
       {selectedClubs.length === 1 && (
-        <p className="text-sm text-[#444444] mb-4">Add one more club to start comparing</p>
+        <p className="text-sm text-[#aaaaaa] mb-4">Add one more club to start comparing</p>
       )}
 
       {/* Bar charts */}
       {selectedClubs.length >= 2 && (
-        <div className="border border-[#2a2a2a] bg-[#0a0a0a] px-6">
+        <div className="border border-[#e0e0e0] bg-white px-6">
           {/* Legend */}
-          <div className="flex gap-6 pt-5 pb-4 border-b border-[#2a2a2a] mb-2">
+          <div className="flex gap-6 pt-5 pb-4 border-b border-[#e0e0e0] mb-2">
             {selectedClubs.map((club, i) => (
               <div key={club.slug} className="flex items-center gap-2">
                 <div className="w-3 h-3" style={{ backgroundColor: CLUB_COLORS[i] }} />
                 <span className={`text-xs ${CLUB_LABEL_COLORS[i]}`}>{club.name}</span>
               </div>
             ))}
-            <span className="text-[10px] text-[#333333] ml-auto self-center tracking-[0.05em]">
+            <span className="text-[10px] text-[#cccccc] ml-auto self-center tracking-[0.05em]">
               Diverging bars: left = loss/debt · right = profit/net cash
             </span>
           </div>
 
           {COMPARE_METRICS.map((metric) => (
-            <MetricSection key={metric.key as string} metric={metric} clubs={selectedClubs} />
+            <MetricSection
+              key={metric.key as string}
+              metric={metric}
+              clubs={selectedClubs}
+              allClubs={allClubs}
+            />
           ))}
         </div>
       )}

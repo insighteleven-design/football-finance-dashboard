@@ -14,13 +14,12 @@ const DIVISION_LABELS: Record<string, string> = {
   "league-two":     "League Two",
 };
 
-// Metrics shown on the profile page
 const ALL_METRICS: {
   key: keyof ClubFinancials;
   label: string;
   isRatio?: boolean;
-  diverging?: boolean;   // profit/debt: negative extends left, positive extends right
-  higherBetter: boolean | null; // null = neutral (wage bill)
+  diverging?: boolean;
+  higherBetter: boolean | null;
 }[] = [
   { key: "revenue",          label: "Revenue",          higherBetter: true },
   { key: "wage_bill",        label: "Wage Bill",        higherBetter: null },
@@ -42,26 +41,26 @@ function divisionStats(division: string, key: keyof ClubFinancials) {
   return { avg, maxAbs, sorted, count: vals.length };
 }
 
-/** Resolve bar color for the club's bar based on vs-average comparison */
+/** Bar fill color for standard (non-diverging) metrics based on vs-average comparison */
 function clubBarColor(
   key: keyof ClubFinancials,
   value: number,
   avg: number,
   higherBetter: boolean | null
 ): string {
-  if (higherBetter === null) return "#444444"; // neutral — wage bill
+  if (higherBetter === null) return "#aaaaaa"; // neutral — wage bill
   const better = higherBetter ? value > avg : value < avg;
   return better ? "#4a9a6a" : "#9a4a4a";
 }
 
-/** Resolve text color for the value on the left panel */
+/** Value text color class for standard metrics */
 function valueTextColor(
   key: keyof ClubFinancials,
   value: number,
   avg: number,
   higherBetter: boolean | null
 ): string {
-  if (higherBetter === null) return "text-white";
+  if (higherBetter === null) return "text-[#111111]";
   const better = higherBetter ? value > avg : value < avg;
   return better ? "text-[#4a9a6a]" : "text-[#9a4a4a]";
 }
@@ -96,38 +95,39 @@ function HealthBadges({ club }: { club: ClubFinancials }) {
   );
 }
 
-/** A standard left-to-right bar (revenue, wages, cash, wage ratio) */
 function StandardBar({ pct, color }: { pct: number; color: string }) {
   return (
-    <div className="flex-1 h-7 bg-[#1a1a1a] overflow-hidden">
+    <div className="flex-1 h-7 bg-[#eeeeee] overflow-hidden">
       <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
     </div>
   );
 }
 
-/** A diverging bar — negative side extends left, positive extends right */
-function DivergingBar({ value, scale, positiveColor, negativeColor }: {
+/**
+ * Diverging bar — negative side extends left, positive extends right.
+ * A single `color` prop controls the fill; the caller decides what color
+ * to use based on the metric's semantics (vs-avg for OP/PTP, sign-based for net_debt).
+ */
+function DivergingBar({ value, scale, color }: {
   value: number;
   scale: number;
-  positiveColor: string;
-  negativeColor: string;
+  color: string;
 }) {
   const pct = Math.min((Math.abs(value) / scale) * 100, 100);
   const isPositive = value >= 0;
-  const color = isPositive ? positiveColor : negativeColor;
 
   return (
     <div className="flex-1 flex h-7">
       {/* Negative (left) side */}
-      <div className="flex-1 flex justify-end overflow-hidden bg-[#1a1a1a]">
+      <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
         {!isPositive && (
           <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
         )}
       </div>
       {/* Centre divider */}
-      <div className="w-px bg-[#2a2a2a] shrink-0" />
+      <div className="w-px bg-[#e0e0e0] shrink-0" />
       {/* Positive (right) side */}
-      <div className="flex-1 overflow-hidden bg-[#1a1a1a]">
+      <div className="flex-1 overflow-hidden bg-[#eeeeee]">
         {isPositive && (
           <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
         )}
@@ -148,7 +148,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Back */}
-      <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#555555] hover:text-white mb-6 group transition-colors">
+      <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors">
         <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
         All clubs
       </Link>
@@ -158,15 +158,15 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1 flex-wrap">
-              <h1 className="text-3xl font-serif font-light text-white tracking-tight">{club.name}</h1>
-              <span className="inline-flex items-center px-2 py-0.5 border border-[#2a2a2a] text-[10px] font-medium tracking-[0.1em] uppercase text-[#888888]">
+              <h1 className="text-3xl font-serif font-light text-[#111111] tracking-tight">{club.name}</h1>
+              <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
                 {DIVISION_LABELS[club.division]}
               </span>
             </div>
-            <p className="text-sm text-[#555555]">
-              Financial year ending <span className="text-[#888888]">{fyDate}</span>
+            <p className="text-sm text-[#999999]">
+              Financial year ending <span className="text-[#666666]">{fyDate}</span>
               {club.data_confidence !== "high" && (
-                <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#2a2a2a] text-[10px] text-[#555555]">
+                <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] text-[#999999]">
                   {club.data_confidence === "medium" ? "Extracted · not independently verified" : "No financial data available"}
                 </span>
               )}
@@ -176,7 +176,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
           <Link
             href={`/compare?clubs=${club.slug}`}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-[#2a2a2a] text-sm text-[#888888] hover:border-white hover:text-white transition-colors shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors shrink-0"
           >
             Compare with another club →
           </Link>
@@ -184,14 +184,14 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       </div>
 
       {/* Split grid — CSS grid ensures left/right rows align precisely */}
-      <div className="grid lg:grid-cols-2 border border-[#2a2a2a] overflow-hidden">
+      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
 
         {/* Column headers */}
-        <div className="px-6 py-4 bg-[#111111] border-b border-r border-[#2a2a2a]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#555555]">Financial Figures</p>
+        <div className="px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
         </div>
-        <div className="px-6 py-4 bg-[#111111] border-b border-[#2a2a2a]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#555555]">vs Division Average</p>
+        <div className="px-6 py-4 bg-white border-b border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs Division Average</p>
         </div>
 
         {/* Metric rows */}
@@ -200,44 +200,54 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           const stats = divisionStats(club.division, m.key);
           const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
 
-          // Scale: max absolute in division (used to size both bars comparably)
           const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats?.avg ?? 0), 0.01) : 1;
 
-          // Club bar sizing
           const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-          // Avg bar sizing
           const avgPct = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
 
-          // Colors
+          // Colors for standard (non-diverging) bars
           const barColor = val !== null && stats
             ? clubBarColor(m.key, val, stats.avg, m.higherBetter)
-            : "#444444";
+            : "#cccccc";
           const txtColor = val !== null && stats
             ? valueTextColor(m.key, val, stats.avg, m.higherBetter)
-            : "text-white";
+            : "text-[#cccccc]";
+
+          // Color for diverging bar fill and value text
+          let divBarColor = "#cccccc";
+          if (m.diverging && val !== null && stats) {
+            if (m.key === "net_debt") {
+              // Sign-based: positive = in debt (red), negative = net cash (green)
+              divBarColor = val >= 0 ? "#9a4a4a" : "#4a9a6a";
+            } else {
+              // OP/PTP: green if better than division average, red if worse
+              divBarColor = val > stats.avg ? "#4a9a6a" : "#9a4a4a";
+            }
+          }
 
           return (
             <Fragment key={m.key as string}>
               {/* Left cell — figure */}
-              <div className="px-6 py-5 border-b border-r border-[#2a2a2a]">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#555555] mb-1.5">{m.label}</p>
+              <div className="px-6 py-5 border-b border-r border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
                 {val !== null ? (
-                  <p className={`text-2xl font-light tabular-nums ${txtColor}`}>
+                  <p className={`text-2xl font-light tabular-nums ${m.diverging ? "" : txtColor}`}
+                     style={m.diverging && val !== null && stats ? { color: divBarColor } : undefined}>
                     {fmt(val, m.isRatio)}
                   </p>
                 ) : (
-                  <p className="text-2xl font-light text-[#2a2a2a]">—</p>
+                  <p className="text-2xl font-light text-[#cccccc]">—</p>
                 )}
                 {stats && rank !== null && (
-                  <p className="text-[10px] text-[#444444] mt-1.5">
-                    #{rank} <span className="text-[#333333]">of {stats.count}</span>
+                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">
+                    #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
                   </p>
                 )}
               </div>
 
               {/* Right cell — bars */}
-              <div className="px-6 py-5 border-b border-[#2a2a2a]">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#555555] mb-3">{m.label}</p>
+              <div className="px-6 py-5 border-b border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
 
                 {/* Club bar */}
                 <div className="mb-1">
@@ -246,17 +256,16 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                       <DivergingBar
                         value={val ?? 0}
                         scale={scale / 2}
-                        positiveColor="#4a9a6a"
-                        negativeColor="#9a4a4a"
+                        color={val !== null ? divBarColor : "#cccccc"}
                       />
                     ) : (
-                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#1a1a1a"} />
+                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
                     )}
-                    <span className="text-xs font-medium tabular-nums text-white w-14 text-right shrink-0">
+                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
                       {fmt(val, m.isRatio)}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#444444] tracking-[0.05em]">This club</p>
+                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
                 </div>
 
                 {/* Division avg bar */}
@@ -266,17 +275,16 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                       <DivergingBar
                         value={stats.avg}
                         scale={scale / 2}
-                        positiveColor="#333333"
-                        negativeColor="#2a2a2a"
+                        color="#cccccc"
                       />
                     ) : (
-                      <StandardBar pct={avgPct} color="#333333" />
+                      <StandardBar pct={avgPct} color="#cccccc" />
                     )}
-                    <span className="text-xs tabular-nums text-[#555555] w-14 text-right shrink-0">
+                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
                       {stats ? fmt(stats.avg, m.isRatio) : "—"}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#333333] tracking-[0.05em]">Division avg</p>
+                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">Division avg</p>
                 </div>
               </div>
             </Fragment>

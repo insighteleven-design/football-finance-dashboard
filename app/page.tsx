@@ -4,7 +4,7 @@ import CountryClubs from "@/components/CountryClubs";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center px-4 pt-20 pb-24">
+    <div className="bg-[#0a0a0a] min-h-screen flex flex-col items-center px-4 pt-20 pb-24">
       {/* Hero */}
       <div className="w-full max-w-2xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-serif font-light text-white tracking-tight mb-4 leading-tight">
