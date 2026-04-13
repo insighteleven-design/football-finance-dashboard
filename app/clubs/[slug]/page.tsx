@@ -140,7 +140,11 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               Financial year ending <span className="text-[#666666]">{fyDate}</span>
               {club.data_confidence !== "high" && (
                 <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] text-[#999999]">
-                  {club.data_confidence === "medium" ? "Extracted · not independently verified" : "No financial data available"}
+                  {club.data_confidence === "medium"
+                    ? "Extracted · not independently verified"
+                    : club.data_confidence === "abridged"
+                    ? "Abridged accounts filed at Companies House"
+                    : "No financial data available"}
                 </span>
               )}
             </p>

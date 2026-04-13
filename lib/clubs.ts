@@ -1,6 +1,6 @@
 export type Division = "premier-league" | "championship" | "league-one" | "league-two";
 
-export type DataConfidence = "high" | "medium" | "low";
+export type DataConfidence = "high" | "medium" | "low" | "abridged";
 
 export interface ClubFinancials {
   slug: string;
@@ -77,14 +77,14 @@ const chRaw: Record<string, RawEntry> = {
   millwall:       { revenue:  29.30, wage_bill:  28.63, operating_profit:    1.05, pre_tax_profit:   -0.30, net_debt:    null, cash:    0.79, fiscal_year_end: "2025-06-30" },
   norwich:        { revenue:  39.28, wage_bill:  48.08, operating_profit:  -14.38, pre_tax_profit:  -20.67, net_debt:   54.43, cash:    2.00, fiscal_year_end: "2025-06-30" },
   oxford_utd:     { revenue:  19.00, wage_bill:  21.66, operating_profit:  -17.46, pre_tax_profit:  -17.48, net_debt:   -0.21, cash:    0.24, fiscal_year_end: "2025-06-30" },
-  portsmouth:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    0.00, fiscal_year_end: "2025-08-31" },
+  portsmouth:     { revenue:  24.57, wage_bill:  17.43, operating_profit:   -1.45, pre_tax_profit:   -4.36, net_debt:    6.15, cash:    2.04, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
   preston:        { revenue:  18.88, wage_bill:  25.67, operating_profit:  -16.02, pre_tax_profit:  -15.98, net_debt:    null, cash:    2.37, fiscal_year_end: "2025-06-30" },
   qpr:            { revenue:  28.00, wage_bill:  27.50, operating_profit:   -1.67, pre_tax_profit:  -20.30, net_debt:    6.14, cash:    0.07, fiscal_year_end: "2025-05-31" },
   sheff_utd:      { revenue:  79.33, wage_bill:  45.97, operating_profit:  -16.64, pre_tax_profit:    2.59, net_debt:   53.68, cash:    2.78, fiscal_year_end: "2025-06-30" },
   sheff_wed:      { revenue:  26.34, wage_bill:  21.81, operating_profit:   -9.26, pre_tax_profit:  -10.01, net_debt:    6.85, cash:    0.16, fiscal_year_end: "2024-07-31" },
   southampton:    { revenue: 157.52, wage_bill: 113.96, operating_profit:  -62.25, pre_tax_profit:  -53.90, net_debt:   -9.35, cash:    9.35, fiscal_year_end: "2025-06-30" },
   stoke:          { revenue:  35.44, wage_bill:  30.30, operating_profit:  -29.54, pre_tax_profit:  -28.31, net_debt:  158.00, cash:   25.52, fiscal_year_end: "2025-05-31" },
-  swansea:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-06-30" },
+  swansea:        { revenue:  21.54, wage_bill:  27.35, operating_profit:  -25.20, pre_tax_profit:  -15.19, net_debt:   -1.62, cash:    5.31, fiscal_year_end: "2024-06-30", data_confidence: "medium" },
   watford:        { revenue:  25.98, wage_bill:  28.12, operating_profit:  -12.47, pre_tax_profit:  -15.95, net_debt:   57.90, cash:    1.31, fiscal_year_end: "2025-06-30" },
   west_brom:      { revenue:  30.35, wage_bill:  37.05, operating_profit:  -20.25, pre_tax_profit:  -17.00, net_debt:   71.85, cash:    0.47, fiscal_year_end: "2025-06-30" },
   wrexham:        { revenue:  33.34, wage_bill:  19.95, operating_profit:  -14.85, pre_tax_profit:  -15.24, net_debt:   -2.66, cash:    3.32, fiscal_year_end: "2025-06-30", data_confidence: "high" },
@@ -99,7 +99,7 @@ const l1Raw: Record<string, RawEntry> = {
   afc_wimbledon:  { revenue:   9.78, wage_bill:   5.74, operating_profit:   -1.40, pre_tax_profit:   -1.30, net_debt:   -1.26, cash:    1.34, fiscal_year_end: "2025-06-30" },
   barnsley:       { revenue:  10.28, wage_bill:  11.46, operating_profit:   -6.28, pre_tax_profit:   -6.58, net_debt:   -0.88, cash:    0.88, fiscal_year_end: "2025-06-30", data_confidence: "high" },
   blackpool:      { revenue:  10.90, wage_bill:  10.97, operating_profit:   -8.40, pre_tax_profit:   -5.60, net_debt:   16.45, cash:    1.42, fiscal_year_end: "2025-06-30" },
-  bolton:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2024-09-30" },
+  bolton:         { revenue:  20.46, wage_bill:  18.47, operating_profit:  -13.96, pre_tax_profit:  -14.36, net_debt:    5.50, cash:    0.46, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
   bradford:       { revenue:   8.69, wage_bill:   null, operating_profit:   -2.98, pre_tax_profit:   -2.99, net_debt:    5.40, cash:    0.17, fiscal_year_end: "2025-06-30" },
   burton:         { revenue:   6.41, wage_bill:   8.23, operating_profit:   -8.58, pre_tax_profit:   -8.34, net_debt:   -0.66, cash:    0.67, fiscal_year_end: "2025-06-30" },
   cardiff:        { revenue:  25.76, wage_bill:  38.95, operating_profit:  -27.49, pre_tax_profit:  -34.48, net_debt:  132.92, cash:    1.38, fiscal_year_end: "2025-05-31", data_confidence: "high" },
@@ -130,12 +130,12 @@ const l1Raw: Record<string, RawEntry> = {
 const l2Raw: Record<string, RawEntry> = {
   accrington:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    5.65, cash:    0.16, fiscal_year_end: "2025-06-30" },
   barnet:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-06-30" },
-  barrow:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-04-30" },
+  barrow:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-04-30", data_confidence: "abridged" },
   bristol_rovers: { revenue:   8.11, wage_bill:   8.91, operating_profit:   -6.47, pre_tax_profit:   -7.90, net_debt:   -0.77, cash:    1.31, fiscal_year_end: "2025-06-30", data_confidence: "high" },
   bromley:        { revenue:   5.27, wage_bill:   null, operating_profit:   -1.06, pre_tax_profit:   -1.09, net_debt:    0.42, cash:    0.50, fiscal_year_end: "2024-12-31" },
   cambridge:      { revenue:   9.25, wage_bill:   6.66, operating_profit:   -3.74, pre_tax_profit:   -3.74, net_debt:   -0.26, cash:    0.30, fiscal_year_end: "2025-06-30" },
   cheltenham:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    0.13, cash:    0.55, fiscal_year_end: "2025-05-31" },
-  chesterfield:   { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2024-11-30" },
+  chesterfield:   { revenue:   7.80, wage_bill:   6.04, operating_profit:   -2.22, pre_tax_profit:   -2.38, net_debt:    2.27, cash:    1.48, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
   colchester:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   40.02, cash:    0.15, fiscal_year_end: "2025-06-30" },
   crawley:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   10.58, cash:    0.06, fiscal_year_end: "2025-06-30" },
   crewe:          { revenue:   5.20, wage_bill:   null, operating_profit:   -1.16, pre_tax_profit:   -1.16, net_debt:    4.56, cash:    0.10, fiscal_year_end: "2025-06-30" },
