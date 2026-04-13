@@ -25,9 +25,7 @@ const ALL_METRICS: {
   { key: "wage_bill",        label: "Wage Bill",        higherBetter: null },
   { key: "wage_ratio",       label: "Wage Ratio",       isRatio: true, higherBetter: false },
   { key: "operating_profit", label: "Operating Profit", diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit",   diverging: true, higherBetter: true },
   { key: "net_debt",         label: "Net Debt",         diverging: true, higherBetter: false },
-  { key: "cash",             label: "Cash",             higherBetter: true },
 ];
 
 function divisionStats(division: string, key: keyof ClubFinancials) {

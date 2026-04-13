@@ -34,7 +34,6 @@ const COMPARE_METRICS: {
   { key: "wage_bill",        label: "Wage Bill" },
   { key: "wage_ratio",       label: "Wage Ratio",       isRatio: true },
   { key: "operating_profit", label: "Operating Profit", diverging: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit",   diverging: true },
   { key: "net_debt",         label: "Net Debt",         diverging: true },
 ];
 
