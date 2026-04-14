@@ -141,10 +141,19 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                     </span>
                   </div>
                 )}
+                {dd?.land_buildings != null && (
+                  <div>
+                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Book Value</p>
+                    <p className="text-sm text-[#111111]">£{dd.land_buildings.toFixed(1)}m</p>
+                  </div>
+                )}
               </div>
               {stadium.notes && (
                 <p className="text-[11px] text-[#999999] mt-4 leading-relaxed">{stadium.notes}</p>
               )}
+              <p className="text-[10px] text-[#cccccc] mt-4 leading-relaxed">
+                Book value is the net carrying amount of land &amp; buildings on the balance sheet. For long-established clubs, this typically understates market value significantly — stadiums are rarely revalued.
+              </p>
             </div>
           ) : (
             <p className="text-sm text-[#aaaaaa] italic">No fixed assets data available for this club.</p>
