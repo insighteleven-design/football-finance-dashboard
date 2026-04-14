@@ -3,8 +3,11 @@ import Link from "next/link";
 import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
+import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
 import MetricsGrid from "@/components/MetricsGrid";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
+import FixedAssetsPanel from "@/components/FixedAssetsPanel";
+import MarketContextPanel from "@/components/MarketContextPanel";
 
 export function generateStaticParams() {
   return clubs.map((c) => ({ slug: c.slug }));
@@ -52,10 +55,15 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const club = getClub(slug);
   if (!club) notFound();
 
-  const dd = deepDive[slug] ?? null;
-  const stadium = fixedAssets[slug] ?? null;
+  const dd       = deepDive[slug] ?? null;
+  const assets   = fixedAssets[slug] ?? null;
+  const ctx      = marketContext[slug] ?? null;
+
+  const currentIndex = clubs.findIndex((c) => c.slug === slug);
+  const nextClub     = clubs[(currentIndex + 1) % clubs.length];
+
   const compareDivision = club.compare_division ?? club.division;
-  const compareLabel = DIVISION_LABELS[compareDivision];
+  const compareLabel    = DIVISION_LABELS[compareDivision];
 
   const fyDate = new Date(club.fiscal_year_end).toLocaleDateString("en-GB", {
     day: "numeric", month: "long", year: "numeric",
@@ -64,7 +72,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Back */}
-      <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors"
+      >
         <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
         All clubs
       </Link>
@@ -74,7 +85,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1 flex-wrap">
-              <h1 className="text-3xl font-serif font-light text-[#111111] tracking-tight">{club.name}</h1>
+              <h1 className="text-3xl font-serif font-light text-[#111111] tracking-tight">
+                {club.name}
+              </h1>
               <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
                 {DIVISION_LABELS[club.division]}
               </span>
@@ -95,10 +108,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           </div>
 
           <Link
-            href={`/compare?clubs=${club.slug}`}
+            href={`/clubs/${nextClub.slug}`}
             className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors shrink-0"
           >
-            Compare with another club →
+            Next club →
           </Link>
         </div>
       </div>
@@ -110,53 +123,24 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             compareDivision={compareDivision}
             compareLabel={compareLabel}
             breakdown={dd?.revenue_breakdown ?? null}
-            debt={dd?.debt_profile ?? null}
           />
         }
         assets={
-          stadium ? (
-            <div className="border border-[#e0e0e0] bg-white px-6 py-5">
-              <div className="flex flex-wrap gap-8">
-                <div>
-                  <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Stadium</p>
-                  <p className="text-sm text-[#111111]">{stadium.stadium_name}</p>
-                </div>
-                {stadium.capacity && (
-                  <div>
-                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Capacity</p>
-                    <p className="text-sm text-[#111111]">{stadium.capacity.toLocaleString()}</p>
-                  </div>
-                )}
-                {stadium.ownership && (
-                  <div>
-                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Ownership</p>
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-medium border ${
-                        stadium.ownership === "owned"
-                          ? "border-[#4a9a6a] text-[#4a9a6a]"
-                          : "border-[#E8A838] text-[#E8A838]"
-                      }`}
-                    >
-                      {stadium.ownership === "owned" ? "Freehold" : "Leased"}
-                    </span>
-                  </div>
-                )}
-                {dd?.land_buildings != null && (
-                  <div>
-                    <p className="text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa] mb-1.5">Book Value</p>
-                    <p className="text-sm text-[#111111]">£{dd.land_buildings.toFixed(1)}m</p>
-                  </div>
-                )}
-              </div>
-              {stadium.notes && (
-                <p className="text-[11px] text-[#999999] mt-4 leading-relaxed">{stadium.notes}</p>
-              )}
-              <p className="text-[10px] text-[#cccccc] mt-4 leading-relaxed">
-                Book value is the net carrying amount of land &amp; buildings on the balance sheet. For long-established clubs, this typically understates market value significantly — stadiums are rarely revalued.
-              </p>
-            </div>
+          assets ? (
+            <FixedAssetsPanel
+              assets={assets}
+              division={club.division}
+              landBuildings={dd?.land_buildings ?? null}
+            />
           ) : (
-            <p className="text-sm text-[#aaaaaa] italic">No fixed assets data available for this club.</p>
+            <p className="text-sm text-[#aaaaaa] italic">No fixed assets data available.</p>
+          )
+        }
+        market={
+          ctx ? (
+            <MarketContextPanel ctx={ctx} division={club.division} slug={slug} />
+          ) : (
+            <p className="text-sm text-[#aaaaaa] italic">No market context data available.</p>
           )
         }
       />

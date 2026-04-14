@@ -33,9 +33,9 @@ const COMPARE_METRICS: {
   { key: "revenue",          label: "Revenue" },
   { key: "wage_bill",        label: "Wage Bill" },
   { key: "wage_ratio",       label: "Wage Ratio",       isRatio: true },
-  { key: "operating_profit", label: "Operating Profit", diverging: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit",   diverging: true },
-  { key: "net_debt",         label: "Net Debt",         diverging: true },
+  { key: "operating_profit", label: "Operating Profit / (Loss)", diverging: true },
+  { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",   diverging: true },
+  { key: "net_debt",         label: "Net Cash / (Debt)",         diverging: true },
 ];
 
 function score(club: ClubFinancials, query: string): number {
@@ -172,11 +172,13 @@ function StandardBarRow({
   value,
   pct,
   clubColor,
+  isRatio,
 }: {
   club: ClubFinancials;
   value: number | null;
   pct: number;
   clubColor: string;
+  isRatio?: boolean;
 }) {
   return (
     <div className="flex items-center gap-3">
@@ -185,7 +187,7 @@ function StandardBarRow({
         <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
       </div>
       <span className="text-sm font-light tabular-nums w-16 text-right shrink-0" style={{ color: clubColor }}>
-        {fmt(value)}
+        {fmt(value, isRatio)}
       </span>
     </div>
   );
@@ -278,6 +280,7 @@ function MetricSection({
               value={value}
               pct={pct}
               clubColor={clubColor}
+              isRatio={metric.isRatio}
             />
           );
         })}
@@ -401,7 +404,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
               </div>
             ))}
             <span className="text-[10px] text-[#cccccc] ml-auto self-center tracking-[0.05em]">
-              Diverging bars: left = loss/debt · right = profit/net cash
+              Diverging bars: left = loss / net debt · right = profit / net cash
             </span>
           </div>
 
