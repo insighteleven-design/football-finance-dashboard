@@ -190,14 +190,12 @@ function RevenueScatterPlot({
       <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-3">
         Revenue vs Market Size — all 92 English clubs
       </p>
-      <div className="overflow-x-auto">
+      <div>
         <svg
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
-          width={W}
-          height={H}
-          className="max-w-full"
-          style={{ fontFamily: "inherit" }}
+          width="100%"
+          style={{ fontFamily: "inherit", display: "block" }}
         >
           <g transform={`translate(${PAD.left},${PAD.top})`}>
             {/* Y grid lines + labels */}
