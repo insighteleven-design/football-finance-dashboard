@@ -48,7 +48,8 @@ export default function Header() {
                 : "text-[#666666] hover:text-[#111111] hover:bg-[#e8e8e8]"
             }`}
           >
-            Club Comparison
+            <span className="hidden sm:inline">Club Comparison</span>
+            <span className="sm:hidden">Compare</span>
           </Link>
         </nav>
       </div>

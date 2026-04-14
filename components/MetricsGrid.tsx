@@ -191,10 +191,10 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
   return (
     <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
       {/* Column headers */}
-      <div className="px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
+      <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
         <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
       </div>
-      <div className="px-6 py-4 bg-white border-b border-[#e0e0e0]">
+      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
         <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
           vs {compareLabel} Average
         </p>
@@ -220,7 +220,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
           <Fragment key={m.key as string}>
             {/* Left cell */}
             <div
-              className={`px-6 py-5 border-b border-r border-[#e0e0e0] bg-white${toggleExpand ? " cursor-pointer hover:bg-[#fafafa] transition-colors" : ""}`}
+              className={`px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white${toggleExpand ? " cursor-pointer hover:bg-[#fafafa] transition-colors" : ""}`}
               onClick={toggleExpand}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -228,9 +228,9 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
                 {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
-                <p className="text-2xl font-light tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
+                <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
               ) : (
-                <p className="text-2xl font-light text-[#cccccc]">—</p>
+                <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
               )}
               {stats && rank !== null && (
                 <p className="text-[10px] text-[#aaaaaa] mt-1.5">
@@ -240,7 +240,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
             </div>
 
             {/* Right cell */}
-            <div className="px-6 py-5 border-b border-[#e0e0e0] bg-white">
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
               <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
 
               {/* Club bar */}

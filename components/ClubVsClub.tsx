@@ -181,12 +181,12 @@ function StandardBarRow({
   isRatio?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
-      <div className="flex-1 h-8 bg-[#eeeeee] overflow-hidden">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className="text-xs w-20 sm:w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
+      <div className="flex-1 h-6 sm:h-8 bg-[#eeeeee] overflow-hidden">
         <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
       </div>
-      <span className="text-sm font-light tabular-nums w-16 text-right shrink-0" style={{ color: clubColor }}>
+      <span className="text-xs sm:text-sm font-light tabular-nums w-14 sm:w-16 text-right shrink-0" style={{ color: clubColor }}>
         {fmt(value, isRatio)}
       </span>
     </div>
@@ -211,9 +211,9 @@ function DivergingBarRow({
   const pct = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
-      <div className="flex-1 flex h-8">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className="text-xs w-20 sm:w-32 shrink-0 truncate" style={{ color: clubColor }}>{club.name}</span>
+      <div className="flex-1 flex h-6 sm:h-8">
         {/* Negative (left) side */}
         <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
           {value !== null && !isPositive && (
@@ -229,7 +229,7 @@ function DivergingBarRow({
         </div>
       </div>
       <span
-        className="text-sm font-light tabular-nums w-16 text-right shrink-0"
+        className="text-xs sm:text-sm font-light tabular-nums w-14 sm:w-16 text-right shrink-0"
         style={{ color: value !== null ? clubColor : "#aaaaaa" }}
       >
         {fmt(value, isRatio)}
@@ -358,7 +358,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
         ))}
 
         {selectedSlugs.length < MAX_CLUBS && (
-          <div className="w-72">
+          <div className="w-full sm:w-72">
             <ClubSearch
               allClubs={allClubs}
               selectedSlugs={selectedSlugs}
@@ -394,7 +394,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
 
       {/* Bar charts */}
       {selectedClubs.length >= 2 && (
-        <div className="border border-[#e0e0e0] bg-white px-6">
+        <div className="border border-[#e0e0e0] bg-white px-3 sm:px-6">
           {/* Legend */}
           <div className="flex flex-wrap gap-x-6 gap-y-2 pt-5 pb-4 border-b border-[#e0e0e0] mb-2">
             {selectedClubs.map((club, i) => (
@@ -403,7 +403,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
                 <span className="text-xs" style={{ color: CLUB_COLORS[i] }}>{club.name}</span>
               </div>
             ))}
-            <span className="text-[10px] text-[#cccccc] ml-auto self-center tracking-[0.05em]">
+            <span className="hidden sm:block text-[10px] text-[#cccccc] ml-auto self-center tracking-[0.05em]">
               Diverging bars: left = loss / net debt · right = profit / net cash
             </span>
           </div>
