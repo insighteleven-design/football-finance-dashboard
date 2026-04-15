@@ -123,48 +123,67 @@ export default function CountryClubs({
   clubs: ClubFinancials[];
   euClubs: EUClub[];
 }) {
-  const [active, setActive] = useState<CountryKey>("England");
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const tabs: { key: CountryKey; flag: string; count: number }[] = [
-    { key: "England",     flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", count: clubs.length },
+  const tabs: { key: CountryKey; flag: string }[] = [
+    { key: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
     ...EU_COUNTRY_CONFIG.map((c) => ({
       key: c.country as CountryKey,
       flag: c.flag,
-      count: euClubs.filter((ec) => ec.country === c.country && hasEuFinancialData(ec)).length,
     })),
   ];
 
-  const activeEuConfig = EU_COUNTRY_CONFIG.find((c) => c.country === active);
+  const prev = () => setActiveIndex((i) => (i - 1 + tabs.length) % tabs.length);
+  const next = () => setActiveIndex((i) => (i + 1) % tabs.length);
+
+  const active = tabs[activeIndex];
+  const activeEuConfig = EU_COUNTRY_CONFIG.find((c) => c.country === active.key);
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Country selector tiles */}
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-2">
-        {tabs.map((tab) => {
-          const isActive = active === tab.key;
-          return (
-            <button
-              key={tab.key}
-              onClick={() => setActive(tab.key)}
-              className={`flex flex-col items-center gap-2.5 px-3 py-5 border transition-all ${
-                isActive
-                  ? "border-[#444444] bg-[#111111] text-white"
-                  : "border-[#1e1e1e] bg-[#0a0a0a] text-[#555555] hover:border-[#333333] hover:text-[#888888]"
-              }`}
-            >
-              <span className="text-3xl leading-none">{tab.flag}</span>
-              <span className="text-xs font-light tracking-[0.06em]">{tab.key}</span>
-              <span className={`text-[10px] tabular-nums ${isActive ? "text-[#555555]" : "text-[#333333]"}`}>
-                {tab.count} clubs
-              </span>
-            </button>
-          );
-        })}
+      {/* Carousel selector */}
+      <div className="flex items-stretch border border-[#2a2a2a] bg-[#0a0a0a] mb-2">
+        <button
+          onClick={prev}
+          className="px-5 flex items-center text-[#444444] hover:text-white border-r border-[#2a2a2a] transition-colors"
+          aria-label="Previous country"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div className="flex-1 flex flex-col items-center gap-2 py-7">
+          <span className="text-4xl leading-none">{active.flag}</span>
+          <span className="text-sm font-light tracking-[0.1em] text-white">{active.key}</span>
+          <div className="flex gap-2 mt-1">
+            {tabs.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                  i === activeIndex ? "bg-[#888888]" : "bg-[#2a2a2a] hover:bg-[#444444]"
+                }`}
+                aria-label={`Go to ${tabs[i].key}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={next}
+          className="px-5 flex items-center text-[#444444] hover:text-white border-l border-[#2a2a2a] transition-colors"
+          aria-label="Next country"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
 
       {/* Club panel */}
       <div className="border border-[#2a2a2a] bg-[#0a0a0a] p-8">
-        {active === "England" ? (
+        {active.key === "England" ? (
           <EnglishClubs clubs={clubs} />
         ) : activeEuConfig ? (
           <EuropeanClubs config={activeEuConfig} clubs={euClubs} />
