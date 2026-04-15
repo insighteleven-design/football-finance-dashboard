@@ -2,6 +2,22 @@ export type Division = "premier-league" | "championship" | "league-one" | "leagu
 
 export type DataConfidence = "high" | "medium" | "low" | "abridged";
 
+export type FinancialSnapshot = {
+  revenue: number | null;
+  wage_bill: number | null;
+  wage_ratio: number | null;
+  operating_profit: number | null;
+  profit_from_player_sales: number | null;
+  pre_tax_profit: number | null;
+  net_debt: number | null;
+};
+
+export interface PriorYearFinancials extends FinancialSnapshot {
+  fiscal_year_end: string;
+  /** Which division to use for vs-average comparison in the prior year tab */
+  compare_division?: Division;
+}
+
 export interface ClubFinancials {
   slug: string;
   name: string;
@@ -19,6 +35,7 @@ export interface ClubFinancials {
   wage_ratio: number | null;
   /** "high" = web-validated, "medium" = extracted from accounts, "low" = abbreviated/no data, "abridged" = abridged accounts filed */
   data_confidence: DataConfidence;
+  prior_year?: PriorYearFinancials | null;
 }
 
 export const METRICS: { key: keyof ClubFinancials; label: string; description: string }[] = [
@@ -40,26 +57,46 @@ type RawEntry = Omit<ClubFinancials, "slug" | "name" | "division" | "wage_ratio"
 // Promoted: Burnley, Leeds United, Sunderland (from Championship)
 // Relegated: Ipswich Town, Leicester City, Southampton (to Championship)
 const plRaw: Record<string, RawEntry> = {
-  arsenal:        { revenue: 690.30, wage_bill: 346.80, operating_profit:  -63.90, profit_from_player_sales:  81.20, pre_tax_profit:   -1.30, net_debt:  302.30, cash:   32.53, fiscal_year_end: "2025-05-31", data_confidence: "high" },
-  aston_villa:    { revenue: 275.70, wage_bill: 252.00, operating_profit: -145.30, profit_from_player_sales:  64.70, pre_tax_profit:  -85.90, net_debt:   24.90, cash:    0.00, fiscal_year_end: "2024-06-30", data_confidence: "high" },
-  bournemouth:    { revenue: 181.70, wage_bill: 158.40, operating_profit:  -62.70, profit_from_player_sales:  91.00, pre_tax_profit:   14.90, net_debt:    4.40, cash:   47.24, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  brentford:      { revenue: 173.10, wage_bill: 130.80, operating_profit:  -48.80, profit_from_player_sales:  27.20, pre_tax_profit:  -20.50, net_debt:  130.10, cash:    1.98, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  brighton:       { revenue: 222.40, wage_bill: 165.00, operating_profit: -102.00, profit_from_player_sales:  57.00, pre_tax_profit:  -55.80, net_debt:  365.60, cash:   39.84, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  burnley:        { revenue: 133.60, wage_bill:  93.40, operating_profit:  -26.50, profit_from_player_sales:  15.10, pre_tax_profit:  -28.40, net_debt:  103.50, cash:    8.91, fiscal_year_end: "2024-07-31", data_confidence: "high", compare_division: "championship" },
-  chelsea:        { revenue: 490.90, wage_bill: 359.30, operating_profit: -258.00, profit_from_player_sales:  32.00, pre_tax_profit: -262.40, net_debt: 1300.00, cash:    0.00, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  crystal_palace: { revenue: 190.20, wage_bill: 133.70, operating_profit:  -20.70, profit_from_player_sales:   1.30, pre_tax_profit:  -32.90, net_debt:  148.90, cash:    8.86, fiscal_year_end: "2024-06-30", data_confidence: "high" },
-  everton:        { revenue: 186.90, wage_bill: 156.60, operating_profit:  -92.70, profit_from_player_sales:  48.50, pre_tax_profit:  -53.20, net_debt: 1018.10, cash:   26.42, fiscal_year_end: "2024-06-30", data_confidence: "high" },
-  fulham:         { revenue: 181.60, wage_bill: 154.80, operating_profit:  -64.90, profit_from_player_sales:  32.70, pre_tax_profit:  -32.10, net_debt:   92.20, cash:   32.77, fiscal_year_end: "2024-06-30", data_confidence: "high" },
-  leeds:          { revenue: 137.00, wage_bill: 102.70, operating_profit:  -68.40, profit_from_player_sales:  24.80, pre_tax_profit:  -49.20, net_debt:   24.90, cash:    5.01, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "championship" },
-  liverpool:      { revenue: 703.00, wage_bill: 428.00, operating_profit:  -30.00, profit_from_player_sales:  53.00, pre_tax_profit:   15.00, net_debt:  217.00, cash:    2.54, fiscal_year_end: "2025-05-31", data_confidence: "high" },
-  man_city:       { revenue: 694.00, wage_bill: 408.00, operating_profit:  -93.00, profit_from_player_sales:  95.00, pre_tax_profit:  -10.00, net_debt:  328.00, cash:  173.72, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  man_united:     { revenue: 667.00, wage_bill: 313.00, operating_profit:  -31.00, profit_from_player_sales:  49.00, pre_tax_profit:  -40.00, net_debt:  550.90, cash:   74.15, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  newcastle:      { revenue: 335.00, wage_bill: 243.00, operating_profit: -109.00, profit_from_player_sales:  20.00, pre_tax_profit:   35.00, net_debt:   52.00, cash:   15.43, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  nottm_forest:   { revenue: 221.70, wage_bill: 166.70, operating_profit:  -64.90, profit_from_player_sales:   7.00, pre_tax_profit:  -78.90, net_debt:   85.80, cash:   13.22, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  sunderland:     { revenue:  38.20, wage_bill:  31.40, operating_profit:  -16.90, profit_from_player_sales:   8.80, pre_tax_profit:   -8.60, net_debt:   28.10, cash:   20.71, fiscal_year_end: "2024-07-31", data_confidence: "high", compare_division: "championship" },
-  tottenham:      { revenue: 565.00, wage_bill: 256.00, operating_profit:  -91.00, profit_from_player_sales:  53.00, pre_tax_profit: -121.00, net_debt:  831.00, cash:   78.97, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  west_ham:       { revenue: 228.00, wage_bill: 176.00, operating_profit: -104.80, profit_from_player_sales:  20.00, pre_tax_profit: -104.20, net_debt:  216.30, cash:    0.42, fiscal_year_end: "2025-05-31", data_confidence: "high" },
-  wolves:         { revenue: 177.70, wage_bill: 141.90, operating_profit:  -73.30, profit_from_player_sales:  64.60, pre_tax_profit:  -14.30, net_debt:   72.70, cash:   33.44, fiscal_year_end: "2024-05-31", data_confidence: "high", compare_division: "championship" },
+  arsenal:        { revenue: 690.30, wage_bill: 346.80, operating_profit:  -63.90, profit_from_player_sales:  81.20, pre_tax_profit:   -1.30, net_debt:  302.30, cash:   32.53, fiscal_year_end: "2025-05-31", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  613.5, wage_bill:  327.8, wage_ratio:  53, operating_profit:  -49.7, profit_from_player_sales:   51.1, pre_tax_profit:   -17.7, net_debt:   275.0, compare_division: "premier-league" } },
+  aston_villa:    { revenue: 275.70, wage_bill: 252.00, operating_profit: -145.30, profit_from_player_sales:  64.70, pre_tax_profit:  -85.90, net_debt:   24.90, cash:    0.00, fiscal_year_end: "2024-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2023-06-30", revenue:  217.7, wage_bill:  194.2, wage_ratio:  89, operating_profit: -139.5, profit_from_player_sales:   22.5, pre_tax_profit:  -120.3, net_debt:    -0.2, compare_division: "premier-league" } },
+  bournemouth:    { revenue: 181.70, wage_bill: 158.40, operating_profit:  -62.70, profit_from_player_sales:  91.00, pre_tax_profit:   14.90, net_debt:    4.40, cash:   47.24, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  160.8, wage_bill:  136.2, wage_ratio:  85, operating_profit:  -55.9, profit_from_player_sales:    0.3, pre_tax_profit:   -66.3, net_debt:   118.8, compare_division: "premier-league" } },
+  brentford:      { revenue: 173.10, wage_bill: 130.80, operating_profit:  -48.80, profit_from_player_sales:  27.20, pre_tax_profit:  -20.50, net_debt:  130.10, cash:    1.98, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  166.5, wage_bill:  114.4, wage_ratio:  69, operating_profit:  -29.2, profit_from_player_sales:   25.2, pre_tax_profit:    -7.9, net_debt:    90.9, compare_division: "premier-league" } },
+  brighton:       { revenue: 222.40, wage_bill: 165.00, operating_profit: -102.00, profit_from_player_sales:  57.00, pre_tax_profit:  -55.80, net_debt:  365.60, cash:   39.84, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  222.5, wage_bill:  146.2, wage_ratio:  66, operating_profit:  -35.6, profit_from_player_sales:  110.3, pre_tax_profit:    75.1, net_debt:   281.3, compare_division: "premier-league" } },
+  burnley:        { revenue: 133.60, wage_bill:  93.40, operating_profit:  -26.50, profit_from_player_sales:  15.10, pre_tax_profit:  -28.40, net_debt:  103.50, cash:    8.91, fiscal_year_end: "2024-07-31", data_confidence: "high", compare_division: "championship",
+    prior_year: { fiscal_year_end: "2023-07-31", revenue:   64.9, wage_bill:   57.6, wage_ratio:  89, operating_profit:  -40.7, profit_from_player_sales:   11.4, pre_tax_profit:   -36.0, net_debt:    81.3, compare_division: "championship" } },
+  chelsea:        { revenue: 490.90, wage_bill: 359.30, operating_profit: -258.00, profit_from_player_sales:  32.00, pre_tax_profit: -262.40, net_debt: 1300.00, cash:    0.00, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  468.5, wage_bill:  338.0, wage_ratio:  72, operating_profit: -213.0, profit_from_player_sales:  152.5, pre_tax_profit:   128.4, net_debt:   267.2, compare_division: "premier-league" } },
+  crystal_palace: { revenue: 190.20, wage_bill: 133.70, operating_profit:  -20.70, profit_from_player_sales:   1.30, pre_tax_profit:  -32.90, net_debt:  148.90, cash:    8.86, fiscal_year_end: "2024-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2023-06-30", revenue:  180.1, wage_bill:  130.6, wage_ratio:  73, operating_profit:  -19.9, profit_from_player_sales:    0.3, pre_tax_profit:   -27.5, net_debt:   109.1, compare_division: "premier-league" } },
+  everton:        { revenue: 186.90, wage_bill: 156.60, operating_profit:  -92.70, profit_from_player_sales:  48.50, pre_tax_profit:  -53.20, net_debt: 1018.10, cash:   26.42, fiscal_year_end: "2024-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2023-06-30", revenue:  172.2, wage_bill:  159.0, wage_ratio:  92, operating_profit: -130.5, profit_from_player_sales:   47.5, pre_tax_profit:   -89.1, net_debt:   781.3, compare_division: "premier-league" } },
+  fulham:         { revenue: 181.60, wage_bill: 154.80, operating_profit:  -64.90, profit_from_player_sales:  32.70, pre_tax_profit:  -32.10, net_debt:   92.20, cash:   32.77, fiscal_year_end: "2024-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2023-06-30", revenue:  182.3, wage_bill:  139.1, wage_ratio:  76, operating_profit:  -35.2, profit_from_player_sales:    8.7, pre_tax_profit:   -26.1, net_debt:   -50.3, compare_division: "premier-league" } },
+  leeds:          { revenue: 137.00, wage_bill: 102.70, operating_profit:  -68.40, profit_from_player_sales:  24.80, pre_tax_profit:  -49.20, net_debt:   24.90, cash:    5.01, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "championship",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  127.6, wage_bill:   84.0, wage_ratio:  66, operating_profit:  -76.3, profit_from_player_sales:   33.7, pre_tax_profit:   -60.8, net_debt:    55.3, compare_division: "championship" } },
+  liverpool:      { revenue: 703.00, wage_bill: 428.00, operating_profit:  -30.00, profit_from_player_sales:  53.00, pre_tax_profit:   15.00, net_debt:  217.00, cash:    2.54, fiscal_year_end: "2025-05-31", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  613.8, wage_bill:  386.1, wage_ratio:  63, operating_profit:  -69.7, profit_from_player_sales:   22.0, pre_tax_profit:   -57.1, net_debt:   306.8, compare_division: "premier-league" } },
+  man_city:       { revenue: 694.00, wage_bill: 408.00, operating_profit:  -93.00, profit_from_player_sales:  95.00, pre_tax_profit:  -10.00, net_debt:  328.00, cash:  173.72, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  715.0, wage_bill:  412.6, wage_ratio:  58, operating_profit:  -60.5, profit_from_player_sales:  139.0, pre_tax_profit:    73.8, net_debt:     9.6, compare_division: "premier-league" } },
+  man_united:     { revenue: 667.00, wage_bill: 313.00, operating_profit:  -31.00, profit_from_player_sales:  49.00, pre_tax_profit:  -40.00, net_debt:  550.90, cash:   74.15, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  661.8, wage_bill:  364.7, wage_ratio:  55, operating_profit: -106.8, profit_from_player_sales:   37.4, pre_tax_profit:  -130.7, net_debt:   473.1, compare_division: "premier-league" } },
+  newcastle:      { revenue: 335.00, wage_bill: 243.00, operating_profit: -109.00, profit_from_player_sales:  20.00, pre_tax_profit:   35.00, net_debt:   52.00, cash:   15.43, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  320.3, wage_bill:  218.7, wage_ratio:  68, operating_profit:  -68.7, profit_from_player_sales:   69.8, pre_tax_profit:   -11.1, net_debt:    34.3, compare_division: "premier-league" } },
+  nottm_forest:   { revenue: 221.70, wage_bill: 166.70, operating_profit:  -64.90, profit_from_player_sales:   7.00, pre_tax_profit:  -78.90, net_debt:   85.80, cash:   13.22, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  189.6, wage_bill:  166.4, wage_ratio:  88, operating_profit:  -73.3, profit_from_player_sales:  100.5, pre_tax_profit:    12.1, net_debt:    96.2, compare_division: "premier-league" } },
+  sunderland:     { revenue:  38.20, wage_bill:  31.40, operating_profit:  -16.90, profit_from_player_sales:   8.80, pre_tax_profit:   -8.60, net_debt:   28.10, cash:   20.71, fiscal_year_end: "2024-07-31", data_confidence: "high", compare_division: "championship",
+    prior_year: { fiscal_year_end: "2023-07-31", revenue:   35.5, wage_bill:   25.6, wage_ratio:  72, operating_profit:   -9.3, profit_from_player_sales:    0.3, pre_tax_profit:    -8.9, net_debt:    15.7, compare_division: "championship" } },
+  tottenham:      { revenue: 565.00, wage_bill: 256.00, operating_profit:  -91.00, profit_from_player_sales:  53.00, pre_tax_profit: -121.00, net_debt:  831.00, cash:   78.97, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  528.2, wage_bill:  221.9, wage_ratio:  42, operating_profit:  -61.0, profit_from_player_sales:   82.3, pre_tax_profit:   -26.0, net_debt:   772.5, compare_division: "premier-league" } },
+  west_ham:       { revenue: 228.00, wage_bill: 176.00, operating_profit: -104.80, profit_from_player_sales:  20.00, pre_tax_profit: -104.20, net_debt:  216.30, cash:    0.42, fiscal_year_end: "2025-05-31", data_confidence: "high",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  269.7, wage_bill:  161.0, wage_ratio:  60, operating_profit:  -30.8, profit_from_player_sales:   96.3, pre_tax_profit:    57.2, net_debt:   -32.5, compare_division: "premier-league" } },
+  wolves:         { revenue: 177.70, wage_bill: 141.90, operating_profit:  -73.30, profit_from_player_sales:  64.60, pre_tax_profit:  -14.30, net_debt:   72.70, cash:   33.44, fiscal_year_end: "2024-05-31", data_confidence: "high", compare_division: "championship",
+    prior_year: { fiscal_year_end: "2023-05-31", revenue:  168.6, wage_bill:  141.6, wage_ratio:  84, operating_profit: -100.7, profit_from_player_sales:   43.9, pre_tax_profit:   -67.2, net_debt:   145.6, compare_division: "premier-league" } },
 };
 
 // ─── Championship 2025/26 ─────────────────────────────────────────────────────
@@ -68,30 +105,53 @@ const plRaw: Record<string, RawEntry> = {
 // Promoted from L1: Birmingham City, Charlton Athletic, Wrexham
 // Relegated to L1: Cardiff City, Luton Town, Plymouth Argyle
 const chRaw: Record<string, RawEntry> = {
-  birmingham:     { revenue:  35.64, wage_bill:  35.70, operating_profit:  -39.42, pre_tax_profit:  -34.56, net_debt:  183.16, cash:   14.23, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one" },
-  blackburn:      { revenue:  23.70, wage_bill:  28.22, operating_profit:  -21.41, pre_tax_profit:  -10.42, net_debt:  151.39, cash:    0.26, fiscal_year_end: "2025-06-30" },
-  bristol_city:   { revenue:  40.30, wage_bill:  35.90, operating_profit:  -18.84, pre_tax_profit:  -18.60, net_debt:   20.74, cash:    0.03, fiscal_year_end: "2025-06-30" },
-  charlton:       { revenue:  11.17, wage_bill:  15.71, operating_profit:  -16.83, pre_tax_profit:  -15.39, net_debt:   31.45, cash:    0.46, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one" },
-  coventry:       { revenue:  34.15, wage_bill:  26.48, operating_profit:  -24.78, pre_tax_profit:  -21.60, net_debt:   49.40, cash:    0.37, fiscal_year_end: "2025-05-31" },
-  derby:          { revenue:  31.87, wage_bill:  31.53, operating_profit:  -11.07, pre_tax_profit:  -11.07, net_debt:   61.89, cash:    1.62, fiscal_year_end: "2025-06-30" },
-  hull:           { revenue:  25.82, wage_bill:  36.68, operating_profit:   -8.63, pre_tax_profit:  -10.22, net_debt:   76.47, cash:    0.09, fiscal_year_end: "2025-06-30" },
-  ipswich:        { revenue: 155.42, wage_bill:  77.14, operating_profit:   -6.21, pre_tax_profit:    4.01, net_debt:   -4.59, cash:   13.67, fiscal_year_end: "2025-06-30", compare_division: "premier-league" },
+  birmingham:     { revenue:  35.64, wage_bill:  35.70, operating_profit:  -39.42, pre_tax_profit:  -34.56, net_debt:  183.16, cash:   14.23, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  28.72, wage_bill:  33.72, wage_ratio: 117, operating_profit:  -32.59, profit_from_player_sales:  15.41, pre_tax_profit:  -16.08, net_debt: 142.81, compare_division: "championship" } },
+  blackburn:      { revenue:  23.70, wage_bill:  28.22, operating_profit:  -21.41, pre_tax_profit:  -10.42, net_debt:  151.39, cash:    0.26, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  21.40, wage_bill:  25.44, wage_ratio: 119, operating_profit:  -19.50, profit_from_player_sales:  23.56, pre_tax_profit:    3.33, net_debt: 118.13, compare_division: "championship" } },
+  bristol_city:   { revenue:  40.30, wage_bill:  35.90, operating_profit:  -18.84, pre_tax_profit:  -18.60, net_debt:   20.74, cash:    0.03, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  20.52, wage_bill:  24.82, wage_ratio: 121, operating_profit:  -21.97, profit_from_player_sales:  21.70, pre_tax_profit:   -0.80, net_debt:  23.43, compare_division: "championship" } },
+  charlton:       { revenue:  11.17, wage_bill:  15.71, operating_profit:  -16.83, pre_tax_profit:  -15.39, net_debt:   31.45, cash:    0.46, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:   8.81, wage_bill:  12.13, wage_ratio: 138, operating_profit:  -14.57, profit_from_player_sales:   0.69, pre_tax_profit:  -13.93, net_debt:  29.77, compare_division: "league-one" } },
+  coventry:       { revenue:  34.15, wage_bill:  26.48, operating_profit:  -24.78, pre_tax_profit:  -21.60, net_debt:   49.40, cash:    0.37, fiscal_year_end: "2025-05-31",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  29.31, wage_bill:  23.41, wage_ratio:  80, operating_profit:  -14.96, profit_from_player_sales:  23.68, pre_tax_profit:    8.69, net_debt:  56.81, compare_division: "championship" } },
+  derby:          { revenue:  31.87, wage_bill:  31.53, operating_profit:  -11.07, pre_tax_profit:  -11.07, net_debt:   61.89, cash:    1.62, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  19.40, wage_bill:  21.98, wage_ratio: 113, operating_profit:  -14.17, profit_from_player_sales:   4.63, pre_tax_profit:  -14.18, net_debt:  60.34, compare_division: "championship" } },
+  hull:           { revenue:  25.82, wage_bill:  36.68, operating_profit:   -8.63, pre_tax_profit:  -10.22, net_debt:   76.47, cash:    0.09, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  21.23, wage_bill:  29.56, wage_ratio: 139, operating_profit:  -18.13, profit_from_player_sales:   8.34, pre_tax_profit:  -18.85, net_debt:  78.25, compare_division: "championship" } },
+  ipswich:        { revenue: 155.42, wage_bill:  77.14, operating_profit:   -6.21, pre_tax_profit:    4.01, net_debt:   -4.59, cash:   13.67, fiscal_year_end: "2025-06-30", compare_division: "premier-league",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  37.31, wage_bill:  44.53, wage_ratio: 119, operating_profit:  -40.48, profit_from_player_sales:   1.23, pre_tax_profit:  -39.28, net_debt:  62.30, compare_division: "championship" } },
   leicester:      { revenue: 105.35, wage_bill: 107.16, operating_profit:   -8.98, pre_tax_profit:  -19.43, net_debt:  199.25, cash:    7.09, fiscal_year_end: "2024-06-30", compare_division: "premier-league" },
-  middlesbrough:  { revenue:  32.48, wage_bill:  36.36, operating_profit:  -10.34, pre_tax_profit:  -11.42, net_debt:   11.37, cash:    0.16, fiscal_year_end: "2025-06-30" },
-  millwall:       { revenue:  29.30, wage_bill:  28.63, operating_profit:    1.05, pre_tax_profit:   -0.30, net_debt:    null, cash:    0.79, fiscal_year_end: "2025-06-30" },
-  norwich:        { revenue:  39.28, wage_bill:  48.08, operating_profit:  -14.38, pre_tax_profit:  -20.67, net_debt:   54.43, cash:    2.00, fiscal_year_end: "2025-06-30" },
-  oxford_utd:     { revenue:  19.00, wage_bill:  21.66, operating_profit:  -17.46, pre_tax_profit:  -17.48, net_debt:   -0.21, cash:    0.24, fiscal_year_end: "2025-06-30" },
-  portsmouth:     { revenue:  24.57, wage_bill:  17.43, operating_profit:   -1.45, pre_tax_profit:   -4.36, net_debt:    6.15, cash:    2.04, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
-  preston:        { revenue:  18.88, wage_bill:  25.67, operating_profit:  -16.02, pre_tax_profit:  -15.98, net_debt:    null, cash:    2.37, fiscal_year_end: "2025-06-30" },
-  qpr:            { revenue:  28.00, wage_bill:  27.50, operating_profit:  -20.70, pre_tax_profit:  -20.30, net_debt:    6.14, cash:    0.07, fiscal_year_end: "2025-05-31" },
-  sheff_utd:      { revenue:  79.33, wage_bill:  45.97, operating_profit:  -16.64, pre_tax_profit:    2.59, net_debt:   53.68, cash:    2.78, fiscal_year_end: "2025-06-30" },
-  sheff_wed:      { revenue:  26.34, wage_bill:  21.81, operating_profit:   -9.26, pre_tax_profit:  -10.01, net_debt:    6.85, cash:    0.16, fiscal_year_end: "2024-07-31" },
-  southampton:    { revenue: 157.52, wage_bill: 113.96, operating_profit:  -62.25, pre_tax_profit:  -53.90, net_debt:   -9.35, cash:    9.35, fiscal_year_end: "2025-06-30", compare_division: "premier-league" },
-  stoke:          { revenue:  35.44, wage_bill:  30.30, operating_profit:  -29.54, pre_tax_profit:  -28.31, net_debt:  158.00, cash:   25.52, fiscal_year_end: "2025-05-31" },
-  swansea:        { revenue:  21.54, wage_bill:  27.35, operating_profit:  -25.20, pre_tax_profit:  -15.19, net_debt:   -1.62, cash:    5.31, fiscal_year_end: "2024-06-30", data_confidence: "medium" },
-  watford:        { revenue:  25.98, wage_bill:  28.12, operating_profit:  -12.47, pre_tax_profit:  -15.95, net_debt:   57.90, cash:    1.31, fiscal_year_end: "2025-06-30" },
-  west_brom:      { revenue:  30.35, wage_bill:  37.05, operating_profit:  -20.25, pre_tax_profit:  -17.00, net_debt:   71.85, cash:    0.47, fiscal_year_end: "2025-06-30" },
-  wrexham:        { revenue:  33.34, wage_bill:  19.95, operating_profit:  -14.85, pre_tax_profit:  -15.24, net_debt:   -2.66, cash:    3.32, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one" },
+  middlesbrough:  { revenue:  32.48, wage_bill:  36.36, operating_profit:  -10.34, pre_tax_profit:  -11.42, net_debt:   11.37, cash:    0.16, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  32.25, wage_bill:  31.39, wage_ratio:  97, operating_profit:  -11.92, profit_from_player_sales:  17.11, pre_tax_profit:  -12.43, net_debt:  58.21, compare_division: "championship" } },
+  millwall:       { revenue:  29.30, wage_bill:  28.63, operating_profit:    1.05, pre_tax_profit:   -0.30, net_debt:    null, cash:    0.79, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  21.41, wage_bill:  25.58, wage_ratio: 119, operating_profit:  -18.29, profit_from_player_sales:   0.00, pre_tax_profit:  -18.59, net_debt: 174.49, compare_division: "championship" } },
+  norwich:        { revenue:  39.28, wage_bill:  48.08, operating_profit:  -14.38, pre_tax_profit:  -20.67, net_debt:   54.43, cash:    2.00, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  73.14, wage_bill:  45.86, wage_ratio:  63, operating_profit:   -6.97, profit_from_player_sales:  13.38, pre_tax_profit:  -14.37, net_debt: 132.30, compare_division: "premier-league" } },
+  oxford_utd:     { revenue:  19.00, wage_bill:  21.66, operating_profit:  -17.46, pre_tax_profit:  -17.48, net_debt:   -0.21, cash:    0.24, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:   8.44, wage_bill:  11.25, wage_ratio: 133, operating_profit:  -15.72, profit_from_player_sales:   0.62, pre_tax_profit:  -15.85, net_debt:  47.45, compare_division: "league-one" } },
+  portsmouth:     { revenue:  24.57, wage_bill:  17.43, operating_profit:   -1.45, pre_tax_profit:   -4.36, net_debt:    6.15, cash:    2.04, fiscal_year_end: "2025-06-30", data_confidence: "medium",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  13.62, wage_bill:  10.57, wage_ratio:  78, operating_profit:   -3.79, profit_from_player_sales:   0.03, pre_tax_profit:   -5.61, net_debt:   8.28, compare_division: "league-one" } },
+  preston:        { revenue:  18.88, wage_bill:  25.67, operating_profit:  -16.02, pre_tax_profit:  -15.98, net_debt:    null, cash:    2.37, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  15.31, wage_bill:  21.29, wage_ratio: 139, operating_profit:  -12.35, profit_from_player_sales:   0.38, pre_tax_profit:  -12.32, net_debt:   5.34, compare_division: "championship" } },
+  qpr:            { revenue:  28.00, wage_bill:  27.50, operating_profit:  -20.70, pre_tax_profit:  -20.30, net_debt:    6.14, cash:    0.07, fiscal_year_end: "2025-05-31",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  25.89, wage_bill:  23.78, wage_ratio:  92, operating_profit:  -15.18, profit_from_player_sales:   2.20, pre_tax_profit:  -13.53, net_debt: 117.42, compare_division: "championship" } },
+  sheff_utd:      { revenue:  79.33, wage_bill:  45.97, operating_profit:  -16.64, pre_tax_profit:    2.59, net_debt:   53.68, cash:    2.78, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue: 137.60, wage_bill:  63.70, wage_ratio:  46, operating_profit:   -7.45, profit_from_player_sales:  19.35, pre_tax_profit:    3.90, net_debt: 103.38, compare_division: "premier-league" } },
+  sheff_wed:      { revenue:  26.34, wage_bill:  21.81, operating_profit:   -9.26, pre_tax_profit:  -10.01, net_debt:    6.85, cash:    0.16, fiscal_year_end: "2024-07-31",
+    prior_year: { fiscal_year_end: "2023-07-31", revenue:  19.31, wage_bill:  15.76, wage_ratio:  82, operating_profit:   -6.47, profit_from_player_sales:   0.00, pre_tax_profit:   -7.24, net_debt:  77.81, compare_division: "championship" } },
+  southampton:    { revenue: 157.52, wage_bill: 113.96, operating_profit:  -62.25, pre_tax_profit:  -53.90, net_debt:   -9.35, cash:    9.35, fiscal_year_end: "2025-06-30", compare_division: "premier-league",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  84.00, wage_bill:  79.01, wage_ratio:  94, operating_profit:   -7.05, profit_from_player_sales: 123.04, pre_tax_profit:   24.09, net_debt: 217.25, compare_division: "premier-league" } },
+  stoke:          { revenue:  35.44, wage_bill:  30.30, operating_profit:  -29.54, pre_tax_profit:  -28.31, net_debt:  158.00, cash:   25.52, fiscal_year_end: "2025-05-31",
+    prior_year: { fiscal_year_end: "2024-05-31", revenue:  32.27, wage_bill:  31.76, wage_ratio:  98, operating_profit:  -30.71, profit_from_player_sales:   4.41, pre_tax_profit:  -25.86, net_debt: 160.50, compare_division: "championship" } },
+  swansea:        { revenue:  21.54, wage_bill:  27.35, operating_profit:  -25.20, pre_tax_profit:  -15.19, net_debt:   -1.62, cash:    5.31, fiscal_year_end: "2024-06-30", data_confidence: "medium",
+    prior_year: { fiscal_year_end: "2023-06-30", revenue:  21.57, wage_bill:  24.85, wage_ratio: 115, operating_profit:  -21.28, profit_from_player_sales:   4.52, pre_tax_profit:  -17.93, net_debt:  10.77, compare_division: "championship" } },
+  watford:        { revenue:  25.98, wage_bill:  28.12, operating_profit:  -12.47, pre_tax_profit:  -15.95, net_debt:   57.90, cash:    1.31, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  57.59, wage_bill:  33.03, wage_ratio:  57, operating_profit:   -7.05, profit_from_player_sales:  29.26, pre_tax_profit:   12.76, net_debt: 130.61, compare_division: "championship" } },
+  west_brom:      { revenue:  30.35, wage_bill:  37.05, operating_profit:  -20.25, pre_tax_profit:  -17.00, net_debt:   71.85, cash:    0.47, fiscal_year_end: "2025-06-30",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  28.21, wage_bill:  42.90, wage_ratio: 152, operating_profit:  -29.20, profit_from_player_sales:   3.53, pre_tax_profit:  -33.87, net_debt:  73.01, compare_division: "championship" } },
+  wrexham:        { revenue:  33.34, wage_bill:  19.95, operating_profit:  -14.85, pre_tax_profit:  -15.24, net_debt:   -2.66, cash:    3.32, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  26.73, wage_bill:  11.04, wage_ratio:  41, operating_profit:   -2.02, profit_from_player_sales:   0.00, pre_tax_profit:   -2.73, net_debt:  25.63, compare_division: "league-one" } },
 };
 
 // ─── League One 2025/26 ───────────────────────────────────────────────────────

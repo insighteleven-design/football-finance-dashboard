@@ -1,11 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
+import { clubs, getClub, type ClubFinancials, type FinancialSnapshot } from "@/lib/clubs";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
 import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
-import MetricsGrid from "@/components/MetricsGrid";
-import YearOnYearSection from "@/components/YearOnYearSection";
+import FinancialYearTabs from "@/components/FinancialYearTabs";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
 import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
@@ -70,6 +69,70 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     day: "numeric", month: "long", year: "numeric",
   });
 
+  // ─── Financial year tabs data ────────────────────────────────────────────────
+
+  function fyLabel(dateStr: string): string {
+    return new Date(dateStr).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+  }
+
+  function toSnapshot(c: {
+    revenue: number | null;
+    wage_bill: number | null;
+    wage_ratio: number | null;
+    operating_profit: number | null;
+    profit_from_player_sales?: number | null;
+    pre_tax_profit: number | null;
+    net_debt: number | null;
+  }): FinancialSnapshot {
+    return {
+      revenue:                  c.revenue,
+      wage_bill:                c.wage_bill,
+      wage_ratio:               c.wage_ratio,
+      operating_profit:         c.operating_profit,
+      profit_from_player_sales: c.profit_from_player_sales ?? null,
+      pre_tax_profit:           c.pre_tax_profit,
+      net_debt:                 c.net_debt,
+    };
+  }
+
+  // Current year
+  const currentData    = toSnapshot(club);
+  const currentLabel   = fyLabel(club.fiscal_year_end);
+  const currentDivData = clubs
+    .filter((c) => (c.compare_division ?? c.division) === compareDivision)
+    .map(toSnapshot);
+
+  // Prior year
+  const py = club.prior_year ?? null;
+  const priorData = py
+    ? {
+        revenue:                  py.revenue,
+        wage_bill:                py.wage_bill,
+        wage_ratio:               py.wage_ratio,
+        operating_profit:         py.operating_profit,
+        profit_from_player_sales: py.profit_from_player_sales,
+        pre_tax_profit:           py.pre_tax_profit,
+        net_debt:                 py.net_debt,
+      }
+    : null;
+  const priorLabel          = py ? fyLabel(py.fiscal_year_end) : null;
+  const priorCompareDivision = py?.compare_division ?? compareDivision;
+  const priorCompareLabel    = DIVISION_LABELS[priorCompareDivision];
+  const priorDivData = clubs
+    .filter((c) => c.prior_year?.compare_division === priorCompareDivision)
+    .map((c) => {
+      const p = c.prior_year!;
+      return {
+        revenue:                  p.revenue,
+        wage_bill:                p.wage_bill,
+        wage_ratio:               p.wage_ratio,
+        operating_profit:         p.operating_profit,
+        profit_from_player_sales: p.profit_from_player_sales,
+        pre_tax_profit:           p.pre_tax_profit,
+        net_debt:                 p.net_debt,
+      } satisfies FinancialSnapshot;
+    });
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Back */}
@@ -119,15 +182,18 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       <ClubProfileTabs
         financial={
-          <>
-            <MetricsGrid
-              club={club}
-              compareDivision={compareDivision}
-              compareLabel={compareLabel}
-              breakdown={dd?.revenue_breakdown ?? null}
-            />
-            <YearOnYearSection club={club} />
-          </>
+          <FinancialYearTabs
+            club={club}
+            currentData={currentData}
+            currentDivisionData={currentDivData}
+            currentLabel={currentLabel}
+            compareLabel={compareLabel}
+            breakdown={dd?.revenue_breakdown ?? null}
+            priorData={priorData}
+            priorDivisionData={priorDivData}
+            priorLabel={priorLabel}
+            priorCompareLabel={priorCompareLabel}
+          />
         }
         assets={
           assets ? (

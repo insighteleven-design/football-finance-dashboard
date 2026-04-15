@@ -16,23 +16,23 @@ export default function Header() {
           : "border-b border-[#e0e0e0] bg-[#f5f5f5]"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-8">
-        <Link href="/" className="shrink-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4 min-w-0">
+        <Link href="/" className="shrink-0 min-w-0">
           <Image
             src="/logo.png"
             alt="Insight Eleven"
             width={1601}
             height={234}
-            className="w-auto h-9"
+            className="w-auto h-7 sm:h-9"
             style={isHome ? undefined : { filter: "brightness(0) opacity(0.85)" }}
             priority
           />
         </Link>
 
-        <nav className="flex items-center gap-0.5">
+        <nav className="flex items-center gap-0.5 shrink-0">
           <Link
             href="/"
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            className={`px-2.5 sm:px-3 py-1.5 text-sm rounded-md transition-colors ${
               isHome
                 ? "text-[#888888] hover:text-white hover:bg-[#111111]"
                 : "text-[#666666] hover:text-[#111111] hover:bg-[#e8e8e8]"
@@ -42,7 +42,7 @@ export default function Header() {
           </Link>
           <Link
             href="/compare"
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors whitespace-nowrap ${
+            className={`px-2.5 sm:px-3 py-1.5 text-sm rounded-md transition-colors whitespace-nowrap ${
               isHome
                 ? "text-[#888888] hover:text-white hover:bg-[#111111]"
                 : "text-[#666666] hover:text-[#111111] hover:bg-[#e8e8e8]"

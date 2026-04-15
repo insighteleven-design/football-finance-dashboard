@@ -1,27 +1,28 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { clubs, fmt, type ClubFinancials, type Division } from "@/lib/clubs";
+import { fmt } from "@/lib/clubs";
+import type { FinancialSnapshot } from "@/lib/clubs";
 import type { RevenueBreakdown } from "@/lib/deepDive";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface Props {
-  club: ClubFinancials;
-  compareDivision: Division;
+  data: FinancialSnapshot;
+  divisionData: FinancialSnapshot[];
   compareLabel: string;
-  breakdown: RevenueBreakdown | null;
+  breakdown?: RevenueBreakdown | null;
 }
 
 // ─── Metrics config ───────────────────────────────────────────────────────────
 
 const ALL_METRICS: {
-  key: keyof ClubFinancials;
+  key: keyof FinancialSnapshot;
   label: string;
   isRatio?: boolean;
   diverging?: boolean;
   higherBetter: boolean | null;
-  expandable?: "revenue" | "debt";
+  expandable?: "revenue";
 }[] = [
   { key: "revenue",                    label: "Revenue",                    higherBetter: true,  expandable: "revenue" },
   { key: "wage_bill",                  label: "Wage Bill",                  higherBetter: false },
@@ -34,10 +35,10 @@ const ALL_METRICS: {
 
 // ─── Division stats ───────────────────────────────────────────────────────────
 
-function divisionStats(division: string, key: keyof ClubFinancials) {
-  const vals = clubs
-    .filter((c) => c.division === division && c[key] !== null)
-    .map((c) => c[key] as number);
+function divisionStats(divisionData: FinancialSnapshot[], key: keyof FinancialSnapshot) {
+  const vals = divisionData
+    .map((c) => c[key])
+    .filter((v): v is number => v !== null);
   if (!vals.length) return null;
   const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
   const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
@@ -185,7 +186,7 @@ function BreakdownBadge({ open }: { open: boolean }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function MetricsGrid({ club, compareDivision, compareLabel, breakdown }: Props) {
+export default function MetricsGrid({ data, divisionData, compareLabel, breakdown }: Props) {
   const [revenueOpen, setRevenueOpen] = useState(false);
 
   return (
@@ -202,8 +203,8 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
 
       {/* Metric rows */}
       {ALL_METRICS.map((m) => {
-        const val = club[m.key] as number | null;
-        const stats = divisionStats(compareDivision, m.key);
+        const val = data[m.key];
+        const stats = divisionStats(divisionData, m.key);
         const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
 
         const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : 1;
@@ -214,7 +215,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
 
         const isRevenue = m.expandable === "revenue";
         const expandOpen = isRevenue ? revenueOpen : false;
-        const toggleExpand = isRevenue ? () => setRevenueOpen((o) => !o) : undefined;
+        const toggleExpand = isRevenue && breakdown !== undefined ? () => setRevenueOpen((o) => !o) : undefined;
 
         return (
           <Fragment key={m.key as string}>
@@ -274,7 +275,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
               </div>
             </div>
 
-            {/* Inline expansion panels */}
+            {/* Inline expansion panel */}
             {isRevenue && (
               <div
                 className="col-span-full border-b border-[#e0e0e0] overflow-hidden transition-all duration-300 ease-in-out"
@@ -282,7 +283,7 @@ export default function MetricsGrid({ club, compareDivision, compareLabel, break
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
                   <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Revenue Breakdown</p>
-                  <RevenuePanel breakdown={breakdown} totalRevenue={club.revenue} />
+                  <RevenuePanel breakdown={breakdown ?? null} totalRevenue={data.revenue} />
                 </div>
               </div>
             )}
