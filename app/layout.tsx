@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Intelligence | Insight Eleven",
-  description: "The comprehensive database of football club finances, sourced from Companies House filings.",
+  description: "Comprehensive database of football club financial data.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
