@@ -215,28 +215,15 @@ const l1Raw: Record<string, RawEntry> = {
 // Promoted from National League: Barnet, Oldham Athletic
 // Relegated to National League: Carlisle Utd, Morecambe (+ 2 others)
 const l2Raw: Record<string, RawEntry> = {
-  accrington:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    5.65, cash:    0.16, fiscal_year_end: "2025-06-30" },
-  barnet:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    0.92, cash:    null, fiscal_year_end: "2025-06-30", data_confidence: "abridged" },
-  barrow:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    0.05, fiscal_year_end: "2025-05-31", data_confidence: "abridged" },
   bristol_rovers: { revenue:   8.11, wage_bill:   8.91, operating_profit:   -6.47, pre_tax_profit:   -7.90, net_debt:   -0.77, cash:    1.31, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-one" },
   bromley:        { revenue:   5.27, wage_bill:   null, operating_profit:   -1.06, pre_tax_profit:   -1.09, net_debt:    0.42, cash:    0.50, fiscal_year_end: "2024-12-31" },
   cambridge:      { revenue:   9.25, wage_bill:   6.66, operating_profit:   -3.74, pre_tax_profit:   -3.74, net_debt:   -0.26, cash:    0.30, fiscal_year_end: "2025-06-30", compare_division: "league-one" },
-  cheltenham:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    0.13, cash:    0.55, fiscal_year_end: "2025-05-31" },
   chesterfield:   { revenue:   7.80, wage_bill:   6.04, operating_profit:   -2.22, pre_tax_profit:   -2.38, net_debt:    2.27, cash:    1.48, fiscal_year_end: "2025-06-30", data_confidence: "medium" },
-  colchester:     { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   40.02, cash:    0.15, fiscal_year_end: "2025-06-30" },
-  crawley:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   10.58, cash:    0.06, fiscal_year_end: "2025-06-30", compare_division: "league-one" },
   crewe:          { revenue:   5.20, wage_bill:   null, operating_profit:   -1.16, pre_tax_profit:   -1.16, net_debt:    4.56, cash:    0.10, fiscal_year_end: "2025-06-30" },
-  fleetwood:      { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    null, fiscal_year_end: "2025-06-30" },
   gillingham:     { revenue:   7.53, wage_bill:   6.77, operating_profit:   -5.72, pre_tax_profit:   -5.74, net_debt:    6.99, cash:    0.08, fiscal_year_end: "2025-06-30", data_confidence: "high" },
-  grimsby:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    0.87, cash:    0.44, fiscal_year_end: "2025-06-30" },
   harrogate:      { revenue:   4.06, wage_bill:   3.53, operating_profit:   -2.17, pre_tax_profit:   -2.17, net_debt:    6.30, cash:    0.11, fiscal_year_end: "2025-06-30" },
   mk_dons:        { revenue:   5.72, wage_bill:   5.22, operating_profit:   -3.70, pre_tax_profit:   -2.20, net_debt:    null, cash:    0.33, fiscal_year_end: "2024-06-30" },
-  newport:        { revenue:   null, wage_bill:   null, operating_profit:   -0.76, pre_tax_profit:    null, net_debt:    0.06, cash:    0.03, fiscal_year_end: "2025-06-30" },
-  notts_county:   { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    0.79, fiscal_year_end: "2025-06-30" },
-  oldham:         { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:    null, cash:    0.13, fiscal_year_end: "2025-06-30", data_confidence: "abridged" },
-  salford:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   20.41, cash:    0.07, fiscal_year_end: "2025-06-30" },
   shrewsbury:     { revenue:   7.21, wage_bill:   5.35, operating_profit:   -0.92, pre_tax_profit:   -0.93, net_debt:    1.25, cash:    0.07, fiscal_year_end: "2025-06-30", compare_division: "league-one" },
-  swindon:        { revenue:   null, wage_bill:   null, operating_profit:    null, pre_tax_profit:    null, net_debt:   10.49, cash:    0.01, fiscal_year_end: "2025-05-31" },
   tranmere:       { revenue:   5.76, wage_bill:   5.17, operating_profit:   -2.80, pre_tax_profit:   -2.92, net_debt:    2.30, cash:    0.38, fiscal_year_end: "2025-06-30" },
   walsall:        { revenue:   8.23, wage_bill:   5.88, operating_profit:   -1.34, pre_tax_profit:   -1.97, net_debt:    9.61, cash:    0.00, fiscal_year_end: "2025-05-31", data_confidence: "high" },
 };
@@ -280,18 +267,12 @@ const NAMES: Record<string, string> = {
   stevenage: "Stevenage",         stockport: "Stockport County",
   wigan: "Wigan Athletic",        wycombe: "Wycombe Wanderers",
   // League Two 2025/26
-  accrington: "Accrington Stanley", barnet: "Barnet",
-  barrow: "Barrow",               bristol_rovers: "Bristol Rovers",
-  bromley: "Bromley",             cambridge: "Cambridge Utd",
-  cheltenham: "Cheltenham Town",  chesterfield: "Chesterfield",
-  colchester: "Colchester Utd",   crawley: "Crawley Town",
-  crewe: "Crewe Alexandra",       fleetwood: "Fleetwood Town",
-  gillingham: "Gillingham",       grimsby: "Grimsby Town",
-  harrogate: "Harrogate Town",    mk_dons: "MK Dons",
-  newport: "Newport County",      notts_county: "Notts County",
-  oldham: "Oldham Athletic",      salford: "Salford City",
-  shrewsbury: "Shrewsbury Town",  swindon: "Swindon Town",
-  tranmere: "Tranmere Rovers",    walsall: "Walsall",
+  bristol_rovers: "Bristol Rovers", bromley: "Bromley",
+  cambridge: "Cambridge Utd",    chesterfield: "Chesterfield",
+  crewe: "Crewe Alexandra",      gillingham: "Gillingham",
+  harrogate: "Harrogate Town",   mk_dons: "MK Dons",
+  shrewsbury: "Shrewsbury Town", tranmere: "Tranmere Rovers",
+  walsall: "Walsall",
 };
 
 function makeClubs(
