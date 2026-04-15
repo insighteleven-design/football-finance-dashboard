@@ -2,6 +2,7 @@
 
 import { useState, Fragment } from "react";
 import { EUClub } from "@/lib/euClubs";
+import EUMarketContextPanel from "@/components/EUMarketContextPanel";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -324,6 +325,7 @@ function ClubInfoTab({ club }: { club: EUClub }) {
 const TABS = [
   { key: "financial",  label: "Financial Information" },
   { key: "historical", label: "Historical" },
+  { key: "market",     label: "Market Context" },
   { key: "info",       label: "Club Info" },
 ] as const;
 type TabKey = (typeof TABS)[number]["key"];
@@ -381,6 +383,9 @@ export default function EuropeanClubProfile({
         <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
       )}
       {tab === "historical" && <HistoricalTab club={club} />}
+      {tab === "market" && (
+        <EUMarketContextPanel club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
+      )}
       {tab === "info" && <ClubInfoTab club={club} />}
     </div>
   );
