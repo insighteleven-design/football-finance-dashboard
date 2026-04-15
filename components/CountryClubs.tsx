@@ -5,6 +5,18 @@ import Link from "next/link";
 import { ClubFinancials, Division } from "@/lib/clubs";
 import { EUClub, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
 
+function hasEuFinancialData(club: EUClub): boolean {
+  const f = club.financials;
+  return (
+    f.revenue !== null ||
+    f.net_profit !== null ||
+    f.wage_bill !== null ||
+    f.equity !== null ||
+    f.total_liabilities !== null ||
+    club.historical.some((h) => h.revenue !== null)
+  );
+}
+
 const LEAGUE_COLORS = [
   "text-[#8888cc]",
   "text-[#6699bb]",
@@ -63,7 +75,7 @@ function EuropeanClubs({
   config: typeof EU_COUNTRY_CONFIG[number];
   clubs: EUClub[];
 }) {
-  const countryClubs = clubs.filter((c) => c.country === config.country);
+  const countryClubs = clubs.filter((c) => c.country === config.country && hasEuFinancialData(c));
   const cols = Math.min(config.leagues.length, 4);
 
   return (
@@ -118,7 +130,7 @@ export default function CountryClubs({
     ...EU_COUNTRY_CONFIG.map((c) => ({
       key: c.country as CountryKey,
       flag: c.flag,
-      count: euClubs.filter((ec) => ec.country === c.country).length,
+      count: euClubs.filter((ec) => ec.country === c.country && hasEuFinancialData(ec)).length,
     })),
   ];
 

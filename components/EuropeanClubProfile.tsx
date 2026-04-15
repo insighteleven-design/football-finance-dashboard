@@ -1,87 +1,261 @@
 "use client";
 
+import { useState, Fragment } from "react";
 import { EUClub } from "@/lib/euClubs";
 
-// ─── Formatting helpers ──────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function fmtEur(v: number | null, isRatio = false): string {
-  if (v === null || v === undefined) return "—";
+  if (v === null) return "—";
   if (isRatio) return `${v.toFixed(1)}%`;
   const abs = Math.abs(v);
   return `${v < 0 ? "-" : ""}€${abs.toFixed(1)}m`;
 }
 
-function profitColor(v: number | null): string {
-  if (v === null) return "text-[#999999]";
-  return v >= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]";
+// ─── League stats ─────────────────────────────────────────────────────────────
+
+type FinKey = keyof EUClub["financials"];
+
+function leagueStats(clubs: EUClub[], key: FinKey) {
+  const vals = clubs
+    .map((c) => c.financials[key])
+    .filter((v): v is number => typeof v === "number" && !isNaN(v));
+  if (!vals.length) return null;
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
+  const sorted = [...vals].sort((a, b) => b - a);
+  return { avg, maxAbs, sorted, count: vals.length };
 }
 
-// ─── Stat card ───────────────────────────────────────────────────────────────
+function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): string {
+  if (higherBetter === null) return "#aaaaaa";
+  return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
+}
 
-function StatCard({
-  label,
-  value,
-  sub,
-  color,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-  color?: string;
-}) {
+// ─── Bar primitives ───────────────────────────────────────────────────────────
+
+function StandardBar({ pct, color }: { pct: number; color: string }) {
   return (
-    <div className="border border-[#e0e0e0] bg-white p-5">
-      <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-2">{label}</p>
-      <p className={`text-2xl font-light tabular-nums ${color ?? "text-[#111111]"}`}>{value}</p>
-      {sub && <p className="text-[10px] text-[#aaaaaa] mt-1.5">{sub}</p>}
+    <div className="flex-1 h-7 bg-[#eeeeee] overflow-hidden">
+      <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
     </div>
   );
 }
 
-// ─── Historical chart ────────────────────────────────────────────────────────
+function DivergingBar({ value, scale, color }: { value: number; scale: number; color: string }) {
+  const pct = Math.min((Math.abs(value) / scale) * 100, 100);
+  const isPositive = value >= 0;
+  return (
+    <div className="flex-1 flex h-7">
+      <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
+        {!isPositive && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
+      </div>
+      <div className="w-px bg-[#e0e0e0] shrink-0" />
+      <div className="flex-1 overflow-hidden bg-[#eeeeee]">
+        {isPositive && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
+      </div>
+    </div>
+  );
+}
 
-function HistoricalChart({ club }: { club: EUClub }) {
-  const hist = club.historical.filter((h) => h.revenue !== null);
-  if (!hist.length) return null;
+// ─── Metrics config ───────────────────────────────────────────────────────────
 
-  const maxRev = Math.max(...hist.map((h) => h.revenue ?? 0), 0.01);
+const EU_METRICS: {
+  key: FinKey;
+  label: string;
+  isRatio?: boolean;
+  diverging?: boolean;
+  higherBetter: boolean | null;
+}[] = [
+  { key: "revenue",             label: "Revenue",             higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill",           higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",          isRatio: true, higherBetter: false },
+  { key: "net_profit",          label: "Net Profit / (Loss)", diverging: true, higherBetter: true },
+  { key: "equity",              label: "Equity",              diverging: true, higherBetter: true },
+  { key: "total_liabilities",   label: "Total Liabilities",   higherBetter: false },
+];
+
+// ─── Financial tab ────────────────────────────────────────────────────────────
+
+function FinancialTab({
+  club,
+  leagueClubs,
+  leagueLabel,
+}: {
+  club: EUClub;
+  leagueClubs: EUClub[];
+  leagueLabel: string;
+}) {
+  const fin = club.financials;
+  const hasAny = EU_METRICS.some((m) => fin[m.key] !== null);
+  if (!hasAny) {
+    return (
+      <p className="text-sm text-[#aaaaaa] italic">No financial data available for this club.</p>
+    );
+  }
 
   return (
-    <div className="border border-[#e0e0e0] bg-white p-6">
-      <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-6">
-        Revenue History (€m)
-      </p>
-      <div className="space-y-2.5">
-        {[...hist].reverse().map((h) => {
-          const pct = h.revenue !== null ? (h.revenue / maxRev) * 100 : 0;
-          return (
-            <div key={h.season} className="flex items-center gap-3">
-              <span className="text-[10px] text-[#aaaaaa] w-16 shrink-0 tabular-nums">{h.season}</span>
-              <div className="flex-1 h-5 bg-[#eeeeee] overflow-hidden">
-                <div className="h-full bg-[#8888cc]" style={{ width: `${pct}%` }} />
+    <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
+      {/* Column headers */}
+      <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
+        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+          Financial Figures
+        </p>
+      </div>
+      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
+        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+          vs {leagueLabel} Average
+        </p>
+      </div>
+
+      {EU_METRICS.map((m) => {
+        const val = fin[m.key] as number | null;
+        const stats = leagueStats(leagueClubs, m.key);
+        const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
+
+        const scale = stats
+          ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01)
+          : Math.abs(val ?? 0) || 1;
+        const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
+        const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
+        const barColor =
+          val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
+
+        return (
+          <Fragment key={m.key}>
+            {/* Left: value */}
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
+              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
+                {m.label}
+              </p>
+              {val !== null ? (
+                <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
+                  {fmtEur(val, m.isRatio)}
+                </p>
+              ) : (
+                <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+              )}
+              {stats && rank !== null && rank > 0 && (
+                <p className="text-[10px] text-[#aaaaaa] mt-1.5">
+                  #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Right: bar comparison */}
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
+              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+                {m.label}
+              </p>
+              {/* Club bar */}
+              <div className="mb-1">
+                <div className="flex items-center gap-2 mb-1">
+                  {m.diverging ? (
+                    <DivergingBar
+                      value={val ?? 0}
+                      scale={scale / 2}
+                      color={val !== null ? barColor : "#cccccc"}
+                    />
+                  ) : (
+                    <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
+                  )}
+                  <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                    {fmtEur(val, m.isRatio)}
+                  </span>
+                </div>
+                <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
               </div>
-              <span className="text-[10px] tabular-nums text-[#111111] w-16 text-right shrink-0">
-                {fmtEur(h.revenue)}
+              {/* League avg bar */}
+              <div className="mt-2">
+                <div className="flex items-center gap-2 mb-1">
+                  {m.diverging && stats ? (
+                    <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
+                  ) : (
+                    <StandardBar pct={avgPct} color="#cccccc" />
+                  )}
+                  <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                    {stats ? fmtEur(stats.avg, m.isRatio) : "—"}
+                  </span>
+                </div>
+                <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
+              </div>
+            </div>
+          </Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Historical tab ───────────────────────────────────────────────────────────
+
+function HistoricalTab({ club }: { club: EUClub }) {
+  const hist = [...club.historical]
+    .reverse()
+    .filter((h) => h.revenue !== null || h.net_profit !== null);
+
+  if (!hist.length) {
+    return <p className="text-sm text-[#aaaaaa] italic">No historical data available.</p>;
+  }
+
+  const maxRev = Math.max(...hist.map((h) => h.revenue ?? 0), 0.01);
+  const showProfit = hist.some((h) => h.net_profit !== null);
+
+  return (
+    <div className="border border-[#e0e0e0] overflow-hidden">
+      {/* Header */}
+      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0] flex items-center justify-between">
+        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+          Revenue History
+        </p>
+        {showProfit && (
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+            Net Profit / (Loss)
+          </p>
+        )}
+      </div>
+      {/* Rows */}
+      <div className="bg-white divide-y divide-[#f0f0f0]">
+        {hist.map((h) => {
+          const revPct = h.revenue !== null ? (h.revenue / maxRev) * 100 : 0;
+          return (
+            <div key={h.season} className="px-4 sm:px-6 py-3.5 flex items-center gap-4">
+              <span className="text-[10px] text-[#aaaaaa] w-16 shrink-0 tabular-nums">
+                {h.season}
               </span>
-              {h.net_profit !== null && (
-                <span className={`text-[10px] tabular-nums w-16 text-right shrink-0 ${profitColor(h.net_profit)}`}>
-                  {fmtEur(h.net_profit)}
+              <div className="flex-1 h-6 bg-[#eeeeee] overflow-hidden">
+                <div className="h-full bg-[#8888cc]" style={{ width: `${revPct}%` }} />
+              </div>
+              <span className="text-xs tabular-nums text-[#111111] w-16 text-right shrink-0">
+                {h.revenue !== null ? `€${h.revenue.toFixed(1)}m` : "—"}
+              </span>
+              {showProfit && (
+                <span
+                  className={`text-xs tabular-nums w-16 text-right shrink-0 ${
+                    h.net_profit === null
+                      ? "text-[#cccccc]"
+                      : h.net_profit >= 0
+                      ? "text-[#4a9a6a]"
+                      : "text-[#9a4a4a]"
+                  }`}
+                >
+                  {h.net_profit !== null ? fmtEur(h.net_profit) : "—"}
                 </span>
               )}
             </div>
           );
         })}
       </div>
-      {hist.some((h) => h.net_profit !== null) && (
-        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-[#f0f0f0]">
+      {showProfit && (
+        <div className="px-4 sm:px-6 py-3 bg-white border-t border-[#f0f0f0] flex items-center gap-6">
           <span className="flex items-center gap-1.5 text-[9px] text-[#aaaaaa]">
             <span className="w-2 h-2 rounded-full bg-[#8888cc] inline-block" /> Revenue
           </span>
-          <span className="flex items-center gap-1.5 text-[9px] text-[#aaaaaa]">
-            <span className="w-2 h-2 rounded-full bg-[#4a9a6a] inline-block" /> Net profit (positive)
+          <span className="flex items-center gap-1.5 text-[9px] text-[#4a9a6a]">
+            <span className="w-2 h-2 rounded-full bg-[#4a9a6a] inline-block" /> Profit
           </span>
-          <span className="flex items-center gap-1.5 text-[9px] text-[#aaaaaa]">
-            <span className="w-2 h-2 rounded-full bg-[#9a4a4a] inline-block" /> Net loss
+          <span className="flex items-center gap-1.5 text-[9px] text-[#9a4a4a]">
+            <span className="w-2 h-2 rounded-full bg-[#9a4a4a] inline-block" /> Loss
           </span>
         </div>
       )}
@@ -89,37 +263,52 @@ function HistoricalChart({ club }: { club: EUClub }) {
   );
 }
 
-// ─── Ownership & stadium panel ───────────────────────────────────────────────
+// ─── Club info tab ────────────────────────────────────────────────────────────
 
-function MetadataPanel({ club }: { club: EUClub }) {
-  const hasOwnership = club.ownership?.summary || club.ownership?.category;
-  const hasStadium = club.stadium?.name;
-  if (!hasOwnership && !hasStadium) return null;
+function ClubInfoTab({ club }: { club: EUClub }) {
+  const hasStadium = !!club.stadium?.name;
+  const hasOwnership = !!(club.ownership?.summary || club.ownership?.category);
+
+  if (!hasStadium && !hasOwnership) {
+    return <p className="text-sm text-[#aaaaaa] italic">No club information available.</p>;
+  }
 
   return (
-    <div className="grid sm:grid-cols-2 gap-4">
+    <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
       {hasStadium && club.stadium && (
-        <div className="border border-[#e0e0e0] bg-white p-5">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-3">Stadium</p>
-          <p className="text-sm text-[#111111] font-medium mb-1">{club.stadium.name}</p>
+        <div
+          className={`px-4 sm:px-6 py-4 sm:py-5 bg-white ${
+            hasOwnership
+              ? "border-b lg:border-b-0 border-r border-[#e0e0e0]"
+              : "lg:col-span-2"
+          }`}
+        >
+          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+            Stadium
+          </p>
+          <p className="text-sm font-medium text-[#111111] mb-1">{club.stadium.name}</p>
           {club.stadium.capacity && (
-            <p className="text-xs text-[#666666]">
+            <p className="text-xs text-[#666666] mb-1.5">
               {club.stadium.capacity.toLocaleString()} capacity
             </p>
           )}
           {club.stadium.ownership && (
-            <p className="text-[10px] text-[#aaaaaa] mt-1.5 leading-relaxed">{club.stadium.ownership}</p>
+            <p className="text-[10px] text-[#aaaaaa] leading-relaxed">{club.stadium.ownership}</p>
           )}
         </div>
       )}
       {hasOwnership && club.ownership && (
-        <div className="border border-[#e0e0e0] bg-white p-5">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-3">Ownership</p>
+        <div className={`px-4 sm:px-6 py-4 sm:py-5 bg-white ${!hasStadium ? "lg:col-span-2" : ""}`}>
+          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+            Ownership
+          </p>
           {club.ownership.category && (
             <p className="text-xs text-[#666666] mb-1">{club.ownership.category}</p>
           )}
           {club.ownership.fifty_plus_one && (
-            <p className="text-[10px] text-[#aaaaaa] mb-1.5">50+1: {club.ownership.fifty_plus_one}</p>
+            <p className="text-[10px] text-[#aaaaaa] mb-1.5">
+              50+1: {club.ownership.fifty_plus_one}
+            </p>
           )}
           {club.ownership.summary && (
             <p className="text-[10px] text-[#aaaaaa] leading-relaxed">{club.ownership.summary}</p>
@@ -132,78 +321,67 @@ function MetadataPanel({ club }: { club: EUClub }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function EuropeanClubProfile({ club }: { club: EUClub }) {
-  const fin = club.financials;
-  const hasFinancials = fin.revenue !== null || fin.net_profit !== null;
+const TABS = [
+  { key: "financial",  label: "Financial Information" },
+  { key: "historical", label: "Historical" },
+  { key: "info",       label: "Club Info" },
+] as const;
+type TabKey = (typeof TABS)[number]["key"];
 
-  const LEAGUE_DISPLAY: Record<string, string> = {
-    "Bundesliga": "Austrian Bundesliga",
-    "2. Liga": "Austrian 2. Liga",
-  };
-  const leagueDisplay =
-    club.country === "Austria"
-      ? (LEAGUE_DISPLAY[club.league] ?? club.league)
-      : club.league;
+export default function EuropeanClubProfile({
+  club,
+  leagueClubs,
+  leagueLabel,
+}: {
+  club: EUClub;
+  leagueClubs: EUClub[];
+  leagueLabel: string;
+}) {
+  const [tab, setTab] = useState<TabKey>("financial");
+  const fin = club.financials;
 
   return (
-    <div className="space-y-6">
-      {/* Financial year label */}
-      {fin.most_recent_year && (
-        <p className="text-sm text-[#999999]">
-          Financial year: <span className="text-[#666666]">{fin.most_recent_year}</span>
-          <span className="ml-2 text-[10px] text-[#aaaaaa] uppercase tracking-widest">{leagueDisplay}</span>
+    <div>
+      {/* Metadata line — mirrors the English club header subtext */}
+      {(fin.most_recent_year || fin.data_notes) && (
+        <p className="text-sm text-[#999999] mb-6">
+          {fin.most_recent_year && (
+            <>
+              Financial year:{" "}
+              <span className="text-[#666666]">{fin.most_recent_year}</span>
+            </>
+          )}
+          {fin.data_notes && (
+            <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] text-[#999999]">
+              {fin.data_notes}
+            </span>
+          )}
         </p>
       )}
 
-      {/* Data notes */}
-      {fin.data_notes && (
-        <div className="border border-[#e8e8e8] bg-[#fafafa] px-4 py-3">
-          <p className="text-[11px] text-[#999999]">{fin.data_notes}</p>
-        </div>
+      {/* Tab bar — identical styling to ClubProfileTabs */}
+      <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
+        {TABS.map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`px-4 sm:px-5 py-2.5 text-xs font-medium tracking-[0.08em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
+              tab === key
+                ? "border-[#111111] text-[#111111]"
+                : "border-transparent text-[#aaaaaa] hover:text-[#555555]"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab content */}
+      {tab === "financial" && (
+        <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
       )}
-
-      {/* PARTIAL data note for Belgium */}
-      {club.data_status === "PARTIAL" && club.country === "Belgium" && (
-        <div className="border border-[#e8d8b0] bg-[#fffdf5] px-4 py-3">
-          <p className="text-[11px] text-[#aa8833]">Some data fields pending enrichment</p>
-        </div>
-      )}
-
-      {/* No financials */}
-      {!hasFinancials && !club.historical.length && (
-        <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this club.</p>
-      )}
-
-      {/* Key metrics grid */}
-      {hasFinancials && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          <StatCard label="Revenue" value={fmtEur(fin.revenue)} sub="€m" />
-          <StatCard label="Wage Bill" value={fmtEur(fin.wage_bill)} sub="€m" />
-          {fin.wage_to_revenue_pct !== null && (
-            <StatCard label="Wage Ratio" value={`${fin.wage_to_revenue_pct?.toFixed(1)}%`} />
-          )}
-          <StatCard
-            label="Net Profit / (Loss)"
-            value={fmtEur(fin.net_profit)}
-            color={profitColor(fin.net_profit)}
-          />
-          {fin.equity !== null && (
-            <StatCard label="Equity" value={fmtEur(fin.equity)} />
-          )}
-          {fin.total_liabilities !== null && (
-            <StatCard label="Total Liabilities" value={fmtEur(fin.total_liabilities)} sub="not net debt" />
-          )}
-          {club.tm_squad_value_eur_m !== null && (
-            <StatCard label="Squad Value (TM)" value={fmtEur(club.tm_squad_value_eur_m)} />
-          )}
-        </div>
-      )}
-
-      {/* Historical chart */}
-      <HistoricalChart club={club} />
-
-      {/* Ownership & stadium */}
-      <MetadataPanel club={club} />
+      {tab === "historical" && <HistoricalTab club={club} />}
+      {tab === "info" && <ClubInfoTab club={club} />}
     </div>
   );
 }

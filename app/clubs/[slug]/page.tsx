@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { clubs, getClub, type ClubFinancials, type FinancialSnapshot } from "@/lib/clubs";
-import { euClubs, getEuClub } from "@/lib/euClubs";
+import { euClubs, getEuClub, type EUClub } from "@/lib/euClubs";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
 import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
@@ -11,9 +11,21 @@ import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
 import EuropeanClubProfile from "@/components/EuropeanClubProfile";
 
+function hasEuFinancialData(club: EUClub): boolean {
+  const f = club.financials;
+  return (
+    f.revenue !== null ||
+    f.net_profit !== null ||
+    f.wage_bill !== null ||
+    f.equity !== null ||
+    f.total_liabilities !== null ||
+    club.historical.some((h) => h.revenue !== null)
+  );
+}
+
 export function generateStaticParams() {
   const englishSlugs = clubs.map((c) => ({ slug: c.slug }));
-  const euSlugs = euClubs.map((c) => ({ slug: c.slug }));
+  const euSlugs = euClubs.filter(hasEuFinancialData).map((c) => ({ slug: c.slug }));
   return [...englishSlugs, ...euSlugs];
 }
 
@@ -60,6 +72,8 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   // ─── European club fast-path ────────────────────────────────────────────────
   const euClub = getEuClub(slug);
   if (euClub) {
+    if (!hasEuFinancialData(euClub)) notFound();
+
     const LEAGUE_DISPLAY: Record<string, string> = {
       "Bundesliga": "Austrian Bundesliga",
       "2. Liga": "Austrian 2. Liga",
@@ -68,9 +82,17 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       euClub.country === "Austria"
         ? (LEAGUE_DISPLAY[euClub.league] ?? euClub.league)
         : euClub.league;
-    const allEuSlugs = euClubs.map((c) => c.slug);
-    const idx = allEuSlugs.indexOf(slug);
-    const nextEu = euClubs[(idx + 1) % euClubs.length];
+
+    // League peers with financial data (for "vs league avg" comparison)
+    const leagueClubs = euClubs.filter(
+      (c) => c.league === euClub.league && c.country === euClub.country && hasEuFinancialData(c)
+    );
+
+    // Next club: skip data-less clubs
+    const visibleEuClubs = euClubs.filter(hasEuFinancialData);
+    const idx = visibleEuClubs.findIndex((c) => c.slug === slug);
+    const nextEu = visibleEuClubs[(idx + 1) % visibleEuClubs.length];
+
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link
@@ -106,7 +128,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             </Link>
           </div>
         </div>
-        <EuropeanClubProfile club={euClub} />
+        <EuropeanClubProfile club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
       </div>
     );
   }
