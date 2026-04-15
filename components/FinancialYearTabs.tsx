@@ -23,6 +23,16 @@ interface Props {
 
 type TabKey = "year1" | "year2" | "yoy";
 
+function hasFinancialData(snap: FinancialSnapshot): boolean {
+  return (
+    snap.revenue !== null ||
+    snap.wage_bill !== null ||
+    snap.operating_profit !== null ||
+    snap.pre_tax_profit !== null ||
+    snap.net_debt !== null
+  );
+}
+
 export default function FinancialYearTabs({
   club,
   currentData,
@@ -71,20 +81,28 @@ export default function FinancialYearTabs({
 
       {/* Tab content */}
       {tab === "year2" && (
-        <MetricsGrid
-          data={currentData}
-          divisionData={currentDivisionData}
-          compareLabel={compareLabel}
-          breakdown={breakdown}
-        />
+        hasFinancialData(currentData) ? (
+          <MetricsGrid
+            data={currentData}
+            divisionData={currentDivisionData}
+            compareLabel={compareLabel}
+            breakdown={breakdown}
+          />
+        ) : (
+          <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this club.</p>
+        )
       )}
 
       {tab === "year1" && priorData && (
-        <MetricsGrid
-          data={priorData}
-          divisionData={priorDivisionData}
-          compareLabel={priorCompareLabel}
-        />
+        hasFinancialData(priorData) ? (
+          <MetricsGrid
+            data={priorData}
+            divisionData={priorDivisionData}
+            compareLabel={priorCompareLabel}
+          />
+        ) : (
+          <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this year.</p>
+        )
       )}
 
       {tab === "yoy" && <YearOnYearSection club={club} />}

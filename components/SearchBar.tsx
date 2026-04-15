@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { ClubFinancials, Division } from "@/lib/clubs";
+import { EUClub } from "@/lib/euClubs";
 
 const DIVISION_LABELS: Record<Division, string> = {
   "premier-league": "Premier League",
@@ -18,20 +19,55 @@ const DIVISION_COLORS: Record<Division, string> = {
   "league-two":     "text-[#66aa88]",
 };
 
-function score(club: ClubFinancials, query: string): number {
+type SearchResult =
+  | { kind: "english"; club: ClubFinancials }
+  | { kind: "eu"; club: EUClub };
+
+function scoreStr(name: string, slug: string, query: string): number {
   const q = query.toLowerCase();
-  const name = club.name.toLowerCase();
-  const slug = club.slug.toLowerCase();
-  if (name === q) return 100;
-  if (name.startsWith(q)) return 90;
-  if (slug.startsWith(q)) return 80;
-  if (name.includes(q)) return 70;
-  if (slug.includes(q)) return 60;
-  if (name.split(" ").some((w) => w.startsWith(q))) return 50;
+  const n = name.toLowerCase();
+  const s = slug.toLowerCase();
+  if (n === q) return 100;
+  if (n.startsWith(q)) return 90;
+  if (s.startsWith(q)) return 80;
+  if (n.includes(q)) return 70;
+  if (s.includes(q)) return 60;
+  if (n.split(" ").some((w) => w.startsWith(q))) return 50;
   return 0;
 }
 
-export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
+// Build a short label for EU clubs: "Bundesliga · Germany"
+const EU_LEAGUE_DISPLAY: Record<string, string> = {
+  "Bundesliga": "Austrian Bundesliga",
+  "2. Liga": "Austrian 2. Liga",
+};
+
+function euLabel(club: EUClub): string {
+  const leagueDisplay =
+    club.country === "Austria"
+      ? (EU_LEAGUE_DISPLAY[club.league] ?? club.league)
+      : club.league;
+  return `${leagueDisplay} · ${club.country}`;
+}
+
+const EU_COUNTRY_COLORS: Record<string, string> = {
+  "Germany":     "text-[#cc9966]",
+  "Netherlands": "text-[#cc6666]",
+  "Belgium":     "text-[#9966cc]",
+  "Austria":     "text-[#66aacc]",
+};
+
+function euColor(club: EUClub): string {
+  return EU_COUNTRY_COLORS[club.country] ?? "text-[#aaaaaa]";
+}
+
+export default function SearchBar({
+  clubs,
+  euClubs,
+}: {
+  clubs: ClubFinancials[];
+  euClubs: EUClub[];
+}) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [highlighted, setHighlighted] = useState(0);
@@ -39,19 +75,28 @@ export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const results = query.trim().length === 0
+  const results: SearchResult[] = query.trim().length === 0
     ? []
-    : clubs
-        .map((c) => ({ club: c, score: score(c, query.trim()) }))
-        .filter((x) => x.score > 0)
-        .sort((a, b) => b.score - a.score)
+    : [
+        ...clubs
+          .map((c) => ({ kind: "english" as const, club: c, s: scoreStr(c.name, c.slug, query.trim()) }))
+          .filter((x) => x.s > 0),
+        ...euClubs
+          .map((c) => ({ kind: "eu" as const, club: c, s: scoreStr(c.name, c.slug, query.trim()) }))
+          .filter((x) => x.s > 0),
+      ]
+        .sort((a, b) => b.s - a.s)
         .slice(0, 8)
-        .map((x) => x.club);
+        .map(({ kind, club }) =>
+          kind === "english"
+            ? { kind: "english" as const, club: club as ClubFinancials }
+            : { kind: "eu" as const, club: club as EUClub }
+        );
 
-  const navigate = useCallback((club: ClubFinancials) => {
+  const navigate = useCallback((result: SearchResult) => {
     setQuery("");
     setOpen(false);
-    router.push(`/clubs/${club.slug}`);
+    router.push(`/clubs/${result.club.slug}`);
   }, [router]);
 
   useEffect(() => {
@@ -123,19 +168,25 @@ export default function SearchBar({ clubs }: { clubs: ClubFinancials[] }) {
 
       {open && results.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-px bg-[#111111] border border-[#2a2a2a] shadow-2xl overflow-hidden z-50">
-          {results.map((club, i) => (
+          {results.map((result, i) => (
             <button
-              key={club.slug}
-              onMouseDown={(e) => { e.preventDefault(); navigate(club); }}
+              key={result.club.slug}
+              onMouseDown={(e) => { e.preventDefault(); navigate(result); }}
               onMouseEnter={() => setHighlighted(i)}
               className={`w-full text-left px-4 py-3 flex items-center justify-between gap-3 transition-colors border-t border-[#1a1a1a] first:border-t-0 ${
                 i === highlighted ? "bg-[#1a1a1a]" : "hover:bg-[#161616]"
               }`}
             >
-              <span className="text-sm text-white">{club.name}</span>
-              <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${DIVISION_COLORS[club.division]}`}>
-                {DIVISION_LABELS[club.division]}
-              </span>
+              <span className="text-sm text-white">{result.club.name}</span>
+              {result.kind === "english" ? (
+                <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${DIVISION_COLORS[result.club.division]}`}>
+                  {DIVISION_LABELS[result.club.division]}
+                </span>
+              ) : (
+                <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${euColor(result.club)}`}>
+                  {euLabel(result.club)}
+                </span>
+              )}
             </button>
           ))}
         </div>

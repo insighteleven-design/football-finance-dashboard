@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { clubs, getClub, type ClubFinancials, type FinancialSnapshot } from "@/lib/clubs";
+import { euClubs, getEuClub } from "@/lib/euClubs";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
 import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
@@ -8,9 +9,12 @@ import FinancialYearTabs from "@/components/FinancialYearTabs";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
 import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
+import EuropeanClubProfile from "@/components/EuropeanClubProfile";
 
 export function generateStaticParams() {
-  return clubs.map((c) => ({ slug: c.slug }));
+  const englishSlugs = clubs.map((c) => ({ slug: c.slug }));
+  const euSlugs = euClubs.map((c) => ({ slug: c.slug }));
+  return [...englishSlugs, ...euSlugs];
 }
 
 const DIVISION_LABELS: Record<string, string> = {
@@ -52,6 +56,61 @@ function HealthBadges({ club }: { club: ClubFinancials }) {
 
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+
+  // ─── European club fast-path ────────────────────────────────────────────────
+  const euClub = getEuClub(slug);
+  if (euClub) {
+    const LEAGUE_DISPLAY: Record<string, string> = {
+      "Bundesliga": "Austrian Bundesliga",
+      "2. Liga": "Austrian 2. Liga",
+    };
+    const leagueLabel =
+      euClub.country === "Austria"
+        ? (LEAGUE_DISPLAY[euClub.league] ?? euClub.league)
+        : euClub.league;
+    const allEuSlugs = euClubs.map((c) => c.slug);
+    const idx = allEuSlugs.indexOf(slug);
+    const nextEu = euClubs[(idx + 1) % euClubs.length];
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors"
+        >
+          <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+          All clubs
+        </Link>
+        <div className="mb-8">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-3 mb-1 flex-wrap">
+                <h1 className="text-2xl sm:text-3xl font-serif font-light text-[#111111] tracking-tight">
+                  {euClub.name}
+                </h1>
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
+                  {leagueLabel}
+                </span>
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
+                  {euClub.country}
+                </span>
+              </div>
+              {euClub.city && (
+                <p className="text-sm text-[#999999]">{euClub.city}</p>
+              )}
+            </div>
+            <Link
+              href={`/clubs/${nextEu.slug}`}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors shrink-0"
+            >
+              Next club →
+            </Link>
+          </div>
+        </div>
+        <EuropeanClubProfile club={euClub} />
+      </div>
+    );
+  }
+
   const club = getClub(slug);
   if (!club) notFound();
 

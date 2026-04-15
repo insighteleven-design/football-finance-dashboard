@@ -1,4 +1,5 @@
 import { clubs } from "@/lib/clubs";
+import { euClubs } from "@/lib/euClubs";
 import SearchBar from "@/components/SearchBar";
 import CountryClubs from "@/components/CountryClubs";
 
@@ -13,11 +14,11 @@ export default function Home() {
         <p className="text-[#888888] text-base mb-10">
           The comprehensive database of football club finances
         </p>
-        <SearchBar clubs={clubs} />
+        <SearchBar clubs={clubs} euClubs={euClubs} />
       </div>
 
       {/* Country selection */}
-      <CountryClubs clubs={clubs} />
+      <CountryClubs clubs={clubs} euClubs={euClubs} />
     </div>
   );
 }
