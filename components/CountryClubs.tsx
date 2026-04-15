@@ -31,7 +31,7 @@ const EN_DIVISIONS: { key: Division; label: string }[] = [
   { key: "league-two",     label: "League Two" },
 ];
 
-type CountryKey = "England" | "Germany" | "Netherlands" | "Belgium" | "Austria";
+type CountryKey = "England" | "Germany" | "Austria";
 
 // ─── England club grid ────────────────────────────────────────────────────────
 
@@ -75,7 +75,9 @@ function EuropeanClubs({
   config: typeof EU_COUNTRY_CONFIG[number];
   clubs: EUClub[];
 }) {
-  const countryClubs = clubs.filter((c) => c.country === config.country && hasEuFinancialData(c));
+  const countryClubs = clubs.filter(
+    (c) => c.country === config.country && hasEuFinancialData(c)
+  );
   const cols = Math.min(config.leagues.length, 4);
 
   return (
@@ -124,6 +126,7 @@ export default function CountryClubs({
   euClubs: EUClub[];
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const tabs: { key: CountryKey; flag: string }[] = [
     { key: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
@@ -133,19 +136,30 @@ export default function CountryClubs({
     })),
   ];
 
-  const prev = () => setActiveIndex((i) => (i - 1 + tabs.length) % tabs.length);
-  const next = () => setActiveIndex((i) => (i + 1) % tabs.length);
-
   const active = tabs[activeIndex];
   const activeEuConfig = EU_COUNTRY_CONFIG.find((c) => c.country === active.key);
 
+  const goTo = (i: number) => {
+    if (i === activeIndex) {
+      setOpen((o) => !o);
+    } else {
+      setActiveIndex(i);
+      setOpen(true);
+    }
+  };
+
+  const prev = () =>
+    setActiveIndex((i) => (i - 1 + tabs.length) % tabs.length);
+  const next = () =>
+    setActiveIndex((i) => (i + 1) % tabs.length);
+
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Carousel selector */}
-      <div className="flex items-stretch border border-[#2a2a2a] bg-[#0a0a0a] mb-2">
+      {/* Carousel — no border, click centre to open/close */}
+      <div className="flex items-center gap-6">
         <button
           onClick={prev}
-          className="px-5 flex items-center text-[#444444] hover:text-white border-r border-[#2a2a2a] transition-colors"
+          className="shrink-0 text-[#3a3a3a] hover:text-white transition-colors p-2"
           aria-label="Previous country"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -153,26 +167,36 @@ export default function CountryClubs({
           </svg>
         </button>
 
-        <div className="flex-1 flex flex-col items-center gap-2 py-7">
-          <span className="text-4xl leading-none">{active.flag}</span>
-          <span className="text-sm font-light tracking-[0.1em] text-white">{active.key}</span>
-          <div className="flex gap-2 mt-1">
+        <button
+          onClick={() => goTo(activeIndex)}
+          className="flex-1 flex flex-col items-center gap-2.5 py-6 group"
+        >
+          <span className="text-5xl leading-none">{active.flag}</span>
+          <span className="flex items-center gap-1.5 text-sm font-light tracking-[0.1em] text-[#888888] group-hover:text-white transition-colors">
+            {active.key}
+            <svg
+              className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+          {/* Position dots */}
+          <div className="flex gap-2">
             {tabs.map((_, i) => (
-              <button
+              <div
                 key={i}
-                onClick={() => setActiveIndex(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                  i === activeIndex ? "bg-[#888888]" : "bg-[#2a2a2a] hover:bg-[#444444]"
+                className={`w-1 h-1 rounded-full transition-colors ${
+                  i === activeIndex ? "bg-[#666666]" : "bg-[#2a2a2a]"
                 }`}
-                aria-label={`Go to ${tabs[i].key}`}
               />
             ))}
           </div>
-        </div>
+        </button>
 
         <button
           onClick={next}
-          className="px-5 flex items-center text-[#444444] hover:text-white border-l border-[#2a2a2a] transition-colors"
+          className="shrink-0 text-[#3a3a3a] hover:text-white transition-colors p-2"
           aria-label="Next country"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -181,13 +205,18 @@ export default function CountryClubs({
         </button>
       </div>
 
-      {/* Club panel */}
-      <div className="border border-[#2a2a2a] bg-[#0a0a0a] p-8">
-        {active.key === "England" ? (
-          <EnglishClubs clubs={clubs} />
-        ) : activeEuConfig ? (
-          <EuropeanClubs config={activeEuConfig} clubs={euClubs} />
-        ) : null}
+      {/* Club list — expands on click */}
+      <div
+        className="overflow-hidden transition-[max-height] duration-500 ease-in-out"
+        style={{ maxHeight: open ? "2400px" : "0px" }}
+      >
+        <div className="pt-8 pb-2">
+          {active.key === "England" ? (
+            <EnglishClubs clubs={clubs} />
+          ) : activeEuConfig ? (
+            <EuropeanClubs config={activeEuConfig} clubs={euClubs} />
+          ) : null}
+        </div>
       </div>
     </div>
   );

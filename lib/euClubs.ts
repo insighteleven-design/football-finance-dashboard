@@ -2,7 +2,7 @@
 // Monetary values in EUR millions. Historical: Germany FY18/19–FY23/24 | Netherlands/Belgium 2019/20–2023/24 | Austria 2020/21–2024/25
 // total_liabilities stored for DE/AT — NOT net_debt. net_debt is always null for EU clubs.
 
-export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria";
+export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria"; // NL/BE kept for type compat
 
 export interface EUHistoricalYear {
   season: string;
@@ -3651,8 +3651,6 @@ const atClubs: EUClub[] = [
 
 export const euClubs: EUClub[] = [
   ...deClubs,
-  ...nlClubs,
-  ...beClubs,
   ...atClubs,
 ];
 
@@ -3672,21 +3670,6 @@ export const EU_COUNTRY_CONFIG: {
       { key: "1. Bundesliga", label: "1. Bundesliga" },
       { key: "2. Bundesliga", label: "2. Bundesliga" },
       { key: "3. Liga", label: "3. Liga" },
-    ],
-  },
-  {
-    country: "Netherlands",
-    flag: "🇳🇱",
-    leagues: [
-      { key: "Eredivisie", label: "Eredivisie" },
-      { key: "Keuken Kampioen Divisie", label: "Keuken Kampioen Divisie" },
-    ],
-  },
-  {
-    country: "Belgium",
-    flag: "🇧🇪",
-    leagues: [
-      { key: "First Division A", label: "First Division A (Pro League)" },
     ],
   },
   {
