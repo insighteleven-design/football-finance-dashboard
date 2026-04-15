@@ -2,16 +2,30 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ClubFinancials, Division, fmt } from "@/lib/clubs";
 
-const DIVISION_LABELS: Record<Division, string> = {
-  "premier-league": "Premier League",
-  "championship":   "Championship",
-  "league-one":     "League One",
-  "league-two":     "League Two",
-};
+export interface ComparableClub {
+  slug: string;
+  name: string;
+  divisionLabel: string;
+  currency: "GBP" | "EUR";
+  revenue: number | null;
+  wage_bill: number | null;
+  wage_ratio: number | null;
+  operating_profit: number | null;
+  pre_tax_profit: number | null;
+  net_debt: number | null;
+}
+
+function fmtVal(value: number | null, isRatio = false, currency: "GBP" | "EUR" = "GBP"): string {
+  if (value === null || value === undefined) return "—";
+  if (isRatio) return `${value.toFixed(1)}%`;
+  const abs = Math.abs(value);
+  const sym = currency === "EUR" ? "€" : "£";
+  return `${value < 0 ? "-" : ""}${sym}${abs.toFixed(1)}m`;
+}
 
 const MAX_CLUBS = 4;
+
 
 // Fixed per-club colours — consistent across all charts and tags
 const CLUB_COLORS = ["#4A90D9", "#E05252", "#E8A838", "#9B59B6"];
@@ -25,7 +39,7 @@ const CLUB_TAG_STYLES = [
 ];
 
 const COMPARE_METRICS: {
-  key: keyof ClubFinancials;
+  key: keyof ComparableClub;
   label: string;
   isRatio?: boolean;
   diverging?: boolean;
@@ -38,7 +52,7 @@ const COMPARE_METRICS: {
   { key: "net_debt",         label: "Net Cash / (Debt)",         diverging: true },
 ];
 
-function score(club: ClubFinancials, query: string): number {
+function score(club: ComparableClub, query: string): number {
   const q = query.toLowerCase();
   const name = club.name.toLowerCase();
   const slug = club.slug.toLowerCase();
@@ -57,7 +71,7 @@ function ClubSearch({
   onAdd,
   disabled,
 }: {
-  allClubs: ClubFinancials[];
+  allClubs: ComparableClub[];
   selectedSlugs: string[];
   onAdd: (slug: string) => void;
   disabled: boolean;
@@ -93,7 +107,7 @@ function ClubSearch({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  function handleSelect(club: ClubFinancials) {
+  function handleSelect(club: ComparableClub) {
     onAdd(club.slug);
     setQuery("");
     setOpen(false);
@@ -156,7 +170,7 @@ function ClubSearch({
             >
               <span className="text-[#111111]">{club.name}</span>
               <span className="text-[10px] text-[#aaaaaa] tracking-[0.08em] uppercase shrink-0">
-                {DIVISION_LABELS[club.division]}
+                {club.divisionLabel}
               </span>
             </button>
           ))}
@@ -174,7 +188,7 @@ function StandardBarRow({
   clubColor,
   isRatio,
 }: {
-  club: ClubFinancials;
+  club: ComparableClub;
   value: number | null;
   pct: number;
   clubColor: string;
@@ -187,7 +201,7 @@ function StandardBarRow({
         <div className="h-full" style={{ width: `${pct}%`, backgroundColor: clubColor }} />
       </div>
       <span className="text-xs sm:text-sm font-light tabular-nums w-14 sm:w-16 text-right shrink-0" style={{ color: clubColor }}>
-        {fmt(value, isRatio)}
+        {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
   );
@@ -201,7 +215,7 @@ function DivergingBarRow({
   clubColor,
   isRatio,
 }: {
-  club: ClubFinancials;
+  club: ComparableClub;
   value: number | null;
   scale: number;
   clubColor: string;
@@ -232,7 +246,7 @@ function DivergingBarRow({
         className="text-xs sm:text-sm font-light tabular-nums w-14 sm:w-16 text-right shrink-0"
         style={{ color: value !== null ? clubColor : "#aaaaaa" }}
       >
-        {fmt(value, isRatio)}
+        {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
   );
@@ -243,7 +257,7 @@ function MetricSection({
   clubs,
 }: {
   metric: (typeof COMPARE_METRICS)[0];
-  clubs: ClubFinancials[];
+  clubs: ComparableClub[];
 }) {
   const vals = clubs.map((c) => c[metric.key] as number | null);
   const absMax = Math.max(
@@ -289,7 +303,7 @@ function MetricSection({
   );
 }
 
-export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] }) {
+export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -325,7 +339,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ClubFinancials[] })
 
   const selectedClubs = selectedSlugs
     .map((s) => allClubs.find((c) => c.slug === s))
-    .filter((c): c is ClubFinancials => !!c);
+    .filter((c): c is ComparableClub => !!c);
 
   const [copied, setCopied] = useState(false);
   function copyLink() {
