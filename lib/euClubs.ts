@@ -2,7 +2,11 @@
 // Monetary values in EUR millions. Historical: Germany FY18/19–FY23/24 | Netherlands/Belgium 2019/20–2023/24 | Austria 2020/21–2024/25
 // total_liabilities stored for DE/AT — NOT net_debt. net_debt is always null for EU clubs.
 
-export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria"; // NL/BE kept for type compat
+import { frClubs } from "./frClubs";
+import { dkClubs } from "./dkClubs";
+import { noClubs } from "./noClubs";
+
+export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria" | "France" | "Denmark" | "Norway";
 
 export interface EUHistoricalYear {
   season: string;
@@ -19,7 +23,7 @@ export interface EUClub {
   country: EUCountry;
   league: string;
   city: string | null;
-  currency: "EUR";
+  currency: "EUR" | "USD";
   stadium: { name: string | null; capacity: number | null; ownership: string | null } | null;
   ownership: { summary: string | null; category: string | null; fifty_plus_one: string | null } | null;
   financials: {
@@ -30,6 +34,11 @@ export interface EUClub {
     net_profit: number | null;
     total_liabilities: number | null;
     equity: number | null;
+    /** French clubs only */
+    operating_profit?: number | null;
+    profit_from_player_sales?: number | null;
+    pre_tax_profit?: number | null;
+    net_debt?: number | null;
     data_notes: string | null;
   };
   historical: EUHistoricalYear[];
@@ -3652,6 +3661,9 @@ const atClubs: EUClub[] = [
 export const euClubs: EUClub[] = [
   ...deClubs,
   ...atClubs,
+  ...frClubs,
+  ...dkClubs,
+  ...noClubs,
 ];
 
 export function getEuClub(slug: string): EUClub | undefined {
@@ -3678,6 +3690,29 @@ export const EU_COUNTRY_CONFIG: {
     leagues: [
       { key: "Bundesliga", label: "Austrian Bundesliga" },
       { key: "2. Liga", label: "Austrian 2. Liga" },
+    ],
+  },
+  {
+    country: "France",
+    flag: "🇫🇷",
+    leagues: [
+      { key: "Ligue 1", label: "Ligue 1" },
+      { key: "Ligue 2", label: "Ligue 2" },
+    ],
+  },
+  {
+    country: "Denmark",
+    flag: "🇩🇰",
+    leagues: [
+      { key: "Superliga", label: "Danish Superliga" },
+      { key: "1. Division", label: "1. Division" },
+    ],
+  },
+  {
+    country: "Norway",
+    flag: "🇳🇴",
+    leagues: [
+      { key: "norwegian-eliteserien", label: "Eliteserien" },
     ],
   },
 ];

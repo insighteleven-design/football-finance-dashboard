@@ -13,6 +13,14 @@ function fmtEur(v: number | null, isRatio = false): string {
   return `${v < 0 ? "-" : ""}€${abs.toFixed(1)}m`;
 }
 
+function fmtCurrency(v: number | null, currency: "EUR" | "USD", isRatio = false): string {
+  if (v === null) return "—";
+  if (isRatio) return `${v.toFixed(1)}%`;
+  const abs = Math.abs(v);
+  const sym = currency === "USD" ? "$" : "€";
+  return `${v < 0 ? "-" : ""}${sym}${abs.toFixed(1)}m`;
+}
+
 // ─── League stats ─────────────────────────────────────────────────────────────
 
 type FinKey = keyof EUClub["financials"];
@@ -61,13 +69,15 @@ function DivergingBar({ value, scale, color }: { value: number; scale: number; c
 
 // ─── Metrics config ───────────────────────────────────────────────────────────
 
-const EU_METRICS: {
+type MetricConfig = {
   key: FinKey;
   label: string;
   isRatio?: boolean;
   diverging?: boolean;
   higherBetter: boolean | null;
-}[] = [
+};
+
+const EU_METRICS: MetricConfig[] = [
   { key: "revenue",             label: "Revenue",             higherBetter: true },
   { key: "wage_bill",           label: "Wage Bill",           higherBetter: false },
   { key: "wage_to_revenue_pct", label: "Wage Ratio",          isRatio: true, higherBetter: false },
@@ -76,19 +86,41 @@ const EU_METRICS: {
   { key: "total_liabilities",   label: "Total Liabilities",   higherBetter: false },
 ];
 
+const FR_METRICS: MetricConfig[] = [
+  { key: "revenue",                  label: "Revenue",                   higherBetter: true },
+  { key: "wage_bill",                label: "Wage Bill",                 higherBetter: false },
+  { key: "wage_to_revenue_pct",      label: "Wage Ratio",                isRatio: true, higherBetter: false },
+  { key: "operating_profit",         label: "Operating Profit / (Loss)", diverging: true, higherBetter: true },
+  { key: "profit_from_player_sales", label: "Player Sales Profit",       diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",           label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",                 label: "Net Debt / (Cash)",         diverging: true, higherBetter: false },
+];
+
+const DK_METRICS: MetricConfig[] = [
+  { key: "revenue",             label: "Revenue (USD)",                  higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (USD)",                higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "Operating Profit / (Loss)",      diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+];
+
 // ─── Financial tab ────────────────────────────────────────────────────────────
 
 function FinancialTab({
   club,
   leagueClubs,
   leagueLabel,
+  metrics,
 }: {
   club: EUClub;
   leagueClubs: EUClub[];
   leagueLabel: string;
+  metrics: MetricConfig[];
 }) {
   const fin = club.financials;
-  const hasAny = EU_METRICS.some((m) => fin[m.key] !== null);
+  const curr = (club.currency === "USD" ? "USD" : "EUR") as "EUR" | "USD";
+  const hasAny = metrics.some((m) => fin[m.key] !== null && fin[m.key] !== undefined);
   if (!hasAny) {
     return (
       <p className="text-sm text-[#aaaaaa] italic">No financial data available for this club.</p>
@@ -96,94 +128,111 @@ function FinancialTab({
   }
 
   return (
-    <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
-      {/* Column headers */}
-      <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
-          Financial Figures
-        </p>
-      </div>
-      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
-          vs {leagueLabel} Average
-        </p>
-      </div>
+    <div>
+      {/* DKK→USD disclaimer for Danish clubs */}
+      {club.country === "Denmark" && (
+        <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+          Figures converted from Danish Krone (DKK) to US Dollars (USD) using published annual FX rates.
+          Original DKK values are available in the data notes below.
+        </div>
+      )}
+      {/* NOK→USD disclaimer for Norwegian clubs */}
+      {club.country === "Norway" && (
+        <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+          Figures converted from Norwegian Krone (NOK) to US Dollars (USD) using published annual FX rates.
+          Original NOK values are available in the data notes below.
+          Norwegian clubs are non-profit idrettslag (sports associations) — no corporate tax applies.
+        </div>
+      )}
+      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
+        {/* Column headers */}
+        <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+            Financial Figures
+          </p>
+        </div>
+        <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+            vs {leagueLabel} Average
+          </p>
+        </div>
 
-      {EU_METRICS.map((m) => {
-        const val = fin[m.key] as number | null;
-        const stats = leagueStats(leagueClubs, m.key);
-        const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
+        {metrics.map((m) => {
+          const val = fin[m.key] as number | null;
+          const stats = leagueStats(leagueClubs, m.key);
+          const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
 
-        const scale = stats
-          ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01)
-          : Math.abs(val ?? 0) || 1;
-        const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-        const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
-        const barColor =
-          val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
+          const scale = stats
+            ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01)
+            : Math.abs(val ?? 0) || 1;
+          const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
+          const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
+          const barColor =
+            val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
 
-        return (
-          <Fragment key={m.key}>
-            {/* Left: value */}
-            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
-              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
-                {m.label}
-              </p>
-              {val !== null ? (
-                <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
-                  {fmtEur(val, m.isRatio)}
+          return (
+            <Fragment key={m.key}>
+              {/* Left: value */}
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
+                  {m.label}
                 </p>
-              ) : (
-                <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
-              )}
-              {stats && rank !== null && rank > 0 && (
-                <p className="text-[10px] text-[#aaaaaa] mt-1.5">
-                  #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
-                </p>
-              )}
-            </div>
+                {val !== null ? (
+                  <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
+                    {fmtCurrency(val, curr, m.isRatio)}
+                  </p>
+                ) : (
+                  <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+                )}
+                {stats && rank !== null && rank > 0 && (
+                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">
+                    #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
+                  </p>
+                )}
+              </div>
 
-            {/* Right: bar comparison */}
-            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
-                {m.label}
-              </p>
-              {/* Club bar */}
-              <div className="mb-1">
-                <div className="flex items-center gap-2 mb-1">
-                  {m.diverging ? (
-                    <DivergingBar
-                      value={val ?? 0}
-                      scale={scale / 2}
-                      color={val !== null ? barColor : "#cccccc"}
-                    />
-                  ) : (
-                    <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
-                  )}
-                  <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
-                    {fmtEur(val, m.isRatio)}
-                  </span>
+              {/* Right: bar comparison */}
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+                  {m.label}
+                </p>
+                {/* Club bar */}
+                <div className="mb-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    {m.diverging ? (
+                      <DivergingBar
+                        value={val ?? 0}
+                        scale={scale / 2}
+                        color={val !== null ? barColor : "#cccccc"}
+                      />
+                    ) : (
+                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
+                    )}
+                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                      {fmtCurrency(val, curr, m.isRatio)}
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
                 </div>
-                <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
-              </div>
-              {/* League avg bar */}
-              <div className="mt-2">
-                <div className="flex items-center gap-2 mb-1">
-                  {m.diverging && stats ? (
-                    <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
-                  ) : (
-                    <StandardBar pct={avgPct} color="#cccccc" />
-                  )}
-                  <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
-                    {stats ? fmtEur(stats.avg, m.isRatio) : "—"}
-                  </span>
+                {/* League avg bar */}
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    {m.diverging && stats ? (
+                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
+                    ) : (
+                      <StandardBar pct={avgPct} color="#cccccc" />
+                    )}
+                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                      {stats ? fmtCurrency(stats.avg, curr, m.isRatio) : "—"}
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
                 </div>
-                <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
               </div>
-            </div>
-          </Fragment>
-        );
-      })}
+            </Fragment>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -380,7 +429,12 @@ export default function EuropeanClubProfile({
 
       {/* Tab content */}
       {tab === "financial" && (
-        <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
+        <FinancialTab
+          club={club}
+          leagueClubs={leagueClubs}
+          leagueLabel={leagueLabel}
+          metrics={club.country === "Norway" || club.country === "Denmark" ? DK_METRICS : club.country === "France" ? FR_METRICS : EU_METRICS}
+        />
       )}
       {tab === "historical" && <HistoricalTab club={club} />}
       {tab === "market" && (

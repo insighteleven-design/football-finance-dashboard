@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
 import { euClubs, type EUClub } from "@/lib/euClubs";
-import ClubVsClub from "@/components/ClubVsClub";
+import RankingsTable from "@/components/RankingsTable";
 import { type ComparableClub } from "@/lib/comparable";
 
 const DIVISION_LABELS: Record<string, string> = {
@@ -13,24 +13,16 @@ const DIVISION_LABELS: Record<string, string> = {
 
 const COUNTRY_CODES: Record<string, string> = {
   "Germany":     "GER",
-  "Netherlands": "NED",
-  "Belgium":     "BEL",
   "Austria":     "AUT",
   "France":      "FRA",
+  "Netherlands": "NED",
+  "Belgium":     "BEL",
   "Denmark":     "DEN",
-  "Norway":      "NOR",
-};
-
-const LEAGUE_DISPLAY: Record<string, string> = {
-  "Bundesliga":              "Austrian Bundesliga",
-  "2. Liga":                 "Austrian 2. Liga",
-  "norwegian-eliteserien":   "Eliteserien",
 };
 
 function euDivisionLabel(c: EUClub): string {
-  const league = LEAGUE_DISPLAY[c.league] ?? c.league;
-  if (c.country === "Germany") return league;
-  return `${league} · ${COUNTRY_CODES[c.country] ?? c.country}`;
+  if (c.country === "Germany") return c.league;
+  return `${c.league} · ${COUNTRY_CODES[c.country] ?? c.country}`;
 }
 
 const englishComparable: ComparableClub[] = clubs.map((c) => ({
@@ -70,14 +62,19 @@ const euComparable: ComparableClub[] = euClubs
 
 const allComparable = [...englishComparable, ...euComparable];
 
-export default function ComparePage() {
+export default function RankingsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl sm:text-3xl font-serif font-light tracking-tight mb-8" style={{ color: "#111111" }}>
-        Club Comparisons
-      </h1>
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-serif font-light tracking-tight" style={{ color: "#111111" }}>
+          Rankings
+        </h1>
+        <p className="mt-1 text-sm" style={{ color: "#999999" }}>
+          {allComparable.length} clubs · England, Germany, Austria, France, Denmark
+        </p>
+      </div>
       <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
-        <ClubVsClub allClubs={allComparable} />
+        <RankingsTable allClubs={allComparable} />
       </Suspense>
     </div>
   );

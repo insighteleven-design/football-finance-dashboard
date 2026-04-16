@@ -36,17 +36,15 @@ function scoreStr(name: string, slug: string, query: string): number {
   return 0;
 }
 
-// Build a short label for EU clubs: "Bundesliga · Germany"
+// Build a short label for EU clubs: "Eliteserien · Norway"
 const EU_LEAGUE_DISPLAY: Record<string, string> = {
   "Bundesliga": "Austrian Bundesliga",
   "2. Liga": "Austrian 2. Liga",
+  "norwegian-eliteserien": "Eliteserien",
 };
 
 function euLabel(club: EUClub): string {
-  const leagueDisplay =
-    club.country === "Austria"
-      ? (EU_LEAGUE_DISPLAY[club.league] ?? club.league)
-      : club.league;
+  const leagueDisplay = EU_LEAGUE_DISPLAY[club.league] ?? club.league;
   return `${leagueDisplay} · ${club.country}`;
 }
 
@@ -55,6 +53,9 @@ const EU_COUNTRY_COLORS: Record<string, string> = {
   "Netherlands": "text-[#cc6666]",
   "Belgium":     "text-[#9966cc]",
   "Austria":     "text-[#66aacc]",
+  "France":      "text-[#cc6688]",
+  "Denmark":     "text-[#cc6644]",
+  "Norway":      "text-[#6699aa]",
 };
 
 function euColor(club: EUClub): string {

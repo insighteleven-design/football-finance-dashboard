@@ -77,11 +77,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     const LEAGUE_DISPLAY: Record<string, string> = {
       "Bundesliga": "Austrian Bundesliga",
       "2. Liga": "Austrian 2. Liga",
+      "norwegian-eliteserien": "Eliteserien",
     };
-    const leagueLabel =
-      euClub.country === "Austria"
-        ? (LEAGUE_DISPLAY[euClub.league] ?? euClub.league)
-        : euClub.league;
+    const leagueLabel = LEAGUE_DISPLAY[euClub.league] ?? euClub.league;
 
     // League peers with financial data (for "vs league avg" comparison)
     const leagueClubs = euClubs.filter(

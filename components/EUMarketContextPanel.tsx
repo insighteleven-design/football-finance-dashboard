@@ -17,6 +17,8 @@ function leagueColor(league: string): string {
   if (league.includes("2. Bundesliga") || league === "2. Liga") return "#f59e0b";
   if (league.includes("3. Liga")) return "#10b981";
   if (league === "Bundesliga") return "#3b82f6"; // Austrian Bundesliga
+  if (league === "Ligue 1") return "#cc6688";
+  if (league === "Ligue 2") return "#e07a9a";
   return "#8b5cf6";
 }
 
@@ -356,7 +358,7 @@ export default function EUMarketContextPanel({
       </div>
 
       <p className="text-[10px] text-[#cccccc] leading-relaxed">
-        Source: Metro Populations (EU) — DE_Football_DB_v0.8 · metro area definitions vary by city
+        Source: Metro Populations (EU) — DE_Football_DB_v0.8 · FR urban area populations from user-supplied data · definitions vary by city
       </p>
     </div>
   );
