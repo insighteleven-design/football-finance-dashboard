@@ -17,10 +17,10 @@ export default function Home() {
             Intelligence
           </h1>
           <p
-            className="font-serif font-light mt-2"
-            style={{ color: "#2a2a2a", fontSize: "clamp(18px, 2.5vw, 36px)", letterSpacing: "-0.01em" }}
+            className="mt-3 sm:mt-4"
+            style={{ color: "#777777", fontSize: "clamp(12px, 1.4vw, 16px)", letterSpacing: "0.06em" }}
           >
-            by Insight Eleven
+            The comprehensive football finance database, by Insight Eleven
           </p>
         </div>
       </header>

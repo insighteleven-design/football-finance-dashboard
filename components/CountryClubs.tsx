@@ -35,11 +35,11 @@ function BackButton({ label, onClick }: { label: string; onClick: () => void }) 
     <button
       onClick={onClick}
       className="flex items-center gap-2.5 mb-10 sm:mb-14 group transition-colors"
-      style={{ color: "#3a3a3a" }}
+      style={{ color: "#777777" }}
     >
       <span className="group-hover:-translate-x-0.5 transition-transform inline-block" style={{ fontSize: "1rem" }}>←</span>
       <span
-        className="group-hover:text-[#666666] transition-colors"
+        className="group-hover:text-[#cccccc] transition-colors"
         style={{ fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 500 }}
       >
         {label}
@@ -97,7 +97,7 @@ function CountriesView({
               </p>
               <p
                 className="mt-2 font-medium uppercase"
-                style={{ color: "#333333", fontSize: "10px", letterSpacing: "0.18em" }}
+                style={{ color: "#888888", fontSize: "10px", letterSpacing: "0.18em" }}
               >
                 {country.leagueCount} {country.leagueCount === 1 ? "league" : "leagues"} · {country.clubCount} clubs
               </p>
@@ -105,7 +105,7 @@ function CountriesView({
           </div>
           <span
             className="shrink-0 group-hover:text-[#666666] transition-colors"
-            style={{ color: "#2a2a2a", fontSize: "1.25rem" }}
+            style={{ color: "#777777", fontSize: "1.25rem" }}
           >
             →
           </span>
@@ -161,7 +161,7 @@ function LeaguesView({
         <span style={{ fontSize: "1.5rem" }}>{flag}</span>
         <p
           className="font-serif font-light"
-          style={{ color: "#555555", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
+          style={{ color: "#999999", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
         >
           {country}
         </p>
@@ -185,14 +185,14 @@ function LeaguesView({
             </p>
             <p
               className="mt-2 font-medium uppercase"
-              style={{ color: "#333333", fontSize: "10px", letterSpacing: "0.18em" }}
+              style={{ color: "#888888", fontSize: "10px", letterSpacing: "0.18em" }}
             >
               {league.clubCount} clubs
             </p>
           </div>
           <span
             className="shrink-0 group-hover:text-[#666666] transition-colors"
-            style={{ color: "#2a2a2a", fontSize: "1.25rem" }}
+            style={{ color: "#777777", fontSize: "1.25rem" }}
           >
             →
           </span>
@@ -243,7 +243,7 @@ function ClubsView({
         <span style={{ fontSize: "1.5rem" }}>{flag}</span>
         <p
           className="font-serif font-light"
-          style={{ color: "#555555", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
+          style={{ color: "#999999", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
         >
           {leagueLabel}
         </p>
@@ -268,14 +268,14 @@ function ClubsView({
             {club.revenue != null && (
               <span
                 className="tabular-nums font-light hidden sm:block"
-                style={{ color: "#333333", fontSize: "13px", letterSpacing: "0.04em" }}
+                style={{ color: "#888888", fontSize: "13px", letterSpacing: "0.04em" }}
               >
                 £{club.revenue.toFixed(1)}m
               </span>
             )}
             <span
               className="group-hover:text-[#666666] transition-colors"
-              style={{ color: "#2a2a2a", fontSize: "1.1rem" }}
+              style={{ color: "#777777", fontSize: "1.1rem" }}
             >
               →
             </span>
