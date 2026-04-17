@@ -349,7 +349,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {qeSegs.length > 0 && (
         <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
           <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
-            Shareholder funding <span className="normal-case font-normal">(treated as quasi-equity, excluded from net debt)</span>
+            Excluded from reported net debt
           </p>
           <div className="space-y-2">
             {qeSegs.map((seg) => (
@@ -379,7 +379,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
             )}
           </div>
           <p className="text-[10px] text-[#bbbbbb] mt-2 leading-relaxed italic">
-            Treated as quasi-equity by the club: interest-free with no fixed repayment date, subordinated to other creditors.
+            Items excluded from the club&apos;s reported net debt figure — typically quasi-equity shareholder funding or non-cash accounting liabilities.
           </p>
         </div>
       )}

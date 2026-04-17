@@ -1238,11 +1238,12 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "debt_breakdown": {
       "segments": [
+        { "label": "Three-shareholder funding (Total Soccer Growth Holdings, QPR Newco LLC, Sea Dream Ltd)", "amount": 106.74, "note": "Not separately itemised in public accounts; implied from net debt position. Each shareholder has committed up to \u00a340.6m support to May 2027.", "type": "quasi_equity" },
         { "label": "EFL FFP settlement liability (discounted at 10%)", "amount": 6.21, "note": "\u00a31.70m current, \u00a34.51m non-current; full undiscounted value \u00a36.80m.", "type": "other" },
         { "label": "Transfer payables", "amount": 3.86, "note": null, "type": "transfer_payables" }
       ],
       "cash": 0.07,
-      "notes": "Reported net debt \u00a3112.9m. Headline figure principally reflects shareholder funding from Total Soccer Growth Holdings, QPR Newco LLC, and Sea Dream Limited (\u00a340.6m each committed) not separately itemised in public accounts."
+      "notes": "Net debt \u00a36.1m = FFP settlement \u2212 cash. Shareholder funding of \u00a3106.7m is treated as quasi-equity (interest-free, no fixed repayment); reported net debt including this was \u00a3112.9m."
     },
     "land_buildings": null
   },
@@ -1308,13 +1309,13 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "debt_breakdown": {
       "segments": [
-        { "label": "D Chansiri owner loan (0%, no fixed date)", "amount": 61.20, "note": "No set repayment terms; carried at transaction price.", "type": "owner_loan" },
         { "label": "Bank term loan (12.5%, guaranteed by Chansiri/Sheffield 3 Ltd)", "amount": 6.63, "note": null, "type": "bank" },
-        { "label": "Rent equalisation liability (Sheffield 3 Ltd, unwinds 2035\u20132049)", "amount": 6.44, "note": "Non-cash accounting liability; unwinds over 14 years.", "type": "other" },
-        { "label": "Finance lease obligations", "amount": 0.38, "note": null, "type": "lease" }
+        { "label": "Finance lease obligations", "amount": 0.38, "note": null, "type": "lease" },
+        { "label": "D Chansiri owner loan (0%, no fixed date)", "amount": 61.20, "note": "No set repayment terms; carried at transaction price. Treated as quasi-equity by the club.", "type": "quasi_equity" },
+        { "label": "Rent equalisation liability (Sheffield 3 Ltd, unwinds 2035\u20132049)", "amount": 6.44, "note": "Non-cash accounting liability arising from straight-line rent treatment; not financial debt.", "type": "quasi_equity" }
       ],
       "cash": 0.16,
-      "notes": "Net debt (excl. rent equalisation) \u2248 \u00a368.1m. Going concern material uncertainty noted by auditors."
+      "notes": "Reported net debt \u00a36.85m = bank + lease \u2212 cash. Chansiri owner loan (\u00a361.2m) and rent equalisation (\u00a36.4m) excluded from reported net debt. Going concern material uncertainty noted by auditors."
     },
     "land_buildings": 0.85
   },
