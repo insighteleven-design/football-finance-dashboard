@@ -10,129 +10,278 @@ import { EUClub, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
   return (
-    f.revenue !== null ||
-    f.net_profit !== null ||
-    f.wage_bill !== null ||
-    f.equity !== null ||
-    f.total_liabilities !== null ||
+    f.revenue !== null || f.net_profit !== null || f.wage_bill !== null ||
+    f.equity !== null || f.total_liabilities !== null ||
     club.historical.some((h) => h.revenue !== null)
   );
 }
 
-const EN_DIVISIONS: { key: Division; label: string; color: string }[] = [
-  { key: "premier-league", label: "Premier League", color: "#8888cc" },
-  { key: "championship",   label: "Championship",   color: "#6699bb" },
-  { key: "league-one",     label: "League One",     color: "#88aa77" },
-  { key: "league-two",     label: "League Two",     color: "#aa8866" },
+const EN_DIVISIONS: { key: Division; label: string }[] = [
+  { key: "premier-league", label: "Premier League" },
+  { key: "championship",   label: "Championship" },
+  { key: "league-one",     label: "League One" },
+  { key: "league-two",     label: "League Two" },
 ];
 
-const LEAGUE_COLORS = ["#8888cc", "#6699bb", "#88aa77", "#aa8866"];
+type View =
+  | { level: "countries" }
+  | { level: "leagues"; country: string; flag: string }
+  | { level: "clubs"; country: string; flag: string; leagueKey: string; leagueLabel: string };
 
-// ─── England ──────────────────────────────────────────────────────────────────
+// ─── Back button ──────────────────────────────────────────────────────────────
 
-function EnglishClubs({ clubs }: { clubs: ClubFinancials[] }) {
+function BackButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8">
-      {EN_DIVISIONS.map((div) => {
-        const divClubs = clubs
-          .filter((c) => c.division === div.key)
-          .sort((a, b) => a.name.localeCompare(b.name));
-        return (
-          <div key={div.key}>
-            <div
-              className="flex items-center gap-2 mb-4 pb-3"
-              style={{ borderBottom: "1px solid #1a1a1a" }}
-            >
-              <span
-                className="w-1 h-3 rounded-full shrink-0"
-                style={{ backgroundColor: div.color }}
-              />
+    <button
+      onClick={onClick}
+      className="flex items-center gap-2.5 mb-10 sm:mb-14 group transition-colors"
+      style={{ color: "#3a3a3a" }}
+    >
+      <span className="group-hover:-translate-x-0.5 transition-transform inline-block" style={{ fontSize: "1rem" }}>←</span>
+      <span
+        className="group-hover:text-[#666666] transition-colors"
+        style={{ fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 500 }}
+      >
+        {label}
+      </span>
+    </button>
+  );
+}
+
+// ─── Level 1: Countries ───────────────────────────────────────────────────────
+
+function CountriesView({
+  clubs,
+  euClubs,
+  onSelect,
+}: {
+  clubs: ClubFinancials[];
+  euClubs: EUClub[];
+  onSelect: (country: string, flag: string) => void;
+}) {
+  const countries = [
+    {
+      key: "England",
+      flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      leagueCount: 4,
+      clubCount: clubs.length,
+    },
+    ...EU_COUNTRY_CONFIG.map((c) => ({
+      key: c.country,
+      flag: c.flag,
+      leagueCount: c.leagues.length,
+      clubCount: euClubs.filter((cl) => cl.country === c.country && hasEuFinancialData(cl)).length,
+    })),
+  ].filter((c) => c.clubCount > 0);
+
+  return (
+    <div>
+      {countries.map((country, i) => (
+        <button
+          key={country.key}
+          onClick={() => onSelect(country.key, country.flag)}
+          className="w-full flex items-center justify-between group py-7 sm:py-9 transition-colors"
+          style={{
+            borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
+            borderBottom: "1px solid #1a1a1a",
+          }}
+        >
+          <div className="flex items-center gap-5 sm:gap-7">
+            <span className="shrink-0" style={{ fontSize: "2rem", lineHeight: 1 }}>{country.flag}</span>
+            <div className="text-left">
               <p
-                className="text-[9px] font-medium tracking-[0.22em] uppercase"
-                style={{ color: "#444444" }}
+                className="font-serif font-light leading-none group-hover:text-[#cccccc] transition-colors"
+                style={{ color: "#ffffff", fontSize: "clamp(24px, 4vw, 44px)", letterSpacing: "-0.02em" }}
               >
-                {div.label}
+                {country.key}
+              </p>
+              <p
+                className="mt-2 font-medium uppercase"
+                style={{ color: "#333333", fontSize: "10px", letterSpacing: "0.18em" }}
+              >
+                {country.leagueCount} {country.leagueCount === 1 ? "league" : "leagues"} · {country.clubCount} clubs
               </p>
             </div>
-            <ul className="space-y-2.5">
-              {divClubs.map((club) => (
-                <li key={club.slug}>
-                  <Link
-                    href={`/clubs/${club.slug}`}
-                    className="block text-[12px] leading-tight transition-colors hover:text-white"
-                    style={{ color: "#666666" }}
-                  >
-                    {club.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
-        );
-      })}
+          <span
+            className="shrink-0 group-hover:text-[#666666] transition-colors"
+            style={{ color: "#2a2a2a", fontSize: "1.25rem" }}
+          >
+            →
+          </span>
+        </button>
+      ))}
     </div>
   );
 }
 
-// ─── European country ─────────────────────────────────────────────────────────
+// ─── Level 2: Leagues ─────────────────────────────────────────────────────────
 
-function EuropeanClubs({
-  config,
+function LeaguesView({
+  country,
+  flag,
   clubs,
+  euClubs,
+  onSelect,
+  onBack,
 }: {
-  config: (typeof EU_COUNTRY_CONFIG)[number];
-  clubs: EUClub[];
+  country: string;
+  flag: string;
+  clubs: ClubFinancials[];
+  euClubs: EUClub[];
+  onSelect: (leagueKey: string, leagueLabel: string) => void;
+  onBack: () => void;
 }) {
-  const countryClubs = clubs.filter(
-    (c) => c.country === config.country && hasEuFinancialData(c)
-  );
-  const cols = Math.min(config.leagues.length, 4);
-  const colClass =
-    cols === 1 ? "grid-cols-1" :
-    cols === 2 ? "grid-cols-1 sm:grid-cols-2" :
-    cols === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" :
-                 "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+  let leagues: { key: string; label: string; clubCount: number }[];
+
+  if (country === "England") {
+    leagues = EN_DIVISIONS.map((d) => ({
+      key: d.key,
+      label: d.label,
+      clubCount: clubs.filter((c) => c.division === d.key).length,
+    }));
+  } else {
+    const config = EU_COUNTRY_CONFIG.find((c) => c.country === country);
+    if (!config) return null;
+    leagues = config.leagues
+      .map((l) => ({
+        key: l.key,
+        label: l.label,
+        clubCount: euClubs.filter(
+          (c) => c.country === country && c.league === l.key && hasEuFinancialData(c)
+        ).length,
+      }))
+      .filter((l) => l.clubCount > 0);
+  }
 
   return (
-    <div className={`grid gap-8 ${colClass}`}>
-      {config.leagues.map((league, li) => {
-        const leagueClubs = countryClubs
-          .filter((c) => c.league === league.key)
-          .sort((a, b) => a.name.localeCompare(b.name));
-        const color = LEAGUE_COLORS[li % LEAGUE_COLORS.length];
-        return (
-          <div key={league.key}>
-            <div
-              className="flex items-center gap-2 mb-4 pb-3"
-              style={{ borderBottom: "1px solid #1a1a1a" }}
+    <div>
+      <BackButton label="All countries" onClick={onBack} />
+      <div className="flex items-center gap-3 mb-8 sm:mb-10">
+        <span style={{ fontSize: "1.5rem" }}>{flag}</span>
+        <p
+          className="font-serif font-light"
+          style={{ color: "#555555", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
+        >
+          {country}
+        </p>
+      </div>
+      {leagues.map((league, i) => (
+        <button
+          key={league.key}
+          onClick={() => onSelect(league.key, league.label)}
+          className="w-full flex items-center justify-between group py-7 sm:py-9 transition-colors"
+          style={{
+            borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
+            borderBottom: "1px solid #1a1a1a",
+          }}
+        >
+          <div className="text-left">
+            <p
+              className="font-serif font-light leading-none group-hover:text-[#cccccc] transition-colors"
+              style={{ color: "#ffffff", fontSize: "clamp(24px, 4vw, 44px)", letterSpacing: "-0.02em" }}
             >
-              <span
-                className="w-1 h-3 rounded-full shrink-0"
-                style={{ backgroundColor: color }}
-              />
-              <p
-                className="text-[9px] font-medium tracking-[0.22em] uppercase"
-                style={{ color: "#444444" }}
-              >
-                {league.label}
-              </p>
-            </div>
-            <ul className="space-y-2.5">
-              {leagueClubs.map((club) => (
-                <li key={club.slug}>
-                  <Link
-                    href={`/clubs/${club.slug}`}
-                    className="block text-[12px] leading-tight transition-colors hover:text-white"
-                    style={{ color: "#666666" }}
-                  >
-                    {club.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+              {league.label}
+            </p>
+            <p
+              className="mt-2 font-medium uppercase"
+              style={{ color: "#333333", fontSize: "10px", letterSpacing: "0.18em" }}
+            >
+              {league.clubCount} clubs
+            </p>
           </div>
-        );
-      })}
+          <span
+            className="shrink-0 group-hover:text-[#666666] transition-colors"
+            style={{ color: "#2a2a2a", fontSize: "1.25rem" }}
+          >
+            →
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Level 3: Clubs ───────────────────────────────────────────────────────────
+
+function ClubsView({
+  country,
+  flag,
+  leagueKey,
+  leagueLabel,
+  clubs,
+  euClubs,
+  onBack,
+}: {
+  country: string;
+  flag: string;
+  leagueKey: string;
+  leagueLabel: string;
+  clubs: ClubFinancials[];
+  euClubs: EUClub[];
+  onBack: () => void;
+}) {
+  type ClubRow = { name: string; slug: string; revenue: number | null };
+  let clubList: ClubRow[];
+
+  if (country === "England") {
+    clubList = clubs
+      .filter((c) => c.division === leagueKey)
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((c) => ({ name: c.name, slug: c.slug, revenue: c.revenue }));
+  } else {
+    clubList = euClubs
+      .filter((c) => c.country === country && c.league === leagueKey && hasEuFinancialData(c))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((c) => ({ name: c.name, slug: c.slug, revenue: c.financials.revenue }));
+  }
+
+  return (
+    <div>
+      <BackButton label={country} onClick={onBack} />
+      <div className="flex items-center gap-3 mb-8 sm:mb-10">
+        <span style={{ fontSize: "1.5rem" }}>{flag}</span>
+        <p
+          className="font-serif font-light"
+          style={{ color: "#555555", fontSize: "clamp(20px, 3vw, 32px)", letterSpacing: "-0.01em" }}
+        >
+          {leagueLabel}
+        </p>
+      </div>
+      {clubList.map((club, i) => (
+        <Link
+          key={club.slug}
+          href={`/clubs/${club.slug}`}
+          className="flex items-center justify-between group py-5 sm:py-6"
+          style={{
+            borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
+            borderBottom: "1px solid #1a1a1a",
+          }}
+        >
+          <p
+            className="font-serif font-light leading-none group-hover:text-[#cccccc] transition-colors"
+            style={{ color: "#ffffff", fontSize: "clamp(18px, 3vw, 32px)", letterSpacing: "-0.02em" }}
+          >
+            {club.name}
+          </p>
+          <div className="flex items-center gap-4 sm:gap-6 shrink-0 ml-4">
+            {club.revenue != null && (
+              <span
+                className="tabular-nums font-light hidden sm:block"
+                style={{ color: "#333333", fontSize: "13px", letterSpacing: "0.04em" }}
+              >
+                £{club.revenue.toFixed(1)}m
+              </span>
+            )}
+            <span
+              className="group-hover:text-[#666666] transition-colors"
+              style={{ color: "#2a2a2a", fontSize: "1.1rem" }}
+            >
+              →
+            </span>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
@@ -146,50 +295,40 @@ export default function CountryClubs({
   clubs: ClubFinancials[];
   euClubs: EUClub[];
 }) {
-  const countries = [
-    { key: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
-    ...EU_COUNTRY_CONFIG.map((c) => ({ key: c.country as string, flag: c.flag })),
-  ];
-
-  const [active, setActive] = useState<string>("England");
-  const activeEuConfig = EU_COUNTRY_CONFIG.find((c) => c.country === active);
+  const [view, setView] = useState<View>({ level: "countries" });
 
   return (
     <div>
-      {/* ── Country tabs ──────────────────────────────────────── */}
-      <div
-        className="flex items-center overflow-x-auto mb-8 sm:mb-10 scrollbar-none"
-        style={{ borderBottom: "1px solid #1a1a1a", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-      >
-        {countries.map(({ key, flag }) => {
-          const isActive = active === key;
-          return (
-            <button
-              key={key}
-              onClick={() => setActive(key)}
-              className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-medium tracking-[0.1em] uppercase whitespace-nowrap shrink-0 transition-colors"
-              style={{
-                color: isActive ? "#ffffff" : "#444444",
-                borderBottom: isActive ? "2px solid #ffffff" : "2px solid transparent",
-                marginBottom: "-1px",
-                background: "none",
-                cursor: "pointer",
-                padding: "0.625rem 0.875rem",
-              }}
-            >
-              <span style={{ fontSize: "1rem", lineHeight: 1 }}>{flag}</span>
-              {key}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* ── Club list ─────────────────────────────────────────── */}
-      {active === "England" ? (
-        <EnglishClubs clubs={clubs} />
-      ) : activeEuConfig ? (
-        <EuropeanClubs config={activeEuConfig} clubs={euClubs} />
-      ) : null}
+      {view.level === "countries" && (
+        <CountriesView
+          clubs={clubs}
+          euClubs={euClubs}
+          onSelect={(country, flag) => setView({ level: "leagues", country, flag })}
+        />
+      )}
+      {view.level === "leagues" && (
+        <LeaguesView
+          country={view.country}
+          flag={view.flag}
+          clubs={clubs}
+          euClubs={euClubs}
+          onSelect={(leagueKey, leagueLabel) =>
+            setView({ level: "clubs", country: view.country, flag: view.flag, leagueKey, leagueLabel })
+          }
+          onBack={() => setView({ level: "countries" })}
+        />
+      )}
+      {view.level === "clubs" && (
+        <ClubsView
+          country={view.country}
+          flag={view.flag}
+          leagueKey={view.leagueKey}
+          leagueLabel={view.leagueLabel}
+          clubs={clubs}
+          euClubs={euClubs}
+          onBack={() => setView({ level: "leagues", country: view.country, flag: view.flag })}
+        />
+      )}
     </div>
   );
 }
