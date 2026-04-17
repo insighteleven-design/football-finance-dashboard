@@ -264,22 +264,12 @@ function ClubsView({
           >
             {club.name}
           </p>
-          <div className="flex items-center gap-4 sm:gap-6 shrink-0 ml-4">
-            {club.revenue != null && (
-              <span
-                className="tabular-nums font-light hidden sm:block"
-                style={{ color: "#888888", fontSize: "13px", letterSpacing: "0.04em" }}
-              >
-                £{club.revenue.toFixed(1)}m
-              </span>
-            )}
-            <span
-              className="group-hover:text-[#666666] transition-colors"
-              style={{ color: "#777777", fontSize: "1.1rem" }}
-            >
-              →
-            </span>
-          </div>
+          <span
+            className="shrink-0 ml-4 group-hover:text-[#666666] transition-colors"
+            style={{ color: "#777777", fontSize: "1.1rem" }}
+          >
+            →
+          </span>
         </Link>
       ))}
     </div>
