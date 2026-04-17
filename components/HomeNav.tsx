@@ -95,6 +95,7 @@ export default function HomeNav({ clubs, euClubs, totalClubs, totalCountries }: 
         const sharedStyle = {
           borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
           borderBottom: "1px solid #1a1a1a",
+          textAlign: "left" as const,
         };
 
         if (item.href) {
