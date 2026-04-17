@@ -176,16 +176,23 @@ const DEBT_COLORS: Record<string, string> = {
 };
 
 function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
-  const totalGross = breakdown.segments.reduce((s, seg) => s + seg.amount, 0);
-  const net = totalGross - (breakdown.cash ?? 0);
+  const debtSegs = breakdown.segments.filter((s) => s.type !== "transfer_payables");
+  const tpSegs   = breakdown.segments.filter((s) => s.type === "transfer_payables");
+
+  const totalDebt = debtSegs.reduce((s, seg) => s + seg.amount, 0);
+  const totalTp   = tpSegs.reduce((s, seg) => s + seg.amount, 0);
+  const cash      = breakdown.cash ?? 0;
+  const net       = totalDebt - cash;
+
+  const fmtAmt = (n: number) => `£${n.toFixed(2)}m`;
 
   return (
     <>
-      {/* Stacked bar — gross debt only */}
-      {totalGross > 0 && (
+      {/* Stacked bar — financial debt only */}
+      {totalDebt > 0 && (
         <div className="h-7 flex overflow-hidden mb-5" style={{ borderRadius: "2px" }}>
-          {breakdown.segments.map((seg) => {
-            const pct = (seg.amount / totalGross) * 100;
+          {debtSegs.map((seg) => {
+            const pct = (seg.amount / totalDebt) * 100;
             return (
               <div
                 key={seg.label}
@@ -201,47 +208,99 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
         </div>
       )}
 
-      {/* Legend — debt segments */}
-      <div className="space-y-2.5">
-        {breakdown.segments.map((seg) => (
-          <div key={seg.label} className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: DEBT_COLORS[seg.type] ?? "#aaaaaa" }} />
-            <span className="text-[11px] text-[#666666] flex-1">{seg.label}</span>
-            <span className="text-[11px] font-light tabular-nums text-[#111111] w-16 text-right shrink-0">
-              £{seg.amount.toFixed(2)}m
-            </span>
+      {/* Column headers */}
+      <div className="flex items-center gap-3 mb-2">
+        <div className="w-2.5 shrink-0" />
+        <span className="text-[10px] text-[#aaaaaa] flex-1" />
+        <span className="text-[10px] text-[#aaaaaa] w-20 text-right shrink-0 tracking-wide">Debt</span>
+        <span className="text-[10px] text-[#4a9a6a] w-20 text-right shrink-0 tracking-wide">Cash</span>
+      </div>
+
+      {/* Debt segment rows */}
+      <div className="space-y-2">
+        {debtSegs.map((seg) => (
+          <div key={seg.label}>
+            <div className="flex items-baseline gap-3">
+              <div className="w-2.5 h-2.5 shrink-0 rounded-full mt-0.5" style={{ backgroundColor: DEBT_COLORS[seg.type] ?? "#aaaaaa" }} />
+              <span className="text-[11px] text-[#666666] flex-1 leading-tight">{seg.label}</span>
+              <span className="text-[11px] font-light tabular-nums text-[#111111] w-20 text-right shrink-0">
+                {fmtAmt(seg.amount)}
+              </span>
+              <span className="w-20 shrink-0" />
+            </div>
             {seg.note && (
-              <span className="text-[10px] text-[#aaaaaa] w-36 shrink-0 text-right">{seg.note}</span>
+              <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
             )}
           </div>
         ))}
-
-        {/* Cash */}
-        {breakdown.cash !== null && (
-          <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2.5 mt-1">
-            <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: "#4a9a6a" }} />
-            <span className="text-[11px] text-[#666666] flex-1">Cash at bank</span>
-            <span className="text-[11px] font-light tabular-nums text-[#4a9a6a] w-16 text-right shrink-0">
-              (£{breakdown.cash.toFixed(2)}m)
-            </span>
-            <span className="w-36 shrink-0" />
-          </div>
-        )}
-
-        {/* Net */}
-        <div className="flex items-center gap-3 border-t border-[#e0e0e0] pt-2.5">
-          <div className="w-2.5 h-2.5 shrink-0" />
-          <span className="text-[11px] font-medium text-[#111111] flex-1">Net debt / (cash)</span>
-          <span
-            className={`text-[11px] font-medium tabular-nums w-16 text-right shrink-0 ${
-              net <= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
-            }`}
-          >
-            {net <= 0 ? `(£${Math.abs(net).toFixed(2)}m)` : `£${net.toFixed(2)}m`}
-          </span>
-          <span className="w-36 shrink-0" />
-        </div>
       </div>
+
+      {/* Total debt + cash on the same row */}
+      <div className="flex items-center gap-3 border-t border-[#e0e0e0] mt-3 pt-2.5">
+        <div className="w-2.5 shrink-0" />
+        <span className="text-[11px] font-medium text-[#444444] flex-1">Total financial debt</span>
+        <span className="text-[11px] font-medium tabular-nums text-[#111111] w-20 text-right shrink-0">
+          {fmtAmt(totalDebt)}
+        </span>
+        {breakdown.cash !== null ? (
+          <span className="text-[11px] tabular-nums text-[#4a9a6a] w-20 text-right shrink-0">
+            ({fmtAmt(cash)})
+          </span>
+        ) : (
+          <span className="w-20 shrink-0" />
+        )}
+      </div>
+
+      {/* Net debt */}
+      <div className="flex items-center gap-3 border-t-2 border-[#cccccc] mt-1.5 pt-2.5">
+        <div className="w-2.5 shrink-0" />
+        <span className="text-[11px] font-semibold text-[#111111] flex-1">Net debt / (cash)</span>
+        <span
+          className={`text-[11px] font-semibold tabular-nums w-20 text-right shrink-0 ${
+            net <= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
+          }`}
+        >
+          {net <= 0 ? `(${fmtAmt(Math.abs(net))})` : fmtAmt(net)}
+        </span>
+        <span className="w-20 shrink-0" />
+      </div>
+
+      {/* Transfer payables — separate section */}
+      {tpSegs.length > 0 && (
+        <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
+          <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
+            Transfer payables <span className="normal-case font-normal">(excluded from net debt)</span>
+          </p>
+          <div className="space-y-2">
+            {tpSegs.map((seg) => (
+              <div key={seg.label}>
+                <div className="flex items-baseline gap-3">
+                  <div className="w-2.5 h-2.5 shrink-0 rounded-full mt-0.5 bg-[#cccccc]" />
+                  <span className="text-[11px] text-[#888888] flex-1 leading-tight">{seg.label}</span>
+                  <span className="text-[11px] font-light tabular-nums text-[#888888] w-20 text-right shrink-0">
+                    {fmtAmt(seg.amount)}
+                  </span>
+                  <span className="w-20 shrink-0" />
+                </div>
+                {seg.note && (
+                  <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+                )}
+              </div>
+            ))}
+            <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
+              <div className="w-2.5 shrink-0" />
+              <span className="text-[11px] font-medium text-[#888888] flex-1">Total transfer payables</span>
+              <span className="text-[11px] font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
+                {fmtAmt(totalTp)}
+              </span>
+              <span className="w-20 shrink-0" />
+            </div>
+          </div>
+          <p className="text-[10px] text-[#bbbbbb] mt-2 leading-relaxed italic">
+            Transfer payables are operational liabilities arising from player acquisitions and are excluded from net debt.
+          </p>
+        </div>
+      )}
 
       {/* Notes */}
       {breakdown.notes && (
