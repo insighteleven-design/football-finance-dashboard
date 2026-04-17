@@ -1,9 +1,24 @@
 import { clubs } from "@/lib/clubs";
-import { euClubs } from "@/lib/euClubs";
+import { euClubs, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
 import SearchBar from "@/components/SearchBar";
-import CountryClubs from "@/components/CountryClubs";
+import HomeNav from "@/components/HomeNav";
+
+function hasEuFinancialData(club: (typeof euClubs)[0]): boolean {
+  const f = club.financials;
+  return (
+    f.revenue !== null || f.net_profit !== null || f.wage_bill !== null ||
+    f.equity !== null || f.total_liabilities !== null ||
+    club.historical.some((h) => h.revenue !== null)
+  );
+}
 
 export default function Home() {
+  const visibleEuClubs = euClubs.filter(hasEuFinancialData);
+  const totalClubs = clubs.length + visibleEuClubs.length;
+  const totalCountries = 1 + EU_COUNTRY_CONFIG.filter((c) =>
+    euClubs.some((cl) => cl.country === c.country && hasEuFinancialData(cl))
+  ).length;
+
   return (
     <div style={{ backgroundColor: "#080808", minHeight: "100vh" }}>
 
@@ -33,9 +48,14 @@ export default function Home() {
         <SearchBar clubs={clubs} euClubs={euClubs} />
       </div>
 
-      {/* ── Club browser ──────────────────────────────────────────────────────── */}
-      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-10 sm:py-14 pb-24 sm:pb-32">
-        <CountryClubs clubs={clubs} euClubs={euClubs} />
+      {/* ── Main navigation ───────────────────────────────────────────────────── */}
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-0 pb-24 sm:pb-32">
+        <HomeNav
+          clubs={clubs}
+          euClubs={euClubs}
+          totalClubs={totalClubs}
+          totalCountries={totalCountries}
+        />
       </div>
 
     </div>

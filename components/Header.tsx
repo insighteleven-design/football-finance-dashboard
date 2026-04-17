@@ -33,17 +33,6 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="flex items-center gap-0.5 shrink-0">
-          <Link href="/" className={`hidden sm:block px-2.5 sm:px-3 py-1.5 text-sm rounded-md transition-colors ${linkClass}`}>
-            Home
-          </Link>
-          <Link href="/compare" className={`px-2 sm:px-3 py-1.5 text-xs sm:text-sm rounded-md transition-colors whitespace-nowrap ${linkClass}`}>
-            Compare
-          </Link>
-          <Link href="/rankings" className={`px-2 sm:px-3 py-1.5 text-xs sm:text-sm rounded-md transition-colors whitespace-nowrap ${linkClass}`}>
-            Rankings
-          </Link>
-        </nav>
       </div>
     </header>
   );
