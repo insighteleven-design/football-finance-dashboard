@@ -839,4 +839,54 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
     reconciliationNote: null,
     postBalanceSheetNote: null,
   },
+
+  // ─── Chelsea ────────────────────────────────────────────────────────────────
+  // Chelsea FC Holdings Limited (group) · FY Jun 2025 / Jun 2024 · FRS 102
+  // Group accounts include a cash flow statement (subsidiary Chelsea Football
+  // Club Limited is FRS 102 s7 exempt, but the group entity is not)
+  chelsea: {
+    slug: "chelsea",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations (Note 33)",            current: -356529000, prior:  -11902000 },
+      { label: "Interest received",                                current:    1325000, prior:    1716000 },
+      { label: "Income taxes paid",                                current:          0, prior:      -5000 },
+    ],
+    netOperating: { current: -355204000, prior: -10191000 },
+    investing: [
+      { label: "Purchase of intangible assets",                    current: -155193000, prior: -589158000 },
+      { label: "Proceeds from disposal of intangibles",            current:  201686000, prior:  189254000 },
+      { label: "Purchase of tangible fixed assets",                current:   -8407000, prior:  -11520000 },
+      { label: "Proceeds from disposal of tangible fixed assets",  current:          0, prior:      54000 },
+    ],
+    netInvesting: { current: 38086000, prior: -411370000 },
+    financing: [
+      { label: "Proceeds from issue of shares",                    current:  339189000, prior:  315000000 },
+      { label: "Proceeds from borrowings",                         current:   65311000, prior:   71500000 },
+      { label: "Repayment of borrowings",                          current:  -74500000, prior:  -16800000 },
+    ],
+    netFinancing: { current: 330000000, prior: 369700000 },
+    openingCash: { current: 36025000, prior: 87889000 },
+    closingCash: { current: 49009000, prior: 36025000 },
+    reconciliation: [
+      { label: "(Loss)/profit for the year after tax",             current: -262647000, prior:  129606000 },
+      { label: "Taxation charged/(credited)",                      current:     203000, prior:   -1206000 },
+      { label: "Finance costs",                                    current:   20357000, prior:   19271000 },
+      { label: "Investment income",                                current:  -11149000, prior:   -9748000 },
+      { label: "Profit on disposal of tangible fixed assets",      current:    2985000, prior:     -54000 },
+      { label: "Profit on disposal of player registrations",       current:  -57906000, prior: -152463000 },
+      { label: "Fair value (gain)/loss on investment properties",  current:          0, prior:     384000 },
+      { label: "Amortisation & impairment of intangible assets",   current:  225990000, prior:  191826000 },
+      { label: "Depreciation & impairment of tangible assets",     current:   12519000, prior:   13445000 },
+      { label: "Gain on sale of investments",                      current:          0, prior: -198749000 },
+      { label: "Increase in provisions",                           current:   24209000, prior:           0 },
+      { label: "Increase in stocks",                               current:   -1019000, prior:    -883000 },
+      { label: "Decrease/(increase) in debtors",                   current:  256525000, prior: -329412000 },
+      { label: "(Decrease)/increase in creditors",                 current: -566596000, prior:  326081000 },
+    ],
+    reconciliationTitle: "Note 33 — Cash absorbed by group operations",
+    reconciliationNote: null,
+    postBalanceSheetNote: "Since the year end the Group has acquired the registration of 6 players at an initial cost of £263.3m and disposed of the registration of 15 players at a profit of £31.8m.",
+  },
 };

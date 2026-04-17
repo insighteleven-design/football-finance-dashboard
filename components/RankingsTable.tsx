@@ -7,10 +7,11 @@ const RANKING_METRICS: {
   key: keyof ComparableClub;
   label: string;
   isRatio?: boolean;
+  lowerIsBetter?: boolean;
 }[] = [
   { key: "revenue",        label: "Revenue" },
   { key: "wage_bill",      label: "Wage Bill" },
-  { key: "wage_ratio",     label: "Wage Ratio",    isRatio: true },
+  { key: "wage_ratio",     label: "Wage Ratio",    isRatio: true, lowerIsBetter: true },
   { key: "pre_tax_profit", label: "Pre-tax Result" },
   { key: "net_debt",       label: "Net Debt" },
 ];
@@ -32,7 +33,11 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
 
   const ranked = [...allClubs]
     .filter((c) => (c[metricKey] as number | null) !== null)
-    .sort((a, b) => (b[metricKey] as number) - (a[metricKey] as number));
+    .sort((a, b) =>
+      metric.lowerIsBetter
+        ? (a[metricKey] as number) - (b[metricKey] as number)
+        : (b[metricKey] as number) - (a[metricKey] as number)
+    );
 
   const displayed = showAll ? ranked : ranked.slice(0, DEFAULT_ROWS);
   const maxAbs    = Math.max(...ranked.map((c) => Math.abs(c[metricKey] as number)), 0.01);
