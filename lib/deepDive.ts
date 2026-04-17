@@ -39,7 +39,7 @@ export interface DebtSegment {
   label: string;
   amount: number;    // £m, always positive
   note: string | null;
-  type: "owner_loan" | "bank" | "lease" | "pension" | "bond" | "transfer_payables" | "pref_shares" | "other";
+  type: "owner_loan" | "bank" | "lease" | "pension" | "bond" | "transfer_payables" | "pref_shares" | "quasi_equity" | "other";
 }
 
 export interface DebtBreakdown {
@@ -1157,7 +1157,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "debt_breakdown": {
       "segments": [
-        { "label": "Group undertakings loans", "amount": 58.04, "note": "Interest-free intercompany funding; shareholder support confirmed to Dec 2026.", "type": "owner_loan" },
+        { "label": "Group undertakings loans", "amount": 58.04, "note": "Interest-free, no fixed repayment date; treated as quasi-equity. Shareholder support confirmed to Dec 2026.", "type": "quasi_equity" },
         { "label": "Bank term loan (repayable by instalments)", "amount": 0.02, "note": null, "type": "bank" },
         { "label": "Finance lease obligations", "amount": 0.01, "note": null, "type": "lease" },
         { "label": "Football League pension scheme liability", "amount": 0.17, "note": null, "type": "pension" },
