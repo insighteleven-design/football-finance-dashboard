@@ -106,6 +106,16 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "other_debt": null,
       "total_debt_notes": "Amounts owed to group undertakings (\u00a3127.89m within one year) are unsecured, bear no interest, and are repayable on demand. A capital contribution of \u00a393.5m was recognised during the period on conversion of an intercompany bridging loan from NSWE Sports Limited. The bank overdraft of \u00a320.45m is from Barclays Bank Plc. Trade creditors due after more than one year of \u00a361.84m relate to transfer fees. Maximum un-provided contingent liability for player registrations is \u00a3117.88m."
     },
+    "debt_breakdown": {
+      "segments": [
+        { "label": "Bank loans and overdrafts (Barclays)", "amount": 20.450, "note": null, "type": "bank" },
+        { "label": "Amounts owed to group undertakings (NSWE, interest-free)", "amount": 127.886, "note": "Unsecured, interest-free, repayable on demand from NSWE Sports Limited / V Sports S.C.S.", "type": "owner_loan" },
+        { "label": "Transfer payables \u2014 current", "amount": 108.141, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables \u2014 non-current", "amount": 61.843, "note": null, "type": "transfer_payables" }
+      ],
+      "cash": 0,
+      "notes": "Cash at bank = nil at 30 June 2024 (prior year: \u00a32.0m). FY covers 13 months ended 30 June 2024."
+    },
     "land_buildings": null
   },
   "bournemouth": {
@@ -238,6 +248,15 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "other_debt": null,
       "total_debt_notes": "Amounts due to group undertakings of \u00a31,641.9m are interest free and repayable on demand, though the parent company directors have confirmed no intention to demand repayment within the next year. The prior year balance sheet was restated to reclassify \u00a31,273.6m of group balances from non-current to current liabilities. Trade creditors (transfer payables) of \u00a3322.6m fall due within one year and \u00a3219.3m after more than one year. Contingent transfer fee liabilities of up to \u00a374.2m may also become payable."
     },
+    "debt_breakdown": {
+      "segments": [
+        { "label": "Amounts due to group undertakings (Blueco 22 Ltd, interest-free)", "amount": 1641.869, "note": "Interest-free, repayable on demand; parent directors confirmed no demand within next 12 months", "type": "owner_loan" },
+        { "label": "Transfer payables \u2014 current", "amount": 322.574, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables \u2014 non-current", "amount": 219.343, "note": null, "type": "transfer_payables" }
+      ],
+      "cash": 0.004,
+      "notes": "No bank debt at company level. Cash = \u00a34k (effectively nil). Owner funding = \u00a31.642bn from Blueco 22 Ltd (interest-free, on demand). FRS 102 subsidiary cash flow exemption applies."
+    },
     "land_buildings": 110.0
   },
   "crystal_palace": {
@@ -266,16 +285,16 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "debt_breakdown": {
       "segments": [
-        { "label": "Bank loans — current", "amount": 2.544, "note": null, "type": "bank" },
-        { "label": "Bank loans — non-current", "amount": 0.103, "note": null, "type": "bank" },
-        { "label": "Premier League funding advance", "amount": 63.543, "note": "Secured on central distributions from the Premier League", "type": "bank" },
-        { "label": "Finance leases", "amount": 1.615, "note": null, "type": "lease" },
-        { "label": "Palace Holdco UK Ltd loan (5%, 2040)", "amount": 7.655, "note": "Fixed-rate 5% unsecured; repayable January 2040", "type": "owner_loan" },
-        { "label": "Transfer payables — current", "amount": 42.190, "note": null, "type": "transfer_payables" },
-        { "label": "Transfer payables — non-current", "amount": 36.218, "note": null, "type": "transfer_payables" }
+        { "label": "Bank loans — current", "amount": 0.063, "note": null, "type": "bank" },
+        { "label": "Bank loans — non-current", "amount": 0.166, "note": null, "type": "bank" },
+        { "label": "Premier League funding advance", "amount": 48.052, "note": "Secured on central distributions from the Premier League", "type": "bank" },
+        { "label": "Finance leases", "amount": 1.042, "note": "£312k current, £730k non-current", "type": "lease" },
+        { "label": "Palace Holdco UK Ltd loan (5%, Jan 2040)", "amount": 7.655, "note": "Fixed-rate 5% unsecured; repayable 14 January 2040", "type": "owner_loan" },
+        { "label": "Transfer payables — current", "amount": 38.603, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables — non-current", "amount": 27.924, "note": null, "type": "transfer_payables" }
       ],
-      "cash": 13.692,
-      "notes": "Gross debt £153.87m less cash £13.69m = net debt £140.18m. Interest-free parent company loans have been excluded from net debt as they were classified as equity-equivalent funding."
+      "cash": 8.862,
+      "notes": "Gross debt £95.58m less cash £8.86m = net debt £86.72m. Group undertakings (£101.3m, interest-free on demand from CPFC 2010 Ltd) excluded from net debt."
     },
     "land_buildings": 24.84
   },
@@ -339,11 +358,13 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "debt_breakdown": {
       "segments": [
-        { "label": "Transfer payables — current", "amount": 55.169, "note": null, "type": "transfer_payables" },
-        { "label": "Transfer payables — non-current", "amount": 42.908, "note": null, "type": "transfer_payables" }
+        { "label": "Parent company loan (Fulham Football Leisure Ltd)", "amount": 44.398, "note": "Interest-free, repayable on demand; converted to equity post year-end Oct 2024", "type": "owner_loan" },
+        { "label": "Amounts due to related parties", "amount": 4.195, "note": null, "type": "owner_loan" },
+        { "label": "Transfer payables — current", "amount": 57.707, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables — non-current", "amount": 14.411, "note": null, "type": "transfer_payables" }
       ],
-      "cash": 13.172,
-      "notes": "Net debt = transfer payables £98.08m less cash £13.17m = £84.91m. Balance sheet borrowings (JPMorgan Riverside Stand facility and parent loan) are excluded from this net debt figure."
+      "cash": 32.768,
+      "notes": "No bank debt at year end. Post year-end (Jul 2024): £125m JPMorgan Chase Bank loan for Riverside Stand. Post year-end (Oct 2024): £75.3m shareholder loans converted to equity."
     },
     "land_buildings": null
   },
@@ -461,6 +482,18 @@ export const deepDive: Record<string, ClubDeepDive> = {
       },
       "other_debt": "Accrued interest on senior secured notes and revolving facilities of \u00a35.12 million.",
       "total_debt_notes": "Total borrowings are \u00a3636.64m comprising $425m senior secured notes at 3.79% fixed coupon maturing June 2027, a $225m secured term loan at SOFR plus 1.25-1.75% margin repayable August 2029, and \u00a3160m drawn under revolving facilities (total available \u00a3350m post year-end amendment). The Red Football Limited group must maintain consolidated EBITDA of not less than \u00a365m on a rolling 12-month basis."
+    },
+    "debt_breakdown": {
+      "segments": [
+        { "label": "Senior secured notes ($425m @ 3.79%, Jun 2027)", "amount": 307.744, "note": "USD bond issued by MU Finance Plc; fixed coupon", "type": "bond" },
+        { "label": "Secured term loan ($225m, SOFR+1.25-1.75%, Aug 2029)", "amount": 163.771, "note": "Secured against substantially all assets", "type": "bank" },
+        { "label": "Revolving credit facilities (\u00a3160m drawn of \u00a3300m total)", "amount": 160.000, "note": "Matures Dec 2029", "type": "bank" },
+        { "label": "Lease liabilities", "amount": 5.963, "note": null, "type": "lease" },
+        { "label": "Transfer payables \u2014 current", "amount": 241.639, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables \u2014 non-current", "amount": 204.943, "note": null, "type": "transfer_payables" }
+      ],
+      "cash": 74.147,
+      "notes": "Net debt (excl. transfer payables) = \u00a3637.48m gross borrowings less \u00a374.15m cash = \u00a3563.33m."
     },
     "land_buildings": 146.5
   },

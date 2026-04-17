@@ -408,6 +408,392 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
       "Cash balances are stated net of overdraft throughout. FY2025: gross cash £1,977k, overdraft £26,548k (net: -£24,571k). FY2024: gross cash £7,470k, overdraft £36,747k (net: -£29,277k). Post year-end: new £100m Macquarie facility arranged; Barclays overdraft repaid. New minority equity investment used to repay preference share capital.",
   },
 
+  // ─── Watford ────────────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £ (net of overdraft)
+  watford: {
+    slug: "watford",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",  current:   -175000, prior:        0 },
+      { label: "Interest paid",                current:   -519000, prior:        0 },
+    ],
+    netOperating:  { current:    -694000, prior:   -5217000 },
+    investing: [
+      { label: "Purchase of intangible assets",     current:  -2048000, prior:        0 },
+      { label: "Proceeds from sale of intangibles", current:  17194000, prior:        0 },
+      { label: "Purchase of tangible assets",       current:   -228000, prior:        0 },
+    ],
+    netInvesting:  { current:  14918000, prior:  24573000 },
+    financing: [
+      { label: "Group loans (net)",           current:   1789000, prior:        0 },
+      { label: "Repayment of other loans",    current: -13922000, prior:        0 },
+      { label: "Finance lease payments",      current:   -167000, prior:        0 },
+    ],
+    netFinancing:  { current: -12300000, prior: -27552000 },
+    openingCash:   { current:   -617000, prior:   7579000 },
+    closingCash:   { current:   1307000, prior:   -617000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Opening and closing cash stated net of overdraft. Prior year line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Blackburn Rovers ───────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Indirect method · Net of overdraft
+  blackburn: {
+    slug: "blackburn",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Net cash absorbed by operating activities", current: -20216378, prior: -13480850 },
+    ],
+    netOperating:  { current: -20216378, prior: -13480850 },
+    investing: [
+      { label: "Net cash from investing activities",        current:  15713582, prior:   8226507 },
+    ],
+    netInvesting:  { current:  15713582, prior:   8226507 },
+    financing: [
+      { label: "Net cash from financing activities",        current:   4571862, prior:   7585213 },
+    ],
+    netFinancing:  { current:   4571862, prior:   7585213 },
+    openingCash:   { current: -12635600, prior: -14966470 },
+    closingCash:   { current: -12566534, prior: -12635600 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Cash and cash equivalents stated net of bank overdraft throughout.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Wrexham ────────────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £
+  wrexham: {
+    slug: "wrexham",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",  current:  -5642452, prior: 0 },
+      { label: "Interest paid",                current:   -406447, prior: 0 },
+    ],
+    netOperating:  { current:  -6048899, prior:   1831620 },
+    investing: [
+      { label: "Purchase of intangible assets",     current:  -8517773, prior: 0 },
+      { label: "Purchase of tangible assets",       current:  -8950698, prior: 0 },
+      { label: "Interest received",                 current:     11484, prior: 0 },
+    ],
+    netInvesting:  { current: -17456987, prior:  -3843143 },
+    financing: [
+      { label: "Proceeds from share issue",         current:  35783111, prior: 0 },
+      { label: "Repayment of borrowings",           current: -10682572, prior: 0 },
+      { label: "Bank loans received",               current:    638687, prior: 0 },
+    ],
+    netFinancing:  { current:  25739226, prior:   1695536 },
+    openingCash:   { current:   1085956, prior:   1401943 },
+    closingCash:   { current:   3319296, prior:   1085956 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Sheffield Wednesday ────────────────────────────────────────────────────
+  // FY Jul 2024 / Jul 2023 · FRS 102 · Values in £'000 (converted to £)
+  sheff_wed: {
+    slug: "sheff_wed",
+    currentFY: "FY2024",
+    priorFY: "FY2023",
+    operating: [
+      { label: "Cash absorbed by operations (Note 28)", current: -8877000, prior: 0 },
+      { label: "Interest paid",                          current:  -766000, prior: 0 },
+      { label: "Tax refund received",                    current:   175000, prior: 0 },
+    ],
+    netOperating:  { current:  -9468000, prior:  -9956000 },
+    investing: [
+      { label: "Purchase of intangible assets",          current: -1584000, prior: 0 },
+      { label: "Proceeds from sale of intangibles",      current:   122000, prior: 0 },
+      { label: "Purchase of tangible assets",            current:  -397000, prior: 0 },
+      { label: "Proceeds from sale of tangibles",        current:    11000, prior: 0 },
+      { label: "Interest received",                      current:    13000, prior: 0 },
+      { label: "Deferred proceeds — stadium",            current:        0, prior: 15000000 },
+    ],
+    netInvesting:  { current:  -1835000, prior:  14972000 },
+    financing: [
+      { label: "New loans received",                     current:   557000, prior: 0 },
+      { label: "Loan from controlling party",            current: 10137000, prior: 0 },
+      { label: "Finance lease payments",                 current:   -91000, prior: 0 },
+    ],
+    netFinancing:  { current:  10603000, prior:  -5044000 },
+    openingCash:   { current:    856000, prior:    884000 },
+    closingCash:   { current:    156000, prior:    856000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year investing includes £15m deferred proceeds from stadium asset. Prior year operating and financing line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Hull City ──────────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £
+  hull: {
+    slug: "hull",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations (Note 29)", current: -15725326, prior: 0 },
+      { label: "Tax refund received",                    current:    178045, prior: 0 },
+    ],
+    netOperating:  { current: -15547281, prior: -28501031 },
+    investing: [
+      { label: "Purchase of intangible assets",          current: -30259258, prior: 0 },
+      { label: "Proceeds from sale of intangibles",      current:  36584300, prior: 0 },
+      { label: "Purchase of tangible assets",            current:   -113219, prior: 0 },
+      { label: "Interest received",                      current:   1540869, prior: 0 },
+    ],
+    netInvesting:  { current:   7752692, prior:   2553224 },
+    financing: [
+      { label: "Proceeds from borrowings",               current:  10987093, prior: 0 },
+      { label: "Finance lease payments",                 current:    -43415, prior: 0 },
+      { label: "Interest paid",                          current:  -3136147, prior: 0 },
+    ],
+    netFinancing:  { current:   7807531, prior:  25514426 },
+    openingCash:   { current:     80064, prior:    513445 },
+    closingCash:   { current:     93006, prior:     80064 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Oxford United ──────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £
+  oxford_utd: {
+    slug: "oxford_utd",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash generated from operations (Note 27)", current:  5661548, prior: 0 },
+      { label: "Interest paid",                             current:   -30595, prior: 0 },
+    ],
+    netOperating:  { current:  5630953, prior:  1684001 },
+    investing: [
+      { label: "Purchase of intangible assets",             current: -5178058, prior: 0 },
+      { label: "Proceeds from sale of intangibles",         current:   511138, prior: 0 },
+      { label: "Purchase of tangible assets",               current: -1047966, prior: 0 },
+      { label: "Interest received",                         current:    11179, prior: 0 },
+    ],
+    netInvesting:  { current: -5703707, prior: -1261848 },
+    financing: [
+      { label: "Repayment of bank loans",                   current:   -10000, prior: 0 },
+      { label: "Finance lease payments",                    current:  -145202, prior: 0 },
+    ],
+    netFinancing:  { current:  -155202, prior:  -203742 },
+    openingCash:   { current:   470625, prior:   252214 },
+    closingCash:   { current:   242669, prior:   470625 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Derby County ───────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £
+  derby: {
+    slug: "derby",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Net cash absorbed by operating activities", current: -17050875, prior: -14797302 },
+    ],
+    netOperating:  { current: -17050875, prior: -14797302 },
+    investing: [
+      { label: "Net cash from investing activities",         current:   1324741, prior:   -202483 },
+    ],
+    netInvesting:  { current:   1324741, prior:   -202483 },
+    financing: [
+      { label: "Loans from parent company",                 current:  16250000, prior: 0 },
+      { label: "Interest paid",                             current:     -3375, prior: 0 },
+    ],
+    netFinancing:  { current:  16246625, prior:  11815367 },
+    openingCash:   { current:   1096012, prior:   4280430 },
+    closingCash:   { current:   1616503, prior:   1096012 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Derby re-entered the EFL in Aug 2021 under administration; administration ended Oct 2022 under new ownership. Financing is entirely parent-company loans. Prior year financing breakdown not available.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Norwich City ───────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Group consolidated · Values in £'000 (converted to £)
+  norwich: {
+    slug: "norwich",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash used in operations",  current: -26914000, prior: 0 },
+      { label: "Interest received",        current:     57000, prior: 0 },
+      { label: "Interest paid",            current:  -1291000, prior: 0 },
+    ],
+    netOperating:  { current: -28148000, prior:  -5981000 },
+    investing: [
+      { label: "Purchase of intangible assets",     current: -21642000, prior: 0 },
+      { label: "Purchase of tangible assets",       current:  -2310000, prior: 0 },
+      { label: "Proceeds from sale of intangibles", current:  23205000, prior: 0 },
+    ],
+    netInvesting:  { current:   -747000, prior:   1733000 },
+    financing: [
+      { label: "Directors' loan received",              current:  34717000, prior: 0 },
+      { label: "Short-term loan capital received",      current:   6013000, prior: 0 },
+      { label: "Short-term loan capital repayments",    current: -11625000, prior: 0 },
+    ],
+    netFinancing:  { current:  29105000, prior:   3743000 },
+    openingCash:   { current:   1790000, prior:   2295000 },
+    closingCash:   { current:   2000000, prior:   1790000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Group consolidated accounts (Norwich City Football Club plc). Prior year line-by-line breakdown not available; prior totals shown.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Portsmouth ─────────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £'000 (converted to £)
+  portsmouth: {
+    slug: "portsmouth",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",  current: -1739000, prior: -2650000 },
+      { label: "Interest paid",                current:    -5000, prior:        0 },
+    ],
+    netOperating:  { current: -1744000, prior: -2650000 },
+    investing: [
+      { label: "Purchase of intangible assets",     current: -4040000, prior: -1007000 },
+      { label: "Proceeds from sale of intangibles", current:   620000, prior:   420000 },
+      { label: "Purchase of tangible assets",       current: -3855000, prior: -5454000 },
+    ],
+    netInvesting:  { current: -7275000, prior: -6041000 },
+    financing: [
+      { label: "Funding received from owners",      current:  8000000, prior: 9000000 },
+      { label: "Finance lease payments",            current:   -60000, prior:   -4000 },
+    ],
+    netFinancing:  { current:  7940000, prior:  8996000 },
+    openingCash:   { current:  3122000, prior:  2817000 },
+    closingCash:   { current:  2043000, prior:  3122000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: null,
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Birmingham City ────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £ (full)
+  // League One in 2024/25; compare_division set to league-one in clubs.ts
+  birmingham: {
+    slug: "birmingham",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash used in operations (Note 1)", current:  1580146, prior: -22505941 },
+      { label: "Corporation tax received",          current:        0, prior:    371454 },
+    ],
+    netOperating:  { current:  1580146, prior: -22134487 },
+    investing: [
+      { label: "Purchase of intangible assets",     current: -26076851, prior:  -3947940 },
+      { label: "Purchase of tangible assets",       current: -19857694, prior: -26211648 },
+      { label: "Proceeds from sale of intangibles", current:   8283860, prior:  10409198 },
+      { label: "Interest received",                 current:    870059, prior:    843003 },
+    ],
+    netInvesting:  { current: -36780626, prior: -18907387 },
+    financing: [
+      { label: "New loans received",                current:  53084843, prior:  55170495 },
+      { label: "Loan repayments",                   current:         0, prior:  -3145165 },
+      { label: "Interest paid",                     current: -10279565, prior:  -2176797 },
+      { label: "Finance lease payments",            current:  -2043010, prior:  -1767859 },
+    ],
+    netFinancing:  { current:  40762268, prior:  48080674 },
+    openingCash:   { current:   8671807, prior:   1633007 },
+    closingCash:   { current:  14233595, prior:   8671807 },
+    reconciliation: [
+      { label: "Loss before income tax",                  current: -34559453, prior: -16081826 },
+      { label: "Depreciation",                            current:   4442009, prior:   2618065 },
+      { label: "Profit on sale of player registrations",  current: -14267841, prior: -15405191 },
+      { label: "Amortisation",                            current:   6830337, prior:   4382419 },
+      { label: "Finance costs",                           current:  10279565, prior:   3097744 },
+      { label: "Finance income",                          current:   -870059, prior:    -843003 },
+      { label: "(Increase) in inventories",               current:   -714990, prior:  -1288830 },
+      { label: "(Increase)/decrease in receivables",      current: -4965964, prior:  -7600225 },
+      { label: "Increase/(decrease) in payables",         current:  35406542, prior:   8614906 },
+    ],
+    reconciliationTitle: "Note 1 — Reconciliation of loss to cash from operations",
+    reconciliationNote: null,
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Ipswich Town ───────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £'000 (converted to £)
+  // FY2025 = Premier League season; FY2024 = Championship season (promoted)
+  ipswich: {
+    slug: "ipswich",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash generated / (absorbed) by operations (Note 29)", current:  74084000, prior: -7580000 },
+      { label: "Interest paid",                                        current:    -88000, prior:   -25000 },
+    ],
+    netOperating:  { current:  73996000, prior:  -7605000 },
+    investing: [
+      { label: "Purchase of intangible assets",     current: -119701000, prior: -26295000 },
+      { label: "Proceeds from sale of intangibles", current:   32237000, prior:   1226000 },
+      { label: "Purchase of tangible assets",       current:  -21323000, prior:  -5825000 },
+      { label: "Proceeds from sale of tangibles",   current:          0, prior:     -2000 },
+    ],
+    netInvesting:  { current: -108787000, prior: -30896000 },
+    financing: [
+      { label: "Proceeds from issue of shares",     current:          0, prior: 39200000 },
+      { label: "Cash in advance of share issue",    current:   44500000, prior:        0 },
+      { label: "Repayment of borrowings",           current:    -343000, prior:    -3000 },
+      { label: "Finance lease payments",            current:     976000, prior:        0 },
+    ],
+    netFinancing:  { current:  45133000, prior:  39197000 },
+    openingCash:   { current:   3328000, prior:   2632000 },
+    closingCash:   { current:  13670000, prior:   3328000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: null,
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Leicester City ─────────────────────────────────────────────────────────
+  // FY Jun 2024 / 13m to Jun 2022 · FRS 102 · Group consolidated · Values in £'000 (converted to £)
+  // Comparative is the 13-month period to Jun 2022 (year-end changed from May to June)
+  leicester: {
+    slug: "leicester",
+    currentFY: "FY2024",
+    priorFY: "13m to Jun 2022",
+    operating: [
+      { label: "Net cash absorbed by operating activities (Note 20)", current: -31850000, prior: -54166000 },
+    ],
+    netOperating:  { current: -31850000, prior: -54166000 },
+    investing: [
+      { label: "Purchase of tangible assets",       current:  -1993000, prior:  -2552000 },
+      { label: "Purchase of intangible assets",     current: -44466000, prior: -56121000 },
+      { label: "Proceeds from sale of tangibles",   current:      1000, prior:        0 },
+      { label: "Proceeds from sale of intangibles", current:  56082000, prior:  49716000 },
+      { label: "Interest received",                 current:    563000, prior:        0 },
+    ],
+    netInvesting:  { current:  10187000, prior:  -8957000 },
+    financing: [
+      { label: "Loan amounts received",             current:  79895000, prior: 101759000 },
+      { label: "Repayment of external loans",       current: -55931000, prior: -59433000 },
+      { label: "Interest paid",                     current:  -3448000, prior:  -5190000 },
+    ],
+    netFinancing:  { current:  20516000, prior:  37136000 },
+    openingCash:   { current:   8235000, prior:  34222000 },
+    closingCash:   { current:   7088000, prior:   8235000 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Comparative period is the 13 months ended 30 June 2022 (Leicester changed their accounting year-end from 31 May to 30 June, making the prior period non-comparable). The most recent annual accounts available at Companies House are for FY2024.",
+    postBalanceSheetNote: null,
+  },
+
   // ─── Everton ────────────────────────────────────────────────────────────────
   // FY Jun 2025 / Jun 2024 · FRS 102
   // All items on face of statement — no separate reconciliation note
