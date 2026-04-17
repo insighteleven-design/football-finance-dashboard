@@ -27,7 +27,7 @@ const COMPARE_METRICS: {
   { key: "wage_ratio",       label: "Wage Ratio",        isRatio: true, higherBetter: false },
   { key: "operating_profit", label: "Operating Profit / (Loss)",    diverging: true, higherBetter: true },
   { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",      diverging: true, higherBetter: true },
-  { key: "net_debt",         label: "Net Cash / (Debt)",            diverging: true, higherBetter: false },
+  { key: "net_debt",         label: "Net Debt",            diverging: true, higherBetter: false },
 ];
 
 // ─── Featured Comparisons ─────────────────────────────────────────────────────

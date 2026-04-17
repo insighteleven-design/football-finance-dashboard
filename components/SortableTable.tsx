@@ -50,7 +50,7 @@ export default function SortableTable({ clubs }: { clubs: ClubFinancials[] }) {
     { key: "wage_ratio",       label: "Wage Ratio" },
     { key: "operating_profit", label: "Op. Profit / (Loss)" },
     { key: "pre_tax_profit",   label: "Pre-tax P / (L)" },
-    { key: "net_debt",         label: "Net Cash / (Debt)" },
+    { key: "net_debt",         label: "Net Debt" },
     { key: "cash",             label: "Cash" },
   ];
 

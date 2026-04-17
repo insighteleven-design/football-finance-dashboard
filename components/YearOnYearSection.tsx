@@ -18,7 +18,7 @@ const METRICS: MetricConfig[] = [
   { key: "operating_profit",         label: "Operating Profit / (Loss)",  higherBetter: true },
   { key: "profit_from_player_sales", label: "Player Sales Profit",        higherBetter: null },
   { key: "pre_tax_profit",           label: "Pre-tax Profit / (Loss)",    higherBetter: true },
-  { key: "net_debt",                 label: "Net Cash / (Debt)",          higherBetter: false },
+  { key: "net_debt",                 label: "Net Debt",          higherBetter: false },
 ];
 
 // ─── Formatting ───────────────────────────────────────────────────────────────

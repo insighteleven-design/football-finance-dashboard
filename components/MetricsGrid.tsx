@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 import { fmt } from "@/lib/clubs";
 import type { FinancialSnapshot } from "@/lib/clubs";
-import type { RevenueBreakdown } from "@/lib/deepDive";
+import type { RevenueBreakdown, DebtBreakdown } from "@/lib/deepDive";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -12,6 +12,7 @@ interface Props {
   divisionData: FinancialSnapshot[];
   compareLabel: string;
   breakdown?: RevenueBreakdown | null;
+  debtBreakdown?: DebtBreakdown | null;
 }
 
 // ─── Metrics config ───────────────────────────────────────────────────────────
@@ -22,7 +23,7 @@ const ALL_METRICS: {
   isRatio?: boolean;
   diverging?: boolean;
   higherBetter: boolean | null;
-  expandable?: "revenue";
+  expandable?: "revenue" | "debt";
 }[] = [
   { key: "revenue",                    label: "Revenue",                    higherBetter: true,  expandable: "revenue" },
   { key: "wage_bill",                  label: "Wage Bill",                  higherBetter: false },
@@ -30,7 +31,7 @@ const ALL_METRICS: {
   { key: "operating_profit",           label: "Operating Profit / (Loss)",  diverging: true, higherBetter: true },
   { key: "profit_from_player_sales",   label: "Player Sales Profit",        diverging: true, higherBetter: null },
   { key: "pre_tax_profit",             label: "Pre-tax Profit / (Loss)",    diverging: true, higherBetter: true },
-  { key: "net_debt",                   label: "Net Cash / (Debt)",          diverging: true, higherBetter: false },
+  { key: "net_debt",                   label: "Net Debt",          diverging: true, higherBetter: false, expandable: "debt" },
 ];
 
 // ─── Division stats ───────────────────────────────────────────────────────────
@@ -162,6 +163,94 @@ function RevenuePanel({ breakdown, totalRevenue }: { breakdown: RevenueBreakdown
   );
 }
 
+// ─── Debt breakdown panel ─────────────────────────────────────────────────────
+
+const DEBT_COLORS: Record<string, string> = {
+  owner_loan:         "#cc8844",
+  bank:               "#4A90D9",
+  lease:              "#9B59B6",
+  pension:            "#999999",
+  bond:               "#E84A3A",
+  transfer_payables:  "#4A9A6A",
+  other:              "#bbbbbb",
+};
+
+function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
+  const totalGross = breakdown.segments.reduce((s, seg) => s + seg.amount, 0);
+  const net = totalGross - (breakdown.cash ?? 0);
+
+  return (
+    <>
+      {/* Stacked bar — gross debt only */}
+      {totalGross > 0 && (
+        <div className="h-7 flex overflow-hidden mb-5" style={{ borderRadius: "2px" }}>
+          {breakdown.segments.map((seg) => {
+            const pct = (seg.amount / totalGross) * 100;
+            return (
+              <div
+                key={seg.label}
+                className="h-full"
+                style={{
+                  width: `${pct}%`,
+                  backgroundColor: DEBT_COLORS[seg.type] ?? "#aaaaaa",
+                  minWidth: pct > 0 ? 2 : 0,
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {/* Legend — debt segments */}
+      <div className="space-y-2.5">
+        {breakdown.segments.map((seg) => (
+          <div key={seg.label} className="flex items-center gap-3">
+            <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: DEBT_COLORS[seg.type] ?? "#aaaaaa" }} />
+            <span className="text-[11px] text-[#666666] flex-1">{seg.label}</span>
+            <span className="text-[11px] font-light tabular-nums text-[#111111] w-16 text-right shrink-0">
+              £{seg.amount.toFixed(2)}m
+            </span>
+            {seg.note && (
+              <span className="text-[10px] text-[#aaaaaa] w-36 shrink-0 text-right">{seg.note}</span>
+            )}
+          </div>
+        ))}
+
+        {/* Cash */}
+        {breakdown.cash !== null && (
+          <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2.5 mt-1">
+            <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: "#4a9a6a" }} />
+            <span className="text-[11px] text-[#666666] flex-1">Cash at bank</span>
+            <span className="text-[11px] font-light tabular-nums text-[#4a9a6a] w-16 text-right shrink-0">
+              (£{breakdown.cash.toFixed(2)}m)
+            </span>
+            <span className="w-36 shrink-0" />
+          </div>
+        )}
+
+        {/* Net */}
+        <div className="flex items-center gap-3 border-t border-[#e0e0e0] pt-2.5">
+          <div className="w-2.5 h-2.5 shrink-0" />
+          <span className="text-[11px] font-medium text-[#111111] flex-1">Net debt / (cash)</span>
+          <span
+            className={`text-[11px] font-medium tabular-nums w-16 text-right shrink-0 ${
+              net <= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
+            }`}
+          >
+            {net <= 0 ? `(£${Math.abs(net).toFixed(2)}m)` : `£${net.toFixed(2)}m`}
+          </span>
+          <span className="w-36 shrink-0" />
+        </div>
+      </div>
+
+      {/* Notes */}
+      {breakdown.notes && (
+        <p className="text-[10px] text-[#aaaaaa] mt-4 leading-relaxed">{breakdown.notes}</p>
+      )}
+    </>
+  );
+}
+
 // ─── Breakdown badge ──────────────────────────────────────────────────────────
 
 function BreakdownBadge({ open }: { open: boolean }) {
@@ -186,8 +275,9 @@ function BreakdownBadge({ open }: { open: boolean }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function MetricsGrid({ data, divisionData, compareLabel, breakdown }: Props) {
+export default function MetricsGrid({ data, divisionData, compareLabel, breakdown, debtBreakdown }: Props) {
   const [revenueOpen, setRevenueOpen] = useState(false);
+  const [debtOpen, setDebtOpen] = useState(false);
 
   return (
     <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
@@ -214,8 +304,14 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
         const barColor = val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
 
         const isRevenue = m.expandable === "revenue";
-        const expandOpen = isRevenue ? revenueOpen : false;
-        const toggleExpand = isRevenue && breakdown !== undefined ? () => setRevenueOpen((o) => !o) : undefined;
+        const isDebt = m.expandable === "debt";
+        const expandOpen = isRevenue ? revenueOpen : isDebt ? debtOpen : false;
+        const toggleExpand =
+          (isRevenue && breakdown !== undefined)
+            ? () => setRevenueOpen((o) => !o)
+            : (isDebt && debtBreakdown != null)
+            ? () => setDebtOpen((o) => !o)
+            : undefined;
 
         return (
           <Fragment key={m.key as string}>
@@ -275,7 +371,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
               </div>
             </div>
 
-            {/* Inline expansion panel */}
+            {/* Inline expansion panel — Revenue */}
             {isRevenue && (
               <div
                 className="col-span-full border-b border-[#e0e0e0] overflow-hidden transition-all duration-300 ease-in-out"
@@ -284,6 +380,19 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
                   <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Revenue Breakdown</p>
                   <RevenuePanel breakdown={breakdown ?? null} totalRevenue={data.revenue} />
+                </div>
+              </div>
+            )}
+
+            {/* Inline expansion panel — Debt */}
+            {isDebt && debtBreakdown != null && (
+              <div
+                className="col-span-full border-b border-[#e0e0e0] overflow-hidden transition-all duration-300 ease-in-out"
+                style={{ maxHeight: debtOpen ? "600px" : "0px" }}
+              >
+                <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
+                  <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Debt Breakdown</p>
+                  <DebtPanel breakdown={debtBreakdown} />
                 </div>
               </div>
             )}

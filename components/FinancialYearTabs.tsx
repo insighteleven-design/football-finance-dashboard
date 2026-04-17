@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import MetricsGrid from "./MetricsGrid";
 import YearOnYearSection from "./YearOnYearSection";
 import type { ClubFinancials, FinancialSnapshot } from "@/lib/clubs";
-import type { RevenueBreakdown } from "@/lib/deepDive";
+import type { RevenueBreakdown, DebtBreakdown } from "@/lib/deepDive";
 
 interface Props {
   club: ClubFinancials;
@@ -14,6 +15,11 @@ interface Props {
   currentLabel: string;
   compareLabel: string;
   breakdown: RevenueBreakdown | null;
+  debtBreakdown: DebtBreakdown | null;
+  // Optional club-specific section rendered below MetricsGrid on the current-year tab
+  extraSection?: ReactNode;
+  // Optional club-specific section rendered below MetricsGrid on the prior-year tab
+  priorExtraSection?: ReactNode;
   // Prior year (null = no prior year available for this club)
   priorData: FinancialSnapshot | null;
   priorDivisionData: FinancialSnapshot[];
@@ -40,6 +46,9 @@ export default function FinancialYearTabs({
   currentLabel,
   compareLabel,
   breakdown,
+  debtBreakdown,
+  extraSection,
+  priorExtraSection,
   priorData,
   priorDivisionData,
   priorLabel,
@@ -82,12 +91,16 @@ export default function FinancialYearTabs({
       {/* Tab content */}
       {tab === "year2" && (
         hasFinancialData(currentData) ? (
-          <MetricsGrid
-            data={currentData}
-            divisionData={currentDivisionData}
-            compareLabel={compareLabel}
-            breakdown={breakdown}
-          />
+          <>
+            <MetricsGrid
+              data={currentData}
+              divisionData={currentDivisionData}
+              compareLabel={compareLabel}
+              breakdown={breakdown}
+              debtBreakdown={debtBreakdown}
+            />
+            {extraSection}
+          </>
         ) : (
           <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this club.</p>
         )
@@ -95,11 +108,14 @@ export default function FinancialYearTabs({
 
       {tab === "year1" && priorData && (
         hasFinancialData(priorData) ? (
-          <MetricsGrid
-            data={priorData}
-            divisionData={priorDivisionData}
-            compareLabel={priorCompareLabel}
-          />
+          <>
+            <MetricsGrid
+              data={priorData}
+              divisionData={priorDivisionData}
+              compareLabel={priorCompareLabel}
+            />
+            {priorExtraSection}
+          </>
         ) : (
           <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this year.</p>
         )

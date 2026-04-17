@@ -10,6 +10,9 @@ import ClubProfileTabs from "@/components/ClubProfileTabs";
 import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
 import EuropeanClubProfile from "@/components/EuropeanClubProfile";
+import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSection";
+import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
+import { cashFlowData } from "@/lib/cashFlowData";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -137,6 +140,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const dd       = deepDive[slug] ?? null;
   const assets   = fixedAssets[slug] ?? null;
   const ctx      = marketContext[slug] ?? null;
+  const cf       = cashFlowData[slug] ?? null;
 
   const currentIndex = clubs.findIndex((c) => c.slug === slug);
   const nextClub     = clubs[(currentIndex + 1) % clubs.length];
@@ -268,6 +272,27 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             currentLabel={currentLabel}
             compareLabel={compareLabel}
             breakdown={dd?.revenue_breakdown ?? null}
+            debtBreakdown={dd?.debt_breakdown ?? null}
+            extraSection={
+              slug === "plymouth" ? <CashFlowSection /> :
+              cf ? <ClubCashFlowSection data={cf} /> :
+              undefined
+            }
+            priorExtraSection={
+              slug === "plymouth" ? <CashFlowSectionSimple /> :
+              cf ? (
+                <ClubCashFlowSectionSimple
+                  value={cf.netOperating.prior}
+                  fyLabel={cf.priorFY}
+                  scale={Math.max(
+                    Math.abs(cf.netOperating.current / 1_000_000),
+                    Math.abs(cf.netOperating.prior / 1_000_000),
+                    1
+                  )}
+                />
+              ) :
+              undefined
+            }
             priorData={priorData}
             priorDivisionData={priorDivData}
             priorLabel={priorLabel}
