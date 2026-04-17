@@ -1340,7 +1340,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
         { "label": "Transfer payables \u2014 non-current", "amount": 42.35, "note": null, "type": "transfer_payables" }
       ],
       "cash": 9.35,
-      "notes": "Reported net debt \u00a3113.2m = net liabilities figure. Financial debt net of cash = \u00a3141.2m (group loans \u2212 cash). FRS 102 group exemption applied \u2014 no cash flow statement filed."
+      "notes": "Net debt \u00a3141.2m = group undertakings \u2212 cash. Previously stated as \u00a3113.2m (net liabilities figure, not financial net debt). FRS 102 group exemption applied \u2014 no cash flow statement filed."
     },
     "land_buildings": 0.01
   },
@@ -1368,7 +1368,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
         { "label": "Stoke City Holdings Ltd loans (0%, on demand)", "amount": 144.87, "note": "Net of intercompany receivables; gross amount owed \u00a3191.2m. Repayment only requested when company has resources.", "type": "owner_loan" }
       ],
       "cash": 25.52,
-      "notes": "Reported net debt \u00a3157.0m. \u00a390.5m of former bet365 intragroup loans waived on demerger to John Coates (Jul 2024). FRS 102 group exemption applied \u2014 no cash flow statement filed."
+      "notes": "Net debt \u00a3119.4m = net group loans \u2212 cash. Previously stated as \u00a3157.0m (net liabilities figure, not financial net debt). \u00a390.5m of former bet365 intragroup loans waived on demerger to John Coates (Jul 2024). FRS 102 group exemption applied \u2014 no cash flow statement filed."
     },
     "land_buildings": null
   },
