@@ -176,11 +176,13 @@ const DEBT_COLORS: Record<string, string> = {
 };
 
 function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
-  const debtSegs = breakdown.segments.filter((s) => s.type !== "transfer_payables");
+  const debtSegs = breakdown.segments.filter((s) => s.type !== "transfer_payables" && s.type !== "pref_shares");
   const tpSegs   = breakdown.segments.filter((s) => s.type === "transfer_payables");
+  const psSegs   = breakdown.segments.filter((s) => s.type === "pref_shares");
 
   const totalDebt = debtSegs.reduce((s, seg) => s + seg.amount, 0);
   const totalTp   = tpSegs.reduce((s, seg) => s + seg.amount, 0);
+  const totalPs   = psSegs.reduce((s, seg) => s + seg.amount, 0);
   const cash      = breakdown.cash ?? 0;
   const net       = totalDebt - cash;
 
@@ -298,6 +300,45 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
           </div>
           <p className="text-[10px] text-[#bbbbbb] mt-2 leading-relaxed italic">
             Transfer payables are operational liabilities arising from player acquisitions and are excluded from net debt.
+          </p>
+        </div>
+      )}
+
+      {/* Preference shares — separate section */}
+      {psSegs.length > 0 && (
+        <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
+          <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
+            Preference shares <span className="normal-case font-normal">(excluded from reported net debt)</span>
+          </p>
+          <div className="space-y-2">
+            {psSegs.map((seg) => (
+              <div key={seg.label}>
+                <div className="flex items-baseline gap-3">
+                  <div className="w-2.5 h-2.5 shrink-0 rounded-full mt-0.5 bg-[#cc8844]" style={{ opacity: 0.4 }} />
+                  <span className="text-[11px] text-[#888888] flex-1 leading-tight">{seg.label}</span>
+                  <span className="text-[11px] font-light tabular-nums text-[#888888] w-20 text-right shrink-0">
+                    {fmtAmt(seg.amount)}
+                  </span>
+                  <span className="w-20 shrink-0" />
+                </div>
+                {seg.note && (
+                  <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+                )}
+              </div>
+            ))}
+            {psSegs.length > 1 && (
+              <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
+                <div className="w-2.5 shrink-0" />
+                <span className="text-[11px] font-medium text-[#888888] flex-1">Total preference shares</span>
+                <span className="text-[11px] font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
+                  {fmtAmt(totalPs)}
+                </span>
+                <span className="w-20 shrink-0" />
+              </div>
+            )}
+          </div>
+          <p className="text-[10px] text-[#bbbbbb] mt-2 leading-relaxed italic">
+            Preference shares are classified as financial liabilities under FRS 102 but excluded from the reported net debt figure.
           </p>
         </div>
       )}

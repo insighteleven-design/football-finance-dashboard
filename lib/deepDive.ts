@@ -39,7 +39,7 @@ export interface DebtSegment {
   label: string;
   amount: number;    // £m, always positive
   note: string | null;
-  type: "owner_loan" | "bank" | "lease" | "pension" | "bond" | "transfer_payables" | "other";
+  type: "owner_loan" | "bank" | "lease" | "pension" | "bond" | "transfer_payables" | "pref_shares" | "other";
 }
 
 export interface DebtBreakdown {
@@ -261,9 +261,9 @@ export const deepDive: Record<string, ClubDeepDive> = {
   },
   "chelsea": {
     "revenue_breakdown": {
-      "matchday": 76.43,
-      "broadcasting": 163.08,
-      "commercial": 175.51
+      "matchday": 86.762,
+      "broadcasting": 203.230,
+      "commercial": 200.865
     },
     "debt_profile": {
       "owner_loans": {
@@ -278,7 +278,14 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "other_debt": null,
       "total_debt_notes": "Amounts due to group undertakings of \u00a31,641.9m are interest free and repayable on demand, though the parent company directors have confirmed no intention to demand repayment within the next year. The prior year balance sheet was restated to reclassify \u00a31,273.6m of group balances from non-current to current liabilities. Trade creditors (transfer payables) of \u00a3322.6m fall due within one year and \u00a3219.3m after more than one year. Contingent transfer fee liabilities of up to \u00a374.2m may also become payable."
     },
-    "debt_breakdown": null,
+    "debt_breakdown": {
+      "segments": [
+        { "label": "Transfer payables — current", "amount": 202.343, "note": null, "type": "transfer_payables" },
+        { "label": "Transfer payables — non-current", "amount": 193.792, "note": null, "type": "transfer_payables" }
+      ],
+      "cash": 49.009,
+      "notes": "Group accounts (Chelsea FC Holdings Limited). No external borrowings at group level — intercompany balance with parent Blueco 22 Ltd is eliminated on consolidation. Net cash position: £49.0m cash, no financial debt."
+    },
     "land_buildings": 110.0
   },
   "crystal_palace": {
@@ -1115,12 +1122,12 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "segments": [
         { "label": "Norfolk FB Holdings LLC / director loans", "amount": 43.53, "note": "\u00a356.6m converted to preference shares in Oct 2024; new \u00a329.8m debt financing provided in year.", "type": "owner_loan" },
         { "label": "Bank loan (secured on player receivables, due Sep 2026)", "amount": 10.43, "note": null, "type": "bank" },
-        { "label": "Preference shares A, B & C (debt-classified)", "amount": 11.42, "note": null, "type": "other" },
+        { "label": "Preference shares A, B & C (debt-classified)", "amount": 11.42, "note": "Excluded from reported net debt; treated as quasi-equity by the club.", "type": "pref_shares" },
         { "label": "Other loans (within 1 year)", "amount": 2.46, "note": null, "type": "other" },
         { "label": "Transfer payables", "amount": 20.21, "note": null, "type": "transfer_payables" }
       ],
       "cash": 2.00,
-      "notes": "Net debt (excl. transfer payables) \u2248 \u00a365.8m."
+      "notes": "Reported net debt \u00a354.4m excludes preference shares (\u00a311.4m). Including pref shares, total financial liabilities net of cash \u2248 \u00a365.8m."
     },
     "land_buildings": 34.55
   },
