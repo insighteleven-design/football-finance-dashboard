@@ -244,7 +244,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
         </span>
         {breakdown.cash !== null ? (
           <span className="text-[11px] tabular-nums text-[#4a9a6a] w-20 text-right shrink-0">
-            ({fmtAmt(cash)})
+            {fmtAmt(cash)}
           </span>
         ) : (
           <span className="w-20 shrink-0" />
