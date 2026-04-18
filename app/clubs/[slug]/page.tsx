@@ -89,20 +89,14 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       (c) => c.league === euClub.league && c.country === euClub.country && hasEuFinancialData(c)
     );
 
-    // Next club: skip data-less clubs
+    // Next/prev club: skip data-less clubs
     const visibleEuClubs = euClubs.filter(hasEuFinancialData);
     const idx = visibleEuClubs.findIndex((c) => c.slug === slug);
     const nextEu = visibleEuClubs[(idx + 1) % visibleEuClubs.length];
+    const prevEu = visibleEuClubs[(idx - 1 + visibleEuClubs.length) % visibleEuClubs.length];
 
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors"
-        >
-          <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-          All clubs
-        </Link>
         <div className="mb-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
@@ -121,12 +115,26 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <p className="text-sm text-[#999999]">{euClub.city}</p>
               )}
             </div>
-            <Link
-              href={`/clubs/${nextEu.slug}`}
-              className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors shrink-0"
-            >
-              Next club →
-            </Link>
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                All clubs
+              </Link>
+              <Link
+                href={`/clubs/${prevEu.slug}`}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                ← Prev
+              </Link>
+              <Link
+                href={`/clubs/${nextEu.slug}`}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                Next →
+              </Link>
+            </div>
           </div>
         </div>
         <EuropeanClubProfile club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
@@ -144,6 +152,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
   const currentIndex = clubs.findIndex((c) => c.slug === slug);
   const nextClub     = clubs[(currentIndex + 1) % clubs.length];
+  const prevClub     = clubs[(currentIndex - 1 + clubs.length) % clubs.length];
 
   const compareDivision = club.compare_division ?? club.division;
   const compareLabel    = DIVISION_LABELS[compareDivision];
@@ -218,15 +227,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Back */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-[#999999] hover:text-[#111111] mb-6 group transition-colors"
-      >
-        <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-        All clubs
-      </Link>
-
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -254,12 +254,26 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <HealthBadges club={club} />
           </div>
 
-          <Link
-            href={`/clubs/${nextClub.slug}`}
-            className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors shrink-0"
-          >
-            Next club →
-          </Link>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+            >
+              All clubs
+            </Link>
+            <Link
+              href={`/clubs/${prevClub.slug}`}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+            >
+              ← Prev
+            </Link>
+            <Link
+              href={`/clubs/${nextClub.slug}`}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+            >
+              Next →
+            </Link>
+          </div>
         </div>
       </div>
 
