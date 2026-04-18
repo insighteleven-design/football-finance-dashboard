@@ -13,6 +13,7 @@ import EuropeanClubProfile from "@/components/EuropeanClubProfile";
 import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSection";
 import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
 import { cashFlowData } from "@/lib/cashFlowData";
+import CopyLinkButton from "@/components/CopyLinkButton";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -116,6 +117,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               )}
             </div>
             <div className="flex items-center gap-2 shrink-0">
+              <CopyLinkButton />
               <Link
                 href="/"
                 className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
@@ -255,6 +257,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
+            <CopyLinkButton />
             <Link
               href="/"
               className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
