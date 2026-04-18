@@ -51,8 +51,6 @@ export default function Home() {
       {/* ── Main navigation ───────────────────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-0 pb-24 sm:pb-32">
         <HomeNav
-          clubs={clubs}
-          euClubs={euClubs}
           totalClubs={totalClubs}
           totalCountries={totalCountries}
         />

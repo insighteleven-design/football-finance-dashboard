@@ -119,7 +119,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <div className="flex items-center gap-2 shrink-0">
               <CopyLinkButton />
               <Link
-                href="/"
+                href={`/directory?country=${encodeURIComponent(euClub.country)}&league=${encodeURIComponent(euClub.league)}`}
                 className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
               >
                 All clubs
@@ -259,7 +259,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <div className="flex items-center gap-2 shrink-0">
             <CopyLinkButton />
             <Link
-              href="/"
+              href={`/directory?country=England&league=${encodeURIComponent(club.division)}`}
               className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
             >
               All clubs

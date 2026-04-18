@@ -281,11 +281,13 @@ function ClubsView({
 export default function CountryClubs({
   clubs,
   euClubs,
+  initialView,
 }: {
   clubs: ClubFinancials[];
   euClubs: EUClub[];
+  initialView?: View;
 }) {
-  const [view, setView] = useState<View>({ level: "countries" });
+  const [view, setView] = useState<View>(initialView ?? { level: "countries" });
 
   return (
     <div>
