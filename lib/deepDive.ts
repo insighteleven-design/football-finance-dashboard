@@ -1559,22 +1559,30 @@ export const deepDive: Record<string, ClubDeepDive> = {
   "bolton": {
     "revenue_breakdown": null,
     "debt_profile": {
-      "owner_loans": {
-        "amount": 5.5,
-        "interest_rate": "5% increasing to 6% from 1 September 2023",
-        "repayment_date": "Four equal instalments of \u00a31,375,000 from 1 August 2025 annually",
-        "secured": true
+      "owner_loans": null,
+      "bank_debt": {
+        "amount": 5.96,
+        "facility_type": "Secured loan",
+        "repayment_date": "Four equal instalments of £1,375,000 from 1 August 2025 annually",
+        "security": "Fixed and floating charge over land and buildings; negative pledges"
       },
-      "bank_debt": null,
       "transfer_payables": null,
       "bond_debt": {
         "amount": 4.57,
         "maturity": "Fixed term of 5 years from June 2023"
       },
-      "other_debt": "\u00a320.15m received from shareholders classified as other creditors at year end pending EFL approval for share issuance, subsequently converted to equity post year end.",
-      "total_debt_notes": "Other borrowings of \u00a35.96m (2024: \u00a36.26m) are secured by fixed and floating charges over land and buildings and include negative pledges, with interest at 5-6% and capital repayable in four annual instalments of \u00a31.375m from August 2025. Bonds of \u00a34.568m raised from the public in June 2023 are unsecured, with 8.5% annual interest from June 2024 and a 5-year term."
+      "other_debt": "£20.15m received from shareholders classified as other creditors at year end pending EFL approval for share issuance, subsequently converted to equity post year end.",
+      "total_debt_notes": "External borrowings of £5.96m (2024: £6.26m) are secured by fixed and floating charges over land and buildings, with interest at 5-6% pa and capital repayable in four annual instalments of £1.375m from August 2025. Bonds of £4.568m raised from the public in June 2023 are unsecured, with 8.5% annual interest and a 5-year term. Shareholder equity contributions of £20.15m were held in other creditors at year end, converted to share capital post year-end."
     },
-    "land_buildings": null
+    "debt_breakdown": {
+      "segments": [
+        { "label": "Secured external loan (5–6%)", "amount": 5.96, "note": "Repayable in four annual instalments of £1.375m from Aug 2025; secured on land & buildings", "type": "bank" },
+        { "label": "Public bonds (8.5%)", "amount": 4.57, "note": "Issued to public Jun 2023; unsecured; 5-year fixed term maturing ~Jun 2028", "type": "bond" }
+      ],
+      "cash": 0.46,
+      "notes": "£20.15m shareholder equity contributions in current creditors at year-end — converted to share capital post year-end, excluded from net debt."
+    },
+    "land_buildings": 8.14
   },
   "bradford": {
     "revenue_breakdown": null,

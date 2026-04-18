@@ -5,8 +5,9 @@
 import { frClubs } from "./frClubs";
 import { dkClubs } from "./dkClubs";
 import { noClubs } from "./noClubs";
+import { swClubs } from "./swClubs";
 
-export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria" | "France" | "Denmark" | "Norway";
+export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria" | "France" | "Denmark" | "Norway" | "Sweden";
 
 export interface EUHistoricalYear {
   season: string;
@@ -23,7 +24,7 @@ export interface EUClub {
   country: EUCountry;
   league: string;
   city: string | null;
-  currency: "EUR" | "USD";
+  currency: "EUR" | "USD" | "SEK";
   stadium: { name: string | null; capacity: number | null; ownership: string | null } | null;
   ownership: { summary: string | null; category: string | null; fifty_plus_one: string | null } | null;
   financials: {
@@ -3664,6 +3665,7 @@ export const euClubs: EUClub[] = [
   ...frClubs,
   ...dkClubs,
   ...noClubs,
+  ...swClubs,
 ];
 
 export function getEuClub(slug: string): EUClub | undefined {
@@ -3713,6 +3715,15 @@ export const EU_COUNTRY_CONFIG: {
     flag: "🇳🇴",
     leagues: [
       { key: "norwegian-eliteserien", label: "Eliteserien" },
+    ],
+  },
+  {
+    country: "Sweden",
+    flag: "🇸🇪",
+    leagues: [
+      { key: "Allsvenskan", label: "Allsvenskan" },
+      { key: "Superettan", label: "Superettan" },
+      { key: "Damallsvenskan", label: "Damallsvenskan" },
     ],
   },
 ];

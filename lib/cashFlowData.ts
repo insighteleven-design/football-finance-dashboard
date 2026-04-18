@@ -889,4 +889,50 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
     reconciliationNote: null,
     postBalanceSheetNote: "Since the year end the Group has acquired the registration of 6 players at an initial cost of £263.3m and disposed of the registration of 15 players at a profit of £31.8m.",
   },
+
+  // ─── Bolton Wanderers ───────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Group (Football Ventures (Whites) Limited)
+  // Interest classified in operating; reconciliation in Note 25
+  bolton: {
+    slug: "bolton",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations (Note 25)", current: -17097805, prior:  -9177162 },
+      { label: "Interest paid",                         current:   -425457, prior:   -711166 },
+    ],
+    netOperating: { current: -17523262, prior: -9888328 },
+    investing: [
+      { label: "Purchase of intangible assets",         current:  -3749148, prior:  -1601663 },
+      { label: "Proceeds from disposal of intangibles", current:   1350000, prior:       943 },
+      { label: "Purchase of tangible fixed assets",     current:  -2404846, prior:  -3509858 },
+      { label: "Interest received",                     current:     18787, prior:    14731 },
+    ],
+    netInvesting: { current: -4785207, prior: -5095847 },
+    financing: [
+      { label: "Proceeds from issue of shares",                        current:   2000002, prior:  4499973 },
+      { label: "Proceeds from shareholders for shares yet to be issued", current: 20150000, prior:  7000504 },
+      { label: "Proceeds from borrowings",                             current:         0, prior:  1631164 },
+      { label: "Repayment of borrowings",                              current:  -299720, prior:        0 },
+      { label: "Repayment of bank loans",                              current:        0, prior: -1422901 },
+    ],
+    netFinancing: { current: 21850282, prior: 11708740 },
+    openingCash: { current: 920791, prior: 4196226 },
+    closingCash: { current: 462604, prior:  920791 },
+    reconciliation: [
+      { label: "Loss after taxation",                                current: -14361894, prior: -11150424 },
+      { label: "Finance costs",                                      current:    425457, prior:    711166 },
+      { label: "Investment income",                                  current:    -18787, prior:    -14731 },
+      { label: "Gain on disposal of intangible assets",             current:   -540544, prior:    -96567 },
+      { label: "Amortisation & impairment of intangible assets",    current:   2484356, prior:   1751405 },
+      { label: "Depreciation & impairment of tangible fixed assets",current:   1388685, prior:   1000222 },
+      { label: "Decrease in stocks",                                current:    190829, prior:     67912 },
+      { label: "Decrease/(increase) in debtors",                    current:    722983, prior:   -440593 },
+      { label: "Decrease in creditors",                             current:  -7279059, prior:  -1540086 },
+      { label: "(Decrease)/increase in deferred income",            current:   -109831, prior:    534534 },
+    ],
+    reconciliationTitle: "Note 25 — Cash absorbed by group operations",
+    reconciliationNote: null,
+    postBalanceSheetNote: "Post year-end the shareholders issued further share capital: £3m (14 Jul 2025), £17.15m (31 Jul 2025) and £9m (1 Aug 2025).",
+  },
 };

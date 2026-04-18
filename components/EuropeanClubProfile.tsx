@@ -13,10 +13,11 @@ function fmtEur(v: number | null, isRatio = false): string {
   return `${v < 0 ? "-" : ""}€${abs.toFixed(1)}m`;
 }
 
-function fmtCurrency(v: number | null, currency: "EUR" | "USD", isRatio = false): string {
+function fmtCurrency(v: number | null, currency: "EUR" | "USD" | "SEK", isRatio = false): string {
   if (v === null) return "—";
   if (isRatio) return `${v.toFixed(1)}%`;
   const abs = Math.abs(v);
+  if (currency === "SEK") return `${v < 0 ? "-" : ""}SEK ${abs.toFixed(1)}m`;
   const sym = currency === "USD" ? "$" : "€";
   return `${v < 0 ? "-" : ""}${sym}${abs.toFixed(1)}m`;
 }
@@ -105,6 +106,15 @@ const DK_METRICS: MetricConfig[] = [
   { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
 ];
 
+const SW_METRICS: MetricConfig[] = [
+  { key: "revenue",             label: "Revenue (USD)",                  higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (USD)",                higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "Operating Profit / (Loss)",      diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+];
+
 // ─── Financial tab ────────────────────────────────────────────────────────────
 
 function FinancialTab({
@@ -119,7 +129,7 @@ function FinancialTab({
   metrics: MetricConfig[];
 }) {
   const fin = club.financials;
-  const curr = (club.currency === "USD" ? "USD" : "EUR") as "EUR" | "USD";
+  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
   const hasAny = metrics.some((m) => fin[m.key] !== null && fin[m.key] !== undefined);
   if (!hasAny) {
     return (
@@ -142,6 +152,14 @@ function FinancialTab({
           Figures converted from Norwegian Krone (NOK) to US Dollars (USD) using published annual FX rates.
           Original NOK values are available in the data notes below.
           Norwegian clubs are non-profit idrettslag (sports associations) — no corporate tax applies.
+        </div>
+      )}
+      {/* SEK→USD disclaimer for Swedish clubs */}
+      {club.country === "Sweden" && (
+        <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+          Figures converted from Swedish Kronor (SEK) to US Dollars (USD) using published annual average FX rates
+          (2025: 10.47, 2024: 10.53, 2023: 10.50 SEK/USD). Original SEK values are available in the data notes below.
+          Swedish clubs are non-profit ideella föreningar (membership associations) — no corporate tax applies.
         </div>
       )}
       <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
@@ -248,6 +266,7 @@ function HistoricalTab({ club }: { club: EUClub }) {
     return <p className="text-sm text-[#aaaaaa] italic">No historical data available.</p>;
   }
 
+  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
   const maxRev = Math.max(...hist.map((h) => h.revenue ?? 0), 0.01);
   const showProfit = hist.some((h) => h.net_profit !== null);
 
@@ -277,7 +296,7 @@ function HistoricalTab({ club }: { club: EUClub }) {
                 <div className="h-full bg-[#8888cc]" style={{ width: `${revPct}%` }} />
               </div>
               <span className="text-xs tabular-nums text-[#111111] w-16 text-right shrink-0">
-                {h.revenue !== null ? `€${h.revenue.toFixed(1)}m` : "—"}
+                {h.revenue !== null ? fmtCurrency(h.revenue, curr) : "—"}
               </span>
               {showProfit && (
                 <span
@@ -289,7 +308,7 @@ function HistoricalTab({ club }: { club: EUClub }) {
                       : "text-[#9a4a4a]"
                   }`}
                 >
-                  {h.net_profit !== null ? fmtEur(h.net_profit) : "—"}
+                  {h.net_profit !== null ? fmtCurrency(h.net_profit, curr) : "—"}
                 </span>
               )}
             </div>
@@ -433,7 +452,7 @@ export default function EuropeanClubProfile({
           club={club}
           leagueClubs={leagueClubs}
           leagueLabel={leagueLabel}
-          metrics={club.country === "Norway" || club.country === "Denmark" ? DK_METRICS : club.country === "France" ? FR_METRICS : EU_METRICS}
+          metrics={club.country === "Norway" || club.country === "Denmark" ? DK_METRICS : club.country === "Sweden" ? SW_METRICS : club.country === "France" ? FR_METRICS : EU_METRICS}
         />
       )}
       {tab === "historical" && <HistoricalTab club={club} />}
