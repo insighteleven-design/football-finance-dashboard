@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { clubs, getClub, type ClubFinancials, type FinancialSnapshot } from "@/lib/clubs";
 import { euClubs, getEuClub, type EUClub } from "@/lib/euClubs";
+import { japanClubs, getJapanClub, J_DIVISION_LABELS } from "@/lib/japanClubs";
+import { japanDeepDive } from "@/lib/japanDeepDive";
 import { deepDive } from "@/lib/deepDive";
 import { fixedAssets } from "@/lib/fixedAssets";
 import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
@@ -10,6 +12,7 @@ import ClubProfileTabs from "@/components/ClubProfileTabs";
 import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
 import EuropeanClubProfile from "@/components/EuropeanClubProfile";
+import JapanClubProfile from "@/components/JapanClubProfile";
 import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSection";
 import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
 import { cashFlowData } from "@/lib/cashFlowData";
@@ -30,7 +33,8 @@ function hasEuFinancialData(club: EUClub): boolean {
 export function generateStaticParams() {
   const englishSlugs = clubs.map((c) => ({ slug: c.slug }));
   const euSlugs = euClubs.filter(hasEuFinancialData).map((c) => ({ slug: c.slug }));
-  return [...englishSlugs, ...euSlugs];
+  const japanSlugs = japanClubs.map((c) => ({ slug: c.slug }));
+  return [...englishSlugs, ...euSlugs, ...japanSlugs];
 }
 
 const DIVISION_LABELS: Record<string, string> = {
@@ -144,6 +148,89 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     );
   }
 
+  // ─── Japan club fast-path ────────────────────────────────────────────────────
+  const japanClub = getJapanClub(slug);
+  if (japanClub) {
+    const divisionLabel = J_DIVISION_LABELS[japanClub.division];
+    const leagueClubs = japanClubs.filter((c) => c.division === japanClub.division);
+    const dd = japanDeepDive[slug] ?? null;
+
+    const visibleJapanClubs = japanClubs;
+    const jIdx = visibleJapanClubs.findIndex((c) => c.slug === slug);
+    const nextJp = visibleJapanClubs[(jIdx + 1) % visibleJapanClubs.length];
+    const prevJp = visibleJapanClubs[(jIdx - 1 + visibleJapanClubs.length) % visibleJapanClubs.length];
+
+    const fyDate = new Date(japanClub.fiscal_year_end).toLocaleDateString("en-GB", {
+      day: "numeric", month: "long", year: "numeric",
+    });
+
+    const issues: string[] = [];
+    const positives: string[] = [];
+    if (japanClub.pre_tax_profit !== null && japanClub.pre_tax_profit < 0) issues.push("Loss-making");
+    if (japanClub.pre_tax_profit !== null && japanClub.pre_tax_profit > 0) positives.push("Profitable");
+    if (japanClub.net_debt !== null && japanClub.net_debt < 0) positives.push("Net cash");
+    if (japanClub.wage_ratio !== null && japanClub.wage_ratio > 100) issues.push("Wages exceed revenue");
+    else if (japanClub.wage_ratio !== null && japanClub.wage_ratio > 80) issues.push("High wage ratio");
+    if (japanClub.wage_ratio !== null && japanClub.wage_ratio < 60) positives.push("Lean wage bill");
+
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-3 mb-1 flex-wrap">
+                <h1 className="text-2xl sm:text-3xl font-serif font-light text-[#111111] tracking-tight">
+                  {japanClub.name}
+                </h1>
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
+                  {divisionLabel}
+                </span>
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
+                  Japan
+                </span>
+              </div>
+              <p className="text-sm text-[#999999]">
+                Financial year ending <span className="text-[#666666]">{fyDate}</span>
+              </p>
+              {(issues.length > 0 || positives.length > 0) && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {positives.map((p) => (
+                    <span key={p} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#4a9a6a] text-[#4a9a6a]">{p}</span>
+                  ))}
+                  {issues.map((i) => (
+                    <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#9a4a4a] text-[#9a4a4a]">{i}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <CopyLinkButton />
+              <Link
+                href={`/directory?country=Japan&league=${encodeURIComponent(japanClub.division)}`}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                All clubs
+              </Link>
+              <Link
+                href={`/clubs/${prevJp.slug}`}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                ← Prev
+              </Link>
+              <Link
+                href={`/clubs/${nextJp.slug}`}
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666666] hover:border-[#111111] hover:text-[#111111] transition-colors"
+              >
+                Next →
+              </Link>
+            </div>
+          </div>
+        </div>
+        <JapanClubProfile club={japanClub} leagueClubs={leagueClubs} deepDive={dd} />
+      </div>
+    );
+  }
+
   const club = getClub(slug);
   if (!club) notFound();
 
@@ -156,7 +243,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const nextClub     = clubs[(currentIndex + 1) % clubs.length];
   const prevClub     = clubs[(currentIndex - 1 + clubs.length) % clubs.length];
 
-  const compareDivision = club.compare_division ?? club.division;
+  const compareDivision = club.division;
   const compareLabel    = DIVISION_LABELS[compareDivision];
 
   const fyDate = new Date(club.fiscal_year_end).toLocaleDateString("en-GB", {
@@ -193,8 +280,28 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const currentData    = toSnapshot(club);
   const currentLabel   = fyLabel(club.fiscal_year_end);
   const currentDivData = clubs
-    .filter((c) => (c.compare_division ?? c.division) === compareDivision)
+    .filter((c) => c.division === compareDivision)
     .map(toSnapshot);
+
+  // data2023 year
+  const d23 = club.data2023 ?? null;
+  const data2023Snap: FinancialSnapshot | null = d23 ? toSnapshot(d23) : null;
+  const data2023Label = d23 ? fyLabel(d23.fiscal_year_end) : null;
+  const data2023CompareDivision = d23?.compare_division ?? compareDivision;
+  const data2023CompareLabel = DIVISION_LABELS[data2023CompareDivision];
+  const data2023DivData = clubs
+    .filter((c) => c.data2023?.compare_division === data2023CompareDivision)
+    .map((c) => toSnapshot(c.data2023!));
+
+  // data2022 year
+  const d22 = club.data2022 ?? null;
+  const data2022Snap: FinancialSnapshot | null = d22 ? toSnapshot(d22) : null;
+  const data2022Label = d22 ? fyLabel(d22.fiscal_year_end) : null;
+  const data2022CompareDivision = d22?.compare_division ?? compareDivision;
+  const data2022CompareLabel = DIVISION_LABELS[data2022CompareDivision];
+  const data2022DivData = clubs
+    .filter((c) => c.data2022?.compare_division === data2022CompareDivision)
+    .map((c) => toSnapshot(c.data2022!));
 
   // Prior year
   const py = club.prior_year ?? null;
@@ -314,6 +421,14 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             priorDivisionData={priorDivData}
             priorLabel={priorLabel}
             priorCompareLabel={priorCompareLabel}
+            data2023={data2023Snap}
+            data2023DivisionData={data2023DivData}
+            data2023Label={data2023Label}
+            data2023CompareLabel={data2023CompareLabel}
+            data2022={data2022Snap}
+            data2022DivisionData={data2022DivData}
+            data2022Label={data2022Label}
+            data2022CompareLabel={data2022CompareLabel}
           />
         }
         assets={
