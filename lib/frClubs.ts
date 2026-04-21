@@ -31,6 +31,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 652.0,
       data_notes: "Ligue 1 2024/25. Values in €m from club accounts.",
     },
+    prior_year: { season: "2023/24", revenue: 807.9, wage_bill: 658.6, wage_to_revenue_pct: 82, operating_profit: -232.2, profit_from_player_sales: 181.4, pre_tax_profit: -56.3, net_debt: 638.6 },
     historical: [
       { season: "2023/24", revenue: 807.9, wage_bill: 658.6, net_profit: -56.3 },
       { season: "2024/25", revenue: 837.0, wage_bill: 535.0, net_profit: -40.4 },
@@ -62,6 +63,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 159.8,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 287.0, wage_bill: 148.3, wage_to_revenue_pct: 52, operating_profit: -44.8, profit_from_player_sales: 7.8, pre_tax_profit: -38.4, net_debt: 167.1 },
     historical: [
       { season: "2023/24", revenue: 287.0, wage_bill: 148.3, net_profit: -38.4 },
       { season: "2024/25", revenue: 188.7, wage_bill: 153.7, net_profit: -103.4 },
@@ -93,6 +95,7 @@ const l1Clubs: EUClub[] = [
       net_debt: -12.4,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 118.3, wage_bill: 74.7, wage_to_revenue_pct: 63, operating_profit: -19.9, profit_from_player_sales: 42.1, pre_tax_profit: 19.2, net_debt: 51.4 },
     historical: [
       { season: "2023/24", revenue: 118.3, wage_bill: 74.7, net_profit: 19.2 },
       { season: "2024/25", revenue: 191.8, wage_bill: 89.0, net_profit: 101.1 },
@@ -124,6 +127,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 750.5,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 264.1, wage_bill: 161.9, wage_to_revenue_pct: 61, operating_profit: 26.5, profit_from_player_sales: 75.9, pre_tax_profit: -8.4, net_debt: 33.4 },
     historical: [
       { season: "2023/24", revenue: 264.1, wage_bill: 161.9, net_profit: -8.4 },
       { season: "2024/25", revenue: 159.0, wage_bill: 155.1, net_profit: -208.6 },
@@ -155,6 +159,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 192.0,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 107.7, wage_bill: 104.9, wage_to_revenue_pct: 97, operating_profit: -30.3, profit_from_player_sales: -4.1, pre_tax_profit: -15.4, net_debt: 193.9 },
     historical: [
       { season: "2023/24", revenue: 107.7, wage_bill: 104.9, net_profit: -15.4 },
       { season: "2024/25", revenue: 116.9, wage_bill: 109.4, net_profit: -2.7 },
@@ -186,6 +191,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 9.8,
       data_notes: "Ligue 1 2024/25. No prior year data available.",
     },
+    prior_year: null,
     historical: [
       { season: "2024/25", revenue: 94.9, wage_bill: 44.0, net_profit: 6.6 },
     ],
@@ -216,6 +222,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 314.8,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 107.1, wage_bill: 111.7, wage_to_revenue_pct: 104, operating_profit: -30.8, profit_from_player_sales: 37.0, pre_tax_profit: -0.2, net_debt: 195.2 },
     historical: [
       { season: "2023/24", revenue: 107.1, wage_bill: 111.7, net_profit: -0.2 },
       { season: "2024/25", revenue: 93.4, wage_bill: 116.1, net_profit: -27.0 },
@@ -247,6 +254,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 89.8,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 161.9, wage_bill: 93.0, wage_to_revenue_pct: 57, operating_profit: -13.1, profit_from_player_sales: -7.7, pre_tax_profit: -26.7, net_debt: 83.3 },
     historical: [
       { season: "2023/24", revenue: 161.9, wage_bill: 93.0, net_profit: -26.7 },
       { season: "2024/25", revenue: 93.4, wage_bill: 89.8, net_profit: -40.5 },
@@ -278,6 +286,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 88.0,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 144.5, wage_bill: 84.8, wage_to_revenue_pct: 59, operating_profit: -13.7, profit_from_player_sales: 28.2, pre_tax_profit: 8.6, net_debt: 73.5 },
     historical: [
       { season: "2023/24", revenue: 144.5, wage_bill: 84.8, net_profit: 8.6 },
       { season: "2024/25", revenue: 68.8, wage_bill: 59.8, net_profit: 4.4 },
@@ -309,6 +318,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 22.6,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 64.4, wage_bill: 56.5, wage_to_revenue_pct: 88, operating_profit: -30.2, profit_from_player_sales: 31.7, pre_tax_profit: 0.1, net_debt: 25.9 },
     historical: [
       { season: "2023/24", revenue: 64.4, wage_bill: 56.5, net_profit: 0.1 },
       { season: "2024/25", revenue: 41.4, wage_bill: 55.6, net_profit: 0.1 },
@@ -340,6 +350,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 40.2,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 58.6, wage_bill: 56.7, wage_to_revenue_pct: 97, operating_profit: -36.9, profit_from_player_sales: 43.2, pre_tax_profit: 0.8, net_debt: 50.4 },
     historical: [
       { season: "2023/24", revenue: 58.6, wage_bill: 56.7, net_profit: 0.8 },
       { season: "2024/25", revenue: 40.7, wage_bill: 42.0, net_profit: 0.4 },
@@ -371,6 +382,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 24.3,
       data_notes: "Ligue 1 2024/25. Promoted from Ligue 2; prior year from Ligue 2.",
     },
+    prior_year: { season: "2023/24", revenue: 26.8, wage_bill: 23.1, wage_to_revenue_pct: 86, operating_profit: -13.1, profit_from_player_sales: -0.1, pre_tax_profit: -14.0, net_debt: 16.5 },
     historical: [
       { season: "2023/24", revenue: 26.8, wage_bill: 23.1, net_profit: -14.0 },
       { season: "2024/25", revenue: 39.3, wage_bill: 38.0, net_profit: -16.5 },
@@ -402,6 +414,7 @@ const l1Clubs: EUClub[] = [
       net_debt: -17.8,
       data_notes: "Ligue 1 2024/25. Promoted from Ligue 2; prior year from Ligue 2.",
     },
+    prior_year: { season: "2023/24", revenue: 50.0, wage_bill: 29.3, wage_to_revenue_pct: 59, operating_profit: -8.3, profit_from_player_sales: 15.2, pre_tax_profit: -0.9, net_debt: 3.9 },
     historical: [
       { season: "2023/24", revenue: 50.0, wage_bill: 29.3, net_profit: -0.9 },
       { season: "2024/25", revenue: 39.0, wage_bill: 38.7, net_profit: -28.5 },
@@ -433,6 +446,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 4.5,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 64.9, wage_bill: 51.2, wage_to_revenue_pct: 79, operating_profit: -41.7, profit_from_player_sales: 28.6, pre_tax_profit: -14.3, net_debt: 63.4 },
     historical: [
       { season: "2023/24", revenue: 64.9, wage_bill: 51.2, net_profit: -14.3 },
       { season: "2024/25", revenue: 38.8, wage_bill: 66.9, net_profit: -78.3 },
@@ -464,6 +478,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 23.2,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 63.2, wage_bill: 38.3, wage_to_revenue_pct: 61, operating_profit: -9.8, profit_from_player_sales: 20.7, pre_tax_profit: 7.8, net_debt: 16.0 },
     historical: [
       { season: "2023/24", revenue: 63.2, wage_bill: 38.3, net_profit: 7.8 },
       { season: "2024/25", revenue: 36.1, wage_bill: 32.4, net_profit: 2.1 },
@@ -495,6 +510,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 28.7,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 37.7, wage_bill: 31.0, wage_to_revenue_pct: 82, operating_profit: -14.3, profit_from_player_sales: 1.4, pre_tax_profit: -13.6, net_debt: 18.5 },
     historical: [
       { season: "2023/24", revenue: 37.7, wage_bill: 31.0, net_profit: -13.6 },
       { season: "2024/25", revenue: 32.5, wage_bill: 30.6, net_profit: -9.7 },
@@ -526,6 +542,7 @@ const l1Clubs: EUClub[] = [
       net_debt: -14.7,
       data_notes: "Ligue 1 2024/25. Promoted from Ligue 2; prior year from Ligue 2.",
     },
+    prior_year: { season: "2023/24", revenue: 33.5, wage_bill: 19.7, wage_to_revenue_pct: 59, operating_profit: 0.1, profit_from_player_sales: 14.4, pre_tax_profit: 13.5, net_debt: -16.7 },
     historical: [
       { season: "2023/24", revenue: 33.5, wage_bill: 19.7, net_profit: 13.5 },
       { season: "2024/25", revenue: 20.6, wage_bill: 27.2, net_profit: -5.8 },
@@ -557,6 +574,7 @@ const l1Clubs: EUClub[] = [
       net_debt: 4.5,
       data_notes: "Ligue 1 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 54.7, wage_bill: 51.7, wage_to_revenue_pct: 95, operating_profit: -25.2, profit_from_player_sales: 36.1, pre_tax_profit: 0.0, net_debt: 29.2 },
     historical: [
       { season: "2023/24", revenue: 54.7, wage_bill: 51.7, net_profit: 0.0 },
       { season: "2024/25", revenue: 28.8, wage_bill: 42.7, net_profit: -4.1 },
@@ -591,6 +609,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 0.9,
       data_notes: "Ligue 2 2024/25. Relegated from Ligue 1; prior year from Ligue 1.",
     },
+    prior_year: { season: "2023/24", revenue: 54.4, wage_bill: 30.5, wage_to_revenue_pct: 56, operating_profit: -15.5, profit_from_player_sales: 21.8, pre_tax_profit: -4.6, net_debt: 19.6 },
     historical: [
       { season: "2023/24", revenue: 54.4, wage_bill: 30.5, net_profit: -4.6 },
       { season: "2024/25", revenue: 23.5, wage_bill: 20.0, net_profit: -0.6 },
@@ -622,6 +641,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 33.6,
       data_notes: "Ligue 2 2024/25. Relegated from Ligue 1; prior year from Ligue 1.",
     },
+    prior_year: { season: "2023/24", revenue: 47.0, wage_bill: 47.2, wage_to_revenue_pct: 100, operating_profit: -37.1, profit_from_player_sales: 37.9, pre_tax_profit: 1.1, net_debt: 59.8 },
     historical: [
       { season: "2023/24", revenue: 47.0, wage_bill: 47.2, net_profit: 1.1 },
       { season: "2024/25", revenue: 17.2, wage_bill: 26.4, net_profit: 1.1 },
@@ -653,6 +673,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 9.7,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 16.2, wage_bill: 16.7, wage_to_revenue_pct: 103, operating_profit: -11.1, profit_from_player_sales: 2.6, pre_tax_profit: -9.4, net_debt: 3.3 },
     historical: [
       { season: "2023/24", revenue: 16.2, wage_bill: 16.7, net_profit: -9.4 },
       { season: "2024/25", revenue: 16.2, wage_bill: 15.8, net_profit: -2.8 },
@@ -684,6 +705,7 @@ const l2Clubs: EUClub[] = [
       net_debt: -4.5,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 13.6, wage_bill: 11.0, wage_to_revenue_pct: 81, operating_profit: -7.5, profit_from_player_sales: 6.2, pre_tax_profit: -0.9, net_debt: -4.0 },
     historical: [
       { season: "2023/24", revenue: 13.6, wage_bill: 11.0, net_profit: -0.9 },
       { season: "2024/25", revenue: 15.5, wage_bill: 10.2, net_profit: 0.7 },
@@ -715,6 +737,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 29.5,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 14.7, wage_bill: 18.7, wage_to_revenue_pct: 127, operating_profit: -15.6, profit_from_player_sales: 1.4, pre_tax_profit: -14.1, net_debt: 11.4 },
     historical: [
       { season: "2023/24", revenue: 14.7, wage_bill: 18.7, net_profit: -14.1 },
       { season: "2024/25", revenue: 12.3, wage_bill: 31.6, net_profit: -33.5 },
@@ -746,6 +769,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 3.8,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 12.3, wage_bill: 7.8, wage_to_revenue_pct: 63, operating_profit: -4.0, profit_from_player_sales: 4.7, pre_tax_profit: 0.1, net_debt: 1.7 },
     historical: [
       { season: "2023/24", revenue: 12.3, wage_bill: 7.8, net_profit: 0.1 },
       { season: "2024/25", revenue: 12.1, wage_bill: 8.1, net_profit: -0.7 },
@@ -777,6 +801,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 3.3,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 33.4, wage_bill: 22.2, wage_to_revenue_pct: 67, operating_profit: -17.2, profit_from_player_sales: 18.4, pre_tax_profit: -2.1, net_debt: 1.3 },
     historical: [
       { season: "2023/24", revenue: 33.4, wage_bill: 22.2, net_profit: -2.1 },
       { season: "2024/25", revenue: 11.2, wage_bill: 22.3, net_profit: -11.2 },
@@ -808,6 +833,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 7.6,
       data_notes: "Ligue 2 2024/25. No prior year data available.",
     },
+    prior_year: null,
     historical: [
       { season: "2024/25", revenue: 11.5, wage_bill: 12.7, net_profit: -7.1 },
     ],
@@ -838,6 +864,7 @@ const l2Clubs: EUClub[] = [
       net_debt: -0.3,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 8.7, wage_bill: 7.2, wage_to_revenue_pct: 83, operating_profit: -3.2, profit_from_player_sales: 0.5, pre_tax_profit: -0.1, net_debt: -0.4 },
     historical: [
       { season: "2023/24", revenue: 8.7, wage_bill: 7.2, net_profit: -0.1 },
       { season: "2024/25", revenue: 10.5, wage_bill: 8.3, net_profit: 0.2 },
@@ -869,6 +896,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 9.0,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 12.2, wage_bill: 12.6, wage_to_revenue_pct: 104, operating_profit: -15.2, profit_from_player_sales: 9.6, pre_tax_profit: -5.8, net_debt: 8.7 },
     historical: [
       { season: "2023/24", revenue: 12.2, wage_bill: 12.6, net_profit: -5.8 },
       { season: "2024/25", revenue: 10.4, wage_bill: 9.4, net_profit: -1.4 },
@@ -900,6 +928,7 @@ const l2Clubs: EUClub[] = [
       net_debt: -0.8,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 10.0, wage_bill: 6.0, wage_to_revenue_pct: 60, operating_profit: 0.1, profit_from_player_sales: 0.3, pre_tax_profit: 0.0, net_debt: -1.5 },
     historical: [
       { season: "2023/24", revenue: 10.0, wage_bill: 6.0, net_profit: 0.0 },
       { season: "2024/25", revenue: 8.4, wage_bill: 5.4, net_profit: -0.1 },
@@ -931,6 +960,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 0.4,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 8.8, wage_bill: 5.7, wage_to_revenue_pct: 66, operating_profit: -1.5, profit_from_player_sales: 1.4, pre_tax_profit: 0.0, net_debt: -1.8 },
     historical: [
       { season: "2023/24", revenue: 8.8, wage_bill: 5.7, net_profit: 0.0 },
       { season: "2024/25", revenue: 8.9, wage_bill: 6.0, net_profit: 0.0 },
@@ -962,6 +992,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 4.7,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 10.2, wage_bill: 8.0, wage_to_revenue_pct: 79, operating_profit: -4.6, profit_from_player_sales: 1.0, pre_tax_profit: -3.8, net_debt: 1.7 },
     historical: [
       { season: "2023/24", revenue: 10.2, wage_bill: 8.0, net_profit: -3.8 },
       { season: "2024/25", revenue: 8.1, wage_bill: 7.8, net_profit: -3.7 },
@@ -993,6 +1024,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 0.6,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 10.1, wage_bill: 6.2, wage_to_revenue_pct: 61, operating_profit: -1.6, profit_from_player_sales: 0.0, pre_tax_profit: -1.7, net_debt: -0.1 },
     historical: [
       { season: "2023/24", revenue: 10.1, wage_bill: 6.2, net_profit: -1.7 },
       { season: "2024/25", revenue: 9.0, wage_bill: 5.7, net_profit: -1.2 },
@@ -1024,6 +1056,7 @@ const l2Clubs: EUClub[] = [
       net_debt: 2.2,
       data_notes: "Ligue 2 2024/25.",
     },
+    prior_year: { season: "2023/24", revenue: 9.5, wage_bill: 7.8, wage_to_revenue_pct: 82, operating_profit: -2.4, profit_from_player_sales: 1.8, pre_tax_profit: -0.6, net_debt: -0.3 },
     historical: [
       { season: "2023/24", revenue: 9.5, wage_bill: 7.8, net_profit: -0.6 },
       { season: "2024/25", revenue: 9.2, wage_bill: 7.4, net_profit: -1.0 },
@@ -1055,6 +1088,7 @@ const l2Clubs: EUClub[] = [
       net_debt: -2.1,
       data_notes: "Ligue 2 2024/25. No prior year data available.",
     },
+    prior_year: null,
     historical: [
       { season: "2024/25", revenue: 6.8, wage_bill: 9.9, net_profit: -8.6 },
     ],

@@ -6,8 +6,10 @@ import { frClubs } from "./frClubs";
 import { dkClubs } from "./dkClubs";
 import { noClubs } from "./noClubs";
 import { swClubs } from "./swClubs";
+import { itClubs } from "./itClubs";
+import { esClubs } from "./esClubs";
 
-export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria" | "France" | "Denmark" | "Norway" | "Sweden";
+export type EUCountry = "Germany" | "Netherlands" | "Belgium" | "Austria" | "France" | "Denmark" | "Norway" | "Sweden" | "Italy" | "Spain";
 
 export interface EUHistoricalYear {
   season: string;
@@ -16,6 +18,21 @@ export interface EUHistoricalYear {
   net_profit: number | null;
   equity?: number | null;
   total_liabilities?: number | null;
+}
+
+/** Prior-year financial snapshot — same optional fields as financials */
+export interface EUPriorYear {
+  season: string;
+  revenue: number | null;
+  wage_bill: number | null;
+  wage_to_revenue_pct: number | null;
+  net_profit?: number | null;
+  total_liabilities?: number | null;
+  equity?: number | null;
+  operating_profit?: number | null;
+  profit_from_player_sales?: number | null;
+  pre_tax_profit?: number | null;
+  net_debt?: number | null;
 }
 
 export interface EUClub {
@@ -35,13 +52,14 @@ export interface EUClub {
     net_profit: number | null;
     total_liabilities: number | null;
     equity: number | null;
-    /** French clubs only */
+    /** French, Italian, Spanish, Norwegian, Danish clubs */
     operating_profit?: number | null;
     profit_from_player_sales?: number | null;
     pre_tax_profit?: number | null;
     net_debt?: number | null;
     data_notes: string | null;
   };
+  prior_year?: EUPriorYear | null;
   historical: EUHistoricalYear[];
   tm_squad_value_eur_m: number | null;
   data_status: string;
@@ -3666,6 +3684,8 @@ export const euClubs: EUClub[] = [
   ...dkClubs,
   ...noClubs,
   ...swClubs,
+  ...itClubs,
+  ...esClubs,
 ];
 
 export function getEuClub(slug: string): EUClub | undefined {
@@ -3724,6 +3744,22 @@ export const EU_COUNTRY_CONFIG: {
       { key: "Allsvenskan", label: "Allsvenskan" },
       { key: "Superettan", label: "Superettan" },
       { key: "Damallsvenskan", label: "Damallsvenskan" },
+    ],
+  },
+  {
+    country: "Italy",
+    flag: "🇮🇹",
+    leagues: [
+      { key: "Serie A", label: "Serie A" },
+      { key: "Serie B", label: "Serie B" },
+    ],
+  },
+  {
+    country: "Spain",
+    flag: "🇪🇸",
+    leagues: [
+      { key: "La Liga", label: "La Liga" },
+      { key: "La Liga 2", label: "La Liga 2" },
     ],
   },
 ];
