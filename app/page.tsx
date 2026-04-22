@@ -26,14 +26,14 @@ export default function Home() {
       <header>
         <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-14 sm:pt-20 pb-10 sm:pb-16">
           <h1
-            className="font-serif font-light leading-none"
-            style={{ color: "#ffffff", fontSize: "clamp(52px, 9vw, 112px)", letterSpacing: "-0.03em" }}
+            className="font-serif font-normal leading-none"
+            style={{ color: "#ffffff", fontSize: "clamp(64px, 11vw, 130px)", letterSpacing: "-0.03em" }}
           >
             Intelligence
           </h1>
           <p
-            className="mt-3 sm:mt-4"
-            style={{ color: "#777777", fontSize: "clamp(12px, 1.4vw, 16px)", letterSpacing: "0.06em" }}
+            className="mt-4 sm:mt-6"
+            style={{ color: "#888888", fontSize: "clamp(16px, 1.8vw, 22px)", letterSpacing: "0.02em" }}
           >
             The comprehensive football finance database, by Insight Eleven
           </p>

@@ -35,21 +35,21 @@ export default function HomeNav({ totalClubs, totalCountries }: Props) {
           <>
             <div>
               <p
-                className="font-serif font-light leading-none group-hover:text-[#cccccc] transition-colors"
-                style={{ color: "#ffffff", fontSize: "clamp(28px, 5vw, 56px)", letterSpacing: "-0.02em" }}
+                className="font-serif font-normal leading-none group-hover:text-[#cccccc] transition-colors"
+                style={{ color: "#ffffff", fontSize: "clamp(36px, 6vw, 72px)", letterSpacing: "-0.02em" }}
               >
                 {item.title}
               </p>
               <p
-                className="mt-2.5"
-                style={{ color: "#888888", fontSize: "clamp(12px, 1.4vw, 15px)", letterSpacing: "0.01em" }}
+                className="mt-3"
+                style={{ color: "#777777", fontSize: "clamp(15px, 1.6vw, 19px)", letterSpacing: "0.01em" }}
               >
                 {item.tagline(totalClubs, totalCountries)}
               </p>
             </div>
             <span
               className="shrink-0 ml-6 group-hover:text-[#888888] transition-colors"
-              style={{ color: "#555555", fontSize: "1.5rem" }}
+              style={{ color: "#444444", fontSize: "2rem" }}
             >
               →
             </span>
@@ -60,7 +60,7 @@ export default function HomeNav({ totalClubs, totalCountries }: Props) {
           <Link
             key={item.id}
             href={item.href}
-            className="w-full flex items-center justify-between group py-9 sm:py-12 transition-colors"
+            className="w-full flex items-center justify-between group py-10 sm:py-14 transition-colors"
             style={{
               borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
               borderBottom: "1px solid #1a1a1a",

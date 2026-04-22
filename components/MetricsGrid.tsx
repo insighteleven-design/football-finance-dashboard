@@ -242,7 +242,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Total debt + cash on the same row */}
       <div className="flex items-center gap-3 border-t border-[#e0e0e0] mt-3 pt-2.5">
         <div className="w-2.5 shrink-0" />
-        <span className="text-sm font-semibold text-[#444444] flex-1">Total financial debt</span>
+        <span className="text-base font-semibold text-[#444444] flex-1">Total financial debt</span>
         <span className="text-sm font-medium tabular-nums text-[#111111] w-20 text-right shrink-0">
           {fmtAmt(totalDebt)}
         </span>
@@ -258,7 +258,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Net debt */}
       <div className="flex items-center gap-3 border-t-2 border-[#cccccc] mt-1.5 pt-2.5">
         <div className="w-2.5 shrink-0" />
-        <span className="text-sm font-bold text-[#111111] flex-1">Net debt / (cash)</span>
+        <span className="text-base font-bold text-[#111111] flex-1">Net debt / (cash)</span>
         <span
           className={`text-sm font-semibold tabular-nums w-20 text-right shrink-0 ${
             net <= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
@@ -293,7 +293,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
             ))}
             <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
               <div className="w-2.5 shrink-0" />
-              <span className="text-sm font-semibold text-[#888888] flex-1">Total transfer payables</span>
+              <span className="text-base font-semibold text-[#888888] flex-1">Total transfer payables</span>
               <span className="text-sm font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                 {fmtAmt(totalTp)}
               </span>
@@ -331,7 +331,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
             {psSegs.length > 1 && (
               <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
                 <div className="w-2.5 shrink-0" />
-                <span className="text-sm font-semibold text-[#888888] flex-1">Total preference shares</span>
+                <span className="text-base font-semibold text-[#888888] flex-1">Total preference shares</span>
                 <span className="text-sm font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                   {fmtAmt(totalPs)}
                 </span>
@@ -370,7 +370,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
             {qeSegs.length > 1 && (
               <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
                 <div className="w-2.5 shrink-0" />
-                <span className="text-sm font-semibold text-[#888888] flex-1">Total shareholder funding</span>
+                <span className="text-base font-semibold text-[#888888] flex-1">Total shareholder funding</span>
                 <span className="text-sm font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                   {fmtAmt(totalQe)}
                 </span>
@@ -424,10 +424,10 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
     <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
       {/* Column headers */}
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-        <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666]">Financial Figures</p>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">Financial Figures</p>
       </div>
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666]">
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">
           vs {compareLabel} Average
         </p>
       </div>
@@ -462,13 +462,13 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
               onClick={toggleExpand}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666]">{m.label}</p>
+                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">{m.label}</p>
                 {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
-                <p className="text-3xl sm:text-4xl font-medium tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
+                <p className="text-4xl sm:text-5xl font-medium tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
               ) : (
-                <p className="text-3xl sm:text-4xl font-medium text-[#cccccc]">—</p>
+                <p className="text-4xl sm:text-5xl font-medium text-[#cccccc]">—</p>
               )}
               {stats && rank !== null && (
                 <p className="text-xs text-[#aaaaaa] mt-1.5">
@@ -479,7 +479,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
 
             {/* Right cell */}
             <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-              <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666] mb-3">{m.label}</p>
+              <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">{m.label}</p>
 
               {/* Club bar */}
               <div className="mb-1">
@@ -519,7 +519,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 style={{ maxHeight: revenueOpen ? "600px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666] mb-4">Revenue Breakdown</p>
+                  <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">Revenue Breakdown</p>
                   <RevenuePanel breakdown={breakdown ?? null} totalRevenue={data.revenue} />
                 </div>
               </div>
@@ -532,7 +532,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 style={{ maxHeight: debtOpen ? "600px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-sm font-semibold tracking-[0.08em] uppercase text-[#666666] mb-4">Debt Breakdown</p>
+                  <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">Debt Breakdown</p>
                   <DebtPanel breakdown={debtBreakdown} />
                 </div>
               </div>

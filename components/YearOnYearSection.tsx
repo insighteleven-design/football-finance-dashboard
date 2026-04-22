@@ -423,11 +423,11 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
                   onMouseEnter={e => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
                 >
-                  <td style={{ padding: "13px 20px", fontSize: "15px", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                  <td style={{ padding: "13px 20px", fontSize: "17px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
                     {m.label}
                   </td>
                   {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 500 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "20px" : "16px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
                       {fmt(v, m.isRatio)}
                     </td>
                   ))}

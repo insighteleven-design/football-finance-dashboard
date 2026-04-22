@@ -108,7 +108,7 @@ function CountriesView({
               </p>
               <p
                 className="mt-2 font-medium uppercase"
-                style={{ color: "#888888", fontSize: "15px", letterSpacing: "0.18em" }}
+                style={{ color: "#888888", fontSize: "16px", letterSpacing: "0.08em" }}
               >
                 {country.leagueCount} {country.leagueCount === 1 ? "league" : "leagues"} · {country.clubCount} clubs
               </p>
@@ -204,7 +204,7 @@ function LeaguesView({
             </p>
             <p
               className="mt-2 font-medium uppercase"
-              style={{ color: "#888888", fontSize: "15px", letterSpacing: "0.18em" }}
+              style={{ color: "#888888", fontSize: "16px", letterSpacing: "0.08em" }}
             >
               {league.clubCount} clubs
             </p>
