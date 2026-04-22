@@ -75,9 +75,9 @@ export default function JapanRevenueBreakdownSection({ breakdown, totalRevenue }
           return (
             <div key={key} className="flex items-center gap-3">
               <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-[11px] text-[#666666] w-36">{label}</span>
-              <span className="text-[11px] font-light tabular-nums text-[#111111] w-14">{fmtUsd(val)}</span>
-              <span className="text-[11px] text-[#aaaaaa] tabular-nums">
+              <span className="text-sm text-[#666666] w-36">{label}</span>
+              <span className="text-sm font-light tabular-nums text-[#111111] w-14">{fmtUsd(val)}</span>
+              <span className="text-sm text-[#aaaaaa] tabular-nums">
                 {pct !== null ? `${pct.toFixed(0)}%` : "—"}
               </span>
             </div>
@@ -86,9 +86,9 @@ export default function JapanRevenueBreakdownSection({ breakdown, totalRevenue }
         {otherAmount > 0.005 && (
           <div className="flex items-center gap-3">
             <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: "#dddddd" }} />
-            <span className="text-[11px] text-[#999999] w-36">Other</span>
-            <span className="text-[11px] font-light tabular-nums text-[#aaaaaa] w-14">{fmtUsd(otherAmount)}</span>
-            <span className="text-[11px] text-[#cccccc] tabular-nums">
+            <span className="text-sm text-[#999999] w-36">Other</span>
+            <span className="text-sm font-light tabular-nums text-[#aaaaaa] w-14">{fmtUsd(otherAmount)}</span>
+            <span className="text-sm text-[#cccccc] tabular-nums">
               {denominator > 0 ? `${((otherAmount / denominator) * 100).toFixed(0)}%` : "—"}
             </span>
           </div>

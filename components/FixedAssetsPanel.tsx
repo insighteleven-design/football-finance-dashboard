@@ -34,7 +34,7 @@ function OwnershipBadge({ ownership }: { ownership: "owned" | "leased" | null })
   const isOwned = ownership === "owned";
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.06em] uppercase border ${
+      className={`inline-flex items-center px-2.5 py-0.5 text-xs font-semibold tracking-[0.06em] uppercase border ${
         isOwned
           ? "border-[#10b981] text-[#10b981] bg-[#f0fdf4]"
           : "border-[#f59e0b] text-[#b45309] bg-[#fffbeb]"
@@ -74,7 +74,7 @@ function CapacityBar({
           style={{ width: `${clubPct}%`, backgroundColor: isAbove ? color : "#d1d5db", opacity: 0.85 }}
         />
       </div>
-      <p className="text-[10px] mt-1.5" style={{ color: isAbove ? "#059669" : "#999999" }}>
+      <p className="text-xs mt-1.5" style={{ color: isAbove ? "#059669" : "#999999" }}>
         {isAbove ? "+" : ""}{diff}% vs division avg ({divisionAvg.toLocaleString()})
       </p>
     </div>
@@ -105,7 +105,7 @@ export default function FixedAssetsPanel({
         style={{ borderLeft: `3px solid ${color}` }}
       >
         <div className="px-5 py-3.5 border-b border-[#f0f0f0] flex items-center justify-between">
-          <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa]">Stadium</p>
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa]">Stadium</p>
         </div>
         <div className="px-5 py-5">
           {/* Name + badge */}
@@ -113,7 +113,7 @@ export default function FixedAssetsPanel({
             <div>
               <h3 className="text-lg font-medium text-[#111111] leading-tight">{s.stadium_name}</h3>
               {s.ownership === "leased" && s.ownership_detail && (
-                <p className="text-[11px] text-[#888888] mt-0.5">
+                <p className="text-sm text-[#888888] mt-0.5">
                   Owned by {s.ownership_detail}
                 </p>
               )}
@@ -125,7 +125,7 @@ export default function FixedAssetsPanel({
           <div className="grid sm:grid-cols-2 gap-6 border-t border-[#f5f5f5] pt-5">
             {s.capacity != null && (
               <div>
-                <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-1">
+                <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-1">
                   Capacity
                 </p>
                 <p className="text-2xl font-semibold text-[#111111]">
@@ -143,13 +143,13 @@ export default function FixedAssetsPanel({
 
             {landBuildings != null && (
               <div>
-                <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-1">
+                <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-1">
                   Book Value (Land &amp; Buildings)
                 </p>
                 <p className="text-2xl font-semibold text-[#111111]">
                   £{landBuildings.toFixed(1)}m
                 </p>
-                <p className="text-[10px] text-[#bbbbbb] mt-1.5">Net book value per latest accounts</p>
+                <p className="text-xs text-[#bbbbbb] mt-1.5">Net book value per latest accounts</p>
               </div>
             )}
           </div>
@@ -157,17 +157,17 @@ export default function FixedAssetsPanel({
           {/* Leasehold note */}
           {s.ownership === "leased" && s.leasehold_notes && (
             <div className="mt-5 px-4 py-3 bg-[#fffbeb] border border-[#fde68a]">
-              <p className="text-[9px] font-semibold tracking-[0.1em] uppercase text-[#b45309] mb-1">
+              <p className="text-xs font-semibold tracking-[0.1em] uppercase text-[#b45309] mb-1">
                 Leasehold Note
               </p>
-              <p className="text-[11px] text-[#78350f] leading-relaxed">{s.leasehold_notes}</p>
+              <p className="text-sm text-[#78350f] leading-relaxed">{s.leasehold_notes}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Division benchmark */}
-      <div className="flex items-center gap-3 px-1 py-1 text-[11px] text-[#999999]">
+      <div className="flex items-center gap-3 px-1 py-1 text-sm text-[#999999]">
         <span
           className="inline-block w-2 h-2 rounded-full"
           style={{ backgroundColor: color }}
@@ -184,7 +184,7 @@ export default function FixedAssetsPanel({
           style={{ borderLeft: `3px solid ${color}` }}
         >
           <div className="px-5 py-3.5 border-b border-[#f0f0f0]">
-            <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa]">
+            <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa]">
               Training Ground
             </p>
           </div>
@@ -204,7 +204,7 @@ export default function FixedAssetsPanel({
       )}
 
       {/* Disclaimer */}
-      <p className="text-[10px] text-[#cccccc] leading-relaxed">
+      <p className="text-xs text-[#cccccc] leading-relaxed">
         Book value is the net carrying amount of land &amp; buildings per the latest annual accounts. For long-established clubs this typically understates market value significantly — stadiums are rarely revalued upward.
       </p>
     </div>

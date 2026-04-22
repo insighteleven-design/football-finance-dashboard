@@ -29,7 +29,7 @@ function ComparisonPill({ value, benchmark }: { value: number; benchmark: number
   const isAbove = diff >= 0;
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full ${
+      className={`inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full ${
         isAbove ? "bg-[#d1fae5] text-[#065f46]" : "bg-[#fee2e2] text-[#991b1b]"
       }`}
     >
@@ -139,7 +139,7 @@ function EUScatterPlot({
 
   return (
     <div className="relative">
-      <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-3">
+      <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-3">
         Revenue vs Metro Population — {country}
       </p>
       <div>
@@ -219,7 +219,7 @@ function EUScatterPlot({
       {/* Tooltip */}
       {tooltip && (
         <div
-          className="absolute pointer-events-none bg-white border border-[#e0e0e0] shadow-sm px-2.5 py-2 text-[11px] z-20"
+          className="absolute pointer-events-none bg-white border border-[#e0e0e0] shadow-sm px-2.5 py-2 text-sm z-20"
           style={{
             left: tooltip.x + 12,
             top: tooltip.y,
@@ -239,7 +239,7 @@ function EUScatterPlot({
         {leagues.map((l) => (
           <div key={l} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: leagueColor(l), opacity: 0.7 }} />
-            <span className="text-[10px] text-[#666666]">{l}</span>
+            <span className="text-xs text-[#666666]">{l}</span>
           </div>
         ))}
       </div>
@@ -301,7 +301,7 @@ export default function EUMarketContextPanel({
           <p className="text-sm text-[#444444]">
             <span className="text-[#888888]">📍</span> {ctx.metro_area}
           </p>
-          <p className="text-[10px] text-[#999999] mt-0.5">{ctx.metro_note}</p>
+          <p className="text-xs text-[#999999] mt-0.5">{ctx.metro_note}</p>
         </div>
 
         <div className="flex items-center gap-0 border border-[#e0e0e0] overflow-hidden">
@@ -309,7 +309,7 @@ export default function EUMarketContextPanel({
             <button
               key={b}
               onClick={() => setBenchmark(b)}
-              className={`px-3 py-1.5 text-[10px] font-medium tracking-[0.05em] uppercase transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium tracking-[0.05em] uppercase transition-colors ${
                 benchmark === b
                   ? "text-white"
                   : "text-[#888888] hover:text-[#444444] bg-white"
@@ -327,7 +327,7 @@ export default function EUMarketContextPanel({
         className="bg-white border border-[#e8e8e8] px-5 py-4"
         style={{ borderLeft: `3px solid ${color}` }}
       >
-        <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
+        <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
           Metro Population
         </p>
         <p className="text-2xl font-semibold text-[#111111]">
@@ -338,11 +338,11 @@ export default function EUMarketContextPanel({
             <MetricBar value={ctx.metro_pop_m} benchmark={benchmarkPop} color={color} />
             <div className="flex items-center gap-2 mt-2">
               <ComparisonPill value={ctx.metro_pop_m} benchmark={benchmarkPop} />
-              <span className="text-[10px] text-[#999999]">{benchmarkLabel}</span>
+              <span className="text-xs text-[#999999]">{benchmarkLabel}</span>
             </div>
           </>
         )}
-        <p className="text-[10px] text-[#bbbbbb] mt-2">{ctx.metro_note}</p>
+        <p className="text-xs text-[#bbbbbb] mt-2">{ctx.metro_note}</p>
       </div>
 
       {/* Scatter plot */}
@@ -357,7 +357,7 @@ export default function EUMarketContextPanel({
         />
       </div>
 
-      <p className="text-[10px] text-[#cccccc] leading-relaxed">
+      <p className="text-xs text-[#cccccc] leading-relaxed">
         Source: Metro Populations (EU) — DE_Football_DB_v0.8 · FR urban area populations from user-supplied data · definitions vary by city
       </p>
     </div>

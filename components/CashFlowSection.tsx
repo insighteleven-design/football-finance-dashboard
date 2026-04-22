@@ -44,7 +44,7 @@ function numColor(v: number): string {
 function BreakdownBadge({ open }: { open: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${
+      className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${
         open
           ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]"
           : "border-[#e0e0e0] text-[#aaaaaa]"
@@ -138,7 +138,7 @@ function WaterfallChart() {
 
   return (
     <div>
-      <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-4">
+      <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-4">
         Cash Movement FY2025
       </p>
 
@@ -149,7 +149,7 @@ function WaterfallChart() {
           style={{ height: CHART_H, marginTop: TOP_PAD }}
         >
           {["£10m", "£7.5m", "£5m", "£2.5m", "£0"].map((l) => (
-            <span key={l} className="text-[9px] text-[#cccccc] leading-none">{l}</span>
+            <span key={l} className="text-xs text-[#cccccc] leading-none">{l}</span>
           ))}
         </div>
 
@@ -223,7 +223,7 @@ function WaterfallChart() {
         ].map(({ color, label }) => (
           <span key={label} className="flex items-center gap-1.5">
             <span className="w-2 h-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-            <span className="text-[9px] text-[#999999]">{label}</span>
+            <span className="text-xs text-[#999999]">{label}</span>
           </span>
         ))}
       </div>
@@ -249,19 +249,19 @@ function TableRow({ label, fy25, fy24, isSubtotal, indent }: TableRowProps) {
     <tr
       className={`border-b border-[#f4f4f4] last:border-b-0 ${isSubtotal ? "bg-[#f7f7f7]" : ""}`}
     >
-      <td className={`py-2 pr-3 text-[10px] ${isSubtotal ? "font-medium text-[#333333]" : "text-[#555555]"} ${indent ? "pl-4" : "pl-0"}`}>
+      <td className={`py-2 pr-3 text-xs ${isSubtotal ? "font-medium text-[#333333]" : "text-[#555555]"} ${indent ? "pl-4" : "pl-0"}`}>
         {label}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: fy25 === 0 && !isSubtotal ? "#cccccc" : numColor(fy25) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: fy25 === 0 && !isSubtotal ? "#cccccc" : numColor(fy25) }}>
         {fy25 === 0 && !isSubtotal ? "—" : fmtK(fy25)}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: fy24 === 0 && !isSubtotal ? "#cccccc" : numColor(fy24) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: fy24 === 0 && !isSubtotal ? "#cccccc" : numColor(fy24) }}>
         {fy24 === 0 && !isSubtotal ? "—" : fmtK(fy24)}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: numColor(delta) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: numColor(delta) }}>
         {fy25 === 0 && fy24 === 0 ? "—" : fmtDelta(delta)}
       </td>
-      <td className="py-2 pl-3 text-right tabular-nums text-[10px]" style={{ color: "#aaaaaa" }}>
+      <td className="py-2 pl-3 text-right tabular-nums text-xs" style={{ color: "#aaaaaa" }}>
         {fy25 === 0 && fy24 === 0 ? "—" : fmtPct(pct)}
       </td>
     </tr>
@@ -273,7 +273,7 @@ function CategoryHeader({ label }: { label: string }) {
     <tr>
       <td
         colSpan={5}
-        className="pt-4 pb-1.5 text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa]"
+        className="pt-4 pb-1.5 text-xs font-medium tracking-[0.15em] uppercase text-[#aaaaaa]"
       >
         {label}
       </td>
@@ -286,7 +286,7 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
 
   return (
     <div>
-      <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+      <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
         Two-Year Comparison
       </p>
 
@@ -294,11 +294,11 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
         <table className="w-full min-w-[480px]">
           <thead>
             <tr className="border-b border-[#e0e0e0]">
-              <th className="pb-2 pr-3 text-left text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Line</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">FY2025</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">FY2024</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ £</th>
-              <th className="pb-2 pl-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ %</th>
+              <th className="pb-2 pr-3 text-left text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Line</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">FY2025</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">FY2024</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ £</th>
+              <th className="pb-2 pl-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ %</th>
             </tr>
           </thead>
           <tbody>
@@ -344,7 +344,7 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
       </div>
 
       {/* Commentary */}
-      <p className="text-[10px] text-[#666666] leading-relaxed mt-4">
+      <p className="text-xs text-[#666666] leading-relaxed mt-4">
         Cash absorbed by operations worsened by £6.8m year-on-year, driving the collapse in cash reserves from £10.3m to £2.7m.
       </p>
 
@@ -352,7 +352,7 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
       <div className="mt-4 border-t border-[#f0f0f0] pt-4">
         <button
           onClick={() => setShowRecon((o) => !o)}
-          className="flex items-center gap-2 text-[9px] font-medium tracking-[0.1em] uppercase transition-colors hover:text-[#333333]"
+          className="flex items-center gap-2 text-xs font-medium tracking-[0.1em] uppercase transition-colors hover:text-[#333333]"
           style={{ color: showRecon ? "#4A90D9" : "#aaaaaa" }}
         >
           <span
@@ -369,30 +369,30 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
           style={{ maxHeight: showRecon ? "600px" : "0px" }}
         >
           <div className="pt-4">
-            <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+            <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
               Note 30 — Cash (absorbed by)/generated from operations
             </p>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[400px]">
                 <thead>
                   <tr className="border-b border-[#e0e0e0]">
-                    <th className="pb-2 pr-3 text-left text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Item</th>
-                    <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">FY2025</th>
-                    <th className="pb-2 pl-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">FY2024*</th>
+                    <th className="pb-2 pr-3 text-left text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Item</th>
+                    <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">FY2025</th>
+                    <th className="pb-2 pl-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">FY2024*</th>
                   </tr>
                 </thead>
                 <tbody>
                   {plymouthCashFlow.reconciliation.map((item, i) => (
                     <tr key={i} className="border-b border-[#f4f4f4] last:border-b-0">
-                      <td className="py-2 pr-3 text-[10px] text-[#555555]">{item.label}</td>
+                      <td className="py-2 pr-3 text-xs text-[#555555]">{item.label}</td>
                       <td
-                        className="py-2 px-3 text-right tabular-nums text-[10px]"
+                        className="py-2 px-3 text-right tabular-nums text-xs"
                         style={{ color: numColor(item.fy25) }}
                       >
                         {fmtK(item.fy25)}
                       </td>
                       <td
-                        className="py-2 pl-3 text-right tabular-nums text-[10px]"
+                        className="py-2 pl-3 text-right tabular-nums text-xs"
                         style={{ color: numColor(item.fy24) }}
                       >
                         {fmtK(item.fy24)}
@@ -401,18 +401,18 @@ function CashFlowTable({ data }: { data: PlymouthCashFlowData }) {
                   ))}
                   {/* Total */}
                   <tr className="border-t border-[#e0e0e0] bg-[#f7f7f7]">
-                    <td className="py-2 pr-3 text-[10px] font-medium text-[#333333]">Cash (absorbed by)/generated from operations</td>
-                    <td className="py-2 px-3 text-right tabular-nums text-[10px] font-medium" style={{ color: numColor(-7_602_684) }}>
+                    <td className="py-2 pr-3 text-xs font-medium text-[#333333]">Cash (absorbed by)/generated from operations</td>
+                    <td className="py-2 px-3 text-right tabular-nums text-xs font-medium" style={{ color: numColor(-7_602_684) }}>
                       {fmtK(-7_602_684)}
                     </td>
-                    <td className="py-2 pl-3 text-right tabular-nums text-[10px] font-medium" style={{ color: numColor(4_900_020) }}>
+                    <td className="py-2 pl-3 text-right tabular-nums text-xs font-medium" style={{ color: numColor(4_900_020) }}>
                       {fmtK(4_900_020)}
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="text-[9px] text-[#aaaaaa] mt-2 leading-relaxed">
+            <p className="text-xs text-[#aaaaaa] mt-2 leading-relaxed">
               * FY2024 comparatives as restated in the FY2025 accounts (reclassification of player trading between operating and investing). The FY2024 cash flow statement reported (£791k) absorbed by operations.
             </p>
           </div>
@@ -468,13 +468,13 @@ function FundingBar({ segments }: { segments: FundingSegment[] }) {
         {segments.map((seg) => (
           <div key={seg.label} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: seg.color, opacity: seg.postBsOnly ? 0.6 : 1 }} />
-            <span className="text-[10px] text-[#666666]">
+            <span className="text-xs text-[#666666]">
               {seg.label}
               {seg.postBsOnly && (
-                <span className="ml-1 text-[9px]" style={{ color: "#aaaaaa" }}>(post balance sheet)</span>
+                <span className="ml-1 text-xs" style={{ color: "#aaaaaa" }}>(post balance sheet)</span>
               )}
             </span>
-            <span className="text-[10px] font-medium tabular-nums" style={{ color: seg.postBsOnly ? "#aaaaaa" : "#333333" }}>
+            <span className="text-xs font-medium tabular-nums" style={{ color: seg.postBsOnly ? "#aaaaaa" : "#333333" }}>
               £{seg.value.toFixed(1)}m
             </span>
           </div>
@@ -484,10 +484,10 @@ function FundingBar({ segments }: { segments: FundingSegment[] }) {
       {/* Reinvestment line */}
       <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center gap-3">
         <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: "#bbbbbb" }} />
-        <span className="text-[10px] text-[#666666] flex-1">
+        <span className="text-xs text-[#666666] flex-1">
           Reinvestment (tangible capex £5.0m less disposals £10k less interest received £104k)
         </span>
-        <span className="text-[10px] font-medium tabular-nums text-[#333333]">£4.9m</span>
+        <span className="text-xs font-medium tabular-nums text-[#333333]">£4.9m</span>
       </div>
     </div>
   );
@@ -501,7 +501,7 @@ function FundingSection() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999]">
           How the £7.6m operating shortfall was funded
         </p>
         {/* Toggle */}
@@ -510,7 +510,7 @@ function FundingSection() {
             <button
               key={v}
               onClick={() => setView(v)}
-              className="px-3 py-1 text-[9px] font-medium tracking-[0.08em] uppercase transition-colors"
+              className="px-3 py-1 text-xs font-medium tracking-[0.08em] uppercase transition-colors"
               style={{
                 backgroundColor: view === v ? "#111111" : "#ffffff",
                 color: view === v ? "#ffffff" : "#aaaaaa",
@@ -525,7 +525,7 @@ function FundingSection() {
       <FundingBar segments={segments} />
 
       {view === "postbs" && (
-        <p className="text-[9px] text-[#aaaaaa] mt-3 leading-relaxed italic">
+        <p className="text-xs text-[#aaaaaa] mt-3 leading-relaxed italic">
           Post-balance sheet view includes the £9.8m director loan drawn from Mr S Hallett after 30 June 2025 (Note 28). Figures are indicative — the post-BS loan is not reflected in the statutory cash flow statement above.
         </p>
       )}
@@ -546,7 +546,7 @@ export function CashFlowSectionSimple() {
     >
       {/* Left cell */}
       <div className="px-4 sm:px-6 py-4 sm:py-5 border-r border-[#e0e0e0] bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
           Operating Cash Flow
         </p>
         <p className="text-xl sm:text-2xl font-light tabular-nums" style={{ color: "#9a4a4a" }}>
@@ -556,7 +556,7 @@ export function CashFlowSectionSimple() {
 
       {/* Right cell */}
       <div className="px-4 sm:px-6 py-4 sm:py-5 bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
           Operating Cash Flow
         </p>
         <div className="flex items-center gap-2 mb-1">
@@ -571,7 +571,7 @@ export function CashFlowSectionSimple() {
             (£0.8m)
           </span>
         </div>
-        <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">FY2024</p>
+        <p className="text-xs text-[#aaaaaa] tracking-[0.05em]">FY2024</p>
       </div>
     </div>
   );
@@ -594,7 +594,7 @@ export default function CashFlowSection() {
         onClick={() => setOpen((o) => !o)}
       >
         <div className="flex items-center justify-between gap-2 mb-1.5">
-          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">
+          <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999]">
             Operating Cash Flow
           </p>
           <BreakdownBadge open={open} />
@@ -609,7 +609,7 @@ export default function CashFlowSection() {
 
       {/* ── Right cell: FY2025 vs FY2024 bars ───────────────────────────────── */}
       <div className="px-4 sm:px-6 py-4 sm:py-5 bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
           Operating Cash Flow
         </p>
 
@@ -626,7 +626,7 @@ export default function CashFlowSection() {
               (£7.6m)
             </span>
           </div>
-          <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">FY2025</p>
+          <p className="text-xs text-[#aaaaaa] tracking-[0.05em]">FY2025</p>
         </div>
 
         <div className="mt-2">
@@ -642,7 +642,7 @@ export default function CashFlowSection() {
               (£0.8m)
             </span>
           </div>
-          <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">FY2024</p>
+          <p className="text-xs text-[#cccccc] tracking-[0.05em]">FY2024</p>
         </div>
       </div>
 
@@ -670,7 +670,7 @@ export default function CashFlowSection() {
 
           {/* Post-balance-sheet footer note */}
           <div className="px-6 py-3">
-            <p className="text-[9px] text-[#aaaaaa] leading-relaxed">
+            <p className="text-xs text-[#aaaaaa] leading-relaxed">
               Post balance sheet, a further £9.8m drawn from Mr Hallett (not reflected in statutory figures above). See Note 28.
             </p>
           </div>

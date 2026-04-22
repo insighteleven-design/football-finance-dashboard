@@ -41,7 +41,7 @@ function ComparisonPill({ value, benchmark }: { value: number; benchmark: number
   const isAbove = diff >= 0;
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full ${
+      className={`inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full ${
         isAbove
           ? "bg-[#d1fae5] text-[#065f46]"
           : "bg-[#fee2e2] text-[#991b1b]"
@@ -187,7 +187,7 @@ function RevenueScatterPlot({
 
   return (
     <div className="relative">
-      <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-3">
+      <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-3">
         Revenue vs Market Size — all 92 English clubs
       </p>
       <div>
@@ -284,7 +284,7 @@ function RevenueScatterPlot({
       {/* Tooltip */}
       {tooltip && (
         <div
-          className="absolute pointer-events-none bg-white border border-[#e0e0e0] shadow-sm px-2.5 py-2 text-[11px] z-20"
+          className="absolute pointer-events-none bg-white border border-[#e0e0e0] shadow-sm px-2.5 py-2 text-sm z-20"
           style={{
             left: tooltip.x + 12,
             top: tooltip.y,
@@ -307,11 +307,11 @@ function RevenueScatterPlot({
       <div className="flex gap-4 mt-2">
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: divColor }} />
-          <span className="text-[10px] text-[#666666]">This club</span>
+          <span className="text-xs text-[#666666]">This club</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full bg-[#cccccc]" />
-          <span className="text-[10px] text-[#666666]">Other clubs</span>
+          <span className="text-xs text-[#666666]">Other clubs</span>
         </div>
       </div>
     </div>
@@ -357,12 +357,12 @@ export default function MarketContextPanel({
             <span className="text-[#888888]">📍</span> {ctx.local_authority}
           </span>
           <span
-            className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium border border-[#e0e0e0] text-[#666666]"
+            className="inline-flex items-center px-2 py-0.5 text-xs font-medium border border-[#e0e0e0] text-[#666666]"
           >
             {ctx.region}
           </span>
           {ctx.uncertain && (
-            <span className="inline-flex items-center px-2 py-0.5 text-[10px] border border-[#fde68a] text-[#b45309] bg-[#fffbeb]">
+            <span className="inline-flex items-center px-2 py-0.5 text-xs border border-[#fde68a] text-[#b45309] bg-[#fffbeb]">
               Approx match
             </span>
           )}
@@ -374,7 +374,7 @@ export default function MarketContextPanel({
             <button
               key={b}
               onClick={() => setBenchmark(b)}
-              className={`px-3 py-1.5 text-[10px] font-medium tracking-[0.05em] uppercase transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium tracking-[0.05em] uppercase transition-colors ${
                 benchmark === b
                   ? "text-white"
                   : "text-[#888888] hover:text-[#444444] bg-white"
@@ -394,7 +394,7 @@ export default function MarketContextPanel({
           className="bg-white border border-[#e8e8e8] px-5 py-4"
           style={{ borderLeft: `3px solid ${color}` }}
         >
-          <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
             Local Population
           </p>
           {ctx.population != null ? (
@@ -413,11 +413,11 @@ export default function MarketContextPanel({
                   />
                   <div className="flex items-center gap-2 mt-2">
                     <ComparisonPill value={ctx.population} benchmark={benchmarks.population} />
-                    <span className="text-[10px] text-[#999999]">{benchmarks.label}</span>
+                    <span className="text-xs text-[#999999]">{benchmarks.label}</span>
                   </div>
                 </>
               )}
-              <p className="text-[10px] text-[#bbbbbb] mt-2">{ctx.local_authority}, mid-2024</p>
+              <p className="text-xs text-[#bbbbbb] mt-2">{ctx.local_authority}, mid-2024</p>
             </>
           ) : (
             <p className="text-sm text-[#cccccc] italic">—</p>
@@ -429,7 +429,7 @@ export default function MarketContextPanel({
           className="bg-white border border-[#e8e8e8] px-5 py-4"
           style={{ borderLeft: `3px solid ${color}` }}
         >
-          <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
             GVA per Head
           </p>
           {ctx.gva_per_head != null ? (
@@ -446,11 +446,11 @@ export default function MarketContextPanel({
                   />
                   <div className="flex items-center gap-2 mt-2">
                     <ComparisonPill value={ctx.gva_per_head} benchmark={benchmarks.gva_per_head} />
-                    <span className="text-[10px] text-[#999999]">{benchmarks.label}</span>
+                    <span className="text-xs text-[#999999]">{benchmarks.label}</span>
                   </div>
                 </>
               )}
-              <p className="text-[10px] text-[#bbbbbb] mt-2">{ctx.gva_area}, 2023</p>
+              <p className="text-xs text-[#bbbbbb] mt-2">{ctx.gva_area}, 2023</p>
             </>
           ) : (
             <p className="text-sm text-[#cccccc] italic">—</p>
@@ -462,7 +462,7 @@ export default function MarketContextPanel({
           className="bg-white border border-[#e8e8e8] px-5 py-4"
           style={{ borderLeft: `3px solid ${color}` }}
         >
-          <p className="text-[9px] font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
+          <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#aaaaaa] mb-2">
             Median Annual Pay
           </p>
           {ctx.median_pay != null ? (
@@ -479,11 +479,11 @@ export default function MarketContextPanel({
                   />
                   <div className="flex items-center gap-2 mt-2">
                     <ComparisonPill value={ctx.median_pay} benchmark={benchmarks.median_pay} />
-                    <span className="text-[10px] text-[#999999]">{benchmarks.label}</span>
+                    <span className="text-xs text-[#999999]">{benchmarks.label}</span>
                   </div>
                 </>
               )}
-              <p className="text-[10px] text-[#bbbbbb] mt-2">{ctx.region}, 2025</p>
+              <p className="text-xs text-[#bbbbbb] mt-2">{ctx.region}, 2025</p>
             </>
           ) : (
             <p className="text-sm text-[#cccccc] italic">—</p>
@@ -499,7 +499,7 @@ export default function MarketContextPanel({
         <RevenueScatterPlot currentSlug={slug} division={division} />
       </div>
 
-      <p className="text-[10px] text-[#cccccc] leading-relaxed">
+      <p className="text-xs text-[#cccccc] leading-relaxed">
         Sources: ONS Mid-Year Population Estimates 2024 · ONS Regional GVA (Balanced) 2023 · ONS ASHE 2025
       </p>
     </div>

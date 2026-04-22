@@ -215,11 +215,11 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
         className="w-full px-6 py-4 flex items-center justify-between text-left bg-white hover:bg-[#fafafa] transition-colors"
         aria-expanded={open}
       >
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999]">
           Debt Profile
         </p>
         <span
-          className="text-[11px] text-[#cccccc] transition-transform duration-200 shrink-0"
+          className="text-sm text-[#cccccc] transition-transform duration-200 shrink-0"
           style={{ display: "inline-block", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
         >
           →
@@ -243,7 +243,7 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
               {/* Composition bar */}
               {totalDebt > 0 && (
                 <div className="px-6 pt-5 pb-4">
-                  <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+                  <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
                     Debt Composition
                   </p>
                   <div className="h-6 flex overflow-hidden mb-3" style={{ borderRadius: "2px" }}>
@@ -272,7 +272,7 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
                     ].filter(({ amt }) => amt > 0).map(({ label, amt, color }) => (
                       <span key={label} className="flex items-center gap-1.5">
                         <span className="w-2 h-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-                        <span className="text-[10px] text-[#666666]">{label}</span>
+                        <span className="text-xs text-[#666666]">{label}</span>
                       </span>
                     ))}
                   </div>
@@ -288,7 +288,7 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
                         {["Type", "Amount", "Interest Rate", "Repayment", "Security / Notes"].map((h) => (
                           <th
                             key={h}
-                            className="px-6 py-3 text-left text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa]"
+                            className="px-6 py-3 text-left text-xs font-medium tracking-[0.15em] uppercase text-[#aaaaaa]"
                           >
                             {h}
                           </th>
@@ -310,19 +310,19 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
                                 className="w-1 h-4 shrink-0 rounded-sm"
                                 style={{ backgroundColor: row.color }}
                               />
-                              <span className="text-[11px] text-[#333333]">{row.type}</span>
+                              <span className="text-sm text-[#333333]">{row.type}</span>
                             </div>
                           </td>
-                          <td className="px-6 py-3.5 text-[11px] font-light tabular-nums text-[#111111]">
+                          <td className="px-6 py-3.5 text-sm font-light tabular-nums text-[#111111]">
                             {row.amount != null ? fmt(row.amount) : "—"}
                           </td>
-                          <td className="px-6 py-3.5 text-[11px] text-[#666666]">
+                          <td className="px-6 py-3.5 text-sm text-[#666666]">
                             {row.rate ?? "—"}
                           </td>
                           <td className="px-6 py-3.5">
                             {row.repayment ? (
                               <span
-                                className={`text-[11px] ${
+                                className={`text-sm ${
                                   row.urgent
                                     ? "text-[#9a4a4a] font-medium"
                                     : "text-[#666666]"
@@ -334,10 +334,10 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
                                 })()}
                               </span>
                             ) : (
-                              <span className="text-[11px] text-[#cccccc]">—</span>
+                              <span className="text-sm text-[#cccccc]">—</span>
                             )}
                           </td>
-                          <td className="px-6 py-3.5 text-[11px] text-[#666666] max-w-[220px]">
+                          <td className="px-6 py-3.5 text-sm text-[#666666] max-w-[220px]">
                             {row.security ?? "—"}
                           </td>
                         </tr>
@@ -350,14 +350,14 @@ export default function DebtProfileSection({ debt, fiscalYearEnd, netDebt }: Pro
               {/* Key observations */}
               {observations.length > 0 && (
                 <div className="px-6 py-5 border-t border-[#e0e0e0]">
-                  <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+                  <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
                     Key Observations
                   </p>
                   <ul className="space-y-1.5">
                     {observations.map((obs, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-[#cccccc] text-[11px] mt-0.5 shrink-0">•</span>
-                        <span className="text-[11px] text-[#555555] leading-relaxed">{obs}</span>
+                        <span className="text-[#cccccc] text-sm mt-0.5 shrink-0">•</span>
+                        <span className="text-sm text-[#555555] leading-relaxed">{obs}</span>
                       </li>
                     ))}
                   </ul>

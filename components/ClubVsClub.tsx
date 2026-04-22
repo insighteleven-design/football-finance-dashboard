@@ -135,13 +135,13 @@ function ClubSlot({
     return (
       <div style={{ border: `1px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
             Club {label}
           </span>
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <button
               onClick={handleRemove}
-              style={{ fontSize: "10px", color: style.text, background: "none", border: "none", cursor: "pointer", letterSpacing: "0.05em", opacity: 0.7, padding: 0 }}
+              style={{ fontSize: "15px", color: style.text, background: "none", border: "none", cursor: "pointer", letterSpacing: "0.05em", opacity: 0.7, padding: 0 }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
             >
@@ -152,7 +152,7 @@ function ClubSlot({
         <p style={{ fontSize: "18px", fontWeight: 400, color: "#111111", lineHeight: 1.2, marginBottom: "0.25rem" }}>
           {selectedClub.name}
         </p>
-        <p style={{ fontSize: "11px", color: "#888888" }}>
+        <p style={{ fontSize: "17px", color: "#888888" }}>
           {COUNTRY_FLAGS[selectedClub.country] ?? ""} {selectedClub.divisionLabel}
         </p>
       </div>
@@ -167,7 +167,7 @@ function ClubSlot({
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1rem", borderBottom: "1px solid #f0f0f0" }}>
           <button
             onClick={goBack}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "11px" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "17px" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#888888"; }}
           >
@@ -176,10 +176,10 @@ function ClubSlot({
             </svg>
             Back
           </button>
-          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
             Club {label}
           </span>
-          <span style={{ fontSize: "13px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
+          <span style={{ fontSize: "15px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
         </div>
 
         {/* Filter */}
@@ -190,18 +190,18 @@ function ClubSlot({
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Filter clubs…"
             autoFocus
-            style={{ width: "100%", fontSize: "13px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.375rem 0.625rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
+            style={{ width: "100%", fontSize: "15px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.375rem 0.625rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
           />
         </div>
 
         {/* Club list */}
         <div style={{ maxHeight: "260px", overflowY: "auto" }}>
           {grouped.length === 0 && (
-            <p style={{ fontSize: "13px", color: "#aaaaaa", padding: "1rem" }}>No clubs match.</p>
+            <p style={{ fontSize: "15px", color: "#aaaaaa", padding: "1rem" }}>No clubs match.</p>
           )}
           {grouped.map(([division, clubs]) => (
             <div key={division}>
-              <div style={{ padding: "0.4rem 1rem 0.2rem", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
+              <div style={{ padding: "0.4rem 1rem 0.2rem", fontSize: "17px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
                 {division}
               </div>
               {clubs.map((club) => (
@@ -212,8 +212,8 @@ function ClubSlot({
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#f5f5f5"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
                 >
-                  <span style={{ fontSize: "13px", color: "#111111" }}>{club.name}</span>
-                  <span style={{ fontSize: "10px", color: color, fontWeight: 500 }}>Select →</span>
+                  <span style={{ fontSize: "15px", color: "#111111" }}>{club.name}</span>
+                  <span style={{ fontSize: "15px", color: color, fontWeight: 500 }}>Select →</span>
                 </button>
               ))}
             </div>
@@ -226,10 +226,10 @@ function ClubSlot({
   // ── Country grid state ───────────────────────────────────────────────────────
   return (
     <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.25rem" }}>
-      <p style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label, marginBottom: "0.875rem" }}>
+      <p style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label, marginBottom: "0.875rem" }}>
         Club {label}
       </p>
-      <p style={{ fontSize: "13px", color: "#999999", marginBottom: "1rem" }}>
+      <p style={{ fontSize: "15px", color: "#999999", marginBottom: "1rem" }}>
         Select a country to browse clubs
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -245,7 +245,7 @@ function ClubSlot({
               border: "1px solid #e0e0e0",
               backgroundColor: "#ffffff",
               cursor: "pointer",
-              fontSize: "12px",
+              fontSize: "17px",
               color: "#333333",
               transition: "border-color 0.12s, background-color 0.12s",
             }}
@@ -279,11 +279,11 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "400px" }}>
         <thead>
           <tr>
-            <th style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0", width: "180px" }}>
+            <th style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0", width: "180px" }}>
               Metric
             </th>
             {clubs.map((club, i) => (
-              <th key={club.slug} style={{ fontSize: "11px", fontWeight: 600, color: CLUB_COLORS[i], textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}>
+              <th key={club.slug} style={{ fontSize: "17px", fontWeight: 600, color: CLUB_COLORS[i], textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}>
                 {club.name}
               </th>
             ))}
@@ -296,12 +296,12 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
             const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
             return (
               <tr key={metric.key as string} style={{ borderBottom: "1px solid #f5f5f5" }}>
-                <td style={{ fontSize: "11px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
+                <td style={{ fontSize: "17px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
                 {clubs.map((club, i) => {
                   const val    = club[metric.key] as number | null;
                   const isBest = val !== null && valid.length > 1 && val === best;
                   return (
-                    <td key={club.slug} style={{ fontSize: "13px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
+                    <td key={club.slug} style={{ fontSize: "15px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
                       {fmtVal(val, metric.isRatio, club.currency)}
                     </td>
                   );
@@ -312,7 +312,7 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
         </tbody>
       </table>
       {clubs.length > 1 && (
-        <p style={{ fontSize: "10px", color: "#cccccc", marginTop: "0.75rem" }}>Green = best in comparison for that metric</p>
+        <p style={{ fontSize: "15px", color: "#cccccc", marginTop: "0.75rem" }}>Green = best in comparison for that metric</p>
       )}
     </div>
   );
@@ -323,11 +323,11 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
 function StandardBarRow({ club, value, pct, clubColor, isRatio }: { club: ComparableClub; value: number | null; pct: number; clubColor: string; isRatio?: boolean }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span style={{ fontSize: "12px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <span style={{ fontSize: "17px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
       <div style={{ flex: 1, height: "1.75rem", backgroundColor: "#eeeeee", overflow: "hidden" }}>
         <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />
       </div>
-      <span style={{ fontSize: "13px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
+      <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -339,7 +339,7 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
   const pct   = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span style={{ fontSize: "12px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <span style={{ fontSize: "17px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
       <div style={{ flex: 1, display: "flex", height: "1.75rem" }}>
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", overflow: "hidden", backgroundColor: "#eeeeee" }}>
           {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />}
@@ -349,7 +349,7 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
           {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />}
         </div>
       </div>
-      <span style={{ fontSize: "13px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
+      <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -363,10 +363,10 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
         {clubs.map((club, i) => (
           <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <div style={{ width: "12px", height: "12px", backgroundColor: CLUB_COLORS[i], flexShrink: 0 }} />
-            <span style={{ fontSize: "12px", color: CLUB_COLORS[i] }}>{club.name}</span>
+            <span style={{ fontSize: "17px", color: CLUB_COLORS[i] }}>{club.name}</span>
           </div>
         ))}
-        <span style={{ fontSize: "10px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "15px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.05em" }}>
           Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
@@ -375,7 +375,7 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
           <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #e0e0e0" }}>
-            <p style={{ fontSize: "9px", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", marginBottom: "1rem" }}>
               {metric.label}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -470,11 +470,11 @@ function AnalysisView({ clubs }: { clubs: ComparableClub[] }) {
       {insights.map((text, i) => (
         <div key={i} style={{ display: "flex", gap: "1rem", marginBottom: "1.25rem" }}>
           <div style={{ width: "3px", backgroundColor: INSIGHT_ACCENTS[i % INSIGHT_ACCENTS.length], flexShrink: 0, borderRadius: "2px" }} />
-          <p style={{ fontSize: "14px", lineHeight: 1.65, color: "#333333" }}>{text}</p>
+          <p style={{ fontSize: "17px", lineHeight: 1.65, color: "#333333" }}>{text}</p>
         </div>
       ))}
       {insights.length === 0 && (
-        <p style={{ fontSize: "14px", color: "#aaaaaa" }}>Not enough data to generate analysis for the selected clubs.</p>
+        <p style={{ fontSize: "17px", color: "#aaaaaa" }}>Not enough data to generate analysis for the selected clubs.</p>
       )}
     </div>
   );
@@ -584,13 +584,13 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
     <div>
       {/* Header */}
       <div style={{ marginBottom: "2rem" }}>
-        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
+        <p style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
           Club Comparison
         </p>
         <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.5rem" }}>
           Select clubs to compare
         </p>
-        <p style={{ fontSize: "13px", color: "#999999" }}>
+        <p style={{ fontSize: "15px", color: "#999999" }}>
           Choose a country, then pick a club for each slot. Add up to four clubs across England, Europe, and Japan.
         </p>
       </div>
@@ -612,7 +612,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
 
       {/* Instructions when only one club selected */}
       {selectedClubs.length === 1 && (
-        <p style={{ fontSize: "13px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
           Select a second club to start the comparison.
         </p>
       )}
@@ -628,7 +628,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
                   <button
                     key={id}
                     onClick={() => setView(id)}
-                    style={{ padding: "0.625rem 1.25rem", fontSize: "11px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
+                    style={{ padding: "0.625rem 1.25rem", fontSize: "17px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
                   >
                     {label}
                   </button>
@@ -637,7 +637,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
             </div>
             <button
               onClick={copyLink}
-              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.375rem 0.75rem", border: "1px solid #e0e0e0", fontSize: "11px", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px" }}
+              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.375rem 0.75rem", border: "1px solid #e0e0e0", fontSize: "17px", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px" }}
               onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#999999"; el.style.color = "#111111"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.color = "#999999"; }}
             >

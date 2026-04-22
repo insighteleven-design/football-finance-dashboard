@@ -43,11 +43,11 @@ export default function RevenueBreakdownSection({ breakdown, totalRevenue }: Pro
         className="w-full px-6 py-4 flex items-center justify-between text-left bg-white hover:bg-[#fafafa] transition-colors"
         aria-expanded={open}
       >
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999]">
           Revenue Breakdown
         </p>
         <span
-          className="text-[11px] text-[#cccccc] transition-transform duration-200 shrink-0"
+          className="text-sm text-[#cccccc] transition-transform duration-200 shrink-0"
           style={{ display: "inline-block", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
         >
           →
@@ -109,11 +109,11 @@ export default function RevenueBreakdownSection({ breakdown, totalRevenue }: Pro
                         className="w-2.5 h-2.5 shrink-0"
                         style={{ backgroundColor: color, borderRadius: "50%" }}
                       />
-                      <span className="text-[11px] text-[#666666] w-28">{label}</span>
-                      <span className="text-[11px] font-light tabular-nums text-[#111111] w-14">
+                      <span className="text-sm text-[#666666] w-28">{label}</span>
+                      <span className="text-sm font-light tabular-nums text-[#111111] w-14">
                         {val !== null ? fmt(val) : "—"}
                       </span>
-                      <span className="text-[11px] text-[#aaaaaa] tabular-nums">
+                      <span className="text-sm text-[#aaaaaa] tabular-nums">
                         {pct !== null ? `${pct.toFixed(0)}%` : "—"}
                       </span>
                     </div>
@@ -125,11 +125,11 @@ export default function RevenueBreakdownSection({ breakdown, totalRevenue }: Pro
                       className="w-2.5 h-2.5 shrink-0"
                       style={{ backgroundColor: "#dddddd", borderRadius: "50%" }}
                     />
-                    <span className="text-[11px] text-[#999999] w-28">Other / unallocated</span>
-                    <span className="text-[11px] font-light tabular-nums text-[#aaaaaa] w-14">
+                    <span className="text-sm text-[#999999] w-28">Other / unallocated</span>
+                    <span className="text-sm font-light tabular-nums text-[#aaaaaa] w-14">
                       {fmt(otherAmount)}
                     </span>
-                    <span className="text-[11px] text-[#cccccc] tabular-nums">
+                    <span className="text-sm text-[#cccccc] tabular-nums">
                       {denominator > 0 ? `${((otherAmount / denominator) * 100).toFixed(0)}%` : "—"}
                     </span>
                   </div>

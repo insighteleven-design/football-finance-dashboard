@@ -61,12 +61,12 @@ function HealthBadges({ club }: { club: ClubFinancials }) {
   return (
     <div className="flex flex-wrap gap-2 mt-3">
       {positives.map((p) => (
-        <span key={p} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#4a9a6a] text-[#4a9a6a]">
+        <span key={p} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium border border-[#4a9a6a] text-[#4a9a6a]">
           {p}
         </span>
       ))}
       {issues.map((i) => (
-        <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#9a4a4a] text-[#9a4a4a]">
+        <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium border border-[#9a4a4a] text-[#9a4a4a]">
           {i}
         </span>
       ))}
@@ -106,13 +106,13 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-3 mb-1 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-serif font-light text-[#111111] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl font-serif font-normal text-[#111111] tracking-tight">
                   {euClub.name}
                 </h1>
-                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
                   {leagueLabel}
                 </span>
-                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   {euClub.country}
                 </span>
               </div>
@@ -179,13 +179,13 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-3 mb-1 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-serif font-light text-[#111111] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl font-serif font-normal text-[#111111] tracking-tight">
                   {japanClub.name}
                 </h1>
-                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
                   {divisionLabel}
                 </span>
-                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
+                <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   Japan
                 </span>
               </div>
@@ -195,10 +195,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               {(issues.length > 0 || positives.length > 0) && (
                 <div className="flex flex-wrap gap-2 mt-3">
                   {positives.map((p) => (
-                    <span key={p} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#4a9a6a] text-[#4a9a6a]">{p}</span>
+                    <span key={p} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium border border-[#4a9a6a] text-[#4a9a6a]">{p}</span>
                   ))}
                   {issues.map((i) => (
-                    <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border border-[#9a4a4a] text-[#9a4a4a]">{i}</span>
+                    <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium border border-[#9a4a4a] text-[#9a4a4a]">{i}</span>
                   ))}
                 </div>
               )}
@@ -341,17 +341,17 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-3 mb-1 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-serif font-light text-[#111111] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-serif font-normal text-[#111111] tracking-tight">
                 {club.name}
               </h1>
-              <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] font-medium tracking-[0.1em] uppercase text-[#666666]">
+              <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
                 {DIVISION_LABELS[club.division]}
               </span>
             </div>
             <p className="text-sm text-[#999999]">
               Financial year ending <span className="text-[#666666]">{fyDate}</span>
               {club.data_confidence !== "high" && (
-                <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-[10px] text-[#999999]">
+                <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs text-[#999999]">
                   {club.data_confidence === "medium"
                     ? "Extracted · not independently verified"
                     : club.data_confidence === "abridged"

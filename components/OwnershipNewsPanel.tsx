@@ -47,7 +47,7 @@ export default function OwnershipNewsPanel({ news }: { news: ClubNews | null }) 
     return (
       <div className="border border-[#e8e8e8] bg-white px-6 py-8 text-center">
         <p className="text-sm text-[#aaaaaa] italic">No recent ownership news found.</p>
-        <p className="text-[10px] text-[#cccccc] mt-2">
+        <p className="text-xs text-[#cccccc] mt-2">
           Last checked: {news?.scraped_at ? new Date(news.scraped_at).toLocaleDateString("en-GB") : "—"}
         </p>
       </div>
@@ -64,11 +64,11 @@ export default function OwnershipNewsPanel({ news }: { news: ClubNews | null }) 
             <div className="flex items-center justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full shrink-0 ${cfg.dot}`} />
-                <span className={`text-[10px] font-semibold tracking-[0.08em] uppercase ${cfg.text}`}>
+                <span className={`text-xs font-semibold tracking-[0.08em] uppercase ${cfg.text}`}>
                   {cfg.label}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-[#999999] shrink-0">
+              <div className="flex items-center gap-2 text-xs text-[#999999] shrink-0">
                 {story.source && <span>{story.source}</span>}
                 {story.date && <span>· {story.date}</span>}
               </div>
@@ -89,12 +89,12 @@ export default function OwnershipNewsPanel({ news }: { news: ClubNews | null }) 
             )}
 
             {/* Summary */}
-            <p className="text-[11px] text-[#555555] leading-relaxed">{story.summary}</p>
+            <p className="text-sm text-[#555555] leading-relaxed">{story.summary}</p>
           </div>
         );
       })}
 
-      <p className="text-[10px] text-[#cccccc]">
+      <p className="text-xs text-[#cccccc]">
         Sourced via DuckDuckGo · summarised by Claude AI · last updated{" "}
         {new Date(news.scraped_at).toLocaleDateString("en-GB", {
           day: "numeric",

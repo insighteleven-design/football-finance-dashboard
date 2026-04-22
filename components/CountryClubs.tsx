@@ -43,7 +43,7 @@ function BackButton({ label, onClick }: { label: string; onClick: () => void }) 
       <span className="group-hover:-translate-x-0.5 transition-transform inline-block" style={{ fontSize: "1rem" }}>←</span>
       <span
         className="group-hover:text-[#cccccc] transition-colors"
-        style={{ fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 500 }}
+        style={{ fontSize: "17px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 500 }}
       >
         {label}
       </span>
@@ -108,7 +108,7 @@ function CountriesView({
               </p>
               <p
                 className="mt-2 font-medium uppercase"
-                style={{ color: "#888888", fontSize: "10px", letterSpacing: "0.18em" }}
+                style={{ color: "#888888", fontSize: "15px", letterSpacing: "0.18em" }}
               >
                 {country.leagueCount} {country.leagueCount === 1 ? "league" : "leagues"} · {country.clubCount} clubs
               </p>
@@ -204,7 +204,7 @@ function LeaguesView({
             </p>
             <p
               className="mt-2 font-medium uppercase"
-              style={{ color: "#888888", fontSize: "10px", letterSpacing: "0.18em" }}
+              style={{ color: "#888888", fontSize: "15px", letterSpacing: "0.18em" }}
             >
               {league.clubCount} clubs
             </p>

@@ -935,4 +935,328 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
     reconciliationNote: null,
     postBalanceSheetNote: "Post year-end the shareholders issued further share capital: £3m (14 Jul 2025), £17.15m (31 Jul 2025) and £9m (1 Aug 2025).",
   },
+
+  // ─── Wigan Athletic ─────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Wigan Athletic FC Limited · Indirect method
+  // Prior year figures not available from published accounts
+  wigan: {
+    slug: "wigan",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Loss for the year",                              current:   -397675, prior: 0 },
+      { label: "Depreciation",                                   current:    330762, prior: 0 },
+      { label: "Profit on disposal of player registrations",     current: -7565259, prior: 0 },
+      { label: "Finance income",                                 current:    -10975, prior: 0 },
+      { label: "Net movement in working capital",                current:   -187123, prior: 0 },
+    ],
+    netOperating: { current: -7830270, prior: 0 },
+    investing: [
+      { label: "Purchase of tangible fixed assets",              current:  -841937, prior: 0 },
+      { label: "Proceeds from disposal of registrations",        current:  5224229, prior: 0 },
+      { label: "Interest received",                              current:    10975, prior: 0 },
+    ],
+    netInvesting: { current: 4393267, prior: 0 },
+    financing: [
+      { label: "Shareholder loan received (Mr M Danson)",        current:  3716343, prior: 0 },
+    ],
+    netFinancing: { current: 3716343, prior: 0 },
+    openingCash: { current: 324126, prior: 0 },
+    closingCash: { current: 603466, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year comparative cash flow figures are not included as they were not available at the time of publication.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Exeter City ────────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Consolidated (includes ECWFC & OTR (Exeter) Limited)
+  // Prior year figures not available
+  exeter: {
+    slug: "exeter",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -1196167, prior: 0 },
+    ],
+    netOperating: { current: -1196167, prior: 0 },
+    investing: [
+      { label: "Purchase of intangible assets",                  current:  -280000, prior: 0 },
+      { label: "Proceeds from disposal of registrations",        current:  1600000, prior: 0 },
+      { label: "Purchase of tangible fixed assets",              current:  -488527, prior: 0 },
+      { label: "Proceeds from disposal of tangibles",            current:      292, prior: 0 },
+      { label: "Interest received",                              current:    11190, prior: 0 },
+      { label: "Cash acquired with subsidiary on consolidation", current:    42811, prior: 0 },
+    ],
+    netInvesting: { current: 885766, prior: 0 },
+    financing: [
+      { label: "New loans received",                             current:   593136, prior: 0 },
+      { label: "Repayment of loans",                             current:    -3079, prior: 0 },
+      { label: "Finance lease payments",                         current:  -250126, prior: 0 },
+    ],
+    netFinancing: { current: 339931, prior: 0 },
+    openingCash: { current: 317573, prior: 0 },
+    closingCash: { current: 347103, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Consolidated group figures include ECWFC (women's team) and OTR (Exeter) Limited. Prior year comparatives not available.",
+    postBalanceSheetNote: "Since year-end, the Supporters' Trust (majority shareholder) provided emergency loans of £400k (June 2025) and £200k (November 2025) to meet payroll obligations. The club also factored £985k of future transfer fee receivables via Close Brothers Leasing in December 2025.",
+  },
+
+  // ─── Lincoln City ───────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Prior year figures not available
+  lincoln: {
+    slug: "lincoln",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -2427448, prior: 0 },
+      { label: "Interest paid",                                  current:   -12991, prior: 0 },
+    ],
+    netOperating: { current: -2440439, prior: 0 },
+    investing: [
+      { label: "Purchase of intangible assets",                  current:  -550430, prior: 0 },
+      { label: "Purchase of tangible fixed assets",              current:  -834902, prior: 0 },
+      { label: "Proceeds from disposal of registrations",        current:   536559, prior: 0 },
+    ],
+    netInvesting: { current: -848773, prior: 0 },
+    financing: [
+      { label: "Proceeds from issue of shares",                  current:  3589892, prior: 0 },
+    ],
+    netFinancing: { current: 3589892, prior: 0 },
+    openingCash: { current: 1309605, prior: 0 },
+    closingCash: { current: 1610285, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year comparative cash flow figures are not included as they were not available at the time of publication.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Tranmere Rovers ────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Group accounts · Prior year figures not available
+  tranmere: {
+    slug: "tranmere",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -1664030, prior: 0 },
+    ],
+    netOperating: { current: -1664030, prior: 0 },
+    investing: [
+      { label: "Net cash used in investing activities",          current:  -117369, prior: 0 },
+    ],
+    netInvesting: { current: -117369, prior: 0 },
+    financing: [
+      { label: "Proceeds from issue of shares",                  current:   280001, prior: 0 },
+      { label: "Proceeds from borrowings",                       current:  1706891, prior: 0 },
+      { label: "Repayment of bank loans",                        current:  -362500, prior: 0 },
+      { label: "Net movement in finance leases",                 current:    58516, prior: 0 },
+    ],
+    netFinancing: { current: 1682908, prior: 0 },
+    openingCash: { current: 482674, prior: 0 },
+    closingCash: { current: 384183, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year comparative cash flow figures are not included as they were not available at the time of publication.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Shrewsbury Town ────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Prior year figures not available
+  // Non-cash: £2.1m director loan-to-equity conversion excluded from CF statement
+  shrewsbury: {
+    slug: "shrewsbury",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash generated by operations",                   current:  163878, prior: 0 },
+    ],
+    netOperating: { current: 163878, prior: 0 },
+    investing: [
+      { label: "Net cash used in investing activities",          current: -196566, prior: 0 },
+    ],
+    netInvesting: { current: -196566, prior: 0 },
+    financing: [
+      { label: "Interest paid",                                  current:   -3898, prior: 0 },
+      { label: "Net movement in finance leases",                 current:   11054, prior: 0 },
+    ],
+    netFinancing: { current: 7156, prior: 0 },
+    openingCash: { current: 95786, prior: 0 },
+    closingCash: { current: 70254, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Non-cash item: £2,100,000 of director loans were converted to equity during the year and are excluded from the cash flow statement. Prior year comparatives not available.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Walsall ────────────────────────────────────────────────────────────────
+  // FY May 2025 / May 2024 · FRS 102 · Year ended 31 May 2025
+  // Opening/closing cash represents net overdraft position (cash less bank overdraft)
+  // Interest paid classified under financing activities
+  walsall: {
+    slug: "walsall",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -204000, prior: 0 },
+    ],
+    netOperating: { current: -204000, prior: 0 },
+    investing: [
+      { label: "Net cash used in investing activities",          current: -402000, prior: 0 },
+    ],
+    netInvesting: { current: -402000, prior: 0 },
+    financing: [
+      { label: "Loan from parent company (Trivela Group UK LLC)",current:  1923000, prior: 0 },
+      { label: "Repayment of bank loans",                        current:  -530000, prior: 0 },
+      { label: "Repayment of other loans",                       current:   -25000, prior: 0 },
+      { label: "Net movement in finance leases",                 current:    22000, prior: 0 },
+      { label: "Interest paid",                                  current:  -620000, prior: 0 },
+    ],
+    netFinancing: { current: 770000, prior: 0 },
+    openingCash: { current: -329000, prior: 0 },
+    closingCash: { current: -165000, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Year ended 31 May 2025. Opening and closing figures represent net cash/(overdraft): opening cash £3k less overdraft £332k = net (£329k); closing cash £3k less overdraft £168k = net (£165k). Interest paid classified under financing activities. Prior year comparatives not available.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Chesterfield ───────────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · CFC 2001 Ltd · Prior year figures not available
+  chesterfield: {
+    slug: "chesterfield",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -2126583, prior: 0 },
+      { label: "Interest paid",                                  current:  -164357, prior: 0 },
+    ],
+    netOperating: { current: -2290940, prior: 0 },
+    investing: [
+      { label: "Purchase of intangible assets",                  current:  -125000, prior: 0 },
+      { label: "Purchase of tangible fixed assets",              current:  -583017, prior: 0 },
+      { label: "Proceeds from disposal of registrations",        current:   371510, prior: 0 },
+      { label: "Proceeds from disposal of tangibles",            current:    11950, prior: 0 },
+      { label: "Interest received",                              current:        1, prior: 0 },
+    ],
+    netInvesting: { current: -324556, prior: 0 },
+    financing: [
+      { label: "Proceeds from new loans",                        current:   279649, prior: 0 },
+      { label: "Repayment of loans",                             current:   -92730, prior: 0 },
+      { label: "Return of unpaid share capital",                 current: -3650000, prior: 0 },
+      { label: "Proceeds from share issue",                      current:  7000000, prior: 0 },
+    ],
+    netFinancing: { current: 3536919, prior: 0 },
+    openingCash: { current: 555741, prior: 0 },
+    closingCash: { current: 1477164, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year comparative cash flow figures are not included as they were not available at the time of publication.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Cambridge United ───────────────────────────────────────────────────────
+  // FY Jun 2025 · FRS 102 · Prior year figures not available
+  cambridge: {
+    slug: "cambridge",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations",                    current: -3660383, prior: 0 },
+      { label: "Interest paid",                                  current:    -2012, prior: 0 },
+    ],
+    netOperating: { current: -3662395, prior: 0 },
+    investing: [
+      { label: "Purchase of tangible fixed assets",              current:  -417414, prior: 0 },
+      { label: "Interest received",                              current:     6546, prior: 0 },
+    ],
+    netInvesting: { current: -410868, prior: 0 },
+    financing: [
+      { label: "Proceeds from issue of shares",                  current:  1000000, prior: 0 },
+      { label: "Advance share purchases received",               current:  2400000, prior: 0 },
+      { label: "Repayment of borrowings",                        current:   -12462, prior: 0 },
+      { label: "Finance lease payments",                         current:    -9506, prior: 0 },
+    ],
+    netFinancing: { current: 3378032, prior: 0 },
+    openingCash: { current: 993278, prior: 0 },
+    closingCash: { current: 298047, prior: 0 },
+    reconciliation: null,
+    reconciliationTitle: null,
+    reconciliationNote: "Prior year comparative cash flow figures are not included as they were not available at the time of publication.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Gillingham ─────────────────────────────────────────────────────────────
+  // FY Jun 2025 / Period 1 Jun 2023 – 30 Jun 2024 · FRS 102
+  // Reconciliation in Note 1; prior year is a 13-month period following incorporation
+  gillingham: {
+    slug: "gillingham",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash generated from operations (Note 1)",              current: -5635913, prior: -2863250 },
+      { label: "Interest element of hire purchase payments paid",       current:   -15884, prior:   -29485 },
+    ],
+    netOperating: { current: -5651797, prior: -2892735 },
+    investing: [
+      { label: "Purchase of intangible assets",                         current:  -255000, prior:  -375000 },
+      { label: "Purchase of tangible fixed assets",                     current:   -38280, prior:  -973050 },
+      { label: "Proceeds from disposal of tangibles",                   current:     1400, prior:        0 },
+    ],
+    netInvesting: { current: -291880, prior: -1348050 },
+    financing: [
+      { label: "New loans in year",                                     current:  4772000, prior:  2200000 },
+      { label: "Loan repayments in year",                               current:  -600000, prior:  -205306 },
+      { label: "Capital repayments (hire purchase)",                    current:   -50742, prior:   -20560 },
+      { label: "Amount withdrawn by directors",                         current:        0, prior:    -1543 },
+      { label: "Donations received",                                    current:  1578000, prior:  1305000 },
+    ],
+    netFinancing: { current: 5699258, prior: 3277591 },
+    openingCash: { current: 326389, prior: 1289583 },
+    closingCash: { current: 81970, prior: 326389 },
+    reconciliation: [
+      { label: "Loss before taxation",                                  current: -5737558, prior: -4347545 },
+      { label: "Depreciation charges",                                  current:   641414, prior:   555522 },
+      { label: "Profit on disposal of fixed assets",                    current:    -1270, prior:        0 },
+      { label: "Finance costs",                                         current:    15884, prior:    29485 },
+      { label: "Decrease/(increase) in inventories",                    current:    59099, prior:   -58060 },
+      { label: "Decrease/(increase) in trade and other debtors",        current:     5701, prior:  -218724 },
+      { label: "(Decrease)/increase in trade and other creditors",      current:  -619183, prior:  1176072 },
+    ],
+    reconciliationTitle: "Note 1 — Reconciliation of loss before taxation to cash generated from operations",
+    reconciliationNote: "Prior year comparatives cover a 13-month period (1 June 2023 to 30 June 2024) following the company's incorporation. Figures are therefore not directly comparable on an annualised basis.",
+    postBalanceSheetNote: null,
+  },
+
+  // ─── Harrogate Town ─────────────────────────────────────────────────────────
+  // FY Jun 2025 / Jun 2024 · FRS 102 · Harrogate Town AFC Limited
+  // Reconciliation in Note 27 (detail not included in published accounts reviewed)
+  harrogate: {
+    slug: "harrogate",
+    currentFY: "FY2025",
+    priorFY: "FY2024",
+    operating: [
+      { label: "Cash absorbed by operations (Note 27)",                 current: -1738795, prior: -2356823 },
+      { label: "Interest paid",                                         current:     -533, prior:     -533 },
+    ],
+    netOperating: { current: -1739328, prior: -2357356 },
+    investing: [
+      { label: "Purchase of intangible assets",                         current:   -47127, prior:  -342978 },
+      { label: "Proceeds from disposal of intangibles",                 current:   312843, prior:    65188 },
+      { label: "Purchase of tangible fixed assets",                     current:  -134658, prior: -1429314 },
+    ],
+    netInvesting: { current: 131058, prior: -1707104 },
+    financing: [
+      { label: "Proceeds from borrowings",                              current:  1149046, prior:  2796500 },
+      { label: "Payment of finance lease obligations",                  current:   -13341, prior:   -13341 },
+      { label: "Capital contributions",                                 current:   500000, prior:  1203500 },
+    ],
+    netFinancing: { current: 1635705, prior: 3986659 },
+    openingCash: { current: 80264, prior: 158065 },
+    closingCash: { current: 107699, prior: 80264 },
+    reconciliation: null,
+    reconciliationTitle: "Note 27 — Cash absorbed by operations (detail not available)",
+    reconciliationNote: null,
+    postBalanceSheetNote: null,
+  },
 };

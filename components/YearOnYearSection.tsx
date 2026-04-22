@@ -66,7 +66,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
   higherBetter: boolean | null; isRatio?: boolean;
 }) {
   if (current === null || prior === null)
-    return <span style={{ color: "#cccccc", fontSize: "11px" }}>—</span>;
+    return <span style={{ color: "#cccccc", fontSize: "17px" }}>—</span>;
 
   const improved = isImprovement(current, prior, higherBetter);
   let label: string;
@@ -74,7 +74,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
     const diff = current - prior;
     label = `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}pp`;
   } else {
-    if (prior === 0) return <span style={{ color: "#cccccc", fontSize: "11px" }}>—</span>;
+    if (prior === 0) return <span style={{ color: "#cccccc", fontSize: "17px" }}>—</span>;
     const pct = ((current - prior) / Math.abs(prior)) * 100;
     label = `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
   }
@@ -82,7 +82,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
   const color = improved === true ? "#2e7d52" : improved === false ? "#9a3030" : "#888888";
   const bg    = improved === true ? "#edf7f1" : improved === false ? "#fdf1f1" : "#f5f5f5";
   return (
-    <span style={{ color, background: bg, fontSize: "12px", fontWeight: 600, padding: "2px 7px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
+    <span style={{ color, background: bg, fontSize: "17px", fontWeight: 600, padding: "2px 7px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
       {label}
     </span>
   );
@@ -266,7 +266,7 @@ function TrendChart({ years, leagueYears, metric }: {
   if (allVals.length === 0) {
     return (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: `${VH}px` }}>
-        <p style={{ fontSize: "12px", color: "#cccccc", fontStyle: "italic" }}>No data available</p>
+        <p style={{ fontSize: "17px", color: "#cccccc", fontStyle: "italic" }}>No data available</p>
       </div>
     );
   }
@@ -396,15 +396,15 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 120}px` }}>
           <thead>
             <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
+              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
                 Metric
               </th>
               {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
+                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
                   {col.label}
                 </th>
               ))}
-              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
+              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
                 {cols[cols.length - 2]?.label.split(" ")[1]} → {cols[cols.length - 1]?.label.split(" ")[1]}
               </th>
             </tr>
@@ -423,7 +423,7 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
                   onMouseEnter={e => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
                 >
-                  <td style={{ padding: "13px 20px", fontSize: "13px", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                  <td style={{ padding: "13px 20px", fontSize: "15px", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
                     {m.label}
                   </td>
                   {values.map((v, ci) => (
@@ -450,7 +450,7 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
               key={m.key as string}
               onClick={() => setActiveMetric(i)}
               style={{
-                padding: "6px 14px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em",
+                padding: "6px 14px", fontSize: "17px", fontWeight: 600, letterSpacing: "0.06em",
                 textTransform: "uppercase", cursor: "pointer", transition: "all 0.12s",
                 border: activeMetric === i ? "1px solid #111111" : "1px solid #e0e0e0",
                 background: activeMetric === i ? "#111111" : "white",
@@ -464,7 +464,7 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
 
         {/* Chart header: title + legend */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", margin: 0 }}>
+          <p style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", margin: 0 }}>
             {METRICS[activeMetric].label}
           </p>
           <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
@@ -473,13 +473,13 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
                 <line x1="0" y1="5" x2="24" y2="5" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" />
                 <circle cx="12" cy="5" r="2.5" fill="white" stroke="#111111" strokeWidth="1.5" />
               </svg>
-              <span style={{ fontSize: "12px", color: "#333333", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Club</span>
+              <span style={{ fontSize: "17px", color: "#333333", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Club</span>
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <svg width="24" height="10" style={{ display: "block" }}>
                 <line x1="0" y1="5" x2="24" y2="5" stroke="#aaaaaa" strokeWidth="1.5" strokeDasharray="5 4" strokeLinecap="round" />
               </svg>
-              <span style={{ fontSize: "12px", color: "#888888", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Div Avg</span>
+              <span style={{ fontSize: "17px", color: "#888888", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Div Avg</span>
             </span>
           </div>
         </div>

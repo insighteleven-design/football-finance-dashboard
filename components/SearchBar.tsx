@@ -180,11 +180,11 @@ export default function SearchBar({
             >
               <span className="text-sm text-white">{result.club.name}</span>
               {result.kind === "english" ? (
-                <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${DIVISION_COLORS[result.club.division]}`}>
+                <span className={`text-xs tracking-[0.1em] uppercase shrink-0 ${DIVISION_COLORS[result.club.division]}`}>
                   {DIVISION_LABELS[result.club.division]}
                 </span>
               ) : (
-                <span className={`text-[10px] tracking-[0.1em] uppercase shrink-0 ${euColor(result.club)}`}>
+                <span className={`text-xs tracking-[0.1em] uppercase shrink-0 ${euColor(result.club)}`}>
                   {euLabel(result.club)}
                 </span>
               )}

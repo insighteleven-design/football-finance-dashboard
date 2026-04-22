@@ -41,7 +41,7 @@ function numColor(v: number): string {
 function BreakdownBadge({ open }: { open: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${
+      className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${
         open
           ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]"
           : "border-[#e0e0e0] text-[#aaaaaa]"
@@ -148,7 +148,7 @@ function WaterfallChart({ data }: { data: ClubCashFlowData }) {
 
   return (
     <div>
-      <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-4">
+      <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-4">
         Cash Movement {data.currentFY}
       </p>
       <div className="flex gap-4">
@@ -158,7 +158,7 @@ function WaterfallChart({ data }: { data: ClubCashFlowData }) {
           style={{ height: CHART_H, marginTop: TOP_PAD }}
         >
           {yLabels.map((l) => (
-            <span key={l} className="text-[9px] text-[#cccccc] leading-none">{l}</span>
+            <span key={l} className="text-xs text-[#cccccc] leading-none">{l}</span>
           ))}
         </div>
 
@@ -220,7 +220,7 @@ function WaterfallChart({ data }: { data: ClubCashFlowData }) {
         ].map(({ color, label }) => (
           <span key={label} className="flex items-center gap-1.5">
             <span className="w-2 h-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-            <span className="text-[9px] text-[#999999]">{label}</span>
+            <span className="text-xs text-[#999999]">{label}</span>
           </span>
         ))}
       </div>
@@ -247,19 +247,19 @@ function TableRow({
   const pct   = prior !== 0 ? (delta / Math.abs(prior)) * 100 : Infinity;
   return (
     <tr className={`border-b border-[#f4f4f4] last:border-b-0 ${isSubtotal ? "bg-[#f7f7f7]" : ""}`}>
-      <td className={`py-2 pr-3 text-[10px] ${isSubtotal ? "font-medium text-[#333333]" : "text-[#555555]"} ${indent ? "pl-4" : "pl-0"}`}>
+      <td className={`py-2 pr-3 text-xs ${isSubtotal ? "font-medium text-[#333333]" : "text-[#555555]"} ${indent ? "pl-4" : "pl-0"}`}>
         {label}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: current === 0 && !isSubtotal ? "#cccccc" : numColor(current) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: current === 0 && !isSubtotal ? "#cccccc" : numColor(current) }}>
         {current === 0 && !isSubtotal ? "—" : fmtK(current)}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: prior === 0 && !isSubtotal ? "#cccccc" : numColor(prior) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: prior === 0 && !isSubtotal ? "#cccccc" : numColor(prior) }}>
         {prior === 0 && !isSubtotal ? "—" : fmtK(prior)}
       </td>
-      <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: numColor(delta) }}>
+      <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: numColor(delta) }}>
         {current === 0 && prior === 0 ? "—" : fmtDelta(delta)}
       </td>
-      <td className="py-2 pl-3 text-right tabular-nums text-[10px]" style={{ color: "#aaaaaa" }}>
+      <td className="py-2 pl-3 text-right tabular-nums text-xs" style={{ color: "#aaaaaa" }}>
         {current === 0 && prior === 0 ? "—" : fmtPct(pct)}
       </td>
     </tr>
@@ -269,7 +269,7 @@ function TableRow({
 function CategoryHeader({ label }: { label: string }) {
   return (
     <tr>
-      <td colSpan={5} className="pt-4 pb-1.5 text-[9px] font-medium tracking-[0.15em] uppercase text-[#aaaaaa]">
+      <td colSpan={5} className="pt-4 pb-1.5 text-xs font-medium tracking-[0.15em] uppercase text-[#aaaaaa]">
         {label}
       </td>
     </tr>
@@ -283,7 +283,7 @@ function CashFlowTable({ data }: { data: ClubCashFlowData }) {
 
   return (
     <div>
-      <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+      <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
         Two-Year Comparison
       </p>
 
@@ -291,11 +291,11 @@ function CashFlowTable({ data }: { data: ClubCashFlowData }) {
         <table className="w-full min-w-[480px]">
           <thead>
             <tr className="border-b border-[#e0e0e0]">
-              <th className="pb-2 pr-3 text-left text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Line</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">{data.currentFY}</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">{data.priorFY}</th>
-              <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ £</th>
-              <th className="pb-2 pl-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ %</th>
+              <th className="pb-2 pr-3 text-left text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Line</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">{data.currentFY}</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa] whitespace-nowrap">{data.priorFY}</th>
+              <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ £</th>
+              <th className="pb-2 pl-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Δ %</th>
             </tr>
           </thead>
           <tbody>
@@ -329,7 +329,7 @@ function CashFlowTable({ data }: { data: ClubCashFlowData }) {
         <div className="mt-4 border-t border-[#f0f0f0] pt-4">
           <button
             onClick={() => setShowRecon((o) => !o)}
-            className="flex items-center gap-2 text-[9px] font-medium tracking-[0.1em] uppercase transition-colors hover:text-[#333333]"
+            className="flex items-center gap-2 text-xs font-medium tracking-[0.1em] uppercase transition-colors hover:text-[#333333]"
             style={{ color: showRecon ? "#4A90D9" : "#aaaaaa" }}
           >
             <span className="inline-block transition-transform duration-200" style={{ transform: showRecon ? "rotate(90deg)" : "rotate(0deg)" }}>
@@ -347,30 +347,30 @@ function CashFlowTable({ data }: { data: ClubCashFlowData }) {
                 <table className="w-full min-w-[400px]">
                   <thead>
                     <tr className="border-b border-[#e0e0e0]">
-                      <th className="pb-2 pr-3 text-left text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Item</th>
-                      <th className="pb-2 px-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">{data.currentFY}</th>
-                      <th className="pb-2 pl-3 text-right text-[9px] font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">{data.priorFY}</th>
+                      <th className="pb-2 pr-3 text-left text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">Item</th>
+                      <th className="pb-2 px-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">{data.currentFY}</th>
+                      <th className="pb-2 pl-3 text-right text-xs font-medium tracking-[0.12em] uppercase text-[#aaaaaa]">{data.priorFY}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.reconciliation.map((item, i) => (
                       <tr key={i} className="border-b border-[#f4f4f4] last:border-b-0">
-                        <td className="py-2 pr-3 text-[10px] text-[#555555]">{item.label}</td>
-                        <td className="py-2 px-3 text-right tabular-nums text-[10px]" style={{ color: numColor(item.current) }}>
+                        <td className="py-2 pr-3 text-xs text-[#555555]">{item.label}</td>
+                        <td className="py-2 px-3 text-right tabular-nums text-xs" style={{ color: numColor(item.current) }}>
                           {fmtK(item.current)}
                         </td>
-                        <td className="py-2 pl-3 text-right tabular-nums text-[10px]" style={{ color: numColor(item.prior) }}>
+                        <td className="py-2 pl-3 text-right tabular-nums text-xs" style={{ color: numColor(item.prior) }}>
                           {fmtK(item.prior)}
                         </td>
                       </tr>
                     ))}
                     {/* Total row matches netOperating */}
                     <tr className="border-t border-[#e0e0e0] bg-[#f7f7f7]">
-                      <td className="py-2 pr-3 text-[10px] font-medium text-[#333333]">Cash (absorbed by)/generated from operations</td>
-                      <td className="py-2 px-3 text-right tabular-nums text-[10px] font-medium" style={{ color: numColor(data.netOperating.current) }}>
+                      <td className="py-2 pr-3 text-xs font-medium text-[#333333]">Cash (absorbed by)/generated from operations</td>
+                      <td className="py-2 px-3 text-right tabular-nums text-xs font-medium" style={{ color: numColor(data.netOperating.current) }}>
                         {fmtK(data.netOperating.current)}
                       </td>
-                      <td className="py-2 pl-3 text-right tabular-nums text-[10px] font-medium" style={{ color: numColor(data.netOperating.prior) }}>
+                      <td className="py-2 pl-3 text-right tabular-nums text-xs font-medium" style={{ color: numColor(data.netOperating.prior) }}>
                         {fmtK(data.netOperating.prior)}
                       </td>
                     </tr>
@@ -378,7 +378,7 @@ function CashFlowTable({ data }: { data: ClubCashFlowData }) {
                 </table>
               </div>
               {data.reconciliationNote && (
-                <p className="text-[9px] text-[#aaaaaa] mt-2 leading-relaxed">
+                <p className="text-xs text-[#aaaaaa] mt-2 leading-relaxed">
                   {data.reconciliationNote}
                 </p>
               )}
@@ -422,7 +422,7 @@ function SimpleBar({ value, scale, label }: { value: number; scale: number; labe
           {fmtM(value)}
         </span>
       </div>
-      <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">{label}</p>
+      <p className="text-xs text-[#aaaaaa] tracking-[0.05em]">{label}</p>
     </div>
   );
 }
@@ -445,7 +445,7 @@ export function ClubCashFlowSectionSimple({
       style={{ marginTop: -1 }}
     >
       <div className="px-4 sm:px-6 py-4 sm:py-5 border-r border-[#e0e0e0] bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">
           Operating Cash Flow
         </p>
         <p className="text-xl sm:text-2xl font-light tabular-nums" style={{ color }}>
@@ -453,7 +453,7 @@ export function ClubCashFlowSectionSimple({
         </p>
       </div>
       <div className="px-4 sm:px-6 py-4 sm:py-5 bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
           Operating Cash Flow
         </p>
         <SimpleBar value={value} scale={scale} label={fyLabel} />
@@ -487,7 +487,7 @@ export default function ClubCashFlowSection({ data }: { data: ClubCashFlowData }
         onClick={() => setOpen((o) => !o)}
       >
         <div className="flex items-center justify-between gap-2 mb-1.5">
-          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">
+          <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999]">
             Operating Cash Flow
           </p>
           <BreakdownBadge open={open} />
@@ -499,7 +499,7 @@ export default function ClubCashFlowSection({ data }: { data: ClubCashFlowData }
 
       {/* Right: dual-year bar */}
       <div className="px-4 sm:px-6 py-4 sm:py-5 bg-white">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">
           Operating Cash Flow
         </p>
         {/* Current year */}
@@ -529,7 +529,7 @@ export default function ClubCashFlowSection({ data }: { data: ClubCashFlowData }
           {/* Post-BS note */}
           {data.postBalanceSheetNote && (
             <div className="px-6 py-3">
-              <p className="text-[9px] text-[#aaaaaa] leading-relaxed">
+              <p className="text-xs text-[#aaaaaa] leading-relaxed">
                 {data.postBalanceSheetNote}
               </p>
             </div>

@@ -165,12 +165,12 @@ function LeagueSlot({
     return (
       <div style={{ border: `1px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
+          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             League {label}
           </span>
           <button
             onClick={handleRemove}
-            style={{ fontSize: "10px", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.7, padding: 0 }}
+            style={{ fontSize: "15px", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.7, padding: 0 }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
           >
@@ -180,7 +180,7 @@ function LeagueSlot({
         <p style={{ fontSize: "18px", fontWeight: 400, color: "#111111", lineHeight: 1.2, marginBottom: "0.25rem" }}>
           {selected.displayName}
         </p>
-        <p style={{ fontSize: "11px", color: "#888888" }}>
+        <p style={{ fontSize: "17px", color: "#888888" }}>
           {COUNTRY_FLAGS[selected.country] ?? ""} {selected.country} · {selected.clubCount} clubs
         </p>
       </div>
@@ -194,7 +194,7 @@ function LeagueSlot({
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1rem", borderBottom: "1px solid #f0f0f0" }}>
           <button
             onClick={() => setActiveCountry(null)}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "11px" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "17px" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#888888"; }}
           >
@@ -203,8 +203,8 @@ function LeagueSlot({
             </svg>
             Back
           </button>
-          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>League {label}</span>
-          <span style={{ fontSize: "13px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
+          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>League {label}</span>
+          <span style={{ fontSize: "15px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
         </div>
         <div>
           {countryLeagues.map((league) => (
@@ -216,10 +216,10 @@ function LeagueSlot({
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
             >
               <div>
-                <p style={{ fontSize: "14px", color: "#111111", marginBottom: "0.1rem" }}>{league.displayName}</p>
-                <p style={{ fontSize: "10px", color: "#aaaaaa" }}>{league.clubCount} clubs</p>
+                <p style={{ fontSize: "17px", color: "#111111", marginBottom: "0.1rem" }}>{league.displayName}</p>
+                <p style={{ fontSize: "15px", color: "#aaaaaa" }}>{league.clubCount} clubs</p>
               </div>
-              <span style={{ fontSize: "10px", color: color, fontWeight: 500 }}>Select →</span>
+              <span style={{ fontSize: "15px", color: color, fontWeight: 500 }}>Select →</span>
             </button>
           ))}
         </div>
@@ -230,10 +230,10 @@ function LeagueSlot({
   // ── Country grid ─────────────────────────────────────────────────────────────
   return (
     <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.25rem" }}>
-      <p style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "0.875rem" }}>
+      <p style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "0.875rem" }}>
         League {label}
       </p>
-      <p style={{ fontSize: "13px", color: "#999999", marginBottom: "1rem" }}>
+      <p style={{ fontSize: "15px", color: "#999999", marginBottom: "1rem" }}>
         Select a country to browse leagues
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -241,7 +241,7 @@ function LeagueSlot({
           <button
             key={country}
             onClick={() => setActiveCountry(country)}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.4rem 0.75rem", border: "1px solid #e0e0e0", backgroundColor: "#ffffff", cursor: "pointer", fontSize: "12px", color: "#333333", transition: "border-color 0.12s, background-color 0.12s" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.4rem 0.75rem", border: "1px solid #e0e0e0", backgroundColor: "#ffffff", cursor: "pointer", fontSize: "17px", color: "#333333", transition: "border-color 0.12s, background-color 0.12s" }}
             onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = color; el.style.backgroundColor = style.bg; el.style.color = color; }}
             onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.backgroundColor = "#ffffff"; el.style.color = "#333333"; }}
           >
@@ -262,13 +262,13 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "400px" }}>
         <thead>
           <tr>
-            <th style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0", width: "200px" }}>
+            <th style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0", width: "200px" }}>
               Metric
             </th>
             {leagues.map((league, i) => (
               <th key={league.id} style={{ textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}>
-                <span style={{ fontSize: "11px", fontWeight: 600, color: SLOT_COLORS[i], display: "block" }}>{league.displayName}</span>
-                <span style={{ fontSize: "9px", color: "#aaaaaa", fontWeight: 400 }}>{COUNTRY_FLAGS[league.country] ?? ""} {league.clubCount} clubs</span>
+                <span style={{ fontSize: "17px", fontWeight: 600, color: SLOT_COLORS[i], display: "block" }}>{league.displayName}</span>
+                <span style={{ fontSize: "17px", color: "#aaaaaa", fontWeight: 400 }}>{COUNTRY_FLAGS[league.country] ?? ""} {league.clubCount} clubs</span>
               </th>
             ))}
           </tr>
@@ -283,12 +283,12 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
 
             return (
               <tr key={metric.key as string} style={{ borderBottom: "1px solid #f5f5f5" }}>
-                <td style={{ fontSize: "11px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
+                <td style={{ fontSize: "17px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
                 {leagues.map((league, i) => {
                   const val    = league[metric.key] as number | null;
                   const isBest = val !== null && valid.length > 1 && best !== null && val === best;
                   return (
-                    <td key={league.id} style={{ fontSize: "13px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
+                    <td key={league.id} style={{ fontSize: "15px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
                       {fmtLeagueVal(league, metric.key)}
                     </td>
                   );
@@ -299,7 +299,7 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
         </tbody>
       </table>
       {leagues.length > 1 && (
-        <p style={{ fontSize: "10px", color: "#cccccc", marginTop: "0.75rem" }}>
+        <p style={{ fontSize: "15px", color: "#cccccc", marginTop: "0.75rem" }}>
           Green = best in comparison for that metric · Averages exclude clubs with missing data
         </p>
       )}
@@ -317,11 +317,11 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
         {leagues.map((league, i) => (
           <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <div style={{ width: "12px", height: "12px", backgroundColor: SLOT_COLORS[i], flexShrink: 0 }} />
-            <span style={{ fontSize: "12px", color: SLOT_COLORS[i] }}>{league.displayName}</span>
-            <span style={{ fontSize: "10px", color: "#cccccc" }}>{COUNTRY_FLAGS[league.country] ?? ""}</span>
+            <span style={{ fontSize: "17px", color: SLOT_COLORS[i] }}>{league.displayName}</span>
+            <span style={{ fontSize: "15px", color: "#cccccc" }}>{COUNTRY_FLAGS[league.country] ?? ""}</span>
           </div>
         ))}
-        <span style={{ fontSize: "10px", color: "#cccccc", marginLeft: "auto", alignSelf: "center" }}>
+        <span style={{ fontSize: "15px", color: "#cccccc", marginLeft: "auto", alignSelf: "center" }}>
           Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
@@ -332,7 +332,7 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
 
         return (
           <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #e0e0e0" }}>
-            <p style={{ fontSize: "9px", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", marginBottom: "1rem" }}>
               {metric.label}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -346,7 +346,7 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
                   const pct   = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                   return (
                     <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                      <span style={{ fontSize: "12px", width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
+                      <span style={{ fontSize: "17px", width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
                       <div style={{ flex: 1, display: "flex", height: "1.75rem" }}>
                         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", overflow: "hidden", backgroundColor: "#eeeeee" }}>
                           {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color }} />}
@@ -356,7 +356,7 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
                           {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color }} />}
                         </div>
                       </div>
-                      <span style={{ fontSize: "13px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: value !== null ? color : "#aaaaaa" }}>{displayVal}</span>
+                      <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: value !== null ? color : "#aaaaaa" }}>{displayVal}</span>
                     </div>
                   );
                 }
@@ -364,11 +364,11 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
                 const pct = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                 return (
                   <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                    <span style={{ fontSize: "12px", width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
+                    <span style={{ fontSize: "17px", width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
                     <div style={{ flex: 1, height: "1.75rem", backgroundColor: "#eeeeee", overflow: "hidden" }}>
                       <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color }} />
                     </div>
-                    <span style={{ fontSize: "13px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color }}>{displayVal}</span>
+                    <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color }}>{displayVal}</span>
                   </div>
                 );
               })}
@@ -456,13 +456,13 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
     <div>
       {/* Header */}
       <div style={{ marginBottom: "2rem" }}>
-        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
+        <p style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
           League Comparison
         </p>
         <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.5rem" }}>
           Compare leagues by average metrics
         </p>
-        <p style={{ fontSize: "13px", color: "#999999" }}>
+        <p style={{ fontSize: "15px", color: "#999999" }}>
           Select leagues to compare average financial performance across clubs. Averages are computed from all clubs with available data in each league.
         </p>
       </div>
@@ -483,7 +483,7 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
       </div>
 
       {selectedLeagues.length === 1 && (
-        <p style={{ fontSize: "13px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
           Select a second league to start the comparison.
         </p>
       )}
@@ -498,7 +498,7 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
                 <button
                   key={id}
                   onClick={() => setView(id)}
-                  style={{ padding: "0.625rem 1.25rem", fontSize: "11px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
+                  style={{ padding: "0.625rem 1.25rem", fontSize: "17px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
                 >
                   {label}
                 </button>

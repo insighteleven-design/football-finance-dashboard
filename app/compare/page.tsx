@@ -1,7 +1,13 @@
 import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
 import { euClubs, type EUClub } from "@/lib/euClubs";
+import { itClubs } from "@/lib/itClubs";
+import { esClubs } from "@/lib/esClubs";
+import { noClubs } from "@/lib/noClubs";
+import { swClubs } from "@/lib/swClubs";
+import { japanClubs, J_DIVISION_LABELS } from "@/lib/japanClubs";
 import ClubVsClub from "@/components/ClubVsClub";
+import LeagueVsLeague from "@/components/LeagueVsLeague";
 import { type ComparableClub } from "@/lib/comparable";
 
 const DIVISION_LABELS: Record<string, string> = {
@@ -19,6 +25,9 @@ const COUNTRY_CODES: Record<string, string> = {
   "France":      "FRA",
   "Denmark":     "DEN",
   "Norway":      "NOR",
+  "Sweden":      "SWE",
+  "Italy":       "ITA",
+  "Spain":       "ESP",
 };
 
 const LEAGUE_DISPLAY: Record<string, string> = {
@@ -47,7 +56,7 @@ const englishComparable: ComparableClub[] = clubs.map((c) => ({
   net_debt:         c.net_debt,
 }));
 
-const euComparable: ComparableClub[] = euClubs
+const euComparable: ComparableClub[] = [...euClubs, ...itClubs, ...esClubs, ...noClubs, ...swClubs]
   .filter(
     (c) =>
       c.financials.revenue !== null ||
@@ -68,17 +77,32 @@ const euComparable: ComparableClub[] = euClubs
     net_debt:         c.financials.net_debt ?? null,
   }));
 
-const allComparable = [...englishComparable, ...euComparable];
+const japanComparable: ComparableClub[] = japanClubs.map((c) => ({
+  slug:             c.slug,
+  name:             c.name,
+  country:          "Japan",
+  divisionLabel:    J_DIVISION_LABELS[c.division],
+  currency:         "USD" as const,
+  revenue:          c.revenue,
+  wage_bill:        c.wage_bill,
+  wage_ratio:       c.wage_ratio,
+  operating_profit: c.operating_profit,
+  pre_tax_profit:   c.pre_tax_profit,
+  net_debt:         c.net_debt,
+}));
+
+const allComparable = [...englishComparable, ...euComparable, ...japanComparable];
 
 export default function ComparePage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl sm:text-3xl font-serif font-light tracking-tight mb-8" style={{ color: "#111111" }}>
-        Club Comparisons
-      </h1>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
       <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
         <ClubVsClub allClubs={allComparable} />
       </Suspense>
+
+      <div style={{ borderTop: "1px solid #e8e8e8", marginTop: "4rem", paddingTop: "4rem" }}>
+        <LeagueVsLeague allClubs={allComparable} />
+      </div>
     </div>
   );
 }

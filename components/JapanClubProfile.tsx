@@ -69,7 +69,7 @@ function DivBar({ value, scale, color }: { value: number; scale: number; color: 
 
 function BreakdownBadge({ open }: { open: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${open ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]" : "border-[#e0e0e0] text-[#aaaaaa]"}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${open ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]" : "border-[#e0e0e0] text-[#aaaaaa]"}`}>
       Breakdown
       <span className="inline-block transition-transform duration-200" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>→</span>
     </span>
@@ -109,8 +109,8 @@ function TransferPanel({ tb }: { tb: JapanClubDeepDive["transfer_breakdown"] }) 
     <div className="space-y-2">
       {rows.map((r) => (
         <div key={r.label} className="flex items-center justify-between gap-4">
-          <span className="text-[11px] text-[#666666] w-40 shrink-0">{r.label}</span>
-          <span className="text-[11px] tabular-nums font-medium" style={{ color: r.color }}>
+          <span className="text-sm text-[#666666] w-40 shrink-0">{r.label}</span>
+          <span className="text-sm tabular-nums font-medium" style={{ color: r.color }}>
             {r.value !== null ? `$${Math.abs(r.value).toFixed(1)}m${r.value < 0 ? " (net cost)" : ""}` : "—"}
           </span>
         </div>
@@ -140,10 +140,10 @@ function MetricsGrid({
   return (
     <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
       </div>
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs {compareLabel} Average</p>
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999]">vs {compareLabel} Average</p>
       </div>
 
       {METRICS.map((m) => {
@@ -169,7 +169,7 @@ function MetricsGrid({
               onClick={toggleExpand}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
+                <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
                 {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
@@ -178,12 +178,12 @@ function MetricsGrid({
                 <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
               )}
               {stats && rank !== null && (
-                <p className="text-[10px] text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
+                <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
               )}
             </div>
 
             <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
+              <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
               <div className="mb-1">
                 <div className="flex items-center gap-2 mb-1">
                   {m.diverging ? (
@@ -195,7 +195,7 @@ function MetricsGrid({
                     {fmtJpy(val, m.isRatio)}
                   </span>
                 </div>
-                <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+                <p className="text-xs text-[#aaaaaa] tracking-[0.05em]">This club</p>
               </div>
               <div className="mt-2">
                 <div className="flex items-center gap-2 mb-1">
@@ -208,7 +208,7 @@ function MetricsGrid({
                     {stats ? fmtJpy(stats.avg, m.isRatio) : "—"}
                   </span>
                 </div>
-                <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">Division avg</p>
+                <p className="text-xs text-[#cccccc] tracking-[0.05em]">Division avg</p>
               </div>
             </div>
 
@@ -218,7 +218,7 @@ function MetricsGrid({
                 style={{ maxHeight: revOpen ? "700px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Revenue Breakdown</p>
+                  <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Revenue Breakdown</p>
                   <JapanRevenueBreakdownSection breakdown={breakdown ?? null} totalRevenue={totalRevenue} />
                 </div>
               </div>
@@ -229,7 +229,7 @@ function MetricsGrid({
                 style={{ maxHeight: transferOpen ? "300px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Transfer Breakdown</p>
+                  <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Transfer Breakdown</p>
                   <TransferPanel tb={transferBreakdown ?? null} />
                 </div>
               </div>
@@ -275,10 +275,10 @@ function YoYSection({ club }: { club: JapanClub }) {
   return (
     <div className="border border-[#e0e0e0] overflow-hidden">
       <div className="grid grid-cols-4 px-4 sm:px-6 py-3 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] col-span-1">Metric</p>
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] text-right">{fyLabel(py.fiscal_year_end)}</p>
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] text-right">{fyLabel(club.fiscal_year_end)}</p>
-        <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] text-right">Change</p>
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] col-span-1">Metric</p>
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] text-right">{fyLabel(py.fiscal_year_end)}</p>
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] text-right">{fyLabel(club.fiscal_year_end)}</p>
+        <p className="text-xs font-medium tracking-[0.18em] uppercase text-[#999999] text-right">Change</p>
       </div>
       {rows.map((r, i) => {
         const curr = current[r.key];
@@ -291,10 +291,10 @@ function YoYSection({ club }: { club: JapanClub }) {
             className="grid grid-cols-4 px-4 sm:px-6 py-3 bg-white items-center"
             style={{ borderBottom: isLast ? undefined : "1px solid #f0f0f0" }}
           >
-            <p className="text-[11px] text-[#666666] col-span-1 pr-2">{r.label}</p>
-            <p className="text-[11px] tabular-nums text-[#aaaaaa] text-right">{fmtJpy(prev as number | null, r.isRatio)}</p>
-            <p className="text-[11px] tabular-nums font-medium text-[#111111] text-right">{fmtJpy(curr as number | null, r.isRatio)}</p>
-            <p className={`text-[11px] tabular-nums text-right font-medium ${pct === null ? "text-[#cccccc]" : pct > 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"}`}>
+            <p className="text-sm text-[#666666] col-span-1 pr-2">{r.label}</p>
+            <p className="text-sm tabular-nums text-[#aaaaaa] text-right">{fmtJpy(prev as number | null, r.isRatio)}</p>
+            <p className="text-sm tabular-nums font-medium text-[#111111] text-right">{fmtJpy(curr as number | null, r.isRatio)}</p>
+            <p className={`text-sm tabular-nums text-right font-medium ${pct === null ? "text-[#cccccc]" : pct > 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"}`}>
               {pct === null ? "—" : `${pct > 0 ? "+" : ""}${pct.toFixed(1)}%`}
             </p>
           </div>
@@ -401,7 +401,7 @@ export default function JapanClubProfile({ club, leagueClubs, deepDive }: Props)
       {tab === "yoy" && <YoYSection club={club} />}
 
       {/* Disclaimer */}
-      <p className="text-[10px] text-[#bbbbbb] mt-6 leading-relaxed">
+      <p className="text-xs text-[#bbbbbb] mt-6 leading-relaxed">
         Figures converted from JPY millions at ¥150/$1. Net Debt shown as a proxy (Total Liabilities minus Current Assets) since individual debt instruments are not disclosed separately in J-League financial disclosures.
       </p>
     </div>
