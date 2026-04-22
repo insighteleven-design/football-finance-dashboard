@@ -35,6 +35,12 @@ function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): s
   return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
 }
 
+// Strip trailing parenthetical qualifiers so "FY2024/25 (Jun)" and "FY2024/25" compare equal
+function normalizeSeason(s: string | null | undefined): string {
+  if (!s) return "";
+  return s.replace(/\s*\(.*$/, "").trim();
+}
+
 function snapStats(snaps: EUYearSnap[], key: keyof EUYearSnap) {
   const vals = snaps
     .map((s) => s[key] as number | null | undefined)
@@ -309,28 +315,35 @@ type EUYearSnap = {
 
 function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
   const currentSeason = club.financials.most_recent_year;
-  const snaps: EUYearSnap[] = club.historical.map((h) => {
-    const py = club.prior_year?.season === h.season ? club.prior_year : null;
-    const isCurrent = h.season === currentSeason;
-    const fin = isCurrent ? club.financials : null;
-    return {
-      season: h.season,
-      revenue: h.revenue,
-      wage_bill: h.wage_bill,
-      wage_to_revenue_pct:
-        h.revenue && h.wage_bill ? Math.round((h.wage_bill / h.revenue) * 1000) / 10 : null,
-      net_profit: h.net_profit,
-      equity: h.equity ?? (fin?.equity ?? null),
-      total_liabilities: h.total_liabilities ?? (fin?.total_liabilities ?? null),
-      operating_profit: fin?.operating_profit ?? py?.operating_profit ?? null,
-      profit_from_player_sales: fin?.profit_from_player_sales ?? py?.profit_from_player_sales ?? null,
-      pre_tax_profit: fin?.pre_tax_profit ?? py?.pre_tax_profit ?? null,
-      net_debt: fin?.net_debt ?? py?.net_debt ?? null,
-    };
-  });
+  const currentNorm = normalizeSeason(currentSeason);
+  // Skip historical entries whose season matches the current season (different string, same year)
+  // — the current year snap is added below from club.financials as the authoritative source.
+  const snaps: EUYearSnap[] = club.historical
+    .filter((h) => normalizeSeason(h.season) !== currentNorm)
+    .map((h) => {
+      const py = club.prior_year?.season === h.season ? club.prior_year : null;
+      return {
+        season: h.season,
+        revenue: h.revenue,
+        wage_bill: h.wage_bill,
+        wage_to_revenue_pct:
+          h.revenue && h.wage_bill ? Math.round((h.wage_bill / h.revenue) * 1000) / 10 : null,
+        net_profit: h.net_profit,
+        equity: h.equity ?? null,
+        total_liabilities: h.total_liabilities ?? null,
+        operating_profit: py?.operating_profit ?? null,
+        profit_from_player_sales: py?.profit_from_player_sales ?? null,
+        pre_tax_profit: py?.pre_tax_profit ?? null,
+        net_debt: py?.net_debt ?? null,
+      };
+    });
   // Inject prior_year when not already present in historical
   const py = club.prior_year;
-  if (py && !snaps.find((s) => s.season === py.season) && py.season !== currentSeason) {
+  if (
+    py &&
+    !snaps.find((s) => normalizeSeason(s.season) === normalizeSeason(py.season)) &&
+    normalizeSeason(py.season) !== currentNorm
+  ) {
     snaps.push({
       season: py.season,
       revenue: py.revenue,
@@ -346,7 +359,7 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
     });
   }
   // Ensure current year is present (use financials as authoritative source)
-  if (currentSeason && !snaps.find((s) => s.season === currentSeason)) {
+  if (currentSeason && !snaps.find((s) => normalizeSeason(s.season) === currentNorm)) {
     snaps.push({
       season: currentSeason,
       revenue: club.financials.revenue,
