@@ -508,19 +508,69 @@ function fmtChartLabel(v: number, isRatio: boolean | undefined): string {
   return `${v.toFixed(0)}m`;
 }
 
+// Build a parallel array of league-average EUYearSnap for each season in allYears
+function buildLeagueAvgSnaps(allYears: EUYearSnap[], leagueClubs: EUClub[]): EUYearSnap[] {
+  return allYears.map((yr) => {
+    const matchingSnaps = leagueClubs.flatMap((c) =>
+      buildEUYearSnaps(c).filter((s) => normalizeSeason(s.season) === normalizeSeason(yr.season))
+    );
+    const avg = (key: keyof EUYearSnap): number | null => {
+      const vals = matchingSnaps
+        .map((s) => s[key] as number | null)
+        .filter((v): v is number => v !== null && isFinite(v));
+      return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+    };
+    return {
+      season: yr.season,
+      revenue: avg("revenue"),
+      wage_bill: avg("wage_bill"),
+      wage_to_revenue_pct: avg("wage_to_revenue_pct"),
+      net_profit: avg("net_profit"),
+      equity: avg("equity"),
+      total_liabilities: avg("total_liabilities"),
+      operating_profit: avg("operating_profit"),
+      profit_from_player_sales: avg("profit_from_player_sales"),
+      pre_tax_profit: avg("pre_tax_profit"),
+      net_debt: avg("net_debt"),
+    };
+  });
+}
+
+function euPolySegments(
+  years: EUYearSnap[],
+  key: keyof EUYearSnap,
+  xPos: (i: number) => number,
+  yPos: (v: number) => number,
+): string[][] {
+  const segs: string[][] = [];
+  let seg: string[] = [];
+  years.forEach((yr, i) => {
+    const v = yr[key] as number | null;
+    if (v !== null && v !== undefined && isFinite(v)) {
+      seg.push(`${xPos(i).toFixed(2)},${yPos(v).toFixed(2)}`);
+    } else {
+      if (seg.length) { segs.push(seg); seg = []; }
+    }
+  });
+  if (seg.length) segs.push(seg);
+  return segs;
+}
+
 function EUTrendChart({
   years,
+  leagueYears,
   metricKey,
   isRatio,
   currency,
 }: {
   years: EUYearSnap[];
+  leagueYears: EUYearSnap[];
   metricKey: keyof EUYearSnap;
   isRatio?: boolean;
   currency: "EUR" | "USD" | "SEK";
 }) {
   const n = years.length;
-  const allVals: number[] = years
+  const allVals: number[] = [...years, ...leagueYears]
     .map((y) => y[metricKey] as number | null)
     .filter((v): v is number => v !== null && isFinite(v));
 
@@ -547,21 +597,11 @@ function EUTrendChart({
   const showZero = yMin < 0 && yMax > 0;
   const zeroY = showZero ? yPos(0) : null;
 
-  // Build polyline segments (skip nulls)
-  const segments: string[][] = [];
-  let seg: string[] = [];
-  years.forEach((yr, i) => {
-    const v = yr[metricKey] as number | null;
-    if (v !== null && v !== undefined && isFinite(v)) {
-      seg.push(`${xPos(i).toFixed(2)},${yPos(v).toFixed(2)}`);
-    } else {
-      if (seg.length) { segments.push(seg); seg = []; }
-    }
-  });
-  if (seg.length) segments.push(seg);
+  const clubSegs = euPolySegments(years, metricKey, xPos, yPos);
+  const avgSegs  = euPolySegments(leagueYears, metricKey, xPos, yPos);
 
   const fillBase = zeroY ?? yPos(yMin);
-  const areaPaths = segments
+  const areaPaths = clubSegs
     .filter((s) => s.length >= 2)
     .map((s) => {
       const pts = s.map((pt) => pt.split(","));
@@ -591,7 +631,12 @@ function EUTrendChart({
         <line x1={ML} y1={zeroY} x2={ML + PW} y2={zeroY} stroke="#d8d8d8" strokeWidth={0.75} strokeDasharray="3 3" />
       )}
       {areaPaths.map((d, i) => <path key={i} d={d} fill="rgba(17,17,17,0.04)" />)}
-      {segments.map((s, i) => (
+      {/* League average dashed line — behind club line */}
+      {avgSegs.map((s, i) => (
+        <polyline key={i} points={s.join(" ")} fill="none" stroke="#cccccc" strokeWidth={0.75} strokeDasharray="5 4" strokeLinejoin="round" strokeLinecap="round" />
+      ))}
+      {/* Club line */}
+      {clubSegs.map((s, i) => (
         <polyline key={i} points={s.join(" ")} fill="none" stroke="#111111" strokeWidth={1} strokeLinejoin="round" strokeLinecap="round" />
       ))}
       {years.map((yr, i) => {
@@ -660,15 +705,19 @@ function ChgBadge({
 
 function EUYoYSection({
   club,
+  leagueClubs,
   metrics,
   currency,
 }: {
   club: EUClub;
+  leagueClubs: EUClub[];
   metrics: MetricConfig[];
   currency: "EUR" | "USD" | "SEK";
 }) {
-  const allYears = buildEUYearSnaps(club);
+  const allYears = buildEUYearSnaps(club).sort((a, b) => a.season.localeCompare(b.season));
   if (allYears.length < 2) return null;
+
+  const leagueAvgYears = buildLeagueAvgSnaps(allYears, leagueClubs);
 
   // Only show metrics that have at least one data point in history
   type SnapKey = keyof EUYearSnap;
@@ -760,9 +809,25 @@ function EUYoYSection({
           <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", margin: 0 }}>
             {chartMetrics[activeMetric]?.label}
           </p>
+          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="24" height="10" style={{ display: "block" }}>
+                <line x1="0" y1="5" x2="24" y2="5" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="12" cy="5" r="2.5" fill="white" stroke="#111111" strokeWidth="1.5" />
+              </svg>
+              <span style={{ fontSize: "10px", color: "#333333", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }}>Club</span>
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="24" height="10" style={{ display: "block" }}>
+                <line x1="0" y1="5" x2="24" y2="5" stroke="#aaaaaa" strokeWidth="1.5" strokeDasharray="5 4" strokeLinecap="round" />
+              </svg>
+              <span style={{ fontSize: "10px", color: "#888888", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }}>League Avg</span>
+            </span>
+          </div>
         </div>
         <EUTrendChart
           years={allYears}
+          leagueYears={leagueAvgYears}
           metricKey={chartMetrics[activeMetric]?.key as keyof EUYearSnap ?? "revenue"}
           isRatio={chartMetrics[activeMetric]?.isRatio}
           currency={currency}
@@ -832,13 +897,13 @@ function FinancialsSection({
 }) {
   const metrics  = getMetrics(club.country);
   const curr     = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
-  const allYears = buildEUYearSnaps(club);
+  const allYears = buildEUYearSnaps(club).sort((a, b) => a.season.localeCompare(b.season));
 
-  // Historical year tabs: up to 3 most recent non-current seasons
+  // Historical year tabs: up to 3 most recent non-current seasons (oldest → newest)
   const currentSeason  = club.financials.most_recent_year;
   const historicalTabs = allYears
-    .filter((y) => y.season !== currentSeason)
-    .slice(-3); // at most 3 historical year tabs
+    .filter((y) => normalizeSeason(y.season) !== normalizeSeason(currentSeason))
+    .slice(-3);
 
   const hasHistory = historicalTabs.length > 0;
   const hasYoY     = allYears.length >= 2;
@@ -904,7 +969,7 @@ function FinancialsSection({
 
       {/* Year on Year tab */}
       {innerTab === "yoy" && hasYoY && (
-        <EUYoYSection club={club} metrics={metrics} currency={curr} />
+        <EUYoYSection club={club} leagueClubs={leagueClubs} metrics={metrics} currency={curr} />
       )}
     </div>
   );
