@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Fragment } from "react";
-import { EUClub, EUPriorYear } from "@/lib/euClubs";
+import { EUClub } from "@/lib/euClubs";
 import EUMarketContextPanel from "@/components/EUMarketContextPanel";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -33,11 +33,6 @@ function leagueStats(clubs: EUClub[], key: FinKey) {
 function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): string {
   if (higherBetter === null) return "#aaaaaa";
   return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
-}
-
-function calcPct(curr: number | null, prior: number | null): number | null {
-  if (curr === null || prior === null || prior === 0) return null;
-  return ((curr - prior) / Math.abs(prior)) * 100;
 }
 
 // ─── Bar primitives ───────────────────────────────────────────────────────────
@@ -285,33 +280,71 @@ function FinancialTab({
   );
 }
 
-// ─── Prior year tab (no league bars — comparative data not available for all clubs) ──
+// ─── Historical year snapshot type ───────────────────────────────────────────
 
-function PriorYearTab({
-  priorYear,
+type EUYearSnap = {
+  season: string;
+  revenue: number | null;
+  wage_bill: number | null;
+  wage_to_revenue_pct: number | null;
+  net_profit: number | null;
+  equity: number | null;
+  total_liabilities: number | null;
+};
+
+function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
+  const currentSeason = club.financials.most_recent_year;
+  const snaps: EUYearSnap[] = club.historical.map((h) => ({
+    season: h.season,
+    revenue: h.revenue,
+    wage_bill: h.wage_bill,
+    wage_to_revenue_pct:
+      h.revenue && h.wage_bill ? Math.round((h.wage_bill / h.revenue) * 1000) / 10 : null,
+    net_profit: h.net_profit,
+    equity: h.equity ?? null,
+    total_liabilities: h.total_liabilities ?? null,
+  }));
+  // Ensure current year is present (use financials as authoritative source)
+  if (currentSeason && !snaps.find((s) => s.season === currentSeason)) {
+    snaps.push({
+      season: currentSeason,
+      revenue: club.financials.revenue,
+      wage_bill: club.financials.wage_bill,
+      wage_to_revenue_pct: club.financials.wage_to_revenue_pct,
+      net_profit: club.financials.net_profit,
+      equity: club.financials.equity,
+      total_liabilities: club.financials.total_liabilities,
+    });
+  }
+  return snaps;
+}
+
+// ─── Historical year tab (simple list — no league comparison available) ───────
+
+function HistoricalYearTab({
+  snap,
   currency,
   metrics,
 }: {
-  priorYear: EUPriorYear;
+  snap: EUYearSnap;
   currency: "EUR" | "USD" | "SEK";
   metrics: MetricConfig[];
 }) {
-  type PriorKey = keyof EUPriorYear;
+  type SnapKey = keyof EUYearSnap;
   const hasAny = metrics.some((m) => {
-    const v = priorYear[m.key as PriorKey];
+    const v = snap[m.key as SnapKey];
     return v !== null && v !== undefined;
   });
   if (!hasAny) {
     return <p className="text-sm text-[#aaaaaa] italic">No financial data available for this year.</p>;
   }
-
   return (
     <div className="border border-[#e0e0e0] overflow-hidden">
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
         <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
       </div>
       {metrics.map((m) => {
-        const val = (priorYear[m.key as PriorKey] ?? null) as number | null;
+        const val = (snap[m.key as SnapKey] ?? null) as number | null;
         return (
           <div key={m.key} className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white flex items-center justify-between">
             <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
@@ -329,126 +362,306 @@ function PriorYearTab({
   );
 }
 
-// ─── Year-on-year comparison tab ───────────────────────────────────────────────
+// ─── SVG trend chart ──────────────────────────────────────────────────────────
 
-function YoYTab({
+const ML = 56, MR = 16, MT = 28, MB = 36, VW = 560, VH = 200;
+const PW = VW - ML - MR, PH = VH - MT - MB;
+
+function niceStep(range: number): number {
+  if (range === 0) return 1;
+  const raw = range / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  return (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
+}
+
+function buildTicks(min: number, max: number): number[] {
+  const step = niceStep(max - min);
+  const start = Math.floor(min / step) * step;
+  const ticks: number[] = [];
+  for (let v = start; v <= max + step * 0.01; v = Math.round((v + step) * 1e9) / 1e9) ticks.push(v);
+  if (ticks.length > 6) {
+    const every = Math.ceil(ticks.length / 5);
+    return ticks.filter((_, i) => i % every === 0);
+  }
+  return ticks;
+}
+
+function fmtChartTick(v: number, isRatio: boolean | undefined, currency: "EUR" | "USD" | "SEK"): string {
+  if (isRatio) return `${v}%`;
+  const sym = currency === "USD" ? "$" : currency === "SEK" ? "SEK" : "€";
+  if (Math.abs(v) >= 1000) return `${sym}${(v / 1000).toFixed(1)}bn`;
+  return `${sym}${v}m`;
+}
+function fmtChartLabel(v: number, isRatio: boolean | undefined): string {
+  if (isRatio) return `${v.toFixed(1)}%`;
+  return `${v.toFixed(0)}m`;
+}
+
+function EUTrendChart({
+  years,
+  metricKey,
+  isRatio,
+  currency,
+}: {
+  years: EUYearSnap[];
+  metricKey: keyof EUYearSnap;
+  isRatio?: boolean;
+  currency: "EUR" | "USD" | "SEK";
+}) {
+  const n = years.length;
+  const allVals: number[] = years
+    .map((y) => y[metricKey] as number | null)
+    .filter((v): v is number => v !== null && isFinite(v));
+
+  if (allVals.length === 0) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: `${VH}px` }}>
+        <p style={{ fontSize: "12px", color: "#cccccc", fontStyle: "italic" }}>No data available</p>
+      </div>
+    );
+  }
+
+  const rawMin = Math.min(...allVals);
+  const rawMax = Math.max(...allVals);
+  const span = rawMax - rawMin || Math.abs(rawMax) || 10;
+  const dataMin = rawMin - span * 0.28;
+  const dataMax = rawMax + span * 0.28;
+  const ticks = buildTicks(dataMin, dataMax);
+  const yMin = Math.min(dataMin, ticks[0]);
+  const yMax = Math.max(dataMax, ticks[ticks.length - 1]);
+
+  const xPos = (i: number) => ML + (n <= 1 ? PW / 2 : (i / (n - 1)) * PW);
+  const yPos = (v: number) => MT + PH - ((v - yMin) / (yMax - yMin)) * PH;
+
+  const showZero = yMin < 0 && yMax > 0;
+  const zeroY = showZero ? yPos(0) : null;
+
+  // Build polyline segments (skip nulls)
+  const segments: string[][] = [];
+  let seg: string[] = [];
+  years.forEach((yr, i) => {
+    const v = yr[metricKey] as number | null;
+    if (v !== null && v !== undefined && isFinite(v)) {
+      seg.push(`${xPos(i).toFixed(2)},${yPos(v).toFixed(2)}`);
+    } else {
+      if (seg.length) { segments.push(seg); seg = []; }
+    }
+  });
+  if (seg.length) segments.push(seg);
+
+  const fillBase = zeroY ?? yPos(yMin);
+  const areaPaths = segments
+    .filter((s) => s.length >= 2)
+    .map((s) => {
+      const pts = s.map((pt) => pt.split(","));
+      return (
+        `M ${pts[0][0]},${pts[0][1]}` +
+        pts.slice(1).map(([x, y]) => ` L ${x},${y}`).join("") +
+        ` L ${pts[pts.length - 1][0]},${fillBase.toFixed(2)}` +
+        ` L ${pts[0][0]},${fillBase.toFixed(2)} Z`
+      );
+    });
+
+  return (
+    <svg viewBox={`0 0 ${VW} ${VH}`} style={{ width: "100%", height: "auto", display: "block" }} aria-label="Trend chart">
+      {ticks.map((tick) => {
+        const y = yPos(tick);
+        if (y < MT - 1 || y > MT + PH + 1) return null;
+        return (
+          <g key={tick}>
+            <line x1={ML} y1={y} x2={ML + PW} y2={y} stroke="#f0f0f0" strokeWidth={0.5} />
+            <text x={ML - 7} y={y} textAnchor="end" dominantBaseline="middle" fontSize={8.5} fill="#cccccc" style={{ fontVariantNumeric: "tabular-nums" }}>
+              {fmtChartTick(tick, isRatio, currency)}
+            </text>
+          </g>
+        );
+      })}
+      {zeroY !== null && (
+        <line x1={ML} y1={zeroY} x2={ML + PW} y2={zeroY} stroke="#d8d8d8" strokeWidth={0.75} strokeDasharray="3 3" />
+      )}
+      {areaPaths.map((d, i) => <path key={i} d={d} fill="rgba(17,17,17,0.04)" />)}
+      {segments.map((s, i) => (
+        <polyline key={i} points={s.join(" ")} fill="none" stroke="#111111" strokeWidth={1} strokeLinejoin="round" strokeLinecap="round" />
+      ))}
+      {years.map((yr, i) => {
+        const v = yr[metricKey] as number | null;
+        if (v === null || v === undefined || !isFinite(v)) return null;
+        const cx = xPos(i);
+        const cy = yPos(v);
+        const isFirst = i === 0, isLast = i === n - 1;
+        const anchor = isFirst ? "start" : isLast ? "end" : "middle";
+        const lx = isFirst ? cx + 1 : isLast ? cx - 1 : cx;
+        const above = cy > MT + 18;
+        const ly = above ? cy - 9 : cy + 17;
+        return (
+          <g key={i}>
+            <circle cx={cx} cy={cy} r={2.5} fill="white" stroke="#111111" strokeWidth={1} />
+            <text x={lx} y={ly} textAnchor={anchor} fontSize={9} fontWeight={400} fill="#555555" style={{ fontVariantNumeric: "tabular-nums" }}>
+              {fmtChartLabel(v, isRatio)}
+            </text>
+          </g>
+        );
+      })}
+      {years.map((yr, i) => (
+        <text key={i} x={xPos(i)} y={MT + PH + 16} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"} fontSize={9} fill="#bbbbbb">
+          {yr.season}
+        </text>
+      ))}
+      <line x1={ML} y1={MT} x2={ML} y2={MT + PH} stroke="#ebebeb" strokeWidth={0.5} />
+      <line x1={ML} y1={MT + PH} x2={ML + PW} y2={MT + PH} stroke="#ebebeb" strokeWidth={0.5} />
+    </svg>
+  );
+}
+
+// ─── Change badge ─────────────────────────────────────────────────────────────
+
+function ChgBadge({
+  current, prior, higherBetter, isRatio,
+}: {
+  current: number | null; prior: number | null;
+  higherBetter: boolean | null; isRatio?: boolean;
+}) {
+  if (current === null || prior === null)
+    return <span style={{ color: "#cccccc", fontSize: "11px" }}>—</span>;
+  const improved =
+    higherBetter === null || current === prior
+      ? null
+      : higherBetter ? current > prior : current < prior;
+  let label: string;
+  if (isRatio) {
+    const diff = current - prior;
+    label = `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}pp`;
+  } else {
+    if (prior === 0) return <span style={{ color: "#cccccc", fontSize: "11px" }}>—</span>;
+    const pct = ((current - prior) / Math.abs(prior)) * 100;
+    label = `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
+  }
+  const color = improved === true ? "#2e7d52" : improved === false ? "#9a3030" : "#888888";
+  const bg    = improved === true ? "#edf7f1" : improved === false ? "#fdf1f1" : "#f5f5f5";
+  return (
+    <span style={{ color, background: bg, fontSize: "10px", fontWeight: 600, padding: "2px 6px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
+      {label}
+    </span>
+  );
+}
+
+// ─── Year-on-year section (table + chart) ─────────────────────────────────────
+
+function EUYoYSection({
   club,
   metrics,
+  currency,
 }: {
   club: EUClub;
   metrics: MetricConfig[];
+  currency: "EUR" | "USD" | "SEK";
 }) {
-  const prior = club.prior_year!;
-  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
-  type PriorKey = keyof EUPriorYear;
+  const allYears = buildEUYearSnaps(club);
+  if (allYears.length < 2) return null;
 
-  const rows = metrics.filter((m) => {
-    const pVal = prior[m.key as PriorKey];
-    const cVal = club.financials[m.key];
-    return (pVal !== null && pVal !== undefined) || (cVal !== null && cVal !== undefined);
-  });
+  // Only show metrics that have at least one data point in history
+  type SnapKey = keyof EUYearSnap;
+  const chartMetrics = metrics.filter((m) =>
+    allYears.some((y) => {
+      const v = y[m.key as SnapKey];
+      return v !== null && v !== undefined && isFinite(v as number);
+    })
+  );
+
+  const [activeMetric, setActiveMetric] = useState(0);
+
+  const cols = allYears.map((y, i) => ({ label: y.season, snap: y, isCurrent: i === allYears.length - 1 }));
 
   return (
-    <div className="border border-[#e0e0e0] overflow-hidden">
-      {/* Header */}
-      <div className="grid grid-cols-4 px-4 sm:px-6 py-3 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] col-span-1">Metric</p>
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] text-right">{prior.season}</p>
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] text-right">{club.financials.most_recent_year ?? "Current"}</p>
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] text-right">Change</p>
+    <div>
+      {/* ── Table ── */}
+      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", whiteSpace: "nowrap", width: "200px" }}>
+                Metric
+              </th>
+              {cols.map((col, ci) => (
+                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
+                  {col.label}
+                </th>
+              ))}
+              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
+                Change
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {chartMetrics.map((m, mi) => {
+              const values = cols.map((col) => {
+                const v = col.snap[m.key as SnapKey];
+                return (v !== undefined ? v : null) as number | null;
+              });
+              const latest      = values[values.length - 1];
+              const penultimate = values[values.length - 2] ?? null;
+              return (
+                <tr
+                  key={m.key}
+                  style={{ borderBottom: mi < chartMetrics.length - 1 ? "1px solid #f2f2f2" : "none", background: "white", cursor: "pointer" }}
+                  onClick={() => setActiveMetric(mi)}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
+                >
+                  <td style={{ padding: "13px 20px", fontSize: "11px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                    {m.label}
+                  </td>
+                  {values.map((v, ci) => (
+                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "14px" : "13px", fontWeight: cols[ci].isCurrent ? 400 : 300, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                      {fmtCurrency(v, currency, m.isRatio)}
+                    </td>
+                  ))}
+                  <td style={{ textAlign: "right", padding: "13px 16px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
+                    <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
-      {rows.map((m) => {
-        const priorVal = (prior[m.key as PriorKey] ?? null) as number | null;
-        const currVal = (club.financials[m.key] ?? null) as number | null;
-        const pct = calcPct(currVal, priorVal);
-        const isPositiveGood = m.higherBetter === true;
-        const isNegativeGood = m.higherBetter === false;
-        const pctColor =
-          pct === null
-            ? "text-[#cccccc]"
-            : pct > 0
-            ? isPositiveGood ? "text-[#4a9a6a]" : isNegativeGood ? "text-[#9a4a4a]" : "text-[#aaaaaa]"
-            : isNegativeGood ? "text-[#4a9a6a]" : isPositiveGood ? "text-[#9a4a4a]" : "text-[#aaaaaa]";
-
-        return (
-          <div key={m.key} className="grid grid-cols-4 px-4 sm:px-6 py-4 border-b border-[#f0f0f0] bg-white items-center">
-            <p className="text-[10px] font-medium tracking-[0.08em] uppercase text-[#777777] col-span-1 pr-2">{m.label}</p>
-            <p className="text-sm tabular-nums text-[#aaaaaa] text-right">
-              {fmtCurrency(priorVal, curr, m.isRatio)}
-            </p>
-            <p className="text-sm tabular-nums font-medium text-[#111111] text-right">
-              {fmtCurrency(currVal, curr, m.isRatio)}
-            </p>
-            <p className={`text-sm tabular-nums font-medium text-right ${pctColor}`}>
-              {pct === null ? "—" : `${pct > 0 ? "+" : ""}${pct.toFixed(1)}%`}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─── Historical section (revenue sparkline) ───────────────────────────────────
-
-function HistoricalSection({ club }: { club: EUClub }) {
-  const hist = [...club.historical]
-    .reverse()
-    .filter((h) => h.revenue !== null || h.net_profit !== null);
-
-  if (!hist.length) return null;
-
-  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
-  const maxRev = Math.max(...hist.map((h) => h.revenue ?? 0), 0.01);
-  const showProfit = hist.some((h) => h.net_profit !== null);
-
-  return (
-    <div className="mt-6">
-      <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-3">Revenue History</p>
-      <div className="border border-[#e0e0e0] overflow-hidden">
-        <div className="bg-white divide-y divide-[#f0f0f0]">
-          {hist.map((h) => {
-            const revPct = h.revenue !== null ? (h.revenue / maxRev) * 100 : 0;
-            return (
-              <div key={h.season} className="px-4 sm:px-6 py-3.5 flex items-center gap-4">
-                <span className="text-[10px] text-[#aaaaaa] w-16 shrink-0 tabular-nums">{h.season}</span>
-                <div className="flex-1 h-6 bg-[#eeeeee] overflow-hidden">
-                  <div className="h-full bg-[#8888cc]" style={{ width: `${revPct}%` }} />
-                </div>
-                <span className="text-xs tabular-nums text-[#111111] w-16 text-right shrink-0">
-                  {h.revenue !== null ? fmtCurrency(h.revenue, curr) : "—"}
-                </span>
-                {showProfit && (
-                  <span
-                    className={`text-xs tabular-nums w-16 text-right shrink-0 ${
-                      h.net_profit === null ? "text-[#cccccc]" : h.net_profit >= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
-                    }`}
-                  >
-                    {h.net_profit !== null ? fmtCurrency(h.net_profit, curr) : "—"}
-                  </span>
-                )}
-              </div>
-            );
-          })}
+      {/* ── Chart ── */}
+      <div style={{ marginTop: "28px", borderTop: "1px solid #eeeeee", paddingTop: "20px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+          {chartMetrics.map((m, i) => (
+            <button
+              key={m.key}
+              onClick={() => setActiveMetric(i)}
+              style={{
+                padding: "5px 12px", fontSize: "10px", fontWeight: 500, letterSpacing: "0.08em",
+                textTransform: "uppercase", cursor: "pointer", transition: "all 0.12s",
+                border: activeMetric === i ? "1px solid #111111" : "1px solid #e0e0e0",
+                background: activeMetric === i ? "#111111" : "white",
+                color: activeMetric === i ? "white" : "#888888",
+              }}
+            >
+              {m.label.replace(" / (Loss)", "").replace(" / (Cash)", "").replace(" (€)", "").replace(" (USD)", "")}
+            </button>
+          ))}
         </div>
-        {showProfit && (
-          <div className="px-4 sm:px-6 py-3 bg-white border-t border-[#f0f0f0] flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-[9px] text-[#aaaaaa]">
-              <span className="w-2 h-2 rounded-full bg-[#8888cc] inline-block" /> Revenue
-            </span>
-            <span className="flex items-center gap-1.5 text-[9px] text-[#4a9a6a]">
-              <span className="w-2 h-2 rounded-full bg-[#4a9a6a] inline-block" /> Profit
-            </span>
-            <span className="flex items-center gap-1.5 text-[9px] text-[#9a4a4a]">
-              <span className="w-2 h-2 rounded-full bg-[#9a4a4a] inline-block" /> Loss
-            </span>
-          </div>
-        )}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+          <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", margin: 0 }}>
+            {chartMetrics[activeMetric]?.label}
+          </p>
+        </div>
+        <EUTrendChart
+          years={allYears}
+          metricKey={chartMetrics[activeMetric]?.key as keyof EUYearSnap ?? "revenue"}
+          isRatio={chartMetrics[activeMetric]?.isRatio}
+          currency={currency}
+        />
       </div>
     </div>
   );
 }
+
 
 // ─── Club info tab ────────────────────────────────────────────────────────────
 
@@ -498,8 +711,6 @@ function ClubInfoTab({ club }: { club: EUClub }) {
 
 // ─── Financials section (outer tab content) ────────────────────────────────────
 
-type InnerTab = "prior" | "current" | "yoy";
-
 function FinancialsSection({
   club,
   leagueClubs,
@@ -509,22 +720,34 @@ function FinancialsSection({
   leagueClubs: EUClub[];
   leagueLabel: string;
 }) {
-  const hasPrior = !!club.prior_year;
-  const metrics = getMetrics(club.country);
-  const [innerTab, setInnerTab] = useState<InnerTab>(hasPrior ? "yoy" : "current");
+  const metrics  = getMetrics(club.country);
+  const curr     = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
+  const allYears = buildEUYearSnaps(club);
 
-  const innerTabs: { key: InnerTab; label: string }[] = [
-    ...(hasPrior ? [{ key: "prior" as InnerTab, label: club.prior_year!.season }] : []),
-    { key: "current", label: club.financials.most_recent_year ?? "Current" },
-    ...(hasPrior ? [{ key: "yoy" as InnerTab, label: "Year on Year" }] : []),
+  // Historical year tabs: up to 3 most recent non-current seasons
+  const currentSeason  = club.financials.most_recent_year;
+  const historicalTabs = allYears
+    .filter((y) => y.season !== currentSeason)
+    .slice(-3); // at most 3 historical year tabs
+
+  const hasHistory = historicalTabs.length > 0;
+  const hasYoY     = allYears.length >= 2;
+
+  const defaultTab = hasYoY ? "yoy" : "current";
+  const [innerTab, setInnerTab] = useState<string>(defaultTab);
+
+  const innerTabs: { key: string; label: string }[] = [
+    ...historicalTabs.map((y) => ({ key: y.season, label: y.season })),
+    { key: "current", label: currentSeason ?? "Current" },
+    ...(hasYoY ? [{ key: "yoy", label: "Year on Year" }] : []),
   ];
 
-  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
+  const activeHistSnap = historicalTabs.find((y) => y.season === innerTab) ?? null;
 
   return (
     <div>
       {/* Inner tab bar */}
-      {hasPrior && (
+      {(hasHistory || hasYoY) && (
         <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
           {innerTabs.map(({ key, label }) => (
             <button
@@ -542,22 +765,23 @@ function FinancialsSection({
         </div>
       )}
 
+      {/* Historical year tab */}
+      {activeHistSnap !== null && innerTab !== "current" && innerTab !== "yoy" && (
+        <>
+          <CountryDisclaimer country={club.country} />
+          <HistoricalYearTab snap={activeHistSnap} currency={curr} metrics={metrics} />
+        </>
+      )}
+
+      {/* Current year tab */}
       {innerTab === "current" && (
         <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} metrics={metrics} />
       )}
 
-      {innerTab === "prior" && hasPrior && (
-        <>
-          <CountryDisclaimer country={club.country} />
-          <PriorYearTab priorYear={club.prior_year!} currency={curr} metrics={metrics} />
-        </>
+      {/* Year on Year tab */}
+      {innerTab === "yoy" && hasYoY && (
+        <EUYoYSection club={club} metrics={metrics} currency={curr} />
       )}
-
-      {innerTab === "yoy" && hasPrior && (
-        <YoYTab club={club} metrics={metrics} />
-      )}
-
-      <HistoricalSection club={club} />
     </div>
   );
 }
