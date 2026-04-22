@@ -27,13 +27,13 @@ export default function Home() {
         <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-16 sm:pt-28 pb-12 sm:pb-20">
           <h1
             className="font-serif font-normal leading-none"
-            style={{ color: "#ffffff", fontSize: "clamp(80px, 14vw, 180px)", letterSpacing: "-0.03em" }}
+            style={{ color: "#ffffff", fontSize: "clamp(40px, 12vw, 180px)", letterSpacing: "-0.03em" }}
           >
             Intelligence
           </h1>
           <p
             className="mt-6 sm:mt-8"
-            style={{ color: "#888888", fontSize: "clamp(18px, 2.2vw, 28px)", letterSpacing: "0.01em" }}
+            style={{ color: "#888888", fontSize: "clamp(15px, 4vw, 28px)", letterSpacing: "0.01em" }}
           >
             The comprehensive football finance database, by Insight Eleven
           </p>

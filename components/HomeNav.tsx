@@ -34,7 +34,7 @@ export default function HomeNav({ totalClubs, totalCountries }: Props) {
         <Link
           key={item.id}
           href={item.href}
-          className="w-full flex items-center justify-between group py-12 sm:py-16 transition-colors"
+          className="w-full flex items-center justify-between group py-7 sm:py-16 transition-colors"
           style={{
             borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
             borderBottom: "1px solid #1a1a1a",
@@ -44,20 +44,20 @@ export default function HomeNav({ totalClubs, totalCountries }: Props) {
           <div>
             <p
               className="font-serif font-normal leading-none group-hover:text-[#cccccc] transition-colors"
-              style={{ color: "#ffffff", fontSize: "clamp(48px, 8vw, 96px)", letterSpacing: "-0.025em" }}
+              style={{ color: "#ffffff", fontSize: "clamp(28px, 8vw, 96px)", letterSpacing: "-0.025em" }}
             >
               {item.title}
             </p>
             <p
-              className="mt-4"
-              style={{ color: "#666666", fontSize: "clamp(17px, 2vw, 24px)", letterSpacing: "0.005em" }}
+              className="mt-2 sm:mt-4"
+              style={{ color: "#666666", fontSize: "clamp(13px, 3.5vw, 24px)", letterSpacing: "0.005em" }}
             >
               {item.tagline(totalClubs, totalCountries)}
             </p>
           </div>
           <span
-            className="shrink-0 ml-8 group-hover:text-[#888888] transition-colors"
-            style={{ color: "#333333", fontSize: "2.5rem" }}
+            className="shrink-0 ml-4 sm:ml-8 group-hover:text-[#888888] transition-colors"
+            style={{ color: "#333333", fontSize: "clamp(1.2rem, 4vw, 2.5rem)" }}
           >
             →
           </span>

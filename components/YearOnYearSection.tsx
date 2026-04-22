@@ -66,7 +66,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
   higherBetter: boolean | null; isRatio?: boolean;
 }) {
   if (current === null || prior === null)
-    return <span style={{ color: "#cccccc", fontSize: "17px" }}>—</span>;
+    return <span style={{ color: "#cccccc", fontSize: "14px" }}>—</span>;
 
   const improved = isImprovement(current, prior, higherBetter);
   let label: string;
@@ -74,7 +74,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
     const diff = current - prior;
     label = `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}pp`;
   } else {
-    if (prior === 0) return <span style={{ color: "#cccccc", fontSize: "17px" }}>—</span>;
+    if (prior === 0) return <span style={{ color: "#cccccc", fontSize: "14px" }}>—</span>;
     const pct = ((current - prior) / Math.abs(prior)) * 100;
     label = `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
   }
@@ -82,7 +82,7 @@ function ChgBadge({ current, prior, higherBetter, isRatio }: {
   const color = improved === true ? "#2e7d52" : improved === false ? "#9a3030" : "#888888";
   const bg    = improved === true ? "#edf7f1" : improved === false ? "#fdf1f1" : "#f5f5f5";
   return (
-    <span style={{ color, background: bg, fontSize: "17px", fontWeight: 600, padding: "2px 7px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
+    <span style={{ color, background: bg, fontSize: "13px", fontWeight: 600, padding: "2px 6px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
       {label}
     </span>
   );
@@ -315,7 +315,7 @@ function TrendChart({ years, leagueYears, metric }: {
         return (
           <g key={tick}>
             <line x1={ML} y1={y} x2={ML + PW} y2={y} stroke="#f0f0f0" strokeWidth={0.5} />
-            <text x={ML - 7} y={y} textAnchor="end" dominantBaseline="middle" fontSize={8.5} fill="#cccccc" style={{ fontVariantNumeric: "tabular-nums" }}>
+            <text x={ML - 7} y={y} textAnchor="end" dominantBaseline="middle" fontSize={11} fill="#cccccc" style={{ fontVariantNumeric: "tabular-nums" }}>
               {fmtTick(tick, metric.isRatio)}
             </text>
           </g>
@@ -358,7 +358,7 @@ function TrendChart({ years, leagueYears, metric }: {
         return (
           <g key={i}>
             <circle cx={cx} cy={cy} r={2.5} fill="white" stroke="#111111" strokeWidth={1} />
-            <text x={lx} y={ly} textAnchor={anchor} fontSize={9} fontWeight={400} fill="#555555" style={{ fontVariantNumeric: "tabular-nums" }}>
+            <text x={lx} y={ly} textAnchor={anchor} fontSize={11} fontWeight={400} fill="#555555" style={{ fontVariantNumeric: "tabular-nums" }}>
               {fmtLabel(vn, metric.isRatio)}
             </text>
           </g>
@@ -367,7 +367,7 @@ function TrendChart({ years, leagueYears, metric }: {
 
       {/* X-axis labels */}
       {years.map((yr, i) => (
-        <text key={i} x={xPos(i)} y={MT + PH + 16} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"} fontSize={9} fill="#bbbbbb">
+        <text key={i} x={xPos(i)} y={MT + PH + 16} textAnchor={i === 0 ? "start" : i === n - 1 ? "end" : "middle"} fontSize={11} fill="#bbbbbb">
           {yr.label}
         </text>
       ))}
@@ -396,15 +396,15 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 120}px` }}>
           <thead>
             <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
+              <th style={{ textAlign: "left", padding: "10px 16px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "160px" }}>
                 Metric
               </th>
               {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
+                <th key={ci} style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
                   {col.label}
                 </th>
               ))}
-              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "17px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
+              <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "70px" }}>
                 {cols[cols.length - 2]?.label.split(" ")[1]} → {cols[cols.length - 1]?.label.split(" ")[1]}
               </th>
             </tr>
@@ -423,15 +423,15 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
                   onMouseEnter={e => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
                 >
-                  <td style={{ padding: "13px 20px", fontSize: "17px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                  <td style={{ padding: "11px 16px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
                     {m.label}
                   </td>
                   {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "20px" : "16px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                    <td key={ci} style={{ textAlign: "right", padding: "11px 12px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
                       {fmt(v, m.isRatio)}
                     </td>
                   ))}
-                  <td style={{ textAlign: "right", padding: "13px 16px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
+                  <td style={{ textAlign: "right", padding: "11px 12px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
                     <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
                   </td>
                 </tr>
@@ -444,13 +444,13 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
       {/* ── Chart ── */}
       <div style={{ marginTop: "28px", borderTop: "1px solid #eeeeee", paddingTop: "20px" }}>
         {/* Metric selector */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "16px" }}>
           {METRICS.map((m, i) => (
             <button
               key={m.key as string}
               onClick={() => setActiveMetric(i)}
               style={{
-                padding: "6px 14px", fontSize: "17px", fontWeight: 600, letterSpacing: "0.06em",
+                padding: "5px 11px", fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em",
                 textTransform: "uppercase", cursor: "pointer", transition: "all 0.12s",
                 border: activeMetric === i ? "1px solid #111111" : "1px solid #e0e0e0",
                 background: activeMetric === i ? "#111111" : "white",
@@ -463,23 +463,23 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
         </div>
 
         {/* Chart header: title + legend */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <p style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", margin: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+          <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", margin: 0 }}>
             {METRICS[activeMetric].label}
           </p>
-          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="24" height="10" style={{ display: "block" }}>
-                <line x1="0" y1="5" x2="24" y2="5" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" />
-                <circle cx="12" cy="5" r="2.5" fill="white" stroke="#111111" strokeWidth="1.5" />
+          <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <svg width="20" height="10" style={{ display: "block" }}>
+                <line x1="0" y1="5" x2="20" y2="5" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="10" cy="5" r="2.5" fill="white" stroke="#111111" strokeWidth="1.5" />
               </svg>
-              <span style={{ fontSize: "17px", color: "#333333", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Club</span>
+              <span style={{ fontSize: "12px", color: "#333333", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Club</span>
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="24" height="10" style={{ display: "block" }}>
-                <line x1="0" y1="5" x2="24" y2="5" stroke="#aaaaaa" strokeWidth="1.5" strokeDasharray="5 4" strokeLinecap="round" />
+            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <svg width="20" height="10" style={{ display: "block" }}>
+                <line x1="0" y1="5" x2="20" y2="5" stroke="#aaaaaa" strokeWidth="1.5" strokeDasharray="5 4" strokeLinecap="round" />
               </svg>
-              <span style={{ fontSize: "17px", color: "#888888", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Div Avg</span>
+              <span style={{ fontSize: "12px", color: "#888888", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Div Avg</span>
             </span>
           </div>
         </div>

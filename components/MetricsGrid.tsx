@@ -466,9 +466,9 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
-                <p className="text-4xl sm:text-5xl font-medium tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
+                <p className="text-3xl sm:text-5xl font-medium tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
               ) : (
-                <p className="text-4xl sm:text-5xl font-medium text-[#cccccc]">—</p>
+                <p className="text-3xl sm:text-5xl font-medium text-[#cccccc]">—</p>
               )}
               {stats && rank !== null && (
                 <p className="text-xs text-[#aaaaaa] mt-1.5">

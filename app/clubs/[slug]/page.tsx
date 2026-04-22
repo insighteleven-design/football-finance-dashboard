@@ -106,7 +106,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-3 mb-1 flex-wrap">
-                <h1 className="text-4xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
+                <h1 className="text-3xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
                   {euClub.name}
                 </h1>
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
@@ -179,7 +179,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-3 mb-1 flex-wrap">
-                <h1 className="text-4xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
+                <h1 className="text-3xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
                   {japanClub.name}
                 </h1>
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
@@ -341,7 +341,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-3 mb-1 flex-wrap">
-              <h1 className="text-4xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
+              <h1 className="text-3xl sm:text-5xl font-serif font-normal text-[#111111] tracking-tight">
                 {club.name}
               </h1>
               <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
