@@ -290,20 +290,33 @@ type EUYearSnap = {
   net_profit: number | null;
   equity: number | null;
   total_liabilities: number | null;
+  operating_profit?: number | null;
+  profit_from_player_sales?: number | null;
+  pre_tax_profit?: number | null;
+  net_debt?: number | null;
 };
 
 function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
   const currentSeason = club.financials.most_recent_year;
-  const snaps: EUYearSnap[] = club.historical.map((h) => ({
-    season: h.season,
-    revenue: h.revenue,
-    wage_bill: h.wage_bill,
-    wage_to_revenue_pct:
-      h.revenue && h.wage_bill ? Math.round((h.wage_bill / h.revenue) * 1000) / 10 : null,
-    net_profit: h.net_profit,
-    equity: h.equity ?? null,
-    total_liabilities: h.total_liabilities ?? null,
-  }));
+  const snaps: EUYearSnap[] = club.historical.map((h) => {
+    const py = club.prior_year?.season === h.season ? club.prior_year : null;
+    const isCurrent = h.season === currentSeason;
+    const fin = isCurrent ? club.financials : null;
+    return {
+      season: h.season,
+      revenue: h.revenue,
+      wage_bill: h.wage_bill,
+      wage_to_revenue_pct:
+        h.revenue && h.wage_bill ? Math.round((h.wage_bill / h.revenue) * 1000) / 10 : null,
+      net_profit: h.net_profit,
+      equity: h.equity ?? (fin?.equity ?? null),
+      total_liabilities: h.total_liabilities ?? (fin?.total_liabilities ?? null),
+      operating_profit: fin?.operating_profit ?? py?.operating_profit ?? null,
+      profit_from_player_sales: fin?.profit_from_player_sales ?? py?.profit_from_player_sales ?? null,
+      pre_tax_profit: fin?.pre_tax_profit ?? py?.pre_tax_profit ?? null,
+      net_debt: fin?.net_debt ?? py?.net_debt ?? null,
+    };
+  });
   // Ensure current year is present (use financials as authoritative source)
   if (currentSeason && !snaps.find((s) => s.season === currentSeason)) {
     snaps.push({
@@ -314,6 +327,10 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
       net_profit: club.financials.net_profit,
       equity: club.financials.equity,
       total_liabilities: club.financials.total_liabilities,
+      operating_profit: club.financials.operating_profit ?? null,
+      profit_from_player_sales: club.financials.profit_from_player_sales ?? null,
+      pre_tax_profit: club.financials.pre_tax_profit ?? null,
+      net_debt: club.financials.net_debt ?? null,
     });
   }
   return snaps;
