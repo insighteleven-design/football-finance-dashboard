@@ -24,16 +24,16 @@ export default function Home() {
 
       {/* ── Masthead ──────────────────────────────────────────────────────────── */}
       <header>
-        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-14 sm:pt-20 pb-10 sm:pb-16">
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-16 sm:pt-28 pb-12 sm:pb-20">
           <h1
             className="font-serif font-normal leading-none"
-            style={{ color: "#ffffff", fontSize: "clamp(64px, 11vw, 130px)", letterSpacing: "-0.03em" }}
+            style={{ color: "#ffffff", fontSize: "clamp(80px, 14vw, 180px)", letterSpacing: "-0.03em" }}
           >
             Intelligence
           </h1>
           <p
-            className="mt-4 sm:mt-6"
-            style={{ color: "#888888", fontSize: "clamp(16px, 1.8vw, 22px)", letterSpacing: "0.02em" }}
+            className="mt-6 sm:mt-8"
+            style={{ color: "#888888", fontSize: "clamp(18px, 2.2vw, 28px)", letterSpacing: "0.01em" }}
           >
             The comprehensive football finance database, by Insight Eleven
           </p>
@@ -42,14 +42,14 @@ export default function Home() {
 
       {/* ── Search ────────────────────────────────────────────────────────────── */}
       <div
-        className="max-w-screen-xl mx-auto px-6 lg:px-12 pb-10 sm:pb-14"
+        className="max-w-screen-xl mx-auto px-6 lg:px-12 pb-12 sm:pb-16"
         style={{ borderBottom: "1px solid #181818" }}
       >
         <SearchBar clubs={clubs} euClubs={euClubs} />
       </div>
 
       {/* ── Main navigation ───────────────────────────────────────────────────── */}
-      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-0 pb-24 sm:pb-32">
+      <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-0 pb-28 sm:pb-40">
         <HomeNav
           totalClubs={totalClubs}
           totalCountries={totalCountries}

@@ -30,47 +30,39 @@ const ITEMS = [
 export default function HomeNav({ totalClubs, totalCountries }: Props) {
   return (
     <div>
-      {ITEMS.map((item, i) => {
-        const inner = (
-          <>
-            <div>
-              <p
-                className="font-serif font-normal leading-none group-hover:text-[#cccccc] transition-colors"
-                style={{ color: "#ffffff", fontSize: "clamp(36px, 6vw, 72px)", letterSpacing: "-0.02em" }}
-              >
-                {item.title}
-              </p>
-              <p
-                className="mt-3"
-                style={{ color: "#777777", fontSize: "clamp(15px, 1.6vw, 19px)", letterSpacing: "0.01em" }}
-              >
-                {item.tagline(totalClubs, totalCountries)}
-              </p>
-            </div>
-            <span
-              className="shrink-0 ml-6 group-hover:text-[#888888] transition-colors"
-              style={{ color: "#444444", fontSize: "2rem" }}
+      {ITEMS.map((item, i) => (
+        <Link
+          key={item.id}
+          href={item.href}
+          className="w-full flex items-center justify-between group py-12 sm:py-16 transition-colors"
+          style={{
+            borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
+            borderBottom: "1px solid #1a1a1a",
+            textAlign: "left",
+          }}
+        >
+          <div>
+            <p
+              className="font-serif font-normal leading-none group-hover:text-[#cccccc] transition-colors"
+              style={{ color: "#ffffff", fontSize: "clamp(48px, 8vw, 96px)", letterSpacing: "-0.025em" }}
             >
-              →
-            </span>
-          </>
-        );
-
-        return (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="w-full flex items-center justify-between group py-10 sm:py-14 transition-colors"
-            style={{
-              borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,
-              borderBottom: "1px solid #1a1a1a",
-              textAlign: "left",
-            }}
+              {item.title}
+            </p>
+            <p
+              className="mt-4"
+              style={{ color: "#666666", fontSize: "clamp(17px, 2vw, 24px)", letterSpacing: "0.005em" }}
+            >
+              {item.tagline(totalClubs, totalCountries)}
+            </p>
+          </div>
+          <span
+            className="shrink-0 ml-8 group-hover:text-[#888888] transition-colors"
+            style={{ color: "#333333", fontSize: "2.5rem" }}
           >
-            {inner}
-          </Link>
-        );
-      })}
+            →
+          </span>
+        </Link>
+      ))}
     </div>
   );
 }
