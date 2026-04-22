@@ -35,6 +35,17 @@ function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): s
   return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
 }
 
+function snapStats(snaps: EUYearSnap[], key: keyof EUYearSnap) {
+  const vals = snaps
+    .map((s) => s[key] as number | null | undefined)
+    .filter((v): v is number => typeof v === "number" && !isNaN(v));
+  if (!vals.length) return null;
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
+  const sorted = [...vals].sort((a, b) => b - a);
+  return { avg, maxAbs, sorted, count: vals.length };
+}
+
 // ─── Bar primitives ───────────────────────────────────────────────────────────
 
 function StandardBar({ pct, color }: { pct: number; color: string }) {
@@ -353,16 +364,22 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
   return snaps;
 }
 
-// ─── Historical year tab (simple list — no league comparison available) ───────
+// ─── Historical year tab (bar chart with league comparison) ──────────────────
 
 function HistoricalYearTab({
   snap,
+  leagueSnaps,
   currency,
   metrics,
+  leagueLabel,
+  country,
 }: {
   snap: EUYearSnap;
+  leagueSnaps: EUYearSnap[];
   currency: "EUR" | "USD" | "SEK";
   metrics: MetricConfig[];
+  leagueLabel: string;
+  country: string;
 }) {
   type SnapKey = keyof EUYearSnap;
   const hasAny = metrics.some((m) => {
@@ -373,25 +390,71 @@ function HistoricalYearTab({
     return <p className="text-sm text-[#aaaaaa] italic">No financial data available for this year.</p>;
   }
   return (
-    <div className="border border-[#e0e0e0] overflow-hidden">
-      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+    <div>
+      <CountryDisclaimer country={country} />
+      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
+        <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+        </div>
+        <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
+          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs {leagueLabel} Average</p>
+        </div>
+        {metrics.map((m) => {
+          const val = (snap[m.key as SnapKey] ?? null) as number | null;
+          const stats = snapStats(leagueSnaps, m.key as SnapKey);
+          const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
+          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : Math.abs(val ?? 0) || 1;
+          const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
+          const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
+          const barColor = val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
+          return (
+            <Fragment key={m.key}>
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
+                {val !== null ? (
+                  <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
+                    {fmtCurrency(val, currency, m.isRatio)}
+                  </p>
+                ) : (
+                  <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+                )}
+                {stats && rank !== null && rank > 0 && (
+                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
+                )}
+              </div>
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
+                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
+                <div className="mb-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    {m.diverging ? (
+                      <DivergingBar value={val ?? 0} scale={scale / 2} color={val !== null ? barColor : "#cccccc"} />
+                    ) : (
+                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
+                    )}
+                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                      {fmtCurrency(val, currency, m.isRatio)}
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    {m.diverging && stats ? (
+                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
+                    ) : (
+                      <StandardBar pct={avgPct} color="#cccccc" />
+                    )}
+                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                      {stats ? fmtCurrency(stats.avg, currency, m.isRatio) : "—"}
+                    </span>
+                  </div>
+                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
+                </div>
+              </div>
+            </Fragment>
+          );
+        })}
       </div>
-      {metrics.map((m) => {
-        const val = (snap[m.key as SnapKey] ?? null) as number | null;
-        return (
-          <div key={m.key} className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white flex items-center justify-between">
-            <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
-            {val !== null ? (
-              <p className="text-lg sm:text-xl font-light tabular-nums text-[#111111]">
-                {fmtCurrency(val, currency, m.isRatio)}
-              </p>
-            ) : (
-              <p className="text-lg sm:text-xl font-light text-[#cccccc]">—</p>
-            )}
-          </div>
-        );
-      })}
     </div>
   );
 }
@@ -778,6 +841,16 @@ function FinancialsSection({
 
   const activeHistSnap = historicalTabs.find((y) => y.season === innerTab) ?? null;
 
+  // Build league snaps for each historical season (for bar chart comparison)
+  const historicalLeagueSnaps = new Map<string, EUYearSnap[]>(
+    historicalTabs.map((histSnap) => [
+      histSnap.season,
+      leagueClubs.flatMap((c) =>
+        buildEUYearSnaps(c).filter((s) => s.season === histSnap.season)
+      ),
+    ])
+  );
+
   return (
     <div>
       {/* Inner tab bar */}
@@ -801,10 +874,14 @@ function FinancialsSection({
 
       {/* Historical year tab */}
       {activeHistSnap !== null && innerTab !== "current" && innerTab !== "yoy" && (
-        <>
-          <CountryDisclaimer country={club.country} />
-          <HistoricalYearTab snap={activeHistSnap} currency={curr} metrics={metrics} />
-        </>
+        <HistoricalYearTab
+          snap={activeHistSnap}
+          leagueSnaps={historicalLeagueSnaps.get(activeHistSnap.season) ?? []}
+          currency={curr}
+          metrics={metrics}
+          leagueLabel={leagueLabel}
+          country={club.country}
+        />
       )}
 
       {/* Current year tab */}
