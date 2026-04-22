@@ -317,6 +317,23 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
       net_debt: fin?.net_debt ?? py?.net_debt ?? null,
     };
   });
+  // Inject prior_year when not already present in historical
+  const py = club.prior_year;
+  if (py && !snaps.find((s) => s.season === py.season) && py.season !== currentSeason) {
+    snaps.push({
+      season: py.season,
+      revenue: py.revenue,
+      wage_bill: py.wage_bill,
+      wage_to_revenue_pct: py.wage_to_revenue_pct,
+      net_profit: py.net_profit ?? null,
+      equity: py.equity ?? null,
+      total_liabilities: py.total_liabilities ?? null,
+      operating_profit: py.operating_profit ?? null,
+      profit_from_player_sales: py.profit_from_player_sales ?? null,
+      pre_tax_profit: py.pre_tax_profit ?? null,
+      net_debt: py.net_debt ?? null,
+    });
+  }
   // Ensure current year is present (use financials as authoritative source)
   if (currentSeason && !snaps.find((s) => s.season === currentSeason)) {
     snaps.push({
