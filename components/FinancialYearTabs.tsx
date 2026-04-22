@@ -16,18 +16,26 @@ interface Props {
   compareLabel: string;
   breakdown: RevenueBreakdown | null;
   debtBreakdown: DebtBreakdown | null;
-  // Optional club-specific section rendered below MetricsGrid on the current-year tab
   extraSection?: ReactNode;
-  // Optional club-specific section rendered below MetricsGrid on the prior-year tab
   priorExtraSection?: ReactNode;
   // Prior year (null = no prior year available for this club)
   priorData: FinancialSnapshot | null;
   priorDivisionData: FinancialSnapshot[];
   priorLabel: string | null;
   priorCompareLabel: string;
+  // FY2023 year
+  data2023?: FinancialSnapshot | null;
+  data2023DivisionData?: FinancialSnapshot[];
+  data2023Label?: string | null;
+  data2023CompareLabel?: string;
+  // FY2022 year
+  data2022?: FinancialSnapshot | null;
+  data2022DivisionData?: FinancialSnapshot[];
+  data2022Label?: string | null;
+  data2022CompareLabel?: string;
 }
 
-type TabKey = "year1" | "year2" | "yoy";
+type TabKey = "year4" | "year3" | "year1" | "year2" | "yoy";
 
 function hasFinancialData(snap: FinancialSnapshot): boolean {
   return (
@@ -53,12 +61,25 @@ export default function FinancialYearTabs({
   priorDivisionData,
   priorLabel,
   priorCompareLabel,
+  data2023,
+  data2023DivisionData,
+  data2023Label,
+  data2023CompareLabel,
+  data2022,
+  data2022DivisionData,
+  data2022Label,
+  data2022CompareLabel,
 }: Props) {
   const hasPriorYear = priorData !== null;
-  const [tab, setTab] = useState<TabKey>("year2");
+  const has2023 = !!data2023;
+  const has2022 = !!data2022;
+
+  const [tab, setTab] = useState<TabKey>(hasPriorYear ? "yoy" : "year2");
 
   type TabDef = { key: TabKey; short: string; full: string };
   const tabs: TabDef[] = [
+    ...(has2022 && data2022Label ? [{ key: "year4" as TabKey, short: data2022Label, full: data2022Label }] : []),
+    ...(has2023 && data2023Label ? [{ key: "year3" as TabKey, short: data2023Label, full: data2023Label }] : []),
     ...(hasPriorYear
       ? [{ key: "year1" as TabKey, short: priorLabel ?? "Prior Year", full: priorLabel ?? "Prior Year" }]
       : []),
@@ -68,8 +89,8 @@ export default function FinancialYearTabs({
 
   return (
     <div>
-      {/* Inner tab bar — only rendered when prior year data exists */}
-      {hasPriorYear && (
+      {/* Inner tab bar */}
+      {(hasPriorYear || has2023 || has2022) && (
         <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
           {tabs.map(({ key, short, full }) => (
             <button
@@ -116,6 +137,30 @@ export default function FinancialYearTabs({
             />
             {priorExtraSection}
           </>
+        ) : (
+          <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this year.</p>
+        )
+      )}
+
+      {tab === "year3" && data2023 && (
+        hasFinancialData(data2023) ? (
+          <MetricsGrid
+            data={data2023}
+            divisionData={data2023DivisionData ?? []}
+            compareLabel={data2023CompareLabel ?? ""}
+          />
+        ) : (
+          <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this year.</p>
+        )
+      )}
+
+      {tab === "year4" && data2022 && (
+        hasFinancialData(data2022) ? (
+          <MetricsGrid
+            data={data2022}
+            divisionData={data2022DivisionData ?? []}
+            compareLabel={data2022CompareLabel ?? ""}
+          />
         ) : (
           <p className="text-sm text-[#aaaaaa] italic py-4">No financial data available for this year.</p>
         )

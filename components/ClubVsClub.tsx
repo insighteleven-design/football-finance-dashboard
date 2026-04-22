@@ -1,19 +1,37 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ComparableClub, fmtVal } from "@/lib/comparable";
+import RadarChart from "@/components/RadarChart";
 
 export type { ComparableClub };
 
 const MAX_CLUBS = 4;
+const SLOT_LABELS = ["A", "B", "C", "D"];
 const CLUB_COLORS = ["#4A90D9", "#E05252", "#E8A838", "#9B59B6"];
-const CLUB_TAG_STYLES = [
-  { borderColor: "#4A90D9", backgroundColor: "#EBF3FC", color: "#4A90D9" },
-  { borderColor: "#E05252", backgroundColor: "#FCEAEA", color: "#E05252" },
-  { borderColor: "#E8A838", backgroundColor: "#FDF5E6", color: "#E8A838" },
-  { borderColor: "#9B59B6", backgroundColor: "#F5EEF8", color: "#9B59B6" },
+const SLOT_STYLES = [
+  { border: "#4A90D9", bg: "#EBF3FC", text: "#4A90D9", label: "#4A90D9" },
+  { border: "#E05252", bg: "#FCEAEA", text: "#E05252", label: "#E05252" },
+  { border: "#E8A838", bg: "#FDF5E6", text: "#E8A838", label: "#E8A838" },
+  { border: "#9B59B6", bg: "#F5EEF8", text: "#9B59B6", label: "#9B59B6" },
 ];
+
+const COUNTRY_ORDER = ["England", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "Austria", "Denmark", "Norway", "Sweden", "Japan"];
+const COUNTRY_FLAGS: Record<string, string> = {
+  England:     "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  Germany:     "🇩🇪",
+  Spain:       "🇪🇸",
+  Italy:       "🇮🇹",
+  France:      "🇫🇷",
+  Netherlands: "🇳🇱",
+  Belgium:     "🇧🇪",
+  Austria:     "🇦🇹",
+  Denmark:     "🇩🇰",
+  Norway:      "🇳🇴",
+  Sweden:      "🇸🇪",
+  Japan:       "🇯🇵",
+};
 
 const COMPARE_METRICS: {
   key: keyof ComparableClub;
@@ -22,152 +40,234 @@ const COMPARE_METRICS: {
   diverging?: boolean;
   higherBetter?: boolean;
 }[] = [
-  { key: "revenue",          label: "Revenue",                      higherBetter: true },
-  { key: "wage_bill",        label: "Wage Bill",                    higherBetter: false },
-  { key: "wage_ratio",       label: "Wage Ratio",        isRatio: true, higherBetter: false },
-  { key: "operating_profit", label: "Operating Profit / (Loss)",    diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",      diverging: true, higherBetter: true },
-  { key: "net_debt",         label: "Net Debt",            diverging: true, higherBetter: false },
+  { key: "revenue",          label: "Revenue",                   higherBetter: true },
+  { key: "wage_bill",        label: "Wage Bill",                 higherBetter: false },
+  { key: "wage_ratio",       label: "Wage Ratio",     isRatio: true, higherBetter: false },
+  { key: "operating_profit", label: "Operating Profit / (Loss)", diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",         label: "Net Debt",                  diverging: true, higherBetter: false },
 ];
 
-// ─── Featured Comparisons ─────────────────────────────────────────────────────
+// ─── Club slot panel ──────────────────────────────────────────────────────────
 
-const CARD_ACCENTS = ["#60a5fa", "#34d399", "#fbbf24", "#c084fc", "#f87171", "#22d3ee"];
+type SlotPhase = "countries" | "clubs";
 
-const FEATURED: {
-  id: string;
-  title: string;
-  subtitle: string;
-  slugs: [string, string];
-  hook: string;
-  primaryMetric: keyof ComparableClub;
-  primaryIsRatio?: boolean;
-}[] = [
-  {
-    id: "dortmund-vs-tottenham",
-    title: "Same Revenue. Opposite Fortunes.",
-    subtitle: "Germany · England",
-    slugs: ["borussia_dortmund", "tottenham"],
-    hook: "Dortmund and Spurs generate almost identical revenues — yet Dortmund turned a profit while Spurs posted a nine-figure loss.",
-    primaryMetric: "pre_tax_profit",
-  },
-  {
-    id: "stuttgart-vs-villa",
-    title: "The €276m Parallel",
-    subtitle: "Germany · England",
-    slugs: ["vfb_stuttgart", "aston_villa"],
-    hook: "VfB Stuttgart and Aston Villa reported almost exactly the same revenue last season. One operates at a profit; the other doesn't.",
-    primaryMetric: "revenue",
-  },
-  {
-    id: "lille-vs-lyon",
-    title: "Ligue 1's Great Divide",
-    subtitle: "France · France",
-    slugs: ["losc_lille", "olympique_lyonnais"],
-    hook: "Lille generated a €101m pre-tax profit with net cash. Lyon posted a €208m loss with €750m of net debt — same league, same season.",
-    primaryMetric: "pre_tax_profit",
-  },
-  {
-    id: "psg-vs-parisfc",
-    title: "One City. 68× Apart.",
-    subtitle: "France · France",
-    slugs: ["paris_saint_germain", "paris_fc"],
-    hook: "PSG and Paris FC both call Paris home. PSG generate €837m in revenue; Paris FC €12m. The gulf captures the full spectrum of French football.",
-    primaryMetric: "revenue",
-  },
-  {
-    id: "chelsea-vs-lyon",
-    title: "The Debt Trap",
-    subtitle: "England · France",
-    slugs: ["chelsea", "olympique_lyonnais"],
-    hook: "Chelsea carry £1.3bn in net debt; Lyon €750m. Together they represent the heaviest leverage across European club football.",
-    primaryMetric: "net_debt",
-  },
-  {
-    id: "strasbourg-vs-brest",
-    title: "Wage Discipline: Extremes",
-    subtitle: "France · France",
-    slugs: ["rc_strasbourg", "stade_brestois"],
-    hook: "Strasbourg spent 173% of revenue on wages — €1.73 for every €1 earned. Brest spent just 46%. Same league. Very different disciplines.",
-    primaryMetric: "wage_ratio",
-    primaryIsRatio: true,
-  },
-];
-
-function FeaturedCard({
-  config,
+function ClubSlot({
+  slotIndex,
   allClubs,
-  index,
-  onLoad,
+  selectedSlug,
+  otherSlugs,
+  onSelect,
+  onRemove,
 }: {
-  config: (typeof FEATURED)[0];
+  slotIndex: number;
   allClubs: ComparableClub[];
-  index: number;
-  onLoad: (slugs: string[]) => void;
+  selectedSlug: string | null;
+  otherSlugs: string[];
+  onSelect: (slug: string) => void;
+  onRemove: () => void;
 }) {
-  const [a, b] = config.slugs.map((s) => allClubs.find((c) => c.slug === s));
-  if (!a || !b) return null;
-  const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
-  const valA = a[config.primaryMetric] as number | null;
-  const valB = b[config.primaryMetric] as number | null;
+  const [phase, setPhase]           = useState<SlotPhase>("countries");
+  const [activeCountry, setCountry] = useState<string | null>(null);
+  const [filter, setFilter]         = useState("");
 
-  return (
-    <button
-      onClick={() => onLoad(config.slugs)}
-      style={{
-        display: "block",
-        textAlign: "left",
-        width: "100%",
-        backgroundColor: "#2a2a2a",
-        border: "1px solid #363636",
-        borderTop: `3px solid ${accent}`,
-        padding: "1.25rem",
-        cursor: "pointer",
-        transition: "border-color 0.15s, background-color 0.15s",
-      }}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.backgroundColor = "#323232";
-        el.style.borderColor = "#444444";
-        el.style.borderTopColor = accent;
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.backgroundColor = "#2a2a2a";
-        el.style.borderColor = "#363636";
-        el.style.borderTopColor = accent;
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.5rem", marginBottom: "0.75rem" }}>
-        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#777777" }}>
-          {String(index + 1).padStart(2, "0")} · {config.subtitle}
+  const style  = SLOT_STYLES[slotIndex];
+  const label  = SLOT_LABELS[slotIndex];
+  const color  = CLUB_COLORS[slotIndex];
+
+  const available = useMemo(
+    () => allClubs.filter((c) => !otherSlugs.includes(c.slug)),
+    [allClubs, otherSlugs]
+  );
+
+  const countries = useMemo(() => {
+    const present = new Set(available.map((c) => c.country));
+    return COUNTRY_ORDER.filter((cn) => present.has(cn));
+  }, [available]);
+
+  const countryClubs = useMemo(() => {
+    if (!activeCountry) return [];
+    const q = filter.toLowerCase();
+    return available
+      .filter((c) => c.country === activeCountry && (!q || c.name.toLowerCase().includes(q) || c.divisionLabel.toLowerCase().includes(q)));
+  }, [available, activeCountry, filter]);
+
+  // Group clubs within a country by division
+  const grouped = useMemo(() => {
+    const map = new Map<string, ComparableClub[]>();
+    for (const c of countryClubs) {
+      if (!map.has(c.divisionLabel)) map.set(c.divisionLabel, []);
+      map.get(c.divisionLabel)!.push(c);
+    }
+    return [...map.entries()];
+  }, [countryClubs]);
+
+  function selectCountry(country: string) {
+    setCountry(country);
+    setPhase("clubs");
+    setFilter("");
+  }
+
+  function goBack() {
+    setPhase("countries");
+    setCountry(null);
+    setFilter("");
+  }
+
+  function handleSelect(slug: string) {
+    onSelect(slug);
+    setPhase("countries");
+    setCountry(null);
+    setFilter("");
+  }
+
+  function handleRemove() {
+    onRemove();
+    setPhase("countries");
+    setCountry(null);
+    setFilter("");
+  }
+
+  const selectedClub = selectedSlug ? allClubs.find((c) => c.slug === selectedSlug) : null;
+
+  // ── Filled state ────────────────────────────────────────────────────────────
+  if (selectedClub) {
+    return (
+      <div style={{ border: `1px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+            Club {label}
+          </span>
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            <button
+              onClick={handleRemove}
+              style={{ fontSize: "10px", color: style.text, background: "none", border: "none", cursor: "pointer", letterSpacing: "0.05em", opacity: 0.7, padding: 0 }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+        <p style={{ fontSize: "18px", fontWeight: 400, color: "#111111", lineHeight: 1.2, marginBottom: "0.25rem" }}>
+          {selectedClub.name}
         </p>
-        <svg style={{ width: "14px", height: "14px", flexShrink: 0, color: "#444444" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-        </svg>
+        <p style={{ fontSize: "11px", color: "#888888" }}>
+          {COUNTRY_FLAGS[selectedClub.country] ?? ""} {selectedClub.divisionLabel}
+        </p>
       </div>
+    );
+  }
 
-      <p style={{ fontSize: "14px", fontWeight: 500, lineHeight: 1.3, color: "#ffffff", marginBottom: "1rem" }}>
-        {config.title}
+  // ── Club list state ──────────────────────────────────────────────────────────
+  if (phase === "clubs" && activeCountry) {
+    return (
+      <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff" }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1rem", borderBottom: "1px solid #f0f0f0" }}>
+          <button
+            onClick={goBack}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "11px" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#888888"; }}
+          >
+            <svg style={{ width: "13px", height: "13px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
+          <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+            Club {label}
+          </span>
+          <span style={{ fontSize: "13px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
+        </div>
+
+        {/* Filter */}
+        <div style={{ padding: "0.5rem 1rem", borderBottom: "1px solid #f5f5f5" }}>
+          <input
+            type="text"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            placeholder="Filter clubs…"
+            autoFocus
+            style={{ width: "100%", fontSize: "13px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.375rem 0.625rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
+          />
+        </div>
+
+        {/* Club list */}
+        <div style={{ maxHeight: "260px", overflowY: "auto" }}>
+          {grouped.length === 0 && (
+            <p style={{ fontSize: "13px", color: "#aaaaaa", padding: "1rem" }}>No clubs match.</p>
+          )}
+          {grouped.map(([division, clubs]) => (
+            <div key={division}>
+              <div style={{ padding: "0.4rem 1rem 0.2rem", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
+                {division}
+              </div>
+              {clubs.map((club) => (
+                <button
+                  key={club.slug}
+                  onMouseDown={() => handleSelect(club.slug)}
+                  style={{ width: "100%", textAlign: "left", padding: "0.5rem 1rem", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", borderBottom: "1px solid #f8f8f8", cursor: "pointer", gap: "0.5rem" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#f5f5f5"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                >
+                  <span style={{ fontSize: "13px", color: "#111111" }}>{club.name}</span>
+                  <span style={{ fontSize: "10px", color: color, fontWeight: 500 }}>Select →</span>
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Country grid state ───────────────────────────────────────────────────────
+  return (
+    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.25rem" }}>
+      <p style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label, marginBottom: "0.875rem" }}>
+        Club {label}
       </p>
-
-      <div style={{ marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "0.5rem" }}>
-          <span style={{ fontSize: "11px", color: "#888888", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{a.name}</span>
-          <span style={{ fontSize: "12px", fontWeight: 600, fontVariantNumeric: "tabular-nums", color: accent, flexShrink: 0 }}>
-            {fmtVal(valA, config.primaryIsRatio, a.currency)}
-          </span>
-        </div>
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "0.5rem" }}>
-          <span style={{ fontSize: "11px", color: "#888888", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{b.name}</span>
-          <span style={{ fontSize: "12px", fontWeight: 600, fontVariantNumeric: "tabular-nums", color: accent, flexShrink: 0 }}>
-            {fmtVal(valB, config.primaryIsRatio, b.currency)}
-          </span>
-        </div>
+      <p style={{ fontSize: "13px", color: "#999999", marginBottom: "1rem" }}>
+        Select a country to browse clubs
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+        {countries.map((country) => (
+          <button
+            key={country}
+            onClick={() => selectCountry(country)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              padding: "0.4rem 0.75rem",
+              border: "1px solid #e0e0e0",
+              backgroundColor: "#ffffff",
+              cursor: "pointer",
+              fontSize: "12px",
+              color: "#333333",
+              transition: "border-color 0.12s, background-color 0.12s",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = color;
+              el.style.backgroundColor = style.bg;
+              el.style.color = color;
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "#e0e0e0";
+              el.style.backgroundColor = "#ffffff";
+              el.style.color = "#333333";
+            }}
+          >
+            <span>{COUNTRY_FLAGS[country] ?? ""}</span>
+            <span>{country}</span>
+          </button>
+        ))}
       </div>
-
-      <p style={{ fontSize: "11px", lineHeight: 1.55, color: "#888888" }}>{config.hook}</p>
-    </button>
+    </div>
   );
 }
 
@@ -183,10 +283,7 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
               Metric
             </th>
             {clubs.map((club, i) => (
-              <th
-                key={club.slug}
-                style={{ fontSize: "11px", fontWeight: 600, color: CLUB_COLORS[i], textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}
-              >
+              <th key={club.slug} style={{ fontSize: "11px", fontWeight: 600, color: CLUB_COLORS[i], textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}>
                 {club.name}
               </th>
             ))}
@@ -196,31 +293,15 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
           {COMPARE_METRICS.map((metric) => {
             const values = clubs.map((c) => c[metric.key] as number | null);
             const valid  = values.filter((v): v is number => v !== null);
-            const best   = valid.length
-              ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid))
-              : null;
-
+            const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
             return (
               <tr key={metric.key as string} style={{ borderBottom: "1px solid #f5f5f5" }}>
-                <td style={{ fontSize: "11px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>
-                  {metric.label}
-                </td>
+                <td style={{ fontSize: "11px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
                 {clubs.map((club, i) => {
                   const val    = club[metric.key] as number | null;
                   const isBest = val !== null && valid.length > 1 && val === best;
                   return (
-                    <td
-                      key={club.slug}
-                      style={{
-                        fontSize: "13px",
-                        fontWeight: isBest ? 600 : 400,
-                        fontVariantNumeric: "tabular-nums",
-                        textAlign: "right",
-                        padding: "0.75rem 0.5rem",
-                        color: isBest ? "#22c55e" : val !== null ? CLUB_COLORS[i] : "#cccccc",
-                        backgroundColor: isBest ? "#f0fdf4" : "transparent",
-                      }}
-                    >
+                    <td key={club.slug} style={{ fontSize: "13px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
                       {fmtVal(val, metric.isRatio, club.currency)}
                     </td>
                   );
@@ -231,9 +312,7 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
         </tbody>
       </table>
       {clubs.length > 1 && (
-        <p style={{ fontSize: "10px", color: "#cccccc", marginTop: "0.75rem" }}>
-          Green = best in comparison for that metric
-        </p>
+        <p style={{ fontSize: "10px", color: "#cccccc", marginTop: "0.75rem" }}>Green = best in comparison for that metric</p>
       )}
     </div>
   );
@@ -241,11 +320,7 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
 
 // ─── Charts view ──────────────────────────────────────────────────────────────
 
-function StandardBarRow({
-  club, value, pct, clubColor, isRatio,
-}: {
-  club: ComparableClub; value: number | null; pct: number; clubColor: string; isRatio?: boolean;
-}) {
+function StandardBarRow({ club, value, pct, clubColor, isRatio }: { club: ComparableClub; value: number | null; pct: number; clubColor: string; isRatio?: boolean }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
       <span style={{ fontSize: "12px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
@@ -259,11 +334,7 @@ function StandardBarRow({
   );
 }
 
-function DivergingBarRow({
-  club, value, scale, clubColor, isRatio,
-}: {
-  club: ComparableClub; value: number | null; scale: number; clubColor: string; isRatio?: boolean;
-}) {
+function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: ComparableClub; value: number | null; scale: number; clubColor: string; isRatio?: boolean }) {
   const isPos = value !== null && value >= 0;
   const pct   = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
   return (
@@ -288,7 +359,7 @@ function DivergingBarRow({
 function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
   return (
     <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "0 1.25rem" }}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", padding: "1.25rem 0", borderBottom: "1px solid #e0e0e0", marginBottom: "0.5rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", padding: "1.25rem 0", borderBottom: "1px solid #e0e0e0" }}>
         {clubs.map((club, i) => (
           <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <div style={{ width: "12px", height: "12px", backgroundColor: CLUB_COLORS[i], flexShrink: 0 }} />
@@ -311,9 +382,7 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
               {clubs.map((club, i) => {
                 const value = club[metric.key] as number | null;
                 const color = CLUB_COLORS[i];
-                if (metric.diverging) {
-                  return <DivergingBarRow key={club.slug} club={club} value={value} scale={absMax} clubColor={color} isRatio={metric.isRatio} />;
-                }
+                if (metric.diverging) return <DivergingBarRow key={club.slug} club={club} value={value} scale={absMax} clubColor={color} isRatio={metric.isRatio} />;
                 const pct = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                 return <StandardBarRow key={club.slug} club={club} value={value} pct={pct} clubColor={color} isRatio={metric.isRatio} />;
               })}
@@ -330,71 +399,51 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
 function generateInsights(clubs: ComparableClub[]): string[] {
   const out: string[] = [];
 
-  // Revenue scale
   const withRev = [...clubs].filter((c) => c.revenue !== null).sort((a, b) => b.revenue! - a.revenue!);
   if (withRev.length >= 2) {
     const top = withRev[0], bot = withRev[withRev.length - 1];
     const ratio = top.revenue! / bot.revenue!;
     if (ratio > 2) {
-      out.push(
-        `${top.name} generate ${ratio.toFixed(1)}× more revenue than ${bot.name} (${fmtVal(top.revenue, false, top.currency)} vs ${fmtVal(bot.revenue, false, bot.currency)}), pointing to a fundamental difference in commercial scale and league context.`
-      );
+      out.push(`${top.name} generate ${ratio.toFixed(1)}× more revenue than ${bot.name} (${fmtVal(top.revenue, false, top.currency)} vs ${fmtVal(bot.revenue, false, bot.currency)}), pointing to a fundamental difference in commercial scale and league context.`);
     } else {
       const pct = Math.round(((top.revenue! - bot.revenue!) / bot.revenue!) * 100);
-      out.push(
-        `${top.name} and ${bot.name} are closely matched on revenue — within ${pct}% of each other — making wage efficiency and cost discipline the more decisive financial battleground.`
-      );
+      out.push(`${top.name} and ${bot.name} are closely matched on revenue — within ${pct}% of each other — making wage efficiency and cost discipline the more decisive financial battleground.`);
     }
   }
 
-  // Profitability split
-  const profitable = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit > 0)
-    .sort((a, b) => b.pre_tax_profit! - a.pre_tax_profit!);
-  const lossMaking = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit < 0)
-    .sort((a, b) => a.pre_tax_profit! - b.pre_tax_profit!);
-
+  const profitable = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit > 0).sort((a, b) => b.pre_tax_profit! - a.pre_tax_profit!);
+  const lossMaking = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit < 0).sort((a, b) => a.pre_tax_profit! - b.pre_tax_profit!);
   if (profitable.length > 0 && lossMaking.length > 0) {
     const profStr = profitable.map((c) => `${c.name} (${fmtVal(c.pre_tax_profit, false, c.currency)})`).join(", ");
     const lossStr = lossMaking.map((c) => `${c.name} (${fmtVal(c.pre_tax_profit, false, c.currency)})`).join(", ");
-    out.push(
-      `The profitability divide is clear: ${profStr} ${profitable.length === 1 ? "is" : "are"} profitable at the pre-tax level, while ${lossStr} ${lossMaking.length === 1 ? "is" : "are"} loss-making.`
-    );
+    out.push(`The profitability divide is clear: ${profStr} ${profitable.length === 1 ? "is" : "are"} profitable at the pre-tax level, while ${lossStr} ${lossMaking.length === 1 ? "is" : "are"} loss-making.`);
   } else if (profitable.length === clubs.filter((c) => c.pre_tax_profit !== null).length && profitable.length > 0) {
     out.push(`All clubs in this comparison are profitable at the pre-tax level — a relatively rare outcome at the top of European football.`);
   } else if (lossMaking.length === clubs.filter((c) => c.pre_tax_profit !== null).length && lossMaking.length > 0) {
     out.push(`Every club in this comparison is loss-making, illustrating the structural cost pressures that have become endemic across European football.`);
   }
 
-  // Wage efficiency
   const withWage = [...clubs].filter((c) => c.wage_ratio !== null).sort((a, b) => a.wage_ratio! - b.wage_ratio!);
   if (withWage.length >= 2) {
     const best = withWage[0], worst = withWage[withWage.length - 1];
     if (best.slug !== worst.slug) {
-      out.push(
-        `${best.name} are the most wage-efficient at ${best.wage_ratio!.toFixed(1)}% of revenue — ${worst.wage_ratio!.toFixed(1)}% for ${worst.name}. A ${(worst.wage_ratio! - best.wage_ratio!).toFixed(0)}-point gap in wage ratio typically flows directly to the profit line.`
-      );
+      out.push(`${best.name} are the most wage-efficient at ${best.wage_ratio!.toFixed(1)}% of revenue — ${worst.wage_ratio!.toFixed(1)}% for ${worst.name}. A ${(worst.wage_ratio! - best.wage_ratio!).toFixed(0)}-point gap in wage ratio typically flows directly to the profit line.`);
     }
   }
 
-  // Debt
   const withDebt = [...clubs].filter((c) => c.net_debt !== null).sort((a, b) => b.net_debt! - a.net_debt!);
   if (withDebt.length >= 1) {
     const mostIndebted = withDebt[0];
     if (mostIndebted.net_debt! > 50) {
-      out.push(
-        `${mostIndebted.name} carry ${fmtVal(mostIndebted.net_debt, false, mostIndebted.currency)} in net debt — a balance sheet constraint that limits transfer investment and increases financial risk.`
-      );
+      out.push(`${mostIndebted.name} carry ${fmtVal(mostIndebted.net_debt, false, mostIndebted.currency)} in net debt — a balance sheet constraint that limits transfer investment and increases financial risk.`);
     }
     const cashClubs = withDebt.filter((c) => c.net_debt! < 0);
     if (cashClubs.length > 0) {
       const cashStr = cashClubs.map((c) => `${c.name} (${fmtVal(c.net_debt, false, c.currency)} net cash)`).join(", ");
-      out.push(
-        `${cashStr} ${cashClubs.length === 1 ? "holds" : "hold"} a net cash position, providing structural flexibility that ${clubs.filter((c) => !cashClubs.includes(c)).map((c) => c.name).join(", ")} ${clubs.length - cashClubs.length === 1 ? "lacks" : "lack"}.`
-      );
+      out.push(`${cashStr} ${cashClubs.length === 1 ? "holds" : "hold"} a net cash position, providing structural flexibility that ${clubs.filter((c) => !cashClubs.includes(c)).map((c) => c.name).join(", ")} ${clubs.length - cashClubs.length === 1 ? "lacks" : "lack"}.`);
     }
   }
 
-  // Verdict
   const scored = clubs.map((c) => {
     let s = 0;
     if (c.pre_tax_profit !== null) s += c.pre_tax_profit > 0 ? 3 : c.pre_tax_profit > -20 ? 1 : 0;
@@ -404,13 +453,9 @@ function generateInsights(clubs: ComparableClub[]): string[] {
   }).sort((a, b) => b.score - a.score);
 
   if (scored.length >= 2 && scored[0].score > scored[1].score) {
-    out.push(
-      `On balance, ${scored[0].club.name} present the strongest financial profile in this comparison — the best combination of profitability, wage discipline, and balance sheet strength.`
-    );
+    out.push(`On balance, ${scored[0].club.name} present the strongest financial profile in this comparison — the best combination of profitability, wage discipline, and balance sheet strength.`);
   } else if (scored.length >= 2) {
-    out.push(
-      `On balance, ${scored[0].club.name} and ${scored[1].club.name} are closely matched financially — their relative fortunes may ultimately depend on factors beyond the accounts.`
-    );
+    out.push(`On balance, ${scored[0].club.name} and ${scored[1].club.name} are closely matched financially — their relative fortunes may ultimately depend on factors beyond the accounts.`);
   }
 
   return out;
@@ -435,116 +480,13 @@ function AnalysisView({ clubs }: { clubs: ComparableClub[] }) {
   );
 }
 
-// ─── Club search ──────────────────────────────────────────────────────────────
-
-function score(club: ComparableClub, query: string): number {
-  const q    = query.toLowerCase();
-  const name = club.name.toLowerCase();
-  const slug = club.slug.toLowerCase();
-  if (name === q)                               return 100;
-  if (name.startsWith(q))                       return 90;
-  if (slug.startsWith(q))                       return 80;
-  if (name.includes(q))                         return 70;
-  if (slug.includes(q))                         return 60;
-  if (name.split(" ").some((w) => w.startsWith(q))) return 50;
-  return 0;
-}
-
-function ClubSearch({
-  allClubs, selectedSlugs, onAdd, disabled,
-}: {
-  allClubs: ComparableClub[];
-  selectedSlugs: string[];
-  onAdd: (slug: string) => void;
-  disabled: boolean;
-}) {
-  const [query, setQuery]           = useState("");
-  const [open, setOpen]             = useState(false);
-  const [highlighted, setHighlight] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef     = useRef<HTMLInputElement>(null);
-
-  const results =
-    query.trim().length === 0
-      ? []
-      : allClubs
-          .filter((c) => !selectedSlugs.includes(c.slug))
-          .map((c) => ({ club: c, score: score(c, query.trim()) }))
-          .filter((x) => x.score > 0)
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 6)
-          .map((x) => x.club);
-
-  useEffect(() => { setHighlight(0); setOpen(results.length > 0); }, [results.length]);
-
-  useEffect(() => {
-    function handle(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handle);
-    return () => document.removeEventListener("mousedown", handle);
-  }, []);
-
-  function handleSelect(club: ComparableClub) {
-    onAdd(club.slug);
-    setQuery("");
-    setOpen(false);
-    inputRef.current?.focus();
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (!open || !results.length) return;
-    if (e.key === "ArrowDown") { e.preventDefault(); setHighlight((h) => Math.min(h + 1, results.length - 1)); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); setHighlight((h) => Math.max(h - 1, 0)); }
-    else if (e.key === "Enter") { e.preventDefault(); handleSelect(results[highlighted]); }
-    else if (e.key === "Escape") setOpen(false);
-  }
-
-  return (
-    <div ref={containerRef} style={{ position: "relative" }}>
-      <div style={{ display: "flex", alignItems: "center", border: `1px solid ${open ? "#333333" : "#cccccc"}`, padding: "0.625rem 0.875rem", gap: "0.625rem", backgroundColor: disabled ? "#f5f5f5" : "#ffffff", opacity: disabled ? 0.4 : 1 }}>
-        <svg style={{ width: "16px", height: "16px", color: "#aaaaaa", flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-        </svg>
-        <input
-          ref={inputRef}
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => { if (results.length > 0) setOpen(true); }}
-          onKeyDown={handleKeyDown}
-          placeholder={disabled ? `${MAX_CLUBS} clubs selected` : "Search clubs — England, Germany, Austria, France…"}
-          disabled={disabled}
-          autoComplete="off"
-          style={{ flex: 1, fontSize: "14px", color: "#111111", background: "transparent", outline: "none", minWidth: 0, border: "none" }}
-        />
-      </div>
-      {open && results.length > 0 && (
-        <div style={{ position: "absolute", top: "100%", left: 0, right: 0, marginTop: "1px", backgroundColor: "#ffffff", border: "1px solid #e0e0e0", boxShadow: "0 8px 24px rgba(0,0,0,0.10)", zIndex: 50, overflow: "hidden" }}>
-          {results.map((club, i) => (
-            <button
-              key={club.slug}
-              onMouseDown={(e) => { e.preventDefault(); handleSelect(club); }}
-              onMouseEnter={() => setHighlight(i)}
-              style={{ width: "100%", textAlign: "left", padding: "0.625rem 0.875rem", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem", fontSize: "14px", backgroundColor: i === highlighted ? "#f5f5f5" : "#ffffff", borderTop: i > 0 ? "1px solid #f0f0f0" : "none", border: "none", cursor: "pointer" }}
-            >
-              <span style={{ color: "#111111" }}>{club.name}</span>
-              <span style={{ fontSize: "10px", color: "#aaaaaa", letterSpacing: "0.08em", textTransform: "uppercase", flexShrink: 0 }}>{club.divisionLabel}</span>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-type CompareView = "stats" | "charts" | "analysis";
+type CompareView = "stats" | "charts" | "radar" | "analysis";
 
 export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const router       = useRouter();
 
   const initialSlugs = (searchParams.get("clubs") ?? "")
     .split(",")
@@ -553,7 +495,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
 
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(initialSlugs);
   const [view, setView]                   = useState<CompareView>("stats");
-  const buildRef = useRef<HTMLDivElement>(null);
+  const [copied, setCopied]               = useState(false);
 
   const updateUrl = useCallback(
     (slugs: string[]) => {
@@ -562,31 +504,75 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
     [router]
   );
 
-  function addClub(slug: string) {
-    if (selectedSlugs.includes(slug) || selectedSlugs.length >= MAX_CLUBS) return;
-    const next = [...selectedSlugs, slug];
+  function setSlug(index: number, slug: string) {
+    const next = [...selectedSlugs];
+    next[index] = slug;
     setSelectedSlugs(next);
     updateUrl(next);
   }
 
-  function removeClub(slug: string) {
-    const next = selectedSlugs.filter((s) => s !== slug);
+  function removeSlug(index: number) {
+    const next = selectedSlugs.filter((_, i) => i !== index);
     setSelectedSlugs(next);
     updateUrl(next);
   }
 
-  function loadFeatured(slugs: string[]) {
-    setSelectedSlugs(slugs);
-    updateUrl(slugs);
-    setView("stats");
-    setTimeout(() => buildRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+  function addSlot() {
+    // No-op — just ensures the slot grid renders the next empty slot
+    // Slots A and B always show; C and D appear once previous slot is filled
   }
 
   const selectedClubs = selectedSlugs
     .map((s) => allClubs.find((c) => c.slug === s))
     .filter((c): c is ComparableClub => !!c);
 
-  const [copied, setCopied] = useState(false);
+  // How many slots to show: always at least 2, add next empty slot once the previous is filled
+  const slotsToShow = Math.min(
+    MAX_CLUBS,
+    Math.max(2, selectedSlugs.length + (selectedSlugs.length < MAX_CLUBS ? 1 : 0))
+  );
+
+  const views: { id: CompareView; label: string }[] = [
+    { id: "stats",    label: "Side by Side" },
+    { id: "radar",    label: "Radar" },
+    { id: "charts",   label: "Charts" },
+    { id: "analysis", label: "Analysis" },
+  ];
+
+  // Full population per axis — used for percentile-rank normalisation
+  const radarPopulations = useMemo(() => {
+    function pop(key: keyof ComparableClub) {
+      return allClubs.map((c) => c[key] as number | null).filter((v): v is number => v !== null);
+    }
+    return {
+      revenue:          pop("revenue"),
+      wage_ratio:       pop("wage_ratio"),
+      operating_profit: pop("operating_profit"),
+      pre_tax_profit:   pop("pre_tax_profit"),
+      net_debt:         pop("net_debt"),
+    };
+  }, [allClubs]);
+
+  const RADAR_AXES = [
+    { label: "Revenue",           invert: false, population: radarPopulations.revenue },
+    { label: "Wage\nEfficiency",  invert: true,  population: radarPopulations.wage_ratio },
+    { label: "Operating\nProfit", invert: false, population: radarPopulations.operating_profit },
+    { label: "Pre-tax\nProfit",   invert: false, population: radarPopulations.pre_tax_profit },
+    { label: "Net\nPosition",     invert: true,  population: radarPopulations.net_debt },
+  ];
+
+  const radarSeries = selectedClubs.map((club, i) => ({
+    name:   club.name,
+    color:  CLUB_COLORS[i],
+    values: [
+      club.revenue,
+      club.wage_ratio,
+      club.operating_profit,
+      club.pre_tax_profit,
+      club.net_debt,
+    ],
+  }));
+
   function copyLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true);
@@ -594,140 +580,80 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
     });
   }
 
-  const views: { id: CompareView; label: string }[] = [
-    { id: "stats",    label: "Side by Side" },
-    { id: "charts",   label: "Charts" },
-    { id: "analysis", label: "Analysis" },
-  ];
-
   return (
     <div>
-      {/* ── 1. Build Your Comparison ───────────────────────────── */}
-      <section ref={buildRef} style={{ marginBottom: "4rem" }}>
-        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1rem" }}>
-          Build Your Comparison
+      {/* Header */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
+          Club Comparison
         </p>
-        <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", marginBottom: "1.5rem", letterSpacing: "-0.01em", lineHeight: 1.2 }}>
-          Compare up to four clubs<br />
-          <span style={{ color: "#aaaaaa", fontSize: "14px" }}>across England, Germany, Austria, and France</span>
+        <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.5rem" }}>
+          Select clubs to compare
         </p>
+        <p style={{ fontSize: "13px", color: "#999999" }}>
+          Choose a country, then pick a club for each slot. Add up to four clubs across England, Europe, and Japan.
+        </p>
+      </div>
 
-        {/* Search */}
-        {selectedSlugs.length < MAX_CLUBS && (
-          <div style={{ maxWidth: "520px", marginBottom: "1rem" }}>
-            <ClubSearch allClubs={allClubs} selectedSlugs={selectedSlugs} onAdd={addClub} disabled={false} />
-          </div>
-        )}
+      {/* Slot grid — always 2 cols on desktop */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+        {Array.from({ length: slotsToShow }).map((_, i) => (
+          <ClubSlot
+            key={i}
+            slotIndex={i}
+            allClubs={allClubs}
+            selectedSlug={selectedSlugs[i] ?? null}
+            otherSlugs={selectedSlugs.filter((_, j) => j !== i)}
+            onSelect={(slug) => setSlug(i, slug)}
+            onRemove={() => removeSlug(i)}
+          />
+        ))}
+      </div>
 
-        {/* Selected clubs + copy */}
-        {selectedClubs.length > 0 && (
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem", marginBottom: "1.5rem" }}>
-            {selectedClubs.map((club, i) => (
-              <div
-                key={club.slug}
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.375rem 0.75rem", border: `1px solid ${CLUB_TAG_STYLES[i].borderColor}`, backgroundColor: CLUB_TAG_STYLES[i].backgroundColor, color: CLUB_TAG_STYLES[i].color, fontSize: "13px" }}
-              >
-                <span>{club.name}</span>
-                <button
-                  onClick={() => removeClub(club.slug)}
-                  style={{ opacity: 0.4, background: "none", border: "none", cursor: "pointer", color: "inherit", padding: 0, lineHeight: 1, display: "flex" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.4"; }}
-                >
-                  <svg style={{ width: "14px", height: "14px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            ))}
-            {selectedClubs.length >= 2 && (
-              <button
-                onClick={copyLink}
-                style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.375rem 0.75rem", border: "1px solid #e0e0e0", fontSize: "12px", color: "#999999", cursor: "pointer", background: "#ffffff", transition: "border-color 0.15s, color 0.15s" }}
-                onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#999999"; el.style.color = "#111111"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.color = "#999999"; }}
-              >
-                <svg style={{ width: "14px", height: "14px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                {copied ? "Copied" : "Share link"}
-              </button>
-            )}
-          </div>
-        )}
+      {/* Instructions when only one club selected */}
+      {selectedClubs.length === 1 && (
+        <p style={{ fontSize: "13px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
+          Select a second club to start the comparison.
+        </p>
+      )}
 
-        {/* Empty state */}
-        {selectedClubs.length === 0 && (
-          <div style={{ padding: "2rem 0", color: "#bbbbbb", fontSize: "13px" }}>
-            Search above, or click a featured comparison below to load it instantly.
-          </div>
-        )}
-
-        {selectedClubs.length === 1 && (
-          <p style={{ fontSize: "13px", color: "#aaaaaa", marginTop: "0.5rem" }}>
-            Add at least one more club to compare.
-          </p>
-        )}
-
-        {/* Comparison panel */}
-        {selectedClubs.length >= 2 && (
-          <div>
-            {/* Toggle tabs */}
-            <div style={{ display: "flex", gap: "0", marginBottom: "1.5rem", borderBottom: "1px solid #e0e0e0" }}>
+      {/* Comparison panel */}
+      {selectedClubs.length >= 2 && (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e0e0e0", marginBottom: "1.5rem" }}>
+            <div style={{ display: "flex", gap: 0 }}>
               {views.map(({ id, label }) => {
                 const isActive = view === id;
                 return (
                   <button
                     key={id}
                     onClick={() => setView(id)}
-                    style={{
-                      padding: "0.625rem 1.25rem",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      color: isActive ? "#111111" : "#999999",
-                      borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`,
-                      marginBottom: "-1px",
-                      background: "none",
-                      border: "none",
-                      borderBottomStyle: "solid",
-                      borderBottomWidth: "2px",
-                      borderBottomColor: isActive ? "#111111" : "transparent",
-                      cursor: "pointer",
-                      transition: "color 0.15s",
-                    }}
+                    style={{ padding: "0.625rem 1.25rem", fontSize: "11px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
                   >
                     {label}
                   </button>
                 );
               })}
             </div>
-
-            {view === "stats"    && <StatsView    clubs={selectedClubs} />}
-            {view === "charts"   && <ChartsView   clubs={selectedClubs} />}
-            {view === "analysis" && <AnalysisView clubs={selectedClubs} />}
+            <button
+              onClick={copyLink}
+              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.375rem 0.75rem", border: "1px solid #e0e0e0", fontSize: "11px", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px" }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#999999"; el.style.color = "#111111"; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.color = "#999999"; }}
+            >
+              <svg style={{ width: "13px", height: "13px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              {copied ? "Copied" : "Share"}
+            </button>
           </div>
-        )}
-      </section>
 
-      {/* ── 2. Featured Comparisons ────────────────────────────── */}
-      <section style={{ borderTop: "1px solid #e8e8e8", paddingTop: "3rem" }}>
-        <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1.25rem" }}>
-          Featured Comparisons
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
-          {FEATURED.map((config, i) => (
-            <FeaturedCard
-              key={config.id}
-              config={config}
-              allClubs={allClubs}
-              index={i}
-              onLoad={loadFeatured}
-            />
-          ))}
+          {view === "stats"    && <StatsView    clubs={selectedClubs} />}
+          {view === "radar"    && <RadarChart   axes={RADAR_AXES} series={radarSeries} />}
+          {view === "charts"   && <ChartsView   clubs={selectedClubs} />}
+          {view === "analysis" && <AnalysisView clubs={selectedClubs} />}
         </div>
-      </section>
+      )}
     </div>
   );
 }

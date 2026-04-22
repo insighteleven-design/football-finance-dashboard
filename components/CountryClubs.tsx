@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ClubFinancials, Division } from "@/lib/clubs";
 import { EUClub, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
+import { JapanClub, JAPAN_LEAGUES, type JDivision } from "@/lib/japanClubs";
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -27,6 +28,8 @@ type View =
   | { level: "countries" }
   | { level: "leagues"; country: string; flag: string }
   | { level: "clubs"; country: string; flag: string; leagueKey: string; leagueLabel: string };
+
+const JP_FLAG = "🇯🇵";
 
 // ─── Back button ──────────────────────────────────────────────────────────────
 
@@ -53,10 +56,12 @@ function BackButton({ label, onClick }: { label: string; onClick: () => void }) 
 function CountriesView({
   clubs,
   euClubs,
+  japanClubs,
   onSelect,
 }: {
   clubs: ClubFinancials[];
   euClubs: EUClub[];
+  japanClubs: JapanClub[];
   onSelect: (country: string, flag: string) => void;
 }) {
   const countries = [
@@ -72,6 +77,12 @@ function CountriesView({
       leagueCount: c.leagues.length,
       clubCount: euClubs.filter((cl) => cl.country === c.country && hasEuFinancialData(cl)).length,
     })),
+    {
+      key: "Japan",
+      flag: JP_FLAG,
+      leagueCount: 3,
+      clubCount: japanClubs.length,
+    },
   ].filter((c) => c.clubCount > 0);
 
   return (
@@ -122,6 +133,7 @@ function LeaguesView({
   flag,
   clubs,
   euClubs,
+  japanClubs,
   onSelect,
   onBack,
 }: {
@@ -129,6 +141,7 @@ function LeaguesView({
   flag: string;
   clubs: ClubFinancials[];
   euClubs: EUClub[];
+  japanClubs: JapanClub[];
   onSelect: (leagueKey: string, leagueLabel: string) => void;
   onBack: () => void;
 }) {
@@ -139,6 +152,12 @@ function LeaguesView({
       key: d.key,
       label: d.label,
       clubCount: clubs.filter((c) => c.division === d.key).length,
+    }));
+  } else if (country === "Japan") {
+    leagues = JAPAN_LEAGUES.map((l) => ({
+      key: l.key,
+      label: l.label,
+      clubCount: japanClubs.filter((c) => c.division === l.key).length,
     }));
   } else {
     const config = EU_COUNTRY_CONFIG.find((c) => c.country === country);
@@ -211,6 +230,7 @@ function ClubsView({
   leagueLabel,
   clubs,
   euClubs,
+  japanClubs,
   onBack,
 }: {
   country: string;
@@ -219,6 +239,7 @@ function ClubsView({
   leagueLabel: string;
   clubs: ClubFinancials[];
   euClubs: EUClub[];
+  japanClubs: JapanClub[];
   onBack: () => void;
 }) {
   type ClubRow = { name: string; slug: string; revenue: number | null };
@@ -227,6 +248,11 @@ function ClubsView({
   if (country === "England") {
     clubList = clubs
       .filter((c) => c.division === leagueKey)
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((c) => ({ name: c.name, slug: c.slug, revenue: c.revenue }));
+  } else if (country === "Japan") {
+    clubList = japanClubs
+      .filter((c) => c.division === (leagueKey as JDivision))
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((c) => ({ name: c.name, slug: c.slug, revenue: c.revenue }));
   } else {
@@ -281,10 +307,12 @@ function ClubsView({
 export default function CountryClubs({
   clubs,
   euClubs,
+  japanClubs = [],
   initialView,
 }: {
   clubs: ClubFinancials[];
   euClubs: EUClub[];
+  japanClubs?: JapanClub[];
   initialView?: View;
 }) {
   const [view, setView] = useState<View>(initialView ?? { level: "countries" });
@@ -295,6 +323,7 @@ export default function CountryClubs({
         <CountriesView
           clubs={clubs}
           euClubs={euClubs}
+          japanClubs={japanClubs}
           onSelect={(country, flag) => setView({ level: "leagues", country, flag })}
         />
       )}
@@ -304,6 +333,7 @@ export default function CountryClubs({
           flag={view.flag}
           clubs={clubs}
           euClubs={euClubs}
+          japanClubs={japanClubs}
           onSelect={(leagueKey, leagueLabel) =>
             setView({ level: "clubs", country: view.country, flag: view.flag, leagueKey, leagueLabel })
           }
@@ -318,6 +348,7 @@ export default function CountryClubs({
           leagueLabel={view.leagueLabel}
           clubs={clubs}
           euClubs={euClubs}
+          japanClubs={japanClubs}
           onBack={() => setView({ level: "leagues", country: view.country, flag: view.flag })}
         />
       )}

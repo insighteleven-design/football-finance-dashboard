@@ -32,7 +32,7 @@ export default function ClubProfileTabs({
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`px-4 sm:px-5 py-2.5 text-xs font-medium tracking-[0.08em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-4 sm:px-5 py-3 text-sm font-semibold tracking-[0.05em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
               tab === key
                 ? "border-[#111111] text-[#111111]"
                 : "border-transparent text-[#aaaaaa] hover:text-[#555555]"

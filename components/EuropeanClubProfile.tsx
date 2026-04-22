@@ -157,7 +157,7 @@ function getMetrics(country: string): MetricConfig[] {
 function CountryDisclaimer({ country }: { country: string }) {
   if (country === "Denmark") {
     return (
-      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures converted from Danish Krone (DKK) to US Dollars (USD) using published annual FX rates.
         Original DKK values are available in the data notes below.
       </div>
@@ -165,7 +165,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   }
   if (country === "Norway") {
     return (
-      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures converted from Norwegian Krone (NOK) to US Dollars (USD) using published annual FX rates.
         Original NOK values are available in the data notes below.
         Norwegian clubs are non-profit idrettslag (sports associations) — no corporate tax applies.
@@ -174,7 +174,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   }
   if (country === "Sweden") {
     return (
-      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures converted from Swedish Kronor (SEK) to US Dollars (USD) using published annual average FX rates
         (2025: 10.47, 2024: 10.53, 2023: 10.50 SEK/USD). Original SEK values are available in the data notes below.
         Swedish clubs are non-profit ideella föreningar (membership associations) — no corporate tax applies.
@@ -183,7 +183,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   }
   if (country === "Italy") {
     return (
-      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures in EUR millions. FY typically ends 30 June (football year); clubs using a December fiscal year are noted.
         Revenue (Valore della Produzione) includes gains on player sales. EBIT shown as Differenza A−B.
         Source: bilancio d'esercizio / bilancio consolidato. Half-year accounts (Juventus, Lazio) cover 6 months only — not comparable to full-year figures.
@@ -192,7 +192,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   }
   if (country === "Spain") {
     return (
-      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-[10px] text-[#888888] leading-relaxed">
+      <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures in EUR millions. FY runs 1 July → 30 June. Revenue = Importe neto de la cifra de negocios (includes player sale gains).
         EBIT = Resultado de explotación. Net debt excludes Deudas con entidades deportivas (transfer payables to other clubs).
         Entity types: SAD (Sociedad Anónima Deportiva, for-profit); Asociación (non-profit member club — Real Madrid, Barcelona, Athletic Club).
@@ -230,10 +230,10 @@ function FinancialTab({
       <CountryDisclaimer country={club.country} />
       <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
         <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">Financial Figures</p>
         </div>
         <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs {leagueLabel} Average</p>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">vs {leagueLabel} Average</p>
         </div>
 
         {metrics.map((m) => {
@@ -248,20 +248,20 @@ function FinancialTab({
           return (
             <Fragment key={m.key}>
               <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
+                <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-1.5">{m.label}</p>
                 {val !== null ? (
-                  <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
+                  <p className="text-2xl sm:text-3xl font-normal tabular-nums text-[#111111]">
                     {fmtCurrency(val, curr, m.isRatio)}
                   </p>
                 ) : (
-                  <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+                  <p className="text-2xl sm:text-3xl font-normal text-[#cccccc]">—</p>
                 )}
                 {stats && rank !== null && rank > 0 && (
-                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
+                  <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
                 )}
               </div>
               <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
+                <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-3">{m.label}</p>
                 <div className="mb-1">
                   <div className="flex items-center gap-2 mb-1">
                     {m.diverging ? (
@@ -269,11 +269,11 @@ function FinancialTab({
                     ) : (
                       <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
                     )}
-                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                    <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
                       {fmtCurrency(val, curr, m.isRatio)}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+                  <p className="text-[11px] text-[#999999] tracking-[0.04em]">This club</p>
                 </div>
                 <div className="mt-2">
                   <div className="flex items-center gap-2 mb-1">
@@ -282,11 +282,11 @@ function FinancialTab({
                     ) : (
                       <StandardBar pct={avgPct} color="#cccccc" />
                     )}
-                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                    <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
                       {stats ? fmtCurrency(stats.avg, curr, m.isRatio) : "—"}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
+                  <p className="text-[11px] text-[#bbbbbb] tracking-[0.04em]">League avg</p>
                 </div>
               </div>
             </Fragment>
@@ -407,10 +407,10 @@ function HistoricalYearTab({
       <CountryDisclaimer country={country} />
       <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
         <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">Financial Figures</p>
         </div>
         <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">vs {leagueLabel} Average</p>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">vs {leagueLabel} Average</p>
         </div>
         {metrics.map((m) => {
           const val = (snap[m.key as SnapKey] ?? null) as number | null;
@@ -423,20 +423,20 @@ function HistoricalYearTab({
           return (
             <Fragment key={m.key}>
               <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-1.5">{m.label}</p>
+                <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-1.5">{m.label}</p>
                 {val !== null ? (
-                  <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">
+                  <p className="text-2xl sm:text-3xl font-normal tabular-nums text-[#111111]">
                     {fmtCurrency(val, currency, m.isRatio)}
                   </p>
                 ) : (
-                  <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+                  <p className="text-2xl sm:text-3xl font-normal text-[#cccccc]">—</p>
                 )}
                 {stats && rank !== null && rank > 0 && (
-                  <p className="text-[10px] text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
+                  <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
                 )}
               </div>
               <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
+                <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-3">{m.label}</p>
                 <div className="mb-1">
                   <div className="flex items-center gap-2 mb-1">
                     {m.diverging ? (
@@ -444,11 +444,11 @@ function HistoricalYearTab({
                     ) : (
                       <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
                     )}
-                    <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                    <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
                       {fmtCurrency(val, currency, m.isRatio)}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+                  <p className="text-[11px] text-[#999999] tracking-[0.04em]">This club</p>
                 </div>
                 <div className="mt-2">
                   <div className="flex items-center gap-2 mb-1">
@@ -457,11 +457,11 @@ function HistoricalYearTab({
                     ) : (
                       <StandardBar pct={avgPct} color="#cccccc" />
                     )}
-                    <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                    <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
                       {stats ? fmtCurrency(stats.avg, currency, m.isRatio) : "—"}
                     </span>
                   </div>
-                  <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">League avg</p>
+                  <p className="text-[11px] text-[#bbbbbb] tracking-[0.04em]">League avg</p>
                 </div>
               </div>
             </Fragment>
@@ -695,7 +695,7 @@ function ChgBadge({
   const color = improved === true ? "#2e7d52" : improved === false ? "#9a3030" : "#888888";
   const bg    = improved === true ? "#edf7f1" : improved === false ? "#fdf1f1" : "#f5f5f5";
   return (
-    <span style={{ color, background: bg, fontSize: "10px", fontWeight: 600, padding: "2px 6px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
+    <span style={{ color, background: bg, fontSize: "12px", fontWeight: 600, padding: "2px 7px", borderRadius: "3px", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em", display: "inline-block" }}>
       {label}
     </span>
   );
@@ -739,15 +739,15 @@ function EUYoYSection({
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
           <thead>
             <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", whiteSpace: "nowrap", width: "200px" }}>
+              <th style={{ textAlign: "left", padding: "12px 20px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
                 Metric
               </th>
               {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
+                <th key={ci} style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
                   {col.label}
                 </th>
               ))}
-              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
+              <th style={{ textAlign: "right", padding: "12px 16px 10px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
                 Change
               </th>
             </tr>
@@ -768,11 +768,11 @@ function EUYoYSection({
                   onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
                 >
-                  <td style={{ padding: "13px 20px", fontSize: "11px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                  <td style={{ padding: "13px 20px", fontSize: "13px", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
                     {m.label}
                   </td>
                   {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "14px" : "13px", fontWeight: cols[ci].isCurrent ? 400 : 300, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                    <td key={ci} style={{ textAlign: "right", padding: "13px 16px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 500 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
                       {fmtCurrency(v, currency, m.isRatio)}
                     </td>
                   ))}
@@ -794,7 +794,7 @@ function EUYoYSection({
               key={m.key}
               onClick={() => setActiveMetric(i)}
               style={{
-                padding: "5px 12px", fontSize: "10px", fontWeight: 500, letterSpacing: "0.08em",
+                padding: "6px 14px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em",
                 textTransform: "uppercase", cursor: "pointer", transition: "all 0.12s",
                 border: activeMetric === i ? "1px solid #111111" : "1px solid #e0e0e0",
                 background: activeMetric === i ? "#111111" : "white",
@@ -806,7 +806,7 @@ function EUYoYSection({
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <p style={{ fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", margin: 0 }}>
+          <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", margin: 0 }}>
             {chartMetrics[activeMetric]?.label}
           </p>
           <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
@@ -815,13 +815,13 @@ function EUYoYSection({
                 <line x1="0" y1="5" x2="24" y2="5" stroke="#111111" strokeWidth="1.5" strokeLinecap="round" />
                 <circle cx="12" cy="5" r="2.5" fill="white" stroke="#111111" strokeWidth="1.5" />
               </svg>
-              <span style={{ fontSize: "10px", color: "#333333", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }}>Club</span>
+              <span style={{ fontSize: "12px", color: "#333333", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Club</span>
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <svg width="24" height="10" style={{ display: "block" }}>
                 <line x1="0" y1="5" x2="24" y2="5" stroke="#aaaaaa" strokeWidth="1.5" strokeDasharray="5 4" strokeLinecap="round" />
               </svg>
-              <span style={{ fontSize: "10px", color: "#888888", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }}>League Avg</span>
+              <span style={{ fontSize: "12px", color: "#888888", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>League Avg</span>
             </span>
           </div>
         </div>
@@ -856,27 +856,27 @@ function ClubInfoTab({ club }: { club: EUClub }) {
             hasOwnership ? "border-b lg:border-b-0 border-r border-[#e0e0e0]" : "lg:col-span-2"
           }`}
         >
-          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">Stadium</p>
+          <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-3">Stadium</p>
           <p className="text-sm font-medium text-[#111111] mb-1">{club.stadium.name}</p>
           {club.stadium.capacity && (
             <p className="text-xs text-[#666666] mb-1.5">{club.stadium.capacity.toLocaleString()} capacity</p>
           )}
           {club.stadium.ownership && (
-            <p className="text-[10px] text-[#aaaaaa] leading-relaxed">{club.stadium.ownership}</p>
+            <p className="text-xs text-[#aaaaaa] leading-relaxed">{club.stadium.ownership}</p>
           )}
         </div>
       )}
       {hasOwnership && club.ownership && (
         <div className={`px-4 sm:px-6 py-4 sm:py-5 bg-white ${!hasStadium ? "lg:col-span-2" : ""}`}>
-          <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">Ownership</p>
+          <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-3">Ownership</p>
           {club.ownership.category && (
             <p className="text-xs text-[#666666] mb-1">{club.ownership.category}</p>
           )}
           {club.ownership.fifty_plus_one && (
-            <p className="text-[10px] text-[#aaaaaa] mb-1.5">50+1: {club.ownership.fifty_plus_one}</p>
+            <p className="text-xs text-[#aaaaaa] mb-1.5">50+1: {club.ownership.fifty_plus_one}</p>
           )}
           {club.ownership.summary && (
-            <p className="text-[10px] text-[#aaaaaa] leading-relaxed">{club.ownership.summary}</p>
+            <p className="text-xs text-[#aaaaaa] leading-relaxed">{club.ownership.summary}</p>
           )}
         </div>
       )}
@@ -938,7 +938,7 @@ function FinancialsSection({
             <button
               key={key}
               onClick={() => setInnerTab(key)}
-              className={`px-4 sm:px-5 py-2.5 text-xs font-medium tracking-[0.08em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
+              className={`px-4 sm:px-5 py-3 text-sm font-semibold tracking-[0.05em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
                 innerTab === key
                   ? "border-[#111111] text-[#111111]"
                   : "border-transparent text-[#aaaaaa] hover:text-[#555555]"
@@ -1018,7 +1018,7 @@ export default function EuropeanClubProfile({
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`px-4 sm:px-5 py-2.5 text-xs font-medium tracking-[0.08em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-4 sm:px-5 py-3 text-sm font-semibold tracking-[0.05em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
               tab === key
                 ? "border-[#111111] text-[#111111]"
                 : "border-transparent text-[#aaaaaa] hover:text-[#555555]"

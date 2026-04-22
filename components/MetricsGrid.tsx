@@ -29,7 +29,7 @@ const ALL_METRICS: {
   { key: "wage_bill",                  label: "Wage Bill",                  higherBetter: false },
   { key: "wage_ratio",                 label: "Wage Ratio",                 isRatio: true, higherBetter: false },
   { key: "operating_profit",           label: "Operating Profit / (Loss)",  diverging: true, higherBetter: true },
-  { key: "profit_from_player_sales",   label: "Player Sales Profit",        diverging: true, higherBetter: null },
+  { key: "profit_from_player_sales",   label: "Player Sales Revenue",       diverging: true, higherBetter: null },
   { key: "pre_tax_profit",             label: "Pre-tax Profit / (Loss)",    diverging: true, higherBetter: true },
   { key: "net_debt",                   label: "Net Debt",          diverging: true, higherBetter: false, expandable: "debt" },
 ];
@@ -138,11 +138,11 @@ function RevenuePanel({ breakdown, totalRevenue }: { breakdown: RevenueBreakdown
           return (
             <div key={key} className="flex items-center gap-3">
               <div className="w-2.5 h-2.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-[11px] text-[#666666] w-28">{label}</span>
-              <span className="text-[11px] font-light tabular-nums text-[#111111] w-14">
+              <span className="text-sm text-[#555555] w-28">{label}</span>
+              <span className="text-sm font-medium tabular-nums text-[#111111] w-14">
                 {val !== null ? fmtGbp(val) : "—"}
               </span>
-              <span className="text-[11px] text-[#aaaaaa] tabular-nums">
+              <span className="text-sm text-[#aaaaaa] tabular-nums">
                 {pct !== null ? `${pct.toFixed(0)}%` : "—"}
               </span>
             </div>
@@ -215,8 +215,8 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Column headers */}
       <div className="flex items-center gap-3 mb-2">
         <div className="w-2.5 shrink-0" />
-        <span className="text-[10px] text-[#aaaaaa] flex-1" />
-        <span className="text-[10px] text-[#aaaaaa] w-20 text-right shrink-0 tracking-wide">Debt</span>
+        <span className="text-xs text-[#aaaaaa] flex-1" />
+        <span className="text-xs text-[#aaaaaa] w-20 text-right shrink-0 tracking-wide">Debt</span>
         <span className="text-[10px] text-[#4a9a6a] w-20 text-right shrink-0 tracking-wide">Cash</span>
       </div>
 
@@ -226,14 +226,14 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
           <div key={seg.label}>
             <div className="flex items-baseline gap-3">
               <div className="w-2.5 h-2.5 shrink-0 rounded-full mt-0.5" style={{ backgroundColor: DEBT_COLORS[seg.type] ?? "#aaaaaa" }} />
-              <span className="text-[11px] text-[#666666] flex-1 leading-tight">{seg.label}</span>
-              <span className="text-[11px] font-light tabular-nums text-[#111111] w-20 text-right shrink-0">
+              <span className="text-sm text-[#555555] flex-1 leading-tight">{seg.label}</span>
+              <span className="text-sm font-medium tabular-nums text-[#111111] w-20 text-right shrink-0">
                 {fmtAmt(seg.amount)}
               </span>
               <span className="w-20 shrink-0" />
             </div>
             {seg.note && (
-              <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+              <p className="text-xs text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
             )}
           </div>
         ))}
@@ -242,7 +242,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Total debt + cash on the same row */}
       <div className="flex items-center gap-3 border-t border-[#e0e0e0] mt-3 pt-2.5">
         <div className="w-2.5 shrink-0" />
-        <span className="text-[11px] font-medium text-[#444444] flex-1">Total financial debt</span>
+        <span className="text-sm font-semibold text-[#444444] flex-1">Total financial debt</span>
         <span className="text-[11px] font-medium tabular-nums text-[#111111] w-20 text-right shrink-0">
           {fmtAmt(totalDebt)}
         </span>
@@ -258,7 +258,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Net debt */}
       <div className="flex items-center gap-3 border-t-2 border-[#cccccc] mt-1.5 pt-2.5">
         <div className="w-2.5 shrink-0" />
-        <span className="text-[11px] font-semibold text-[#111111] flex-1">Net debt / (cash)</span>
+        <span className="text-sm font-bold text-[#111111] flex-1">Net debt / (cash)</span>
         <span
           className={`text-[11px] font-semibold tabular-nums w-20 text-right shrink-0 ${
             net <= 0 ? "text-[#4a9a6a]" : "text-[#9a4a4a]"
@@ -272,7 +272,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Transfer payables — separate section */}
       {tpSegs.length > 0 && (
         <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
-          <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
+          <p className="text-xs font-semibold tracking-[0.06em] uppercase text-[#999999] mb-2.5">
             Transfer payables <span className="normal-case font-normal">(excluded from net debt)</span>
           </p>
           <div className="space-y-2">
@@ -287,13 +287,13 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
                   <span className="w-20 shrink-0" />
                 </div>
                 {seg.note && (
-                  <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+                  <p className="text-xs text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
                 )}
               </div>
             ))}
             <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
               <div className="w-2.5 shrink-0" />
-              <span className="text-[11px] font-medium text-[#888888] flex-1">Total transfer payables</span>
+              <span className="text-sm font-semibold text-[#888888] flex-1">Total transfer payables</span>
               <span className="text-[11px] font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                 {fmtAmt(totalTp)}
               </span>
@@ -309,7 +309,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Preference shares — separate section */}
       {psSegs.length > 0 && (
         <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
-          <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
+          <p className="text-xs font-semibold tracking-[0.06em] uppercase text-[#999999] mb-2.5">
             Preference shares <span className="normal-case font-normal">(excluded from reported net debt)</span>
           </p>
           <div className="space-y-2">
@@ -324,14 +324,14 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
                   <span className="w-20 shrink-0" />
                 </div>
                 {seg.note && (
-                  <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+                  <p className="text-xs text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
                 )}
               </div>
             ))}
             {psSegs.length > 1 && (
               <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
                 <div className="w-2.5 shrink-0" />
-                <span className="text-[11px] font-medium text-[#888888] flex-1">Total preference shares</span>
+                <span className="text-sm font-semibold text-[#888888] flex-1">Total preference shares</span>
                 <span className="text-[11px] font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                   {fmtAmt(totalPs)}
                 </span>
@@ -348,7 +348,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
       {/* Quasi-equity / shareholder funding — separate section */}
       {qeSegs.length > 0 && (
         <div className="mt-5 pt-4 border-t border-dashed border-[#e0e0e0]">
-          <p className="text-[10px] font-medium tracking-[0.06em] uppercase text-[#aaaaaa] mb-2.5">
+          <p className="text-xs font-semibold tracking-[0.06em] uppercase text-[#999999] mb-2.5">
             Excluded from reported net debt
           </p>
           <div className="space-y-2">
@@ -363,14 +363,14 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
                   <span className="w-20 shrink-0" />
                 </div>
                 {seg.note && (
-                  <p className="text-[10px] text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
+                  <p className="text-xs text-[#aaaaaa] leading-relaxed pl-[22px] mt-0.5">{seg.note}</p>
                 )}
               </div>
             ))}
             {qeSegs.length > 1 && (
               <div className="flex items-center gap-3 border-t border-[#eeeeee] pt-2">
                 <div className="w-2.5 shrink-0" />
-                <span className="text-[11px] font-medium text-[#888888] flex-1">Total shareholder funding</span>
+                <span className="text-sm font-semibold text-[#888888] flex-1">Total shareholder funding</span>
                 <span className="text-[11px] font-medium tabular-nums text-[#888888] w-20 text-right shrink-0">
                   {fmtAmt(totalQe)}
                 </span>
@@ -386,7 +386,7 @@ function DebtPanel({ breakdown }: { breakdown: DebtBreakdown }) {
 
       {/* Notes */}
       {breakdown.notes && (
-        <p className="text-[10px] text-[#aaaaaa] mt-4 leading-relaxed">{breakdown.notes}</p>
+        <p className="text-xs text-[#aaaaaa] mt-4 leading-relaxed">{breakdown.notes}</p>
       )}
     </>
   );
@@ -424,10 +424,10 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
     <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
       {/* Column headers */}
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">Financial Figures</p>
+        <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">Financial Figures</p>
       </div>
       <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999]">
+        <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888]">
           vs {compareLabel} Average
         </p>
       </div>
@@ -462,16 +462,16 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
               onClick={toggleExpand}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999]">{m.label}</p>
+                <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888]">{m.label}</p>
                 {toggleExpand && <BreakdownBadge open={expandOpen} />}
               </div>
               {val !== null ? (
-                <p className="text-xl sm:text-2xl font-light tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
+                <p className="text-2xl sm:text-3xl font-normal tabular-nums text-[#111111]">{fmt(val, m.isRatio)}</p>
               ) : (
-                <p className="text-xl sm:text-2xl font-light text-[#cccccc]">—</p>
+                <p className="text-2xl sm:text-3xl font-normal text-[#cccccc]">—</p>
               )}
               {stats && rank !== null && (
-                <p className="text-[10px] text-[#aaaaaa] mt-1.5">
+                <p className="text-xs text-[#aaaaaa] mt-1.5">
                   #{rank} <span className="text-[#cccccc]">of {stats.count}</span>
                 </p>
               )}
@@ -479,7 +479,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
 
             {/* Right cell */}
             <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-              <p className="text-[9px] font-medium tracking-[0.18em] uppercase text-[#999999] mb-3">{m.label}</p>
+              <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#888888] mb-3">{m.label}</p>
 
               {/* Club bar */}
               <div className="mb-1">
@@ -489,11 +489,11 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                   ) : (
                     <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
                   )}
-                  <span className="text-xs font-medium tabular-nums text-[#111111] w-14 text-right shrink-0">
+                  <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
                     {fmt(val, m.isRatio)}
                   </span>
                 </div>
-                <p className="text-[9px] text-[#aaaaaa] tracking-[0.05em]">This club</p>
+                <p className="text-[11px] text-[#999999] tracking-[0.04em]">This club</p>
               </div>
 
               {/* Division avg bar */}
@@ -504,11 +504,11 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                   ) : (
                     <StandardBar pct={avgPct} color="#cccccc" />
                   )}
-                  <span className="text-xs tabular-nums text-[#aaaaaa] w-14 text-right shrink-0">
+                  <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
                     {stats ? fmt(stats.avg, m.isRatio) : "—"}
                   </span>
                 </div>
-                <p className="text-[9px] text-[#cccccc] tracking-[0.05em]">Division avg</p>
+                <p className="text-[11px] text-[#bbbbbb] tracking-[0.04em]">Division avg</p>
               </div>
             </div>
 
@@ -519,7 +519,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 style={{ maxHeight: revenueOpen ? "600px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Revenue Breakdown</p>
+                  <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888] mb-4">Revenue Breakdown</p>
                   <RevenuePanel breakdown={breakdown ?? null} totalRevenue={data.revenue} />
                 </div>
               </div>
@@ -532,7 +532,7 @@ export default function MetricsGrid({ data, divisionData, compareLabel, breakdow
                 style={{ maxHeight: debtOpen ? "600px" : "0px" }}
               >
                 <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#999999] mb-4">Debt Breakdown</p>
+                  <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[#888888] mb-4">Debt Breakdown</p>
                   <DebtPanel breakdown={debtBreakdown} />
                 </div>
               </div>

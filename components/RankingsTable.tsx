@@ -53,10 +53,10 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
               key={m.key as string}
               onClick={() => { setMetricKey(m.key); setShowAll(false); }}
               style={{
-                padding: "0.625rem 1rem",
-                fontSize: "10px",
-                fontWeight: 500,
-                letterSpacing: "0.1em",
+                padding: "0.75rem 1.25rem",
+                fontSize: "13px",
+                fontWeight: 600,
+                letterSpacing: "0.07em",
                 textTransform: "uppercase",
                 color: active ? "#111111" : "#999999",
                 borderBottom: `2px solid ${active ? "#111111" : "transparent"}`,
@@ -92,23 +92,23 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
           return (
             <div
               key={club.slug}
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.5rem 0", borderBottom: "1px solid #f5f5f5" }}
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.625rem 0", borderBottom: "1px solid #f5f5f5" }}
             >
-              <span style={{ fontSize: "10px", fontVariantNumeric: "tabular-nums", width: "1.5rem", textAlign: "right", flexShrink: 0, color: "#cccccc" }}>
+              <span style={{ fontSize: "12px", fontVariantNumeric: "tabular-nums", width: "1.75rem", textAlign: "right", flexShrink: 0, color: "#aaaaaa", fontWeight: 500 }}>
                 {i + 1}
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "12px", color: "#111111" }}>{club.name}</span>
-                  <span style={{ fontSize: "9px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#cccccc" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "0.625rem", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "14px", color: "#111111", fontWeight: 500 }}>{club.name}</span>
+                  <span style={{ fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#aaaaaa" }}>
                     {club.divisionLabel}
                   </span>
                 </div>
-                <div style={{ marginTop: "4px", height: "4px", backgroundColor: "#f0f0f0", maxWidth: "280px", borderRadius: "2px" }}>
+                <div style={{ marginTop: "5px", height: "5px", backgroundColor: "#f0f0f0", maxWidth: "280px", borderRadius: "2px" }}>
                   <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.7, borderRadius: "2px" }} />
                 </div>
               </div>
-              <span style={{ fontSize: "12px", fontWeight: 500, fontVariantNumeric: "tabular-nums", flexShrink: 0, width: "5.5rem", textAlign: "right", color: valueColor }}>
+              <span style={{ fontSize: "14px", fontWeight: 600, fontVariantNumeric: "tabular-nums", flexShrink: 0, width: "6rem", textAlign: "right", color: valueColor }}>
                 {fmtVal(value, metric.isRatio, club.currency)}
               </span>
             </div>
@@ -120,7 +120,7 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
       {!showAll && ranked.length > DEFAULT_ROWS && (
         <button
           onClick={() => setShowAll(true)}
-          style={{ marginTop: "1rem", fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", color: "#999999", cursor: "pointer", background: "none", border: "none", padding: 0 }}
+          style={{ marginTop: "1rem", fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em", color: "#777777", cursor: "pointer", background: "none", border: "none", padding: 0 }}
         >
           Show all {ranked.length} clubs ↓
         </button>

@@ -10,6 +10,7 @@ body {
   color: #111111;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-size: 15px;
 }
 
 .positive { color: var(--positive); }

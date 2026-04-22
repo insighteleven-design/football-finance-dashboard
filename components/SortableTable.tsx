@@ -11,7 +11,6 @@ function ValueCell({ value, metricKey }: { value: number | null; metricKey: keyo
   const isRatio = metricKey === "wage_ratio";
   const formatted = fmt(value, isRatio);
 
-  // For most metrics, negative = bad (red). For net_debt, negative = net cash position (good = green).
   let cls = "text-gray-900";
   if (metricKey === "net_debt") {
     cls = value > 0 ? "text-red-600" : value < 0 ? "text-green-600" : "text-gray-900";
@@ -59,17 +58,17 @@ export default function SortableTable({ clubs }: { clubs: ClubFinancials[] }) {
       <table className="min-w-full text-sm">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
-            <th className="sticky left-0 bg-gray-50 px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+            <th className="sticky left-0 bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-600 uppercase tracking-wide whitespace-nowrap">
               Club
             </th>
-            <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+            <th className="px-3 py-3 text-left text-sm font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">
               FY End
             </th>
             {columns.map((col) => (
               <th
                 key={col.key}
                 onClick={() => handleSort(col.key)}
-                className="px-3 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:text-blue-600 select-none"
+                className="px-3 py-3 text-right text-sm font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap cursor-pointer hover:text-blue-600 select-none"
               >
                 <span className="inline-flex items-center gap-1 justify-end">
                   {col.label}
@@ -86,16 +85,16 @@ export default function SortableTable({ clubs }: { clubs: ClubFinancials[] }) {
         <tbody className="divide-y divide-gray-100">
           {sorted.map((club, i) => (
             <tr key={club.slug} className={`hover:bg-blue-50/40 transition-colors ${i % 2 === 0 ? "bg-white" : "bg-gray-50/40"}`}>
-              <td className="sticky left-0 bg-inherit px-4 py-3 font-medium whitespace-nowrap">
+              <td className="sticky left-0 bg-inherit px-4 py-3 font-semibold whitespace-nowrap">
                 <Link href={`/clubs/${club.slug}`} className="text-blue-600 hover:text-blue-800 hover:underline">
                   {club.name}
                 </Link>
               </td>
-              <td className="px-3 py-3 text-gray-500 whitespace-nowrap text-xs">
+              <td className="px-3 py-3 text-gray-500 whitespace-nowrap text-sm">
                 {new Date(club.fiscal_year_end).toLocaleDateString("en-GB", { month: "short", year: "numeric" })}
               </td>
               {columns.map((col) => (
-                <td key={col.key} className="px-3 py-3 text-right tabular-nums whitespace-nowrap font-mono text-xs">
+                <td key={col.key} className="px-3 py-3 text-right tabular-nums whitespace-nowrap text-sm font-medium">
                   <ValueCell value={club[col.key] as number | null} metricKey={col.key} />
                 </td>
               ))}
