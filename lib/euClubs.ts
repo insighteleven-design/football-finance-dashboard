@@ -87,6 +87,7 @@ const deClubs: EUClub[] = [
     equity: 570.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 854.0, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 713.8, wage_bill: 356.1, net_profit: 52.5, equity: 497.4, total_liabilities: 128.1 },
     { season: "FY19/20", revenue: 698.0, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
@@ -118,6 +119,7 @@ const deClubs: EUClub[] = [
     equity: 327.0,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 418.239, wage_bill: 236.0, wage_to_revenue_pct: 56.4, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 0.5, wage_bill: 205.1, net_profit: 17.4, equity: 354.9, total_liabilities: 115.3 },
     { season: "FY19/20", revenue: 370.2, wage_bill: null, net_profit: -43.9, equity: null, total_liabilities: null },
@@ -149,6 +151,7 @@ const deClubs: EUClub[] = [
     equity: 200.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 273.608, wage_bill: 142.257, wage_to_revenue_pct: 52.0, net_profit: 0.0, equity: 200.476, total_liabilities: 148.488 },
   historical: [
     { season: "FY18/19", revenue: 259.2, wage_bill: 136.6, net_profit: 0.0, equity: 200.5, total_liabilities: 78.8 },
     { season: "FY20/21", revenue: 253.1, wage_bill: 134.3, net_profit: 0.0, equity: 200.5, total_liabilities: 172.5 },
@@ -178,6 +181,7 @@ const deClubs: EUClub[] = [
     equity: 67.8,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 217.9, wage_bill: null, wage_to_revenue_pct: null, net_profit: 0.7, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 0.2, wage_bill: 75.8, net_profit: 9.4, equity: 46.1, total_liabilities: 38.6 },
     { season: "FY20/21", revenue: 142.5, wage_bill: 82.8, net_profit: -1.2, equity: 22.2, total_liabilities: 92.3 },
@@ -208,6 +212,7 @@ const deClubs: EUClub[] = [
     equity: 137.7,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 346.5, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 274.6, wage_bill: 125.2, net_profit: 4.5, equity: 126.1, total_liabilities: 135.6 },
     { season: "FY20/21", revenue: 375.7, wage_bill: 168.9, net_profit: 2.8, equity: 131.7, total_liabilities: 292.3 },
@@ -238,6 +243,7 @@ const deClubs: EUClub[] = [
     equity: 51.7,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 310.2, wage_bill: null, wage_to_revenue_pct: null, net_profit: 17.6, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 301.4, wage_bill: 0.1, net_profit: 36.9, equity: 67.9, total_liabilities: 95.7 },
     { season: "FY19/20", revenue: 278.1, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
@@ -269,6 +275,7 @@ const deClubs: EUClub[] = [
     equity: 76.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 251.287, wage_bill: 121.554, wage_to_revenue_pct: 48.4, net_profit: 0.0, equity: 30.973, total_liabilities: 196.747 },
   historical: [
     { season: "FY18/19", revenue: 193.6, wage_bill: 131.4, net_profit: 0.0, equity: 0.0, total_liabilities: 0.2 },
     { season: "FY20/21", revenue: 198.6, wage_bill: 122.8, net_profit: 0.0, equity: 0.0, total_liabilities: 170.9 },
@@ -298,6 +305,7 @@ const deClubs: EUClub[] = [
     equity: 151.9,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 175.3, wage_bill: null, wage_to_revenue_pct: null, net_profit: 16.1, equity: 111.1, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 91.8, wage_bill: 45.2, net_profit: 6.9, equity: 83.2, total_liabilities: 8.9 },
     { season: "FY19/20", revenue: null, wage_bill: null, net_profit: 7.0, equity: null, total_liabilities: null },
@@ -329,6 +337,7 @@ const deClubs: EUClub[] = [
     equity: 2.9,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 174.14, wage_bill: null, wage_to_revenue_pct: null, net_profit: 18.09, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 60.1, wage_bill: 25.8, net_profit: 0.3, equity: -0.0, total_liabilities: 44.4 },
     { season: "FY19/20", revenue: 74.5, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
@@ -360,6 +369,7 @@ const deClubs: EUClub[] = [
     equity: 48.9,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 177.3, wage_bill: null, wage_to_revenue_pct: null, net_profit: -24.7, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 200.4, wage_bill: 98.6, net_profit: 12.2, equity: 103.3, total_liabilities: 118.4 },
     { season: "FY20/21", revenue: 160.3, wage_bill: 98.1, net_profit: -14.6, equity: 71.8, total_liabilities: 109.2 },
@@ -390,6 +400,7 @@ const deClubs: EUClub[] = [
     equity: 25.9,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 172.2, wage_bill: null, wage_to_revenue_pct: null, net_profit: 12.4, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 106.6, wage_bill: 47.8, net_profit: 0.0, equity: 38.5, total_liabilities: 33.5 },
     { season: "FY20/21", revenue: 114.9, wage_bill: 76.3, net_profit: -18.3, equity: 1.5, total_liabilities: 70.9 },
@@ -420,6 +431,7 @@ const deClubs: EUClub[] = [
     equity: 170.1,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 178.1, wage_bill: null, wage_to_revenue_pct: null, net_profit: 0.0, equity: null, total_liabilities: null },
   historical: [],
   tm_squad_value_eur_m: null,
   data_status: "VERIFIED",
@@ -444,6 +456,7 @@ const deClubs: EUClub[] = [
     equity: 22.3,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 120.1, wage_bill: null, wage_to_revenue_pct: null, net_profit: -3.8, equity: null, total_liabilities: null },
   historical: [
     { season: "FY22/23", revenue: 120.1, wage_bill: null, net_profit: -3.8, equity: null, total_liabilities: null },
   ],
@@ -470,6 +483,7 @@ const deClubs: EUClub[] = [
     equity: 33.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 127.9, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 144.5, wage_bill: 48.9, net_profit: 15.8, equity: 49.5, total_liabilities: 32.5 },
     { season: "FY19/20", revenue: 116.0, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
@@ -501,6 +515,7 @@ const deClubs: EUClub[] = [
     equity: 45.0,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 114.0, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY19/20", revenue: 95.7, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
     { season: "FY20/21", revenue: 80.8, wage_bill: 0.0, net_profit: -4.7, equity: 31.8, total_liabilities: 69.4 },
@@ -531,6 +546,7 @@ const deClubs: EUClub[] = [
     equity: -23.1,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 124.0, wage_bill: 35.29, wage_to_revenue_pct: 28.5, net_profit: null, equity: 5.4, total_liabilities: 102.3 },
   historical: [
     { season: "FY18/19", revenue: 140.8, wage_bill: 62.4, net_profit: -0.0, equity: 8.2, total_liabilities: 91.6 },
     { season: "FY19/20", revenue: 114.5, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
@@ -562,6 +578,7 @@ const deClubs: EUClub[] = [
     equity: 46.8,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: null, wage_bill: null, wage_to_revenue_pct: null, net_profit: -8.826, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 95.5, wage_bill: 38.2, net_profit: 9.6, equity: 57.6, total_liabilities: 45.5 },
     { season: "FY20/21", revenue: 81.9, wage_bill: 44.4, net_profit: -0.5, equity: 58.4, total_liabilities: 34.5 },
@@ -592,6 +609,7 @@ const deClubs: EUClub[] = [
     equity: 2.2,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 56.0, wage_bill: null, wage_to_revenue_pct: null, net_profit: -1.0, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 35.9, wage_bill: 15.2, net_profit: 1.5, equity: 1.9, total_liabilities: 23.7 },
     { season: "FY21/22", revenue: 38.8, wage_bill: 18.4, net_profit: -0.2, equity: 1.7, total_liabilities: 20.9 },
@@ -621,6 +639,7 @@ const deClubs: EUClub[] = [
     equity: 3.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 61.955, wage_bill: null, wage_to_revenue_pct: null, net_profit: -4.877, equity: null, total_liabilities: null },
   historical: [
     { season: "FY19/20", revenue: 53.4, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
     { season: "FY20/21", revenue: 35.1, wage_bill: 20.9, net_profit: -5.7, equity: 7.8, total_liabilities: 43.7 },
@@ -651,6 +670,7 @@ const deClubs: EUClub[] = [
     equity: 2.8,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 28.395, wage_bill: 15.236, wage_to_revenue_pct: 53.7, net_profit: 0.487, equity: 8.637, total_liabilities: 4.405 },
   historical: [
     { season: "FY20/21", revenue: 30.7, wage_bill: 0.0, net_profit: 1.4, equity: 8.2, total_liabilities: 5.8 },
     { season: "FY21/22", revenue: 28.4, wage_bill: 15.2, net_profit: 0.5, equity: 8.6, total_liabilities: 4.4 },
@@ -679,6 +699,7 @@ const deClubs: EUClub[] = [
     equity: 4.2,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 86.8, wage_bill: null, wage_to_revenue_pct: null, net_profit: 8.1, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 28.3, wage_bill: 18.7, net_profit: -4.9, equity: -4.9, total_liabilities: 25.9 },
     { season: "FY21/22", revenue: 63.6, wage_bill: 31.2, net_profit: 0.0, equity: 0.0, total_liabilities: 23.4 },
@@ -708,6 +729,7 @@ const deClubs: EUClub[] = [
     equity: 1.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 46.416, wage_bill: 24.241, wage_to_revenue_pct: 52.2, net_profit: -1.186, equity: 3.84, total_liabilities: 14.26 },
   historical: [
     { season: "FY20/21", revenue: 46.6, wage_bill: 24.1, net_profit: -0.0, equity: 0.0, total_liabilities: 16.6 },
     { season: "FY21/22", revenue: 46.4, wage_bill: 24.2, net_profit: -1.2, equity: 3.8, total_liabilities: 14.3 },
@@ -736,6 +758,7 @@ const deClubs: EUClub[] = [
     equity: -104.0,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 168.3, wage_bill: null, wage_to_revenue_pct: null, net_profit: 6.9, equity: null, total_liabilities: null },
   historical: [
     { season: "FY18/19", revenue: 263.2, wage_bill: 123.8, net_profit: -27.1, equity: -18.5, total_liabilities: 197.9 },
     { season: "FY20/21", revenue: 199.2, wage_bill: 88.3, net_profit: -18.7, equity: -88.8, total_liabilities: 183.5 },
@@ -766,6 +789,7 @@ const deClubs: EUClub[] = [
     equity: 22.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 26.513, wage_bill: 15.103, wage_to_revenue_pct: 57.0, net_profit: -1.976, equity: 18.328, total_liabilities: 16.623 },
   historical: [
     { season: "FY20/21", revenue: 29.9, wage_bill: 14.3, net_profit: 2.1, equity: 20.3, total_liabilities: 12.1 },
     { season: "FY21/22", revenue: 26.5, wage_bill: 15.1, net_profit: -0.0, equity: 18.3, total_liabilities: 16.6 },
@@ -794,6 +818,7 @@ const deClubs: EUClub[] = [
     equity: 28.3,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 43.5, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 34.2, wage_bill: 9.5, net_profit: 11.3, equity: 15.6, total_liabilities: 2.1 },
     { season: "FY21/22", revenue: 19.1, wage_bill: 11.1, net_profit: -4.1, equity: 19.8, total_liabilities: 2.9 },
@@ -823,6 +848,7 @@ const deClubs: EUClub[] = [
     equity: 8.3,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 40.0, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 47.7, wage_bill: 31.3, net_profit: -8.8, equity: 8.8, total_liabilities: 31.5 },
     { season: "FY21/22", revenue: 0.1, wage_bill: 0.0, net_profit: -0.5, equity: 8.4, total_liabilities: 32.5 },
@@ -852,6 +878,7 @@ const deClubs: EUClub[] = [
     equity: -7.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 51.2, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 0.0, wage_bill: 20.9, net_profit: -9.4, equity: -3.9, total_liabilities: 19.5 },
     { season: "FY21/22", revenue: 41.1, wage_bill: 21.2, net_profit: -2.5, equity: -6.4, total_liabilities: 24.8 },
@@ -881,6 +908,7 @@ const deClubs: EUClub[] = [
     equity: 11.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 27.125, wage_bill: 12.596, wage_to_revenue_pct: 46.4, net_profit: 1.031, equity: 11.998, total_liabilities: 11.949 },
   historical: [
     { season: "FY20/21", revenue: 19.6, wage_bill: 11.9, net_profit: -5.8, equity: 10.4, total_liabilities: 12.9 },
     { season: "FY21/22", revenue: 27.1, wage_bill: 12.6, net_profit: 0.0, equity: 0.0, total_liabilities: 11.9 },
@@ -909,6 +937,7 @@ const deClubs: EUClub[] = [
     equity: 7.4,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 35.59, wage_bill: null, wage_to_revenue_pct: null, net_profit: 0.13, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 23.5, wage_bill: 12.6, net_profit: -0.5, equity: 2.5, total_liabilities: 0.0 },
     { season: "FY21/22", revenue: 48.8, wage_bill: 22.7, net_profit: 5.3, equity: 7.8, total_liabilities: 7.6 },
@@ -938,6 +967,7 @@ const deClubs: EUClub[] = [
     equity: 6.3,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 34.0, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 16.3, wage_bill: 13.6, net_profit: -0.6, equity: 6.6, total_liabilities: 3.1 },
     { season: "FY21/22", revenue: 29.3, wage_bill: 13.5, net_profit: -0.5, equity: 6.1, total_liabilities: 2.4 },
@@ -967,6 +997,7 @@ const deClubs: EUClub[] = [
     equity: 9.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 12.098, wage_bill: 6.57, wage_to_revenue_pct: 54.3, net_profit: -0.931, equity: 5.599, total_liabilities: 0.886 },
   historical: [
     { season: "FY20/21", revenue: 9.3, wage_bill: 5.8, net_profit: -0.1, equity: 6.5, total_liabilities: 0.7 },
     { season: "FY21/22", revenue: 12.1, wage_bill: 6.6, net_profit: -0.9, equity: 5.6, total_liabilities: 0.9 },
@@ -995,6 +1026,7 @@ const deClubs: EUClub[] = [
     equity: 0.6,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 16.527, wage_bill: 8.901, wage_to_revenue_pct: 53.9, net_profit: -0.508, equity: 0.719, total_liabilities: 6.871 },
   historical: [
     { season: "FY20/21", revenue: 22.4, wage_bill: 12.9, net_profit: -0.8, equity: 1.2, total_liabilities: 7.5 },
     { season: "FY21/22", revenue: 16.5, wage_bill: 8.9, net_profit: -0.5, equity: 0.7, total_liabilities: 6.9 },
@@ -1023,6 +1055,7 @@ const deClubs: EUClub[] = [
     equity: -4.2,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY21/22", revenue: 11.952, wage_bill: 6.324, wage_to_revenue_pct: 52.9, net_profit: 0.006, equity: -1.851, total_liabilities: 20.184 },
   historical: [],
   tm_squad_value_eur_m: null,
   data_status: "VERIFIED",
@@ -1097,6 +1130,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: null, wage_bill: null, wage_to_revenue_pct: null, net_profit: 3.0, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 22.1, wage_bill: 0.0, net_profit: 2.8, equity: 12.4, total_liabilities: 1.3 },
     { season: "FY22/23", revenue: null, wage_bill: null, net_profit: 3.0, equity: null, total_liabilities: null },
@@ -1124,6 +1158,7 @@ const deClubs: EUClub[] = [
     equity: -3.9,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 52.07, wage_bill: null, wage_to_revenue_pct: null, net_profit: 0.06, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 49.3, wage_bill: 30.7, net_profit: -1.7, equity: -7.1, total_liabilities: 17.5 },
     { season: "FY21/22", revenue: 59.7, wage_bill: 30.1, net_profit: 2.7, equity: -2.7, total_liabilities: 17.8 },
@@ -1153,6 +1188,7 @@ const deClubs: EUClub[] = [
     equity: 11.5,
     data_notes: "total_liabilities used; net debt figure not available from DFL source",
   },
+  prior_year: { season: "FY22/23", revenue: 23.8, wage_bill: null, wage_to_revenue_pct: null, net_profit: -0.85, equity: null, total_liabilities: null },
   historical: [
     { season: "FY22/23", revenue: 23.8, wage_bill: null, net_profit: -0.8, equity: null, total_liabilities: null },
     { season: "FY23/24", revenue: 31.5, wage_bill: 12.2, net_profit: 1.6, equity: 11.5, total_liabilities: 12.3 },
@@ -1180,6 +1216,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: 14.1, wage_bill: null, wage_to_revenue_pct: null, net_profit: 0.57, equity: null, total_liabilities: null },
   historical: [
     { season: "FY22/23", revenue: 14.1, wage_bill: null, net_profit: 0.6, equity: null, total_liabilities: null },
   ],
@@ -1206,6 +1243,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: 17.7, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: null, total_liabilities: null },
   historical: [
     { season: "FY22/23", revenue: 17.7, wage_bill: null, net_profit: null, equity: null, total_liabilities: null },
   ],
@@ -1280,6 +1318,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: null, wage_bill: null, wage_to_revenue_pct: null, net_profit: -1.5, equity: null, total_liabilities: null },
   historical: [
     { season: "FY22/23", revenue: null, wage_bill: null, net_profit: -1.5, equity: null, total_liabilities: null },
   ],
@@ -1354,6 +1393,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: 37.5, wage_bill: null, wage_to_revenue_pct: null, net_profit: -0.5, equity: null, total_liabilities: null },
   historical: [
     { season: "FY20/21", revenue: 14.5, wage_bill: 6.9, net_profit: -0.7, equity: -3.6, total_liabilities: 23.5 },
     { season: "FY21/22", revenue: 33.6, wage_bill: 13.3, net_profit: 4.5, equity: 1.7, total_liabilities: 18.5 },
@@ -1382,6 +1422,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY22/23", revenue: 15.2, wage_bill: null, wage_to_revenue_pct: null, net_profit: -0.15, equity: null, total_liabilities: null },
   historical: [
     { season: "FY21/22", revenue: 14.7, wage_bill: 7.3, net_profit: -0.0, equity: 5.4, total_liabilities: 4.9 },
     { season: "FY22/23", revenue: 15.2, wage_bill: null, net_profit: -0.1, equity: null, total_liabilities: null },
@@ -1507,6 +1548,7 @@ const deClubs: EUClub[] = [
     equity: null,
     data_notes: null,
   },
+  prior_year: { season: "FY21/22", revenue: 13.851, wage_bill: 8.981, wage_to_revenue_pct: 64.8, net_profit: -0.072, equity: -0.993, total_liabilities: 8.104 },
   historical: [
     { season: "FY21/22", revenue: 13.9, wage_bill: 0.0, net_profit: -0.1, equity: -1.0, total_liabilities: 8.1 },
   ],
@@ -2913,6 +2955,7 @@ const atClubs: EUClub[] = [
     equity: 164.5,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 182.6, wage_bill: 46.4, wage_to_revenue_pct: 25.4, net_profit: 24.7, equity: 161.7, total_liabilities: 73.0 },
   historical: [
     { season: "2020/21", revenue: 112.1, wage_bill: 53.3, net_profit: 5.0, equity: 89.4, total_liabilities: 29.5 },
     { season: "2021/22", revenue: 152.5, wage_bill: 56.5, net_profit: 15.4, equity: 104.8, total_liabilities: 40.2 },
@@ -2943,6 +2986,7 @@ const atClubs: EUClub[] = [
     equity: 20.5,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 54.4, wage_bill: 25.3, wage_to_revenue_pct: 46.5, net_profit: 30.8, equity: 7.9, total_liabilities: 20.5 },
   historical: [
     { season: "2020/21", revenue: 14.8, wage_bill: 9.6, net_profit: -0.5, equity: 3.6, total_liabilities: 5.9 },
     { season: "2021/22", revenue: 28.6, wage_bill: 14.5, net_profit: 2.3, equity: 5.9, total_liabilities: 8.4 },
@@ -2973,6 +3017,7 @@ const atClubs: EUClub[] = [
     equity: 21.6,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 44.4, wage_bill: 20.4, wage_to_revenue_pct: 45.9, net_profit: 194.6, equity: 21.6, total_liabilities: 42.5 },
   historical: [
     { season: "2022/23", revenue: 45.3, wage_bill: 18.4, net_profit: 0.0, equity: 21.4, total_liabilities: 41.1 },
     { season: "2023/24", revenue: 44.4, wage_bill: 20.4, net_profit: 194.6, equity: 21.6, total_liabilities: 42.5 },
@@ -3001,6 +3046,7 @@ const atClubs: EUClub[] = [
     equity: 33.7,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 48.5, wage_bill: 17.8, wage_to_revenue_pct: 36.7, net_profit: 3.4, equity: 33.8, total_liabilities: 94.6 },
   historical: [
     { season: "2020/21", revenue: 23.4, wage_bill: 12.9, net_profit: 0.1, equity: 4.6, total_liabilities: 18.2 },
     { season: "2022/23", revenue: 26.5, wage_bill: 14.6, net_profit: -3.7, equity: 30.4, total_liabilities: 90.7 },
@@ -3030,6 +3076,7 @@ const atClubs: EUClub[] = [
     equity: 4.7,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 15.0, wage_bill: 7.1, wage_to_revenue_pct: 47.3, net_profit: 460.9, equity: 4.6, total_liabilities: 4.2 },
   historical: [
     { season: "2020/21", revenue: 17.5, wage_bill: 7.7, net_profit: 1.5, equity: 3.9, total_liabilities: 3.1 },
     { season: "2021/22", revenue: 10.2, wage_bill: 6.0, net_profit: 169.4, equity: 4.1, total_liabilities: 2.5 },
@@ -3060,6 +3107,7 @@ const atClubs: EUClub[] = [
     equity: -17.1,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 48.4, wage_bill: 14.6, wage_to_revenue_pct: 30.2, net_profit: 11.2, equity: -9.4, total_liabilities: 59.4 },
   historical: [
     { season: "2020/21", revenue: 29.9, wage_bill: 13.2, net_profit: -4.7, equity: -19.2, total_liabilities: 79.6 },
     { season: "2021/22", revenue: 23.6, wage_bill: 12.6, net_profit: -7.1, equity: -16.3, total_liabilities: 71.9 },
@@ -3090,6 +3138,7 @@ const atClubs: EUClub[] = [
     equity: 0.3,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 9.7, wage_bill: 5.0, wage_to_revenue_pct: 51.5, net_profit: 82.2, equity: -0.4, total_liabilities: 3.3 },
   historical: [
     { season: "2021/22", revenue: 0.0, wage_bill: 0.8, net_profit: 0.0, equity: 0.1, total_liabilities: 0.5 },
     { season: "2022/23", revenue: 3.7, wage_bill: 2.7, net_profit: -0.6, equity: -0.5, total_liabilities: 2.1 },
@@ -3119,6 +3168,7 @@ const atClubs: EUClub[] = [
     equity: 2.2,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 6.4, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: 1.4, total_liabilities: 8.8 },
   historical: [
     { season: "2020/21", revenue: 5.9, wage_bill: 4.0, net_profit: 0.3, equity: 0.6, total_liabilities: 1.0 },
     { season: "2021/22", revenue: 6.4, wage_bill: 4.5, net_profit: -99.2, equity: 1.9, total_liabilities: 0.7 },
@@ -3175,6 +3225,7 @@ const atClubs: EUClub[] = [
     equity: 0.0,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 6.2, wage_bill: 3.7, wage_to_revenue_pct: 59.7, net_profit: -436.1, equity: 0.0, total_liabilities: 2.7 },
   historical: [
     { season: "2020/21", revenue: 0.7, wage_bill: 3.5, net_profit: 1.7, equity: 1.2, total_liabilities: 0.8 },
     { season: "2021/22", revenue: 2.2, wage_bill: -0.3, net_profit: null, equity: 517.8, total_liabilities: 3.5 },
@@ -3205,6 +3256,7 @@ const atClubs: EUClub[] = [
     equity: -4.0,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 9.5, wage_bill: 7.1, wage_to_revenue_pct: 74.7, net_profit: -2.7, equity: -10.1, total_liabilities: 11.5 },
   historical: [
     { season: "2020/21", revenue: 2.1, wage_bill: 3.7, net_profit: -3.6, equity: -4.8, total_liabilities: 5.8 },
     { season: "2021/22", revenue: 5.9, wage_bill: -3.2, net_profit: 0.0, equity: 9.0, total_liabilities: 5.8 },
@@ -3235,6 +3287,7 @@ const atClubs: EUClub[] = [
     equity: 0.9,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 6.1, wage_bill: 4.0, wage_to_revenue_pct: 65.6, net_profit: -651.1, equity: 0.8, total_liabilities: 2.9 },
   historical: [
     { season: "2021/22", revenue: 7.8, wage_bill: 4.3, net_profit: 255.5, equity: 2.0, total_liabilities: 3.7 },
     { season: "2022/23", revenue: 6.9, wage_bill: 4.2, net_profit: -0.6, equity: 1.4, total_liabilities: 3.1 },
@@ -3264,6 +3317,7 @@ const atClubs: EUClub[] = [
     equity: 0.1,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 20.9, wage_bill: 7.9, wage_to_revenue_pct: 37.8, net_profit: 0.0, equity: 0.1, total_liabilities: 6.5 },
   historical: [
     { season: "2020/21", revenue: 18.2, wage_bill: 7.0, net_profit: 0.0, equity: 0.1, total_liabilities: 1.9 },
     { season: "2021/22", revenue: 19.1, wage_bill: 8.1, net_profit: 0.0, equity: 0.1, total_liabilities: 2.5 },
@@ -3369,6 +3423,7 @@ const atClubs: EUClub[] = [
     equity: 0.0,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 7.0, wage_bill: 4.1, wage_to_revenue_pct: 58.6, net_profit: -0.2, equity: -1.6, total_liabilities: 3.8 },
   historical: [
     { season: "2021/22", revenue: 3.8, wage_bill: -0.3, net_profit: null, equity: 2.8, total_liabilities: 6.7 },
     { season: "2022/23", revenue: 7.0, wage_bill: 3.3, net_profit: -0.2, equity: -1.3, total_liabilities: 3.1 },
@@ -3476,6 +3531,7 @@ const atClubs: EUClub[] = [
     equity: -2.0,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 8.0, wage_bill: 4.6, wage_to_revenue_pct: 57.5, net_profit: 2.2, equity: -1.6, total_liabilities: 5.0 },
   historical: [
     { season: "2023/24", revenue: 8.0, wage_bill: 4.6, net_profit: 2.2, equity: -1.6, total_liabilities: 5.0 },
     { season: "2024/25", revenue: 8.0, wage_bill: 4.8, net_profit: -0.4, equity: -2.0, total_liabilities: 4.7 },
@@ -3527,6 +3583,7 @@ const atClubs: EUClub[] = [
     equity: 0.2,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 0.0, wage_bill: 1.0, wage_to_revenue_pct: null, net_profit: 0.8, equity: 0.1, total_liabilities: 0.4 },
   historical: [
     { season: "2022/23", revenue: 1.9, wage_bill: 1.0, net_profit: -0.1, equity: 0.0, total_liabilities: 0.4 },
     { season: "2023/24", revenue: 0.0, wage_bill: 1.0, net_profit: 0.8, equity: 0.1, total_liabilities: 0.4 },
@@ -3579,6 +3636,7 @@ const atClubs: EUClub[] = [
     equity: 0.4,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 1.5, wage_bill: 0.0, wage_to_revenue_pct: null, net_profit: 0.1, equity: 0.5, total_liabilities: 2.3 },
   historical: [
     { season: "2020/21", revenue: 1.6, wage_bill: 1.1, net_profit: 0.0, equity: 0.8, total_liabilities: 0.1 },
     { season: "2021/22", revenue: 1.7, wage_bill: -0.4, net_profit: null, equity: 0.3, total_liabilities: 2.0 },
@@ -3635,6 +3693,7 @@ const atClubs: EUClub[] = [
     equity: 0.0,
     data_notes: "total_liabilities used; net debt figure not available from \u00d6FBL source",
   },
+  prior_year: { season: "2023/24", revenue: 2.6, wage_bill: null, wage_to_revenue_pct: null, net_profit: null, equity: 1.2, total_liabilities: 6.8 },
   historical: [
     { season: "2020/21", revenue: 2.6, wage_bill: 1.5, net_profit: 0.0, equity: -0.4, total_liabilities: 1.6 },
     { season: "2021/22", revenue: 1.8, wage_bill: -0.8, net_profit: 0.0, equity: 1.7, total_liabilities: 2.4 },
