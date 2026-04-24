@@ -208,16 +208,17 @@ function ClubRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   const DEFAULT_ROWS = 30;
 
   const metric = CLUB_METRICS.find((m) => m.key === metricKey)!;
+  const lowerIsBetter = metric.lowerIsBetter ?? false;
 
   const ranked = useMemo(() =>
     [...allClubs]
       .filter((c) => (c[metricKey] as number | null) !== null)
       .sort((a, b) =>
-        metric.lowerIsBetter
+        lowerIsBetter
           ? (a[metricKey] as number) - (b[metricKey] as number)
           : (b[metricKey] as number) - (a[metricKey] as number)
       ),
-    [allClubs, metricKey, metric.lowerIsBetter]
+    [allClubs, metricKey, lowerIsBetter]
   );
 
   const displayed = showAll ? ranked : ranked.slice(0, DEFAULT_ROWS);
@@ -272,6 +273,7 @@ function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   const [selectedLeagueId, setSelectedLeagueId] = useState<string | null>(null);
 
   const metric = CLUB_METRICS.find((m) => m.key === metricKey)!;
+  const lowerIsBetter = metric.lowerIsBetter ?? false;
 
   const leagueGroups = useMemo(() => {
     const map = new Map<string, { leagueId: string; country: string; divisionLabel: string; displayName: string; clubs: ComparableClub[] }>();
@@ -293,11 +295,11 @@ function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
     return [...selectedGroup.clubs]
       .filter((c) => (c[metricKey] as number | null) !== null)
       .sort((a, b) =>
-        metric.lowerIsBetter
+        lowerIsBetter
           ? (a[metricKey] as number) - (b[metricKey] as number)
           : (b[metricKey] as number) - (a[metricKey] as number)
       );
-  }, [selectedGroup, metricKey, metric.lowerIsBetter]);
+  }, [selectedGroup, metricKey, lowerIsBetter]);
 
   const localMax = useMemo(() =>
     Math.max(...rankedClubs.map((c) => Math.abs(c[metricKey] as number)), 0.01),
@@ -406,16 +408,17 @@ function LeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
 
   const allLeagues = useMemo(() => computeLeagues(allClubs), [allClubs]);
   const metric = LEAGUE_METRICS.find((m) => m.key === metricKey)!;
+  const lowerIsBetter = metric.lowerIsBetter ?? false;
 
   const ranked = useMemo(() =>
     [...allLeagues]
       .filter((l) => (l[metricKey] as number | null) !== null)
       .sort((a, b) =>
-        metric.lowerIsBetter
+        lowerIsBetter
           ? (a[metricKey] as number) - (b[metricKey] as number)
           : (b[metricKey] as number) - (a[metricKey] as number)
       ),
-    [allLeagues, metricKey, metric.lowerIsBetter]
+    [allLeagues, metricKey, lowerIsBetter]
   );
 
   const maxAbs = Math.max(...ranked.map((l) => Math.abs(l[metricKey] as number)), 0.01);
