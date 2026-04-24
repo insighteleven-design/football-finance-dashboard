@@ -89,24 +89,24 @@ function ClubSlot({
   // ── Filled ───────────────────────────────────────────────────────────────────
   if (selectedClub) {
     return (
-      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "1.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
+      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "2.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+          <span style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             Club {label}
           </span>
           <button
             onClick={handleRemove}
-            style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
+            style={{ fontSize: "14px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
           >
             Remove ×
           </button>
         </div>
-        <p style={{ fontSize: "22px", fontWeight: 500, color: "#111111", lineHeight: 1.2, marginBottom: "0.5rem" }}>
+        <p style={{ fontSize: "36px", fontWeight: 500, color: "#111111", lineHeight: 1.15, marginBottom: "0.75rem" }}>
           {selectedClub.name}
         </p>
-        <p style={{ fontSize: "13px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
+        <p style={{ fontSize: "17px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
           {COUNTRY_FLAGS[selectedClub.country] ?? ""} {selectedClub.divisionLabel}
         </p>
       </div>
@@ -116,44 +116,44 @@ function ClubSlot({
   // ── Club list ─────────────────────────────────────────────────────────────────
   if (phase === "clubs" && activeCountry) {
     return (
-      <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #f0f0f0" }}>
+      <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1.25rem 1.75rem", borderBottom: "1px solid #f0f0f0" }}>
           <button
             onClick={goBack}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "16px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#888888"; }}
           >
             ← Back
           </button>
-          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
+          <span style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             Club {label}
           </span>
-          <span style={{ fontSize: "13px", marginLeft: "auto", color: "#888" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
+          <span style={{ fontSize: "18px", marginLeft: "auto", color: "#888" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
         </div>
-        <div style={{ padding: "0.625rem 1.25rem", borderBottom: "1px solid #f5f5f5" }}>
+        <div style={{ padding: "1rem 1.75rem", borderBottom: "1px solid #f5f5f5" }}>
           <input
             type="text" value={filter} onChange={(e) => setFilter(e.target.value)}
             placeholder="Filter clubs…" autoFocus
-            style={{ width: "100%", fontSize: "15px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.5rem 0.75rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
+            style={{ width: "100%", fontSize: "18px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.75rem 1rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
           />
         </div>
-        <div style={{ maxHeight: "280px", overflowY: "auto" }}>
-          {grouped.length === 0 && <p style={{ fontSize: "14px", color: "#aaaaaa", padding: "1rem 1.25rem" }}>No clubs match.</p>}
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {grouped.length === 0 && <p style={{ fontSize: "18px", color: "#aaaaaa", padding: "1.5rem 1.75rem" }}>No clubs match.</p>}
           {grouped.map(([division, divClubs]) => (
             <div key={division}>
-              <div style={{ padding: "0.5rem 1.25rem 0.3rem", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
+              <div style={{ padding: "0.75rem 1.75rem 0.5rem", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
                 {division}
               </div>
               {divClubs.map((club) => (
                 <button
                   key={club.slug} onMouseDown={() => handleSelect(club.slug)}
-                  style={{ width: "100%", textAlign: "left", padding: "0.625rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", borderBottom: "1px solid #f8f8f8", cursor: "pointer", gap: "0.5rem" }}
+                  style={{ width: "100%", textAlign: "left", padding: "1rem 1.75rem", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", borderBottom: "1px solid #f8f8f8", cursor: "pointer", gap: "0.5rem" }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#f5f5f5"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
                 >
-                  <span style={{ fontSize: "15px", color: "#111111" }}>{club.name}</span>
-                  <span style={{ fontSize: "13px", color: color, fontWeight: 600 }}>Select →</span>
+                  <span style={{ fontSize: "22px", color: "#111111" }}>{club.name}</span>
+                  <span style={{ fontSize: "17px", color: color, fontWeight: 600 }}>Select →</span>
                 </button>
               ))}
             </div>
@@ -165,18 +165,18 @@ function ClubSlot({
 
   // ── Country grid ──────────────────────────────────────────────────────────────
   return (
-    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.75rem", minHeight: "200px", display: "flex", flexDirection: "column" }}>
-      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "1rem" }}>
+    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "2.5rem", minHeight: "200px", display: "flex", flexDirection: "column" }}>
+      <p style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "1.25rem" }}>
         Club {label}
       </p>
-      <p style={{ fontSize: "14px", color: "#999999", marginBottom: "1.25rem" }}>
+      <p style={{ fontSize: "20px", color: "#999999", marginBottom: "1.75rem" }}>
         Select a country to browse clubs
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
         {countries.map((country) => (
           <button
             key={country} onClick={() => selectCountry(country)}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.45rem 0.875rem", border: "1px solid #e0e0e0", backgroundColor: "#ffffff", cursor: "pointer", fontSize: "14px", color: "#444444", transition: "all 0.12s" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.875rem 1.75rem", border: "1px solid #e0e0e0", backgroundColor: "#ffffff", cursor: "pointer", fontSize: "22px", color: "#444444", transition: "all 0.12s" }}
             onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = color; el.style.backgroundColor = style.bg; el.style.color = color; }}
             onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.backgroundColor = "#ffffff"; el.style.color = "#444444"; }}
           >
