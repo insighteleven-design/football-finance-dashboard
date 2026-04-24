@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
 import { euClubs, type EUClub } from "@/lib/euClubs";
+import { itClubs } from "@/lib/itClubs";
+import { esClubs } from "@/lib/esClubs";
+import { noClubs } from "@/lib/noClubs";
+import { swClubs } from "@/lib/swClubs";
+import { japanClubs, J_DIVISION_LABELS } from "@/lib/japanClubs";
 import RankingsTable from "@/components/RankingsTable";
 import { type ComparableClub } from "@/lib/comparable";
 
@@ -13,16 +18,27 @@ const DIVISION_LABELS: Record<string, string> = {
 
 const COUNTRY_CODES: Record<string, string> = {
   "Germany":     "GER",
-  "Austria":     "AUT",
-  "France":      "FRA",
   "Netherlands": "NED",
   "Belgium":     "BEL",
+  "Austria":     "AUT",
+  "France":      "FRA",
   "Denmark":     "DEN",
+  "Norway":      "NOR",
+  "Sweden":      "SWE",
+  "Italy":       "ITA",
+  "Spain":       "ESP",
+};
+
+const LEAGUE_DISPLAY: Record<string, string> = {
+  "Bundesliga":            "Austrian Bundesliga",
+  "2. Liga":               "Austrian 2. Liga",
+  "norwegian-eliteserien": "Eliteserien",
 };
 
 function euDivisionLabel(c: EUClub): string {
-  if (c.country === "Germany") return c.league;
-  return `${c.league} · ${COUNTRY_CODES[c.country] ?? c.country}`;
+  const league = LEAGUE_DISPLAY[c.league] ?? c.league;
+  if (c.country === "Germany") return league;
+  return `${league} · ${COUNTRY_CODES[c.country] ?? c.country}`;
 }
 
 const englishComparable: ComparableClub[] = clubs.map((c) => ({
@@ -39,7 +55,7 @@ const englishComparable: ComparableClub[] = clubs.map((c) => ({
   net_debt:         c.net_debt,
 }));
 
-const euComparable: ComparableClub[] = euClubs
+const euComparable: ComparableClub[] = [...euClubs, ...itClubs, ...esClubs, ...noClubs, ...swClubs]
   .filter(
     (c) =>
       c.financials.revenue !== null ||
@@ -60,22 +76,42 @@ const euComparable: ComparableClub[] = euClubs
     net_debt:         c.financials.net_debt ?? null,
   }));
 
-const allComparable = [...englishComparable, ...euComparable];
+const japanComparable: ComparableClub[] = japanClubs.map((c) => ({
+  slug:             c.slug,
+  name:             c.name,
+  country:          "Japan",
+  divisionLabel:    J_DIVISION_LABELS[c.division],
+  currency:         "USD" as const,
+  revenue:          c.revenue,
+  wage_bill:        c.wage_bill,
+  wage_ratio:       c.wage_ratio,
+  operating_profit: c.operating_profit,
+  pre_tax_profit:   c.pre_tax_profit,
+  net_debt:         c.net_debt,
+}));
+
+const allComparable = [...englishComparable, ...euComparable, ...japanComparable];
 
 export default function RankingsPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl sm:text-5xl font-serif font-normal tracking-tight" style={{ color: "#111111" }}>
+    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
+      <div className="px-6 lg:px-12 pt-10 sm:pt-16 pb-10 sm:pb-14">
+        <h1
+          className="font-serif font-normal leading-none mb-2"
+          style={{ color: "#111111", fontSize: "clamp(40px, 10vw, 140px)", letterSpacing: "-0.03em" }}
+        >
           Rankings
         </h1>
-        <p className="mt-1 text-sm" style={{ color: "#999999" }}>
-          {allComparable.length} clubs · England, Germany, Austria, France, Denmark
+        <p
+          className="mb-8 sm:mb-12"
+          style={{ color: "#999999", fontSize: "clamp(14px, 2vw, 20px)", letterSpacing: "0.01em" }}
+        >
+          {allComparable.length} clubs across England, Europe &amp; Japan
         </p>
+        <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
+          <RankingsTable allClubs={allComparable} />
+        </Suspense>
       </div>
-      <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
-        <RankingsTable allClubs={allComparable} />
-      </Suspense>
     </div>
   );
 }
