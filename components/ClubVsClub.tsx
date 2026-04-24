@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ComparableClub, fmtVal } from "@/lib/comparable";
 import RadarChart from "@/components/RadarChart";
+import { getImmigrationRating } from "@/lib/immigrationRatings";
 
 export type { ComparableClub };
 
@@ -233,6 +234,30 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
         );
       })}
 
+      {/* Immigration ease row */}
+      <div style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #eeeeee", backgroundColor: COMPARE_METRICS.length % 2 === 0 ? "#fafafa" : "#ffffff" }}>
+        <div style={{ width: "190px", flexShrink: 0, padding: "1.75rem 1.5rem 1.75rem 0", fontSize: "16px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#777777", fontWeight: 700, whiteSpace: "nowrap" }}>
+          Permit
+        </div>
+        {clubs.map((club, i) => {
+          const rating = getImmigrationRating(club.country);
+          const hex    = rating ? rating.hex : "#cccccc";
+          const label  = rating ? rating.label.split(" — ")[0] : "Not rated";
+          const rank   = rating ? `${rating.rank}/10` : "—";
+          return (
+            <div key={club.slug} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+                <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: hex, flexShrink: 0, display: "inline-block" }} />
+                <span style={{ fontSize: "20px", fontWeight: 600, color: hex }}>{label}</span>
+              </div>
+              <div style={{ fontSize: "13px", color: "#aaaaaa", marginTop: "4px", letterSpacing: "0.06em" }}>
+                {rank} · {club.country}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
       {clubs.length > 1 && (
         <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.875rem", letterSpacing: "0.04em" }}>
           Green = best in comparison for that metric
@@ -315,6 +340,34 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
           </div>
         );
       })}
+
+      {/* Immigration ease strip */}
+      <div style={{ padding: "2.25rem 0" }}>
+        <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1.25rem" }}>
+          Non-EU Permit Ease
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {clubs.map((club, i) => {
+            const rating = getImmigrationRating(club.country);
+            const hex    = rating ? rating.hex : "#cccccc";
+            const label  = rating ? rating.label : "Not rated";
+            const rank   = rating ? rating.rank : null;
+            const trackPct = rank !== null ? Math.round(((10 - rank) / 9) * 100) : 0;
+            return (
+              <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                <span style={{ fontSize: "17px", fontWeight: 500, width: "11rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: CLUB_COLORS[i] }}>{club.name}</span>
+                <div style={{ flex: 1, height: "3rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "2px" }}>
+                  <div style={{ height: "100%", width: `${trackPct}%`, backgroundColor: hex, opacity: 0.85 }} />
+                </div>
+                <div style={{ width: "6rem", textAlign: "right", flexShrink: 0 }}>
+                  <span style={{ fontSize: "14px", fontWeight: 600, color: hex, display: "block" }}>{label.split(" — ")[0]}</span>
+                  {rank !== null && <span style={{ fontSize: "12px", color: "#aaaaaa" }}>{rank}/10</span>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
