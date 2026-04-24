@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { type ComparableClub, fmtVal } from "@/lib/comparable";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Mode = "clubs" | "leagues";
+type Mode = "clubs" | "by-league" | "leagues";
 
 interface LeagueData {
   id: string;
@@ -34,9 +35,9 @@ const CLUB_METRICS: {
 }[] = [
   { key: "revenue",          label: "Revenue" },
   { key: "wage_bill",        label: "Wage Bill" },
-  { key: "wage_ratio",       label: "Wage Ratio",    isRatio: true, lowerIsBetter: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Result", diverging: true },
-  { key: "net_debt",         label: "Net Debt",       diverging: true, lowerIsBetter: true },
+  { key: "wage_ratio",       label: "Wage Ratio",     isRatio: true, lowerIsBetter: true },
+  { key: "pre_tax_profit",   label: "Pre-tax Result",  diverging: true },
+  { key: "net_debt",         label: "Net Debt",        diverging: true, lowerIsBetter: true },
 ];
 
 const LEAGUE_METRICS: {
@@ -46,12 +47,12 @@ const LEAGUE_METRICS: {
   lowerIsBetter?: boolean;
   diverging?: boolean;
 }[] = [
-  { key: "avgRevenue",         label: "Avg Revenue" },
-  { key: "avgWageBill",        label: "Avg Wage Bill" },
-  { key: "avgWageRatio",       label: "Avg Wage Ratio",    isRatio: true, lowerIsBetter: true },
-  { key: "pctProfitable",      label: "% Profitable",      isRatio: true },
-  { key: "avgPreTaxProfit",    label: "Avg Pre-tax Result", diverging: true },
-  { key: "avgNetDebt",         label: "Avg Net Debt",       diverging: true, lowerIsBetter: true },
+  { key: "avgRevenue",      label: "Avg Revenue" },
+  { key: "avgWageBill",     label: "Avg Wage Bill" },
+  { key: "avgWageRatio",    label: "Avg Wage Ratio", isRatio: true, lowerIsBetter: true },
+  { key: "pctProfitable",   label: "% Profitable",   isRatio: true },
+  { key: "avgPreTaxProfit", label: "Avg Pre-tax",     diverging: true },
+  { key: "avgNetDebt",      label: "Avg Net Debt",    diverging: true, lowerIsBetter: true },
 ];
 
 // ─── League computation ───────────────────────────────────────────────────────
@@ -62,7 +63,9 @@ const COUNTRY_FLAGS: Record<string, string> = {
   Denmark: "🇩🇰", Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
 };
 
-function avg(members: ComparableClub[], key: keyof ComparableClub): number | null {
+const COUNTRY_ORDER = ["England","Germany","Spain","Italy","France","Netherlands","Belgium","Austria","Denmark","Norway","Sweden","Japan"];
+
+function avgOf(members: ComparableClub[], key: keyof ComparableClub): number | null {
   const vals = members.map((m) => m[key] as number | null).filter((v): v is number => v !== null);
   return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
 }
@@ -85,12 +88,12 @@ function computeLeagues(clubs: ComparableClub[]): LeagueData[] {
     return {
       id, country, divisionLabel, displayName,
       clubCount: members.length, currency,
-      avgRevenue:         avg(members, "revenue"),
-      avgWageBill:        avg(members, "wage_bill"),
-      avgWageRatio:       avg(members, "wage_ratio"),
-      avgOperatingProfit: avg(members, "operating_profit"),
-      avgPreTaxProfit:    avg(members, "pre_tax_profit"),
-      avgNetDebt:         avg(members, "net_debt"),
+      avgRevenue:         avgOf(members, "revenue"),
+      avgWageBill:        avgOf(members, "wage_bill"),
+      avgWageRatio:       avgOf(members, "wage_ratio"),
+      avgOperatingProfit: avgOf(members, "operating_profit"),
+      avgPreTaxProfit:    avgOf(members, "pre_tax_profit"),
+      avgNetDebt:         avgOf(members, "net_debt"),
       pctProfitable,
     };
   });
@@ -103,13 +106,54 @@ function fmtLeagueVal(league: LeagueData, key: keyof LeagueData): string {
   return fmtVal(val, false, league.currency);
 }
 
-// ─── Shared bar row ───────────────────────────────────────────────────────────
+// ─── Shared metric tab bar ────────────────────────────────────────────────────
+
+function MetricTabs<K extends string>({
+  metrics, active, onChange,
+}: {
+  metrics: { key: K; label: string }[];
+  active: K;
+  onChange: (k: K) => void;
+}) {
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", borderBottom: "2px solid #eeeeee", marginBottom: "1.75rem" }}>
+      {metrics.map((m) => {
+        const isActive = m.key === active;
+        return (
+          <button
+            key={m.key}
+            onClick={() => onChange(m.key)}
+            style={{
+              padding: "0.9rem 1.5rem",
+              fontSize: "13px",
+              fontWeight: isActive ? 700 : 400,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: isActive ? "#111111" : "#aaaaaa",
+              background: "none",
+              border: "none",
+              borderBottom: `3px solid ${isActive ? "#111111" : "transparent"}`,
+              marginBottom: "-2px",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {m.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Bar row ──────────────────────────────────────────────────────────────────
 
 function BarRow({
-  rank, name, subtitle, value, formattedValue, barPct, color, isDiverg,
+  rank, name, slug, subtitle, value, formattedValue, barPct, color, isDiverg,
 }: {
-  rank: number;
+  rank: number | string;
   name: string;
+  slug?: string;
   subtitle: string;
   value: number;
   formattedValue: string;
@@ -118,34 +162,45 @@ function BarRow({
   isDiverg: boolean;
 }) {
   const isNeg = value < 0;
+  const nameEl = slug ? (
+    <Link href={`/clubs/${slug}`} style={{ fontSize: "20px", color: "#111111", fontWeight: 500, textDecoration: "none" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4A90D9"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
+    >
+      {name}
+    </Link>
+  ) : (
+    <span style={{ fontSize: "20px", color: "#111111", fontWeight: 500 }}>{name}</span>
+  );
+
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0.7rem 0", borderBottom: "1px solid #f5f5f5" }}>
-      <span style={{ fontSize: "15px", fontVariantNumeric: "tabular-nums", width: "2rem", textAlign: "right", flexShrink: 0, color: "#cccccc", fontWeight: 500 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0.9rem 0", borderBottom: "1px solid #f5f5f5" }}>
+      <span style={{ fontSize: "16px", fontVariantNumeric: "tabular-nums", width: "2.25rem", textAlign: "right", flexShrink: 0, color: "#cccccc", fontWeight: 500 }}>
         {rank}
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "16px", color: "#111111", fontWeight: 500 }}>{name}</span>
-          <span style={{ fontSize: "12px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#bbbbbb" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.625rem", flexWrap: "wrap" }}>
+          {nameEl}
+          <span style={{ fontSize: "12px", letterSpacing: "0.07em", textTransform: "uppercase", color: "#bbbbbb" }}>
             {subtitle}
           </span>
         </div>
-        <div style={{ marginTop: "6px", height: "4px", backgroundColor: "#f0f0f0", maxWidth: "360px", borderRadius: "2px", overflow: "hidden" }}>
+        <div style={{ marginTop: "7px", height: "6px", backgroundColor: "#f0f0f0", maxWidth: "480px", borderRadius: "3px", overflow: "hidden" }}>
           {isDiverg ? (
-            <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.75, marginLeft: isNeg ? "auto" : 0, borderRadius: "2px" }} />
+            <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.7, marginLeft: isNeg ? "auto" : 0, borderRadius: "3px" }} />
           ) : (
-            <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.75, borderRadius: "2px" }} />
+            <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.7, borderRadius: "3px" }} />
           )}
         </div>
       </div>
-      <span style={{ fontSize: "16px", fontWeight: 600, fontVariantNumeric: "tabular-nums", flexShrink: 0, minWidth: "5.5rem", textAlign: "right", color }}>
+      <span style={{ fontSize: "20px", fontWeight: 600, fontVariantNumeric: "tabular-nums", flexShrink: 0, minWidth: "6rem", textAlign: "right", color }}>
         {formattedValue}
       </span>
     </div>
   );
 }
 
-// ─── Club rankings ────────────────────────────────────────────────────────────
+// ─── Club rankings (global) ───────────────────────────────────────────────────
 
 function ClubRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   const [metricKey, setMetricKey] = useState<keyof ComparableClub>("revenue");
@@ -176,60 +231,30 @@ function ClubRankings({ allClubs }: { allClubs: ComparableClub[] }) {
 
   return (
     <div>
-      {/* Metric tabs */}
-      <div style={{ display: "flex", flexWrap: "wrap", borderBottom: "2px solid #eeeeee", marginBottom: "1.5rem" }}>
-        {CLUB_METRICS.map((m) => {
-          const active = m.key === metricKey;
-          return (
-            <button
-              key={m.key as string}
-              onClick={() => { setMetricKey(m.key); setShowAll(false); }}
-              style={{
-                padding: "0.9rem 1.5rem",
-                fontSize: "13px",
-                fontWeight: active ? 700 : 400,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: active ? "#111111" : "#aaaaaa",
-                background: "none",
-                border: "none",
-                borderBottom: `3px solid ${active ? "#111111" : "transparent"}`,
-                marginBottom: "-2px",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {m.label}
-            </button>
-          );
-        })}
-      </div>
-
+      <MetricTabs metrics={CLUB_METRICS as { key: keyof ComparableClub; label: string }[]} active={metricKey} onChange={(k) => { setMetricKey(k); setShowAll(false); }} />
       <div>
         {displayed.map((club, i) => {
           const value = club[metricKey] as number;
-          const barPct = Math.min((Math.abs(value) / maxAbs) * 100, 100);
-          const color = barColor(value);
           return (
             <BarRow
               key={club.slug}
               rank={i + 1}
               name={club.name}
+              slug={club.slug}
               subtitle={`${COUNTRY_FLAGS[club.country] ?? ""} ${club.divisionLabel}`}
               value={value}
               formattedValue={fmtVal(value, metric.isRatio, club.currency)}
-              barPct={barPct}
-              color={color}
+              barPct={Math.min((Math.abs(value) / maxAbs) * 100, 100)}
+              color={barColor(value)}
               isDiverg={!!metric.diverging}
             />
           );
         })}
       </div>
-
       {!showAll && ranked.length > DEFAULT_ROWS && (
         <button
           onClick={() => setShowAll(true)}
-          style={{ marginTop: "1.25rem", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999", cursor: "pointer", background: "none", border: "none", padding: 0 }}
+          style={{ marginTop: "1.5rem", fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999", cursor: "pointer", background: "none", border: "none", padding: 0 }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#999999"; }}
         >
@@ -240,13 +265,141 @@ function ClubRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   );
 }
 
+// ─── By-league rankings ───────────────────────────────────────────────────────
+
+function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
+  const [metricKey, setMetricKey] = useState<keyof ComparableClub>("revenue");
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  const metric = CLUB_METRICS.find((m) => m.key === metricKey)!;
+
+  // Group clubs by league, sort leagues by their average (desc/asc), sort clubs within each league
+  const leagueGroups = useMemo(() => {
+    const map = new Map<string, { leagueId: string; country: string; divisionLabel: string; displayName: string; currency: string; clubs: ComparableClub[] }>();
+    for (const c of allClubs) {
+      const id = `${c.country}::${c.divisionLabel}`;
+      if (!map.has(id)) {
+        map.set(id, {
+          leagueId: id,
+          country: c.country,
+          divisionLabel: c.divisionLabel,
+          displayName: c.divisionLabel.replace(/ · \w+$/, ""),
+          currency: c.currency,
+          clubs: [],
+        });
+      }
+      map.get(id)!.clubs.push(c);
+    }
+
+    // Sort clubs within each league by metric
+    const groups = [...map.values()].map((g) => {
+      const ranked = [...g.clubs]
+        .filter((c) => (c[metricKey] as number | null) !== null)
+        .sort((a, b) =>
+          metric.lowerIsBetter
+            ? (a[metricKey] as number) - (b[metricKey] as number)
+            : (b[metricKey] as number) - (a[metricKey] as number)
+        );
+      const vals = ranked.map((c) => c[metricKey] as number);
+      const leagueAvg = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+      return { ...g, ranked, leagueAvg };
+    });
+
+    // Sort leagues by country order
+    groups.sort((a, b) => {
+      const ci = COUNTRY_ORDER.indexOf(a.country) - COUNTRY_ORDER.indexOf(b.country);
+      return ci !== 0 ? ci : a.divisionLabel.localeCompare(b.divisionLabel);
+    });
+
+    return groups;
+  }, [allClubs, metricKey, metric.lowerIsBetter]);
+
+  // Global max for consistent bar scaling across leagues
+  const globalMax = useMemo(() => {
+    const allVals = allClubs.map((c) => c[metricKey] as number | null).filter((v): v is number => v !== null);
+    return Math.max(...allVals.map(Math.abs), 0.01);
+  }, [allClubs, metricKey]);
+
+  function barColor(value: number): string {
+    if (metricKey === "pre_tax_profit") return value >= 0 ? "#22c55e" : "#ef4444";
+    if (metricKey === "net_debt")       return value >  0 ? "#ef4444" : "#22c55e";
+    return "#4A90D9";
+  }
+
+  function toggleCollapse(id: string) {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
+
+  return (
+    <div>
+      <MetricTabs metrics={CLUB_METRICS as { key: keyof ComparableClub; label: string }[]} active={metricKey} onChange={(k) => setMetricKey(k)} />
+      <div>
+        {leagueGroups.map((group) => {
+          const isCollapsed = collapsed.has(group.leagueId);
+          return (
+            <div key={group.leagueId} style={{ marginBottom: "2rem" }}>
+              {/* League header */}
+              <button
+                onClick={() => toggleCollapse(group.leagueId)}
+                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.75rem 0", background: "none", border: "none", borderBottom: "2px solid #111111", cursor: "pointer", textAlign: "left" }}
+              >
+                <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem" }}>
+                  <span style={{ fontSize: "18px", fontWeight: 700, color: "#111111", letterSpacing: "-0.01em" }}>
+                    {COUNTRY_FLAGS[group.country] ?? ""} {group.displayName}
+                  </span>
+                  <span style={{ fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaaaaa" }}>
+                    {group.ranked.length} clubs
+                  </span>
+                </div>
+                <span style={{ fontSize: "13px", color: "#aaaaaa", fontWeight: 500 }}>
+                  {isCollapsed ? "Show ↓" : "Hide ↑"}
+                </span>
+              </button>
+
+              {/* Club rows */}
+              {!isCollapsed && (
+                <div>
+                  {group.ranked.length === 0 ? (
+                    <p style={{ fontSize: "14px", color: "#cccccc", padding: "1rem 0" }}>No data available for this metric.</p>
+                  ) : (
+                    group.ranked.map((club, i) => {
+                      const value = club[metricKey] as number;
+                      return (
+                        <BarRow
+                          key={club.slug}
+                          rank={i + 1}
+                          name={club.name}
+                          slug={club.slug}
+                          subtitle=""
+                          value={value}
+                          formattedValue={fmtVal(value, metric.isRatio, club.currency)}
+                          barPct={Math.min((Math.abs(value) / globalMax) * 100, 100)}
+                          color={barColor(value)}
+                          isDiverg={!!metric.diverging}
+                        />
+                      );
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── League rankings ──────────────────────────────────────────────────────────
 
 function LeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   const [metricKey, setMetricKey] = useState<keyof LeagueData>("avgRevenue");
 
   const allLeagues = useMemo(() => computeLeagues(allClubs), [allClubs]);
-
   const metric = LEAGUE_METRICS.find((m) => m.key === metricKey)!;
 
   const ranked = useMemo(() =>
@@ -270,40 +423,10 @@ function LeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
 
   return (
     <div>
-      {/* Metric tabs */}
-      <div style={{ display: "flex", flexWrap: "wrap", borderBottom: "2px solid #eeeeee", marginBottom: "1.5rem" }}>
-        {LEAGUE_METRICS.map((m) => {
-          const active = m.key === metricKey;
-          return (
-            <button
-              key={m.key as string}
-              onClick={() => setMetricKey(m.key)}
-              style={{
-                padding: "0.9rem 1.5rem",
-                fontSize: "13px",
-                fontWeight: active ? 700 : 400,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: active ? "#111111" : "#aaaaaa",
-                background: "none",
-                border: "none",
-                borderBottom: `3px solid ${active ? "#111111" : "transparent"}`,
-                marginBottom: "-2px",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {m.label}
-            </button>
-          );
-        })}
-      </div>
-
+      <MetricTabs metrics={LEAGUE_METRICS as { key: keyof LeagueData; label: string }[]} active={metricKey} onChange={(k) => setMetricKey(k as keyof LeagueData)} />
       <div>
         {ranked.map((league, i) => {
           const value = league[metricKey] as number;
-          const barPct = Math.min((Math.abs(value) / maxAbs) * 100, 100);
-          const color = barColor(value);
           return (
             <BarRow
               key={league.id}
@@ -312,14 +435,13 @@ function LeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
               subtitle={`${COUNTRY_FLAGS[league.country] ?? ""} ${league.country} · ${league.clubCount} clubs`}
               value={value}
               formattedValue={fmtLeagueVal(league, metricKey)}
-              barPct={barPct}
-              color={color}
+              barPct={Math.min((Math.abs(value) / maxAbs) * 100, 100)}
+              color={barColor(value)}
               isDiverg={!!metric.diverging}
             />
           );
         })}
       </div>
-
       {ranked.length === 0 && (
         <p style={{ fontSize: "15px", color: "#aaaaaa", paddingTop: "1rem" }}>No data available for this metric.</p>
       )}
@@ -332,16 +454,22 @@ function LeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
 export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[] }) {
   const [mode, setMode] = useState<Mode>("clubs");
 
+  const MODES: { id: Mode; label: string }[] = [
+    { id: "clubs",     label: "Club Rankings" },
+    { id: "by-league", label: "By League" },
+    { id: "leagues",   label: "League Rankings" },
+  ];
+
   return (
     <div>
       {/* Mode switcher */}
       <div style={{ display: "flex", borderBottom: "2px solid #eeeeee", marginBottom: "2rem", overflowX: "auto" }}>
-        {(["clubs", "leagues"] as Mode[]).map((m) => {
-          const active = mode === m;
+        {MODES.map(({ id, label }) => {
+          const active = mode === id;
           return (
             <button
-              key={m}
-              onClick={() => setMode(m)}
+              key={id}
+              onClick={() => setMode(id)}
               style={{
                 padding: "1.1rem 2.25rem",
                 fontSize: "15px",
@@ -357,14 +485,15 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
                 whiteSpace: "nowrap",
               }}
             >
-              {m === "clubs" ? "Club Rankings" : "League Rankings"}
+              {label}
             </button>
           );
         })}
       </div>
 
-      {mode === "clubs"   && <ClubRankings   allClubs={allClubs} />}
-      {mode === "leagues" && <LeagueRankings allClubs={allClubs} />}
+      {mode === "clubs"     && <ClubRankings     allClubs={allClubs} />}
+      {mode === "by-league" && <ByLeagueRankings allClubs={allClubs} />}
+      {mode === "leagues"   && <LeagueRankings   allClubs={allClubs} />}
     </div>
   );
 }
