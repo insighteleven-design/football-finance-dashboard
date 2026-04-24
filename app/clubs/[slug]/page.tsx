@@ -17,6 +17,7 @@ import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSec
 import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
 import { cashFlowData } from "@/lib/cashFlowData";
 import CopyLinkButton from "@/components/CopyLinkButton";
+import ImmigrationBadge from "@/components/ImmigrationBadge";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -118,6 +119,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   {euClub.country}
                 </span>
+                <ImmigrationBadge country={euClub.country} />
               </div>
               {euClub.city && (
                 <p className="text-sm text-[#999999]">{euClub.city}</p>
@@ -191,6 +193,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   Japan
                 </span>
+                <ImmigrationBadge country="Japan" />
               </div>
               <p className="text-sm text-[#999999]">
                 Financial year ending <span className="text-[#666666]">{fyDate}</span>
@@ -350,6 +353,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
                 {DIVISION_LABELS[club.division]}
               </span>
+              <ImmigrationBadge country="England" />
             </div>
             <p className="text-sm text-[#999999]">
               Financial year ending <span className="text-[#666666]">{fyDate}</span>
