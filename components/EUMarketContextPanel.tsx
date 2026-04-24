@@ -13,12 +13,13 @@ function fmtPop(m: number): string {
 }
 
 function leagueColor(league: string): string {
-  if (league.includes("1. Bundesliga")) return "#3b82f6";
-  if (league.includes("2. Bundesliga") || league === "2. Liga") return "#f59e0b";
-  if (league.includes("3. Liga")) return "#10b981";
-  if (league === "Bundesliga") return "#3b82f6"; // Austrian Bundesliga
   if (league === "Ligue 1") return "#cc6688";
   if (league === "Ligue 2") return "#e07a9a";
+  if (league === "1. Bundesliga") return "#e8a020";
+  if (league === "2. Bundesliga") return "#f0bc5a";
+  if (league === "Austrian Bundesliga") return "#cc4444";
+  if (league === "Austrian 2. Liga") return "#e06060";
+  if (league === "Super League") return "#cc3333";
   return "#8b5cf6";
 }
 

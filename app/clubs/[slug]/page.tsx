@@ -83,9 +83,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     if (!hasEuFinancialData(euClub)) notFound();
 
     const LEAGUE_DISPLAY: Record<string, string> = {
-      "Bundesliga": "Austrian Bundesliga",
-      "2. Liga": "Austrian 2. Liga",
       "norwegian-eliteserien": "Eliteserien",
+      "1. Bundesliga":         "Bundesliga",
+      "2. Bundesliga":         "2. Bundesliga",
+      "Austrian Bundesliga":   "Austrian Bundesliga",
+      "Austrian 2. Liga":      "Austrian 2. Liga",
+      "Super League":          "Swiss Super League",
     };
     const leagueLabel = LEAGUE_DISPLAY[euClub.league] ?? euClub.league;
 
@@ -335,7 +338,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="px-6 lg:px-12 py-8">
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-wrap items-start justify-between gap-3">

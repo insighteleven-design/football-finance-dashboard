@@ -17,11 +17,12 @@ const SLOT_STYLES = [
   { border: "#9B59B6", bg: "#F5EEF8", text: "#9B59B6" },
 ];
 
-const COUNTRY_ORDER = ["England", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "Austria", "Denmark", "Norway", "Sweden", "Japan"];
+const COUNTRY_ORDER = ["England", "Spain", "Italy", "Germany", "France", "Netherlands", "Belgium", "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan"];
 const COUNTRY_FLAGS: Record<string, string> = {
-  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Germany: "🇩🇪", Spain: "🇪🇸", Italy: "🇮🇹",
-  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪", Austria: "🇦🇹",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Spain: "🇪🇸", Italy: "🇮🇹",
+  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪",
   Denmark: "🇩🇰", Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
+  Germany: "🇩🇪", Austria: "🇦🇹", Switzerland: "🇨🇭",
 };
 
 const COMPARE_METRICS: {
@@ -89,24 +90,24 @@ function ClubSlot({
   // ── Filled ───────────────────────────────────────────────────────────────────
   if (selectedClub) {
     return (
-      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "2.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-          <span style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
+      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem 1.75rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             Club {label}
           </span>
           <button
             onClick={handleRemove}
-            style={{ fontSize: "14px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
+            style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
           >
             Remove ×
           </button>
         </div>
-        <p style={{ fontSize: "36px", fontWeight: 500, color: "#111111", lineHeight: 1.15, marginBottom: "0.75rem" }}>
+        <p style={{ fontSize: "26px", fontWeight: 500, color: "#111111", lineHeight: 1.2, marginBottom: "0.375rem" }}>
           {selectedClub.name}
         </p>
-        <p style={{ fontSize: "17px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
+        <p style={{ fontSize: "14px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
           {COUNTRY_FLAGS[selectedClub.country] ?? ""} {selectedClub.divisionLabel}
         </p>
       </div>
@@ -193,49 +194,47 @@ function ClubSlot({
 
 function StatsView({ clubs }: { clubs: ComparableClub[] }) {
   return (
-    <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${180 + clubs.length * 160}px` }}>
-        <thead>
-          <tr>
-            <th style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "1rem 1rem 1rem 0", borderBottom: "2px solid #e0e0e0", width: "160px" }}>
-              Metric
-            </th>
-            {clubs.map((club, i) => (
-              <th key={club.slug} style={{ textAlign: "right", padding: "1rem 0 1rem 1rem", borderBottom: "2px solid #e0e0e0" }}>
-                <div style={{ fontSize: "17px", fontWeight: 600, color: CLUB_COLORS[i], marginBottom: "4px" }}>{club.name}</div>
-                <div style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaaaaa", fontWeight: 500 }}>
-                  {COUNTRY_FLAGS[club.country] ?? ""} {club.divisionLabel}
+    <div>
+      {/* Club header */}
+      <div style={{ display: "flex", borderBottom: "2px solid #e0e0e0" }}>
+        <div style={{ width: "190px", flexShrink: 0, padding: "1rem 1.5rem 1rem 0" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa" }}>Metric</span>
+        </div>
+        {clubs.map((club, i) => (
+          <div key={club.slug} style={{ flex: 1, padding: "1rem 1rem 1rem 1.5rem", minWidth: 0 }}>
+            <div style={{ fontSize: "20px", fontWeight: 600, color: CLUB_COLORS[i], marginBottom: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{club.name}</div>
+            <div style={{ fontSize: "13px", letterSpacing: "0.07em", textTransform: "uppercase", color: "#aaaaaa", fontWeight: 500 }}>
+              {COUNTRY_FLAGS[club.country] ?? ""} {club.divisionLabel}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Metric rows */}
+      {COMPARE_METRICS.map((metric, mi) => {
+        const values = clubs.map((c) => c[metric.key] as number | null);
+        const valid  = values.filter((v): v is number => v !== null);
+        const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
+        return (
+          <div key={metric.key as string} style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #eeeeee", backgroundColor: mi % 2 === 0 ? "#fafafa" : "#ffffff" }}>
+            <div style={{ width: "190px", flexShrink: 0, padding: "1.75rem 1.5rem 1.75rem 0", fontSize: "16px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#777777", fontWeight: 700, whiteSpace: "nowrap" }}>
+              {metric.shortLabel}
+            </div>
+            {clubs.map((club, i) => {
+              const val    = club[metric.key] as number | null;
+              const isBest = val !== null && valid.length > 1 && val === best;
+              return (
+                <div key={club.slug} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
+                  {fmtVal(val, metric.isRatio, club.currency)}
                 </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {COMPARE_METRICS.map((metric, mi) => {
-            const values = clubs.map((c) => c[metric.key] as number | null);
-            const valid  = values.filter((v): v is number => v !== null);
-            const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
-            return (
-              <tr key={metric.key as string} style={{ borderBottom: "1px solid #f0f0f0", backgroundColor: mi % 2 === 0 ? "#fafafa" : "#ffffff" }}>
-                <td style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", fontWeight: 600, padding: "1.25rem 1rem 1.25rem 0", whiteSpace: "nowrap" }}>
-                  {metric.shortLabel}
-                </td>
-                {clubs.map((club, i) => {
-                  const val    = club[metric.key] as number | null;
-                  const isBest = val !== null && valid.length > 1 && val === best;
-                  return (
-                    <td key={club.slug} style={{ fontSize: "20px", fontWeight: isBest ? 700 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "1.25rem 0 1.25rem 1rem", color: isBest ? "#059669" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent" }}>
-                      {fmtVal(val, metric.isRatio, club.currency)}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              );
+            })}
+          </div>
+        );
+      })}
+
       {clubs.length > 1 && (
-        <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.75rem", letterSpacing: "0.04em" }}>
+        <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.875rem", letterSpacing: "0.04em" }}>
           Green = best in comparison for that metric
         </p>
       )}
@@ -247,12 +246,12 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
 
 function StandardBarRow({ club, value, pct, clubColor, isRatio }: { club: ComparableClub; value: number | null; pct: number; clubColor: string; isRatio?: boolean }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
-      <div style={{ flex: 1, height: "2.25rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "1px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+      <span style={{ fontSize: "17px", fontWeight: 500, width: "11rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <div style={{ flex: 1, height: "3rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "2px" }}>
         <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />
       </div>
-      <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
+      <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -263,9 +262,9 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
   const isPos = value !== null && value >= 0;
   const pct   = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
-      <div style={{ flex: 1, display: "flex", height: "2.25rem", borderRadius: "1px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+      <span style={{ fontSize: "17px", fontWeight: 500, width: "11rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <div style={{ flex: 1, display: "flex", height: "3rem", borderRadius: "2px" }}>
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", overflow: "hidden", backgroundColor: "#eeeeee" }}>
           {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />}
         </div>
@@ -274,7 +273,7 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
           {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />}
         </div>
       </div>
-      <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
+      <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -285,14 +284,14 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
   return (
     <div>
       {/* Legend */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid #eeeeee", marginBottom: "0.5rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.75rem", paddingBottom: "1.75rem", borderBottom: "1px solid #eeeeee", marginBottom: "0.5rem" }}>
         {clubs.map((club, i) => (
-          <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div style={{ width: "10px", height: "10px", backgroundColor: CLUB_COLORS[i], flexShrink: 0, borderRadius: "2px" }} />
-            <span style={{ fontSize: "14px", fontWeight: 500, color: CLUB_COLORS[i] }}>{club.name}</span>
+          <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+            <div style={{ width: "14px", height: "14px", backgroundColor: CLUB_COLORS[i], flexShrink: 0, borderRadius: "2px" }} />
+            <span style={{ fontSize: "17px", fontWeight: 500, color: CLUB_COLORS[i] }}>{club.name}</span>
           </div>
         ))}
-        <span style={{ fontSize: "12px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
+        <span style={{ fontSize: "13px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
           Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
@@ -300,11 +299,11 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
         const vals   = clubs.map((c) => c[metric.key] as number | null);
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
-          <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #f0f0f0" }}>
-            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1rem" }}>
+          <div key={metric.key as string} style={{ padding: "2.25rem 0", borderBottom: "1px solid #f0f0f0" }}>
+            <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1.25rem" }}>
               {metric.label}
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
               {clubs.map((club, i) => {
                 const value = club[metric.key] as number | null;
                 const color = CLUB_COLORS[i];
@@ -394,9 +393,9 @@ function AnalysisView({ clubs }: { clubs: ComparableClub[] }) {
   return (
     <div>
       {insights.map((text, i) => (
-        <div key={i} style={{ display: "flex", gap: "1.25rem", marginBottom: "1.5rem", alignItems: "flex-start" }}>
-          <div style={{ width: "4px", minHeight: "100%", backgroundColor: INSIGHT_ACCENTS[i % INSIGHT_ACCENTS.length], flexShrink: 0, borderRadius: "2px", alignSelf: "stretch" }} />
-          <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#333333" }}>{text}</p>
+        <div key={i} style={{ display: "flex", gap: "1.5rem", marginBottom: "1.75rem", alignItems: "flex-start" }}>
+          <div style={{ width: "5px", minHeight: "100%", backgroundColor: INSIGHT_ACCENTS[i % INSIGHT_ACCENTS.length], flexShrink: 0, borderRadius: "2px", alignSelf: "stretch" }} />
+          <p style={{ fontSize: "19px", lineHeight: 1.8, color: "#333333" }}>{text}</p>
         </div>
       ))}
       {insights.length === 0 && (
@@ -522,7 +521,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
                 return (
                   <button
                     key={id} onClick={() => setView(id)}
-                    style={{ padding: "0.75rem 1.5rem", fontSize: "13px", fontWeight: isActive ? 700 : 500, letterSpacing: "0.08em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}
+                    style={{ padding: "1rem 2rem", fontSize: "15px", fontWeight: isActive ? 700 : 500, letterSpacing: "0.08em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}
                   >
                     {label}
                   </button>
@@ -531,7 +530,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
             </div>
             <button
               onClick={copyLink}
-              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.5rem 0.875rem", border: "1px solid #e0e0e0", fontSize: "12px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px", whiteSpace: "nowrap", flexShrink: 0 }}
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.625rem 1.125rem", border: "1px solid #e0e0e0", fontSize: "13px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px", whiteSpace: "nowrap", flexShrink: 0 }}
               onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#999999"; el.style.color = "#111111"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.color = "#999999"; }}
             >

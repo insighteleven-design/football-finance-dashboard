@@ -34,11 +34,12 @@ const SLOT_STYLES = [
   { border: "#9B59B6", bg: "#F5EEF8", text: "#9B59B6" },
 ];
 
-const COUNTRY_ORDER = ["England", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "Austria", "Denmark", "Norway", "Sweden", "Japan"];
+const COUNTRY_ORDER = ["England", "Spain", "Italy", "Germany", "France", "Netherlands", "Belgium", "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan"];
 const COUNTRY_FLAGS: Record<string, string> = {
-  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Germany: "🇩🇪", Spain: "🇪🇸", Italy: "🇮🇹",
-  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪", Austria: "🇦🇹",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Spain: "🇪🇸", Italy: "🇮🇹",
+  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪",
   Denmark: "🇩🇰", Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
+  Germany: "🇩🇪", Austria: "🇦🇹", Switzerland: "🇨🇭",
 };
 
 const LEAGUE_METRICS: {
@@ -140,24 +141,24 @@ function LeagueSlot({
   // ── Filled ────────────────────────────────────────────────────────────────────
   if (selected) {
     return (
-      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "2.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-          <span style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
+      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem 1.75rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             League {label}
           </span>
           <button
             onClick={handleRemove}
-            style={{ fontSize: "14px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
+            style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
           >
             Remove ×
           </button>
         </div>
-        <p style={{ fontSize: "36px", fontWeight: 500, color: "#111111", lineHeight: 1.15, marginBottom: "0.75rem" }}>
+        <p style={{ fontSize: "26px", fontWeight: 500, color: "#111111", lineHeight: 1.2, marginBottom: "0.375rem" }}>
           {selected.displayName}
         </p>
-        <p style={{ fontSize: "17px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
+        <p style={{ fontSize: "14px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
           {COUNTRY_FLAGS[selected.country] ?? ""} {selected.country} · {selected.clubCount} clubs
         </p>
       </div>
@@ -230,51 +231,49 @@ function LeagueSlot({
 
 function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
   return (
-    <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${180 + leagues.length * 160}px` }}>
-        <thead>
-          <tr>
-            <th style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "1rem 1rem 1rem 0", borderBottom: "2px solid #e0e0e0", width: "160px" }}>
-              Metric
-            </th>
-            {leagues.map((league, i) => (
-              <th key={league.id} style={{ textAlign: "right", padding: "1rem 0 1rem 1rem", borderBottom: "2px solid #e0e0e0" }}>
-                <div style={{ fontSize: "17px", fontWeight: 600, color: SLOT_COLORS[i], marginBottom: "4px" }}>{league.displayName}</div>
-                <div style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaaaaa", fontWeight: 500 }}>
-                  {COUNTRY_FLAGS[league.country] ?? ""} {league.country} · {league.clubCount} clubs
+    <div>
+      {/* League header */}
+      <div style={{ display: "flex", borderBottom: "2px solid #e0e0e0" }}>
+        <div style={{ width: "190px", flexShrink: 0, padding: "1rem 1.5rem 1rem 0" }}>
+          <span style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa" }}>Metric</span>
+        </div>
+        {leagues.map((league, i) => (
+          <div key={league.id} style={{ flex: 1, padding: "1rem 1rem 1rem 1.5rem", minWidth: 0 }}>
+            <div style={{ fontSize: "20px", fontWeight: 600, color: SLOT_COLORS[i], marginBottom: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{league.displayName}</div>
+            <div style={{ fontSize: "13px", letterSpacing: "0.07em", textTransform: "uppercase", color: "#aaaaaa", fontWeight: 500 }}>
+              {COUNTRY_FLAGS[league.country] ?? ""} {league.country} · {league.clubCount} clubs
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Metric rows */}
+      {LEAGUE_METRICS.map((metric, mi) => {
+        const values = leagues.map((l) => l[metric.key] as number | null);
+        const valid  = values.filter((v): v is number => v !== null);
+        const best   = valid.length && metric.higherBetter !== null
+          ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid))
+          : null;
+        return (
+          <div key={metric.key as string} style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #eeeeee", backgroundColor: mi % 2 === 0 ? "#fafafa" : "#ffffff" }}>
+            <div style={{ width: "190px", flexShrink: 0, padding: "1.75rem 1.5rem 1.75rem 0", fontSize: "16px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#777777", fontWeight: 700, whiteSpace: "nowrap" }}>
+              {metric.shortLabel}
+            </div>
+            {leagues.map((league, i) => {
+              const val    = league[metric.key] as number | null;
+              const isBest = val !== null && valid.length > 1 && best !== null && val === best;
+              return (
+                <div key={league.id} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : val !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
+                  {fmtLeagueVal(league, metric.key)}
                 </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {LEAGUE_METRICS.map((metric, mi) => {
-            const values = leagues.map((l) => l[metric.key] as number | null);
-            const valid  = values.filter((v): v is number => v !== null);
-            const best   = valid.length && metric.higherBetter !== null
-              ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid))
-              : null;
-            return (
-              <tr key={metric.key as string} style={{ borderBottom: "1px solid #f0f0f0", backgroundColor: mi % 2 === 0 ? "#fafafa" : "#ffffff" }}>
-                <td style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", fontWeight: 600, padding: "1.25rem 1rem 1.25rem 0", whiteSpace: "nowrap" }}>
-                  {metric.shortLabel}
-                </td>
-                {leagues.map((league, i) => {
-                  const val    = league[metric.key] as number | null;
-                  const isBest = val !== null && valid.length > 1 && best !== null && val === best;
-                  return (
-                    <td key={league.id} style={{ fontSize: "20px", fontWeight: isBest ? 700 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "1.25rem 0 1.25rem 1rem", color: isBest ? "#059669" : val !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent" }}>
-                      {fmtLeagueVal(league, metric.key)}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              );
+            })}
+          </div>
+        );
+      })}
+
       {leagues.length > 1 && (
-        <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.75rem", letterSpacing: "0.04em" }}>
+        <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.875rem", letterSpacing: "0.04em" }}>
           Green = best in comparison · Averages exclude clubs with missing data
         </p>
       )}
@@ -288,15 +287,15 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
   return (
     <div>
       {/* Legend */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid #eeeeee", marginBottom: "0.5rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.75rem", paddingBottom: "1.75rem", borderBottom: "1px solid #eeeeee", marginBottom: "0.5rem" }}>
         {leagues.map((league, i) => (
-          <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div style={{ width: "10px", height: "10px", backgroundColor: SLOT_COLORS[i], flexShrink: 0, borderRadius: "2px" }} />
-            <span style={{ fontSize: "14px", fontWeight: 500, color: SLOT_COLORS[i] }}>{league.displayName}</span>
-            <span style={{ fontSize: "12px", color: "#cccccc" }}>{COUNTRY_FLAGS[league.country] ?? ""}</span>
+          <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+            <div style={{ width: "14px", height: "14px", backgroundColor: SLOT_COLORS[i], flexShrink: 0, borderRadius: "2px" }} />
+            <span style={{ fontSize: "17px", fontWeight: 500, color: SLOT_COLORS[i] }}>{league.displayName}</span>
+            <span style={{ fontSize: "14px", color: "#cccccc" }}>{COUNTRY_FLAGS[league.country] ?? ""}</span>
           </div>
         ))}
-        <span style={{ fontSize: "12px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
+        <span style={{ fontSize: "13px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
           Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
@@ -305,11 +304,11 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
         const vals   = leagues.map((l) => l[metric.key] as number | null);
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
-          <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #f0f0f0" }}>
-            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1rem" }}>
+          <div key={metric.key as string} style={{ padding: "2.25rem 0", borderBottom: "1px solid #f0f0f0" }}>
+            <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1.25rem" }}>
               {metric.label}
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
               {leagues.map((league, i) => {
                 const value = league[metric.key] as number | null;
                 const color = SLOT_COLORS[i];
@@ -319,9 +318,9 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
                   const isPos = value !== null && value >= 0;
                   const pct   = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                   return (
-                    <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                      <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
-                      <div style={{ flex: 1, display: "flex", height: "2.25rem" }}>
+                    <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                      <span style={{ fontSize: "17px", fontWeight: 500, width: "11rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
+                      <div style={{ flex: 1, display: "flex", height: "3rem" }}>
                         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", overflow: "hidden", backgroundColor: "#eeeeee" }}>
                           {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color, opacity: 0.85 }} />}
                         </div>
@@ -330,19 +329,19 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
                           {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color, opacity: 0.85 }} />}
                         </div>
                       </div>
-                      <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color: value !== null ? color : "#aaaaaa" }}>{displayVal}</span>
+                      <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color: value !== null ? color : "#aaaaaa" }}>{displayVal}</span>
                     </div>
                   );
                 }
 
                 const pct = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                 return (
-                  <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
-                    <div style={{ flex: 1, height: "2.25rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "1px" }}>
+                  <div key={league.id} style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                    <span style={{ fontSize: "17px", fontWeight: 500, width: "11rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color }}>{league.displayName}</span>
+                    <div style={{ flex: 1, height: "3rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "2px" }}>
                       <div style={{ height: "100%", width: `${pct}%`, backgroundColor: color, opacity: 0.85 }} />
                     </div>
-                    <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color }}>{displayVal}</span>
+                    <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color }}>{displayVal}</span>
                   </div>
                 );
               })}
@@ -440,7 +439,7 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
               return (
                 <button
                   key={id} onClick={() => setView(id)}
-                  style={{ padding: "0.75rem 1.5rem", fontSize: "13px", fontWeight: isActive ? 700 : 500, letterSpacing: "0.08em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}
+                  style={{ padding: "1rem 2rem", fontSize: "15px", fontWeight: isActive ? 700 : 500, letterSpacing: "0.08em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}
                 >
                   {label}
                 </button>

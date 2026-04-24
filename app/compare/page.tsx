@@ -1,10 +1,6 @@
 import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
 import { euClubs, type EUClub } from "@/lib/euClubs";
-import { itClubs } from "@/lib/itClubs";
-import { esClubs } from "@/lib/esClubs";
-import { noClubs } from "@/lib/noClubs";
-import { swClubs } from "@/lib/swClubs";
 import { japanClubs, J_DIVISION_LABELS } from "@/lib/japanClubs";
 import CompareWrapper from "@/components/CompareWrapper";
 import { type ComparableClub } from "@/lib/comparable";
@@ -17,22 +13,26 @@ const DIVISION_LABELS: Record<string, string> = {
 };
 
 const COUNTRY_CODES: Record<string, string> = {
-  "Germany":     "GER",
   "Netherlands": "NED",
   "Belgium":     "BEL",
-  "Austria":     "AUT",
   "France":      "FRA",
   "Denmark":     "DEN",
   "Norway":      "NOR",
   "Sweden":      "SWE",
   "Italy":       "ITA",
   "Spain":       "ESP",
+  "Germany":     "GER",
+  "Austria":     "AUT",
+  "Switzerland": "SUI",
 };
 
 const LEAGUE_DISPLAY: Record<string, string> = {
-  "Bundesliga":              "Austrian Bundesliga",
-  "2. Liga":                 "Austrian 2. Liga",
-  "norwegian-eliteserien":   "Eliteserien",
+  "norwegian-eliteserien": "Eliteserien",
+  "1. Bundesliga":         "Bundesliga",
+  "2. Bundesliga":         "2. Bundesliga",
+  "Austrian Bundesliga":   "Austrian Bundesliga",
+  "Austrian 2. Liga":      "Austrian 2. Liga",
+  "Super League":          "Swiss Super League",
 };
 
 function euDivisionLabel(c: EUClub): string {
@@ -55,7 +55,7 @@ const englishComparable: ComparableClub[] = clubs.map((c) => ({
   net_debt:         c.net_debt,
 }));
 
-const euComparable: ComparableClub[] = [...euClubs, ...itClubs, ...esClubs, ...noClubs, ...swClubs]
+const euComparable: ComparableClub[] = [...euClubs]
   .filter(
     (c) =>
       c.financials.revenue !== null ||

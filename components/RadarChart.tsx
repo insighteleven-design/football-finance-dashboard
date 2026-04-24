@@ -21,15 +21,13 @@ interface Props {
   series: RadarSeries[];
 }
 
-const CX      = 260;
-const CY      = 240;
-const RADIUS  = 160;
-const LABEL_R = 198;
-const GRID_STEPS = 4;
+const CX       = 350;
+const CY       = 350;
+const RADIUS   = 240;
+const LABEL_R  = 306;
+const GRID_STEPS = 5;
 
 // ─── Percentile rank ──────────────────────────────────────────────────────────
-// Returns a value in [0, 1] representing where `v` sits in `population`.
-// Clubs with identical values share the midpoint of their tied rank.
 
 function percentileRank(v: number, sorted: number[]): number {
   if (sorted.length === 0) return 0.5;
@@ -45,7 +43,6 @@ function normalizeValue(v: number | null, sorted: number[], invert: boolean): nu
   if (v === null || sorted.length === 0) return 0.05;
   const rank = percentileRank(v, sorted);
   const result = invert ? 1 - rank : rank;
-  // Clamp to [0.05, 0.98] so even worst/best values show clearly inside the chart
   return Math.max(0.05, Math.min(0.98, result));
 }
 
@@ -86,19 +83,19 @@ function AxisLabel({ axis, index, total }: { axis: RadarAxis; index: number; tot
   const sin     = Math.sin(angle);
   const anchor  = cos < -0.25 ? "end" : cos > 0.25 ? "start" : "middle";
   const lines   = axis.label.split("\n");
-  const lineH   = 14;
+  const lineH   = 22;
   const startDy = -(lines.length - 1) * lineH * 0.5;
-  const nudgeY  = sin < -0.25 ? -4 : sin > 0.25 ? 4 : 0;
+  const nudgeY  = sin < -0.25 ? -6 : sin > 0.25 ? 6 : 0;
 
   return (
     <text
       x={x}
       y={y + startDy + nudgeY}
       textAnchor={anchor}
-      fontSize={10}
-      fontWeight={500}
-      letterSpacing="0.06em"
-      fill="#888888"
+      fontSize={17}
+      fontWeight={600}
+      letterSpacing="0.07em"
+      fill="#666666"
       style={{ textTransform: "uppercase", fontFamily: "inherit" }}
     >
       {lines.map((line, li) => (
@@ -112,13 +109,11 @@ function AxisLabel({ axis, index, total }: { axis: RadarAxis; index: number; tot
 
 export default function RadarChart({ axes, series }: Props) {
   const n     = axes.length;
-  const viewW = 560;
-  const viewH = 480;
+  const viewW = 700;
+  const viewH = 700;
 
-  // Pre-sort each population once
   const sortedPops = axes.map((axis) => [...axis.population].sort((a, b) => a - b));
 
-  // Normalise every value to a percentile rank
   const seriesNorm: number[][] = series.map((s) =>
     axes.map((axis, ai) =>
       normalizeValue(s.values[ai] ?? null, sortedPops[ai], axis.invert ?? false)
@@ -126,42 +121,49 @@ export default function RadarChart({ axes, series }: Props) {
   );
 
   return (
-    <div style={{ width: "100%", maxWidth: "560px", margin: "0 auto" }}>
+    <div style={{ width: "100%", maxWidth: "720px", margin: "0 auto" }}>
       <svg
         viewBox={`0 0 ${viewW} ${viewH}`}
         style={{ width: "100%", height: "auto", display: "block" }}
         aria-label="Radar chart"
       >
-        {/* ── Background grid ─────────────────────────────────────────────── */}
+        {/* ── Background fill ──────────────────────────────────────────────── */}
+        <polygon
+          points={gridPolygonPoints(1, n)}
+          fill="#f8f8f8"
+          stroke="none"
+        />
+
+        {/* ── Grid rings ───────────────────────────────────────────────────── */}
         {Array.from({ length: GRID_STEPS }).map((_, gi) => {
           const frac = (gi + 1) / GRID_STEPS;
           return (
             <polygon
               key={gi}
               points={gridPolygonPoints(frac, n)}
-              fill={gi === GRID_STEPS - 1 ? "#fafafa" : "none"}
-              stroke="#e8e8e8"
-              strokeWidth={1}
+              fill="none"
+              stroke={gi === GRID_STEPS - 1 ? "#d8d8d8" : "#e8e8e8"}
+              strokeWidth={gi === GRID_STEPS - 1 ? 1.5 : 1}
             />
           );
         })}
 
-        {/* Percentile labels on second axis */}
+        {/* ── Percentile labels on second axis ─────────────────────────────── */}
         {Array.from({ length: GRID_STEPS }).map((_, gi) => {
           const frac  = (gi + 1) / GRID_STEPS;
           const angle = axisAngle(1, n);
           const { x, y } = polarToXY(angle, RADIUS * frac);
           return (
-            <text key={gi} x={x + 5} y={y} fontSize={8} fill="#cccccc" dominantBaseline="middle">
+            <text key={gi} x={x + 8} y={y} fontSize={12} fill="#bbbbbb" dominantBaseline="middle" fontWeight={500}>
               {Math.round(frac * 100)}
             </text>
           );
         })}
 
-        {/* ── Axis lines ──────────────────────────────────────────────────── */}
+        {/* ── Axis lines ───────────────────────────────────────────────────── */}
         {axes.map((_, i) => {
           const { x, y } = polarToXY(axisAngle(i, n), RADIUS);
-          return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="#e0e0e0" strokeWidth={1} />;
+          return <line key={i} x1={CX} y1={CY} x2={x} y2={y} stroke="#dedede" strokeWidth={1.5} />;
         })}
 
         {/* ── Series polygons ──────────────────────────────────────────────── */}
@@ -170,41 +172,38 @@ export default function RadarChart({ axes, series }: Props) {
             <polygon
               points={polygonPoints(seriesNorm[si])}
               fill={s.color}
-              fillOpacity={series.length <= 2 ? 0.13 : 0.08}
+              fillOpacity={series.length <= 2 ? 0.15 : 0.1}
               stroke={s.color}
-              strokeWidth={2}
+              strokeWidth={3}
               strokeLinejoin="round"
             />
             {seriesNorm[si].map((norm, ai) => {
               const { x, y } = polarToXY(axisAngle(ai, n), RADIUS * norm);
-              return <circle key={ai} cx={x} cy={y} r={3.5} fill={s.color} />;
+              return (
+                <circle key={ai} cx={x} cy={y} r={7} fill={s.color} stroke="#ffffff" strokeWidth={2} />
+              );
             })}
           </g>
         ))}
 
-        {/* ── Axis labels ─────────────────────────────────────────────────── */}
+        {/* ── Axis labels ──────────────────────────────────────────────────── */}
         {axes.map((axis, i) => (
           <AxisLabel key={i} axis={axis} index={i} total={n} />
         ))}
-
-        {/* ── Legend ──────────────────────────────────────────────────────── */}
-        {series.map((s, si) => {
-          const lx = 40 + si * 130;
-          const ly = viewH - 36;
-          return (
-            <g key={s.name}>
-              <rect x={lx} y={ly} width={12} height={12} fill={s.color} fillOpacity={0.85} />
-              <text x={lx + 17} y={ly + 9} fontSize={11} fill="#555555" dominantBaseline="middle" fontWeight={500}>
-                {s.name}
-              </text>
-            </g>
-          );
-        })}
-
-        <text x={viewW - 12} y={viewH - 10} fontSize={8} fill="#cccccc" textAnchor="end">
-          Position = percentile rank across full dataset
-        </text>
       </svg>
+
+      {/* ── Legend (HTML) ────────────────────────────────────────────────────── */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem 2.5rem", marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #eeeeee", justifyContent: "center" }}>
+        {series.map((s) => (
+          <div key={s.name} style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+            <div style={{ width: "16px", height: "16px", backgroundColor: s.color, borderRadius: "3px", flexShrink: 0 }} />
+            <span style={{ fontSize: "16px", fontWeight: 500, color: s.color }}>{s.name}</span>
+          </div>
+        ))}
+      </div>
+      <p style={{ textAlign: "center", fontSize: "12px", color: "#bbbbbb", marginTop: "0.75rem", letterSpacing: "0.04em" }}>
+        Position = percentile rank across full dataset
+      </p>
     </div>
   );
 }

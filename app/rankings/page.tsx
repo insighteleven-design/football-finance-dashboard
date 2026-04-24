@@ -1,10 +1,6 @@
 import { Suspense } from "react";
 import { clubs } from "@/lib/clubs";
 import { euClubs, type EUClub } from "@/lib/euClubs";
-import { itClubs } from "@/lib/itClubs";
-import { esClubs } from "@/lib/esClubs";
-import { noClubs } from "@/lib/noClubs";
-import { swClubs } from "@/lib/swClubs";
 import { japanClubs, J_DIVISION_LABELS } from "@/lib/japanClubs";
 import RankingsTable from "@/components/RankingsTable";
 import { type ComparableClub } from "@/lib/comparable";
@@ -17,26 +13,31 @@ const DIVISION_LABELS: Record<string, string> = {
 };
 
 const COUNTRY_CODES: Record<string, string> = {
-  "Germany":     "GER",
   "Netherlands": "NED",
   "Belgium":     "BEL",
-  "Austria":     "AUT",
   "France":      "FRA",
   "Denmark":     "DEN",
   "Norway":      "NOR",
   "Sweden":      "SWE",
   "Italy":       "ITA",
   "Spain":       "ESP",
+  "Germany":     "GER",
+  "Austria":     "AUT",
+  "Switzerland": "SUI",
 };
 
 const LEAGUE_DISPLAY: Record<string, string> = {
-  "Bundesliga":            "Austrian Bundesliga",
-  "2. Liga":               "Austrian 2. Liga",
   "norwegian-eliteserien": "Eliteserien",
+  "1. Bundesliga":         "Bundesliga",
+  "2. Bundesliga":         "2. Bundesliga",
+  "Austrian Bundesliga":   "Austrian Bundesliga",
+  "Austrian 2. Liga":      "Austrian 2. Liga",
+  "Super League":          "Swiss Super League",
 };
 
 function euDivisionLabel(c: EUClub): string {
   const league = LEAGUE_DISPLAY[c.league] ?? c.league;
+  // German leagues: no country suffix (league name already specific)
   if (c.country === "Germany") return league;
   return `${league} · ${COUNTRY_CODES[c.country] ?? c.country}`;
 }
@@ -55,7 +56,7 @@ const englishComparable: ComparableClub[] = clubs.map((c) => ({
   net_debt:         c.net_debt,
 }));
 
-const euComparable: ComparableClub[] = [...euClubs, ...itClubs, ...esClubs, ...noClubs, ...swClubs]
+const euComparable: ComparableClub[] = [...euClubs]
   .filter(
     (c) =>
       c.financials.revenue !== null ||
@@ -106,7 +107,7 @@ export default function RankingsPage() {
           className="mb-8 sm:mb-12"
           style={{ color: "#999999", fontSize: "clamp(14px, 2vw, 20px)", letterSpacing: "0.01em" }}
         >
-          {allComparable.length} clubs across England, Europe &amp; Japan
+          {`${allComparable.length} clubs across England, Europe & Japan`}
         </p>
         <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
           <RankingsTable allClubs={allComparable} />

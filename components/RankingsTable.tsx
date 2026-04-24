@@ -58,12 +58,13 @@ const LEAGUE_METRICS: {
 // ─── League computation ───────────────────────────────────────────────────────
 
 const COUNTRY_FLAGS: Record<string, string> = {
-  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Germany: "🇩🇪", Spain: "🇪🇸", Italy: "🇮🇹",
-  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪", Austria: "🇦🇹",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Spain: "🇪🇸", Italy: "🇮🇹",
+  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪",
   Denmark: "🇩🇰", Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
+  Germany: "🇩🇪", Austria: "🇦🇹", Switzerland: "🇨🇭",
 };
 
-const COUNTRY_ORDER = ["England","Germany","Spain","Italy","France","Netherlands","Belgium","Austria","Denmark","Norway","Sweden","Japan"];
+const COUNTRY_ORDER = ["England","Spain","Italy","Germany","France","Netherlands","Belgium","Austria","Switzerland","Denmark","Norway","Sweden","Japan"];
 
 function avgOf(members: ComparableClub[], key: keyof ComparableClub): number | null {
   const vals = members.map((m) => m[key] as number | null).filter((v): v is number => v !== null);
