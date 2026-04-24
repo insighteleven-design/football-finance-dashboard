@@ -11,75 +11,54 @@ const MAX_CLUBS = 4;
 const SLOT_LABELS = ["A", "B", "C", "D"];
 const CLUB_COLORS = ["#4A90D9", "#E05252", "#E8A838", "#9B59B6"];
 const SLOT_STYLES = [
-  { border: "#4A90D9", bg: "#EBF3FC", text: "#4A90D9", label: "#4A90D9" },
-  { border: "#E05252", bg: "#FCEAEA", text: "#E05252", label: "#E05252" },
-  { border: "#E8A838", bg: "#FDF5E6", text: "#E8A838", label: "#E8A838" },
-  { border: "#9B59B6", bg: "#F5EEF8", text: "#9B59B6", label: "#9B59B6" },
+  { border: "#4A90D9", bg: "#EBF3FC", text: "#4A90D9" },
+  { border: "#E05252", bg: "#FCEAEA", text: "#E05252" },
+  { border: "#E8A838", bg: "#FDF5E6", text: "#E8A838" },
+  { border: "#9B59B6", bg: "#F5EEF8", text: "#9B59B6" },
 ];
 
 const COUNTRY_ORDER = ["England", "Germany", "Spain", "Italy", "France", "Netherlands", "Belgium", "Austria", "Denmark", "Norway", "Sweden", "Japan"];
 const COUNTRY_FLAGS: Record<string, string> = {
-  England:     "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  Germany:     "🇩🇪",
-  Spain:       "🇪🇸",
-  Italy:       "🇮🇹",
-  France:      "🇫🇷",
-  Netherlands: "🇳🇱",
-  Belgium:     "🇧🇪",
-  Austria:     "🇦🇹",
-  Denmark:     "🇩🇰",
-  Norway:      "🇳🇴",
-  Sweden:      "🇸🇪",
-  Japan:       "🇯🇵",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Germany: "🇩🇪", Spain: "🇪🇸", Italy: "🇮🇹",
+  France: "🇫🇷", Netherlands: "🇳🇱", Belgium: "🇧🇪", Austria: "🇦🇹",
+  Denmark: "🇩🇰", Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
 };
 
 const COMPARE_METRICS: {
   key: keyof ComparableClub;
   label: string;
+  shortLabel: string;
   isRatio?: boolean;
   diverging?: boolean;
   higherBetter?: boolean;
 }[] = [
-  { key: "revenue",          label: "Revenue",                   higherBetter: true },
-  { key: "wage_bill",        label: "Wage Bill",                 higherBetter: false },
-  { key: "wage_ratio",       label: "Wage Ratio",     isRatio: true, higherBetter: false },
-  { key: "operating_profit", label: "Operating Profit / (Loss)", diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
-  { key: "net_debt",         label: "Net Debt",                  diverging: true, higherBetter: false },
+  { key: "revenue",          label: "Revenue",                   shortLabel: "Revenue",      higherBetter: true },
+  { key: "wage_bill",        label: "Wage Bill",                 shortLabel: "Wages",        higherBetter: false },
+  { key: "wage_ratio",       label: "Wage Ratio",                shortLabel: "Wage %", isRatio: true, higherBetter: false },
+  { key: "operating_profit", label: "Operating Profit / (Loss)", shortLabel: "Op. Profit",   diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",   label: "Pre-tax Profit / (Loss)",   shortLabel: "Pre-tax",      diverging: true, higherBetter: true },
+  { key: "net_debt",         label: "Net Debt",                  shortLabel: "Net Debt",     diverging: true, higherBetter: false },
 ];
 
-// ─── Club slot panel ──────────────────────────────────────────────────────────
+// ─── Club slot ────────────────────────────────────────────────────────────────
 
 type SlotPhase = "countries" | "clubs";
 
 function ClubSlot({
-  slotIndex,
-  allClubs,
-  selectedSlug,
-  otherSlugs,
-  onSelect,
-  onRemove,
+  slotIndex, allClubs, selectedSlug, otherSlugs, onSelect, onRemove,
 }: {
-  slotIndex: number;
-  allClubs: ComparableClub[];
-  selectedSlug: string | null;
-  otherSlugs: string[];
-  onSelect: (slug: string) => void;
-  onRemove: () => void;
+  slotIndex: number; allClubs: ComparableClub[]; selectedSlug: string | null;
+  otherSlugs: string[]; onSelect: (slug: string) => void; onRemove: () => void;
 }) {
   const [phase, setPhase]           = useState<SlotPhase>("countries");
   const [activeCountry, setCountry] = useState<string | null>(null);
   const [filter, setFilter]         = useState("");
 
-  const style  = SLOT_STYLES[slotIndex];
-  const label  = SLOT_LABELS[slotIndex];
-  const color  = CLUB_COLORS[slotIndex];
+  const style = SLOT_STYLES[slotIndex];
+  const color = CLUB_COLORS[slotIndex];
+  const label = SLOT_LABELS[slotIndex];
 
-  const available = useMemo(
-    () => allClubs.filter((c) => !otherSlugs.includes(c.slug)),
-    [allClubs, otherSlugs]
-  );
-
+  const available = useMemo(() => allClubs.filter((c) => !otherSlugs.includes(c.slug)), [allClubs, otherSlugs]);
   const countries = useMemo(() => {
     const present = new Set(available.map((c) => c.country));
     return COUNTRY_ORDER.filter((cn) => present.has(cn));
@@ -88,11 +67,9 @@ function ClubSlot({
   const countryClubs = useMemo(() => {
     if (!activeCountry) return [];
     const q = filter.toLowerCase();
-    return available
-      .filter((c) => c.country === activeCountry && (!q || c.name.toLowerCase().includes(q) || c.divisionLabel.toLowerCase().includes(q)));
+    return available.filter((c) => c.country === activeCountry && (!q || c.name.toLowerCase().includes(q) || c.divisionLabel.toLowerCase().includes(q)));
   }, [available, activeCountry, filter]);
 
-  // Group clubs within a country by division
   const grouped = useMemo(() => {
     const map = new Map<string, ComparableClub[]>();
     for (const c of countryClubs) {
@@ -102,118 +79,81 @@ function ClubSlot({
     return [...map.entries()];
   }, [countryClubs]);
 
-  function selectCountry(country: string) {
-    setCountry(country);
-    setPhase("clubs");
-    setFilter("");
-  }
-
-  function goBack() {
-    setPhase("countries");
-    setCountry(null);
-    setFilter("");
-  }
-
-  function handleSelect(slug: string) {
-    onSelect(slug);
-    setPhase("countries");
-    setCountry(null);
-    setFilter("");
-  }
-
-  function handleRemove() {
-    onRemove();
-    setPhase("countries");
-    setCountry(null);
-    setFilter("");
-  }
+  function selectCountry(country: string) { setCountry(country); setPhase("clubs"); setFilter(""); }
+  function goBack() { setPhase("countries"); setCountry(null); setFilter(""); }
+  function handleSelect(slug: string) { onSelect(slug); setPhase("countries"); setCountry(null); setFilter(""); }
+  function handleRemove() { onRemove(); setPhase("countries"); setCountry(null); setFilter(""); }
 
   const selectedClub = selectedSlug ? allClubs.find((c) => c.slug === selectedSlug) : null;
 
-  // ── Filled state ────────────────────────────────────────────────────────────
+  // ── Filled ───────────────────────────────────────────────────────────────────
   if (selectedClub) {
     return (
-      <div style={{ border: `1px solid ${style.border}`, backgroundColor: style.bg, padding: "1.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+      <div style={{ border: `2px solid ${style.border}`, backgroundColor: style.bg, padding: "1.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             Club {label}
           </span>
-          <div style={{ display: "flex", gap: "0.75rem" }}>
-            <button
-              onClick={handleRemove}
-              style={{ fontSize: "15px", color: style.text, background: "none", border: "none", cursor: "pointer", letterSpacing: "0.05em", opacity: 0.7, padding: 0 }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
-            >
-              Remove
-            </button>
-          </div>
+          <button
+            onClick={handleRemove}
+            style={{ fontSize: "12px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: style.text, background: "none", border: "none", cursor: "pointer", opacity: 0.65, padding: 0 }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
+          >
+            Remove ×
+          </button>
         </div>
-        <p style={{ fontSize: "18px", fontWeight: 400, color: "#111111", lineHeight: 1.2, marginBottom: "0.25rem" }}>
+        <p style={{ fontSize: "22px", fontWeight: 500, color: "#111111", lineHeight: 1.2, marginBottom: "0.5rem" }}>
           {selectedClub.name}
         </p>
-        <p style={{ fontSize: "17px", color: "#888888" }}>
+        <p style={{ fontSize: "13px", letterSpacing: "0.06em", textTransform: "uppercase", color: style.text, fontWeight: 500 }}>
           {COUNTRY_FLAGS[selectedClub.country] ?? ""} {selectedClub.divisionLabel}
         </p>
       </div>
     );
   }
 
-  // ── Club list state ──────────────────────────────────────────────────────────
+  // ── Club list ─────────────────────────────────────────────────────────────────
   if (phase === "clubs" && activeCountry) {
     return (
       <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff" }}>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1rem", borderBottom: "1px solid #f0f0f0" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #f0f0f0" }}>
           <button
             onClick={goBack}
-            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "17px" }}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", background: "none", border: "none", cursor: "pointer", color: "#888888", padding: 0, fontSize: "13px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#888888"; }}
           >
-            <svg style={{ width: "13px", height: "13px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
+            ← Back
           </button>
-          <span style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text }}>
             Club {label}
           </span>
-          <span style={{ fontSize: "15px", marginLeft: "auto" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
+          <span style={{ fontSize: "13px", marginLeft: "auto", color: "#888" }}>{COUNTRY_FLAGS[activeCountry] ?? ""} {activeCountry}</span>
         </div>
-
-        {/* Filter */}
-        <div style={{ padding: "0.5rem 1rem", borderBottom: "1px solid #f5f5f5" }}>
+        <div style={{ padding: "0.625rem 1.25rem", borderBottom: "1px solid #f5f5f5" }}>
           <input
-            type="text"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            placeholder="Filter clubs…"
-            autoFocus
-            style={{ width: "100%", fontSize: "15px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.375rem 0.625rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
+            type="text" value={filter} onChange={(e) => setFilter(e.target.value)}
+            placeholder="Filter clubs…" autoFocus
+            style={{ width: "100%", fontSize: "15px", color: "#111111", border: "1px solid #e8e8e8", padding: "0.5rem 0.75rem", outline: "none", backgroundColor: "#fafafa", boxSizing: "border-box" }}
           />
         </div>
-
-        {/* Club list */}
-        <div style={{ maxHeight: "260px", overflowY: "auto" }}>
-          {grouped.length === 0 && (
-            <p style={{ fontSize: "15px", color: "#aaaaaa", padding: "1rem" }}>No clubs match.</p>
-          )}
-          {grouped.map(([division, clubs]) => (
+        <div style={{ maxHeight: "280px", overflowY: "auto" }}>
+          {grouped.length === 0 && <p style={{ fontSize: "14px", color: "#aaaaaa", padding: "1rem 1.25rem" }}>No clubs match.</p>}
+          {grouped.map(([division, divClubs]) => (
             <div key={division}>
-              <div style={{ padding: "0.4rem 1rem 0.2rem", fontSize: "17px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
+              <div style={{ padding: "0.5rem 1.25rem 0.3rem", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#bbbbbb", backgroundColor: "#fafafa", borderBottom: "1px solid #f5f5f5" }}>
                 {division}
               </div>
-              {clubs.map((club) => (
+              {divClubs.map((club) => (
                 <button
-                  key={club.slug}
-                  onMouseDown={() => handleSelect(club.slug)}
-                  style={{ width: "100%", textAlign: "left", padding: "0.5rem 1rem", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", borderBottom: "1px solid #f8f8f8", cursor: "pointer", gap: "0.5rem" }}
+                  key={club.slug} onMouseDown={() => handleSelect(club.slug)}
+                  style={{ width: "100%", textAlign: "left", padding: "0.625rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", borderBottom: "1px solid #f8f8f8", cursor: "pointer", gap: "0.5rem" }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#f5f5f5"; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
                 >
                   <span style={{ fontSize: "15px", color: "#111111" }}>{club.name}</span>
-                  <span style={{ fontSize: "15px", color: color, fontWeight: 500 }}>Select →</span>
+                  <span style={{ fontSize: "13px", color: color, fontWeight: 600 }}>Select →</span>
                 </button>
               ))}
             </div>
@@ -223,44 +163,22 @@ function ClubSlot({
     );
   }
 
-  // ── Country grid state ───────────────────────────────────────────────────────
+  // ── Country grid ──────────────────────────────────────────────────────────────
   return (
-    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.25rem" }}>
-      <p style={{ fontSize: "17px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.label, marginBottom: "0.875rem" }}>
+    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.5rem" }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "1rem" }}>
         Club {label}
       </p>
-      <p style={{ fontSize: "15px", color: "#999999", marginBottom: "1rem" }}>
+      <p style={{ fontSize: "14px", color: "#999999", marginBottom: "1.25rem" }}>
         Select a country to browse clubs
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
         {countries.map((country) => (
           <button
-            key={country}
-            onClick={() => selectCountry(country)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.375rem",
-              padding: "0.4rem 0.75rem",
-              border: "1px solid #e0e0e0",
-              backgroundColor: "#ffffff",
-              cursor: "pointer",
-              fontSize: "17px",
-              color: "#333333",
-              transition: "border-color 0.12s, background-color 0.12s",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = color;
-              el.style.backgroundColor = style.bg;
-              el.style.color = color;
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = "#e0e0e0";
-              el.style.backgroundColor = "#ffffff";
-              el.style.color = "#333333";
-            }}
+            key={country} onClick={() => selectCountry(country)}
+            style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.45rem 0.875rem", border: "1px solid #e0e0e0", backgroundColor: "#ffffff", cursor: "pointer", fontSize: "14px", color: "#444444", transition: "all 0.12s" }}
+            onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = color; el.style.backgroundColor = style.bg; el.style.color = color; }}
+            onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.backgroundColor = "#ffffff"; el.style.color = "#444444"; }}
           >
             <span>{COUNTRY_FLAGS[country] ?? ""}</span>
             <span>{country}</span>
@@ -276,32 +194,37 @@ function ClubSlot({
 function StatsView({ clubs }: { clubs: ComparableClub[] }) {
   return (
     <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "400px" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${180 + clubs.length * 160}px` }}>
         <thead>
           <tr>
-            <th style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0", width: "180px" }}>
+            <th style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa", textAlign: "left", padding: "1rem 1rem 1rem 0", borderBottom: "2px solid #e0e0e0", width: "160px" }}>
               Metric
             </th>
             {clubs.map((club, i) => (
-              <th key={club.slug} style={{ fontSize: "17px", fontWeight: 600, color: CLUB_COLORS[i], textAlign: "right", padding: "0.75rem 0.5rem", borderBottom: "1px solid #e0e0e0" }}>
-                {club.name}
+              <th key={club.slug} style={{ textAlign: "right", padding: "1rem 0 1rem 1rem", borderBottom: "2px solid #e0e0e0" }}>
+                <div style={{ fontSize: "17px", fontWeight: 600, color: CLUB_COLORS[i], marginBottom: "4px" }}>{club.name}</div>
+                <div style={{ fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaaaaa", fontWeight: 500 }}>
+                  {COUNTRY_FLAGS[club.country] ?? ""} {club.divisionLabel}
+                </div>
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {COMPARE_METRICS.map((metric) => {
+          {COMPARE_METRICS.map((metric, mi) => {
             const values = clubs.map((c) => c[metric.key] as number | null);
             const valid  = values.filter((v): v is number => v !== null);
             const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
             return (
-              <tr key={metric.key as string} style={{ borderBottom: "1px solid #f5f5f5" }}>
-                <td style={{ fontSize: "17px", color: "#666666", padding: "0.75rem 0.5rem", whiteSpace: "nowrap" }}>{metric.label}</td>
+              <tr key={metric.key as string} style={{ borderBottom: "1px solid #f0f0f0", backgroundColor: mi % 2 === 0 ? "#fafafa" : "#ffffff" }}>
+                <td style={{ fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", fontWeight: 600, padding: "1.25rem 1rem 1.25rem 0", whiteSpace: "nowrap" }}>
+                  {metric.shortLabel}
+                </td>
                 {clubs.map((club, i) => {
                   const val    = club[metric.key] as number | null;
                   const isBest = val !== null && valid.length > 1 && val === best;
                   return (
-                    <td key={club.slug} style={{ fontSize: "15px", fontWeight: isBest ? 600 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "0.75rem 0.5rem", color: isBest ? "#22c55e" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#f0fdf4" : "transparent" }}>
+                    <td key={club.slug} style={{ fontSize: "20px", fontWeight: isBest ? 700 : 400, fontVariantNumeric: "tabular-nums", textAlign: "right", padding: "1.25rem 0 1.25rem 1rem", color: isBest ? "#059669" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent" }}>
                       {fmtVal(val, metric.isRatio, club.currency)}
                     </td>
                   );
@@ -312,7 +235,9 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
         </tbody>
       </table>
       {clubs.length > 1 && (
-        <p style={{ fontSize: "15px", color: "#cccccc", marginTop: "0.75rem" }}>Green = best in comparison for that metric</p>
+        <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.75rem", letterSpacing: "0.04em" }}>
+          Green = best in comparison for that metric
+        </p>
       )}
     </div>
   );
@@ -322,12 +247,12 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
 
 function StandardBarRow({ club, value, pct, clubColor, isRatio }: { club: ComparableClub; value: number | null; pct: number; clubColor: string; isRatio?: boolean }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span style={{ fontSize: "17px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
-      <div style={{ flex: 1, height: "1.75rem", backgroundColor: "#eeeeee", overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <div style={{ flex: 1, height: "2.25rem", backgroundColor: "#eeeeee", overflow: "hidden", borderRadius: "1px" }}>
+        <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />
       </div>
-      <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
+      <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -338,18 +263,18 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
   const isPos = value !== null && value >= 0;
   const pct   = value !== null ? Math.min((Math.abs(value) / scale) * 100, 100) : 0;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-      <span style={{ fontSize: "17px", width: "8rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
-      <div style={{ flex: 1, display: "flex", height: "1.75rem" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <span style={{ fontSize: "14px", fontWeight: 500, width: "9rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: clubColor }}>{club.name}</span>
+      <div style={{ flex: 1, display: "flex", height: "2.25rem", borderRadius: "1px" }}>
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end", overflow: "hidden", backgroundColor: "#eeeeee" }}>
-          {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />}
+          {value !== null && !isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />}
         </div>
-        <div style={{ width: "1px", backgroundColor: "#e0e0e0", flexShrink: 0 }} />
+        <div style={{ width: "2px", backgroundColor: "#dddddd", flexShrink: 0 }} />
         <div style={{ flex: 1, overflow: "hidden", backgroundColor: "#eeeeee" }}>
-          {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor }} />}
+          {value !== null && isPos && <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />}
         </div>
       </div>
-      <span style={{ fontSize: "15px", fontWeight: 300, fontVariantNumeric: "tabular-nums", width: "4.5rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
+      <span style={{ fontSize: "15px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "5rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
         {fmtVal(value, isRatio, club.currency)}
       </span>
     </div>
@@ -358,15 +283,16 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
 
 function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
   return (
-    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "0 1.25rem" }}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", padding: "1.25rem 0", borderBottom: "1px solid #e0e0e0" }}>
+    <div>
+      {/* Legend */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", paddingBottom: "1.5rem", borderBottom: "1px solid #eeeeee", marginBottom: "0.5rem" }}>
         {clubs.map((club, i) => (
           <div key={club.slug} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div style={{ width: "12px", height: "12px", backgroundColor: CLUB_COLORS[i], flexShrink: 0 }} />
-            <span style={{ fontSize: "17px", color: CLUB_COLORS[i] }}>{club.name}</span>
+            <div style={{ width: "10px", height: "10px", backgroundColor: CLUB_COLORS[i], flexShrink: 0, borderRadius: "2px" }} />
+            <span style={{ fontSize: "14px", fontWeight: 500, color: CLUB_COLORS[i] }}>{club.name}</span>
           </div>
         ))}
-        <span style={{ fontSize: "15px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "12px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
           Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
@@ -374,11 +300,11 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
         const vals   = clubs.map((c) => c[metric.key] as number | null);
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
-          <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #e0e0e0" }}>
-            <p style={{ fontSize: "17px", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#999999", marginBottom: "1rem" }}>
+          <div key={metric.key as string} style={{ padding: "1.5rem 0", borderBottom: "1px solid #f0f0f0" }}>
+            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "1rem" }}>
               {metric.label}
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
               {clubs.map((club, i) => {
                 const value = club[metric.key] as number | null;
                 const color = CLUB_COLORS[i];
@@ -468,13 +394,13 @@ function AnalysisView({ clubs }: { clubs: ComparableClub[] }) {
   return (
     <div>
       {insights.map((text, i) => (
-        <div key={i} style={{ display: "flex", gap: "1rem", marginBottom: "1.25rem" }}>
-          <div style={{ width: "3px", backgroundColor: INSIGHT_ACCENTS[i % INSIGHT_ACCENTS.length], flexShrink: 0, borderRadius: "2px" }} />
-          <p style={{ fontSize: "17px", lineHeight: 1.65, color: "#333333" }}>{text}</p>
+        <div key={i} style={{ display: "flex", gap: "1.25rem", marginBottom: "1.5rem", alignItems: "flex-start" }}>
+          <div style={{ width: "4px", minHeight: "100%", backgroundColor: INSIGHT_ACCENTS[i % INSIGHT_ACCENTS.length], flexShrink: 0, borderRadius: "2px", alignSelf: "stretch" }} />
+          <p style={{ fontSize: "17px", lineHeight: 1.7, color: "#333333" }}>{text}</p>
         </div>
       ))}
       {insights.length === 0 && (
-        <p style={{ fontSize: "17px", color: "#aaaaaa" }}>Not enough data to generate analysis for the selected clubs.</p>
+        <p style={{ fontSize: "16px", color: "#aaaaaa", fontStyle: "italic" }}>Not enough data to generate analysis for the selected clubs.</p>
       )}
     </div>
   );
@@ -499,7 +425,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
 
   const updateUrl = useCallback(
     (slugs: string[]) => {
-      router.replace(`/compare${slugs.length > 0 ? `?clubs=${slugs.join(",")}` : ""}`, { scroll: false });
+      router.replace(`/compare?mode=clubs${slugs.length > 0 ? `&clubs=${slugs.join(",")}` : ""}`, { scroll: false });
     },
     [router]
   );
@@ -517,20 +443,11 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
     updateUrl(next);
   }
 
-  function addSlot() {
-    // No-op — just ensures the slot grid renders the next empty slot
-    // Slots A and B always show; C and D appear once previous slot is filled
-  }
-
   const selectedClubs = selectedSlugs
     .map((s) => allClubs.find((c) => c.slug === s))
     .filter((c): c is ComparableClub => !!c);
 
-  // How many slots to show: always at least 2, add next empty slot once the previous is filled
-  const slotsToShow = Math.min(
-    MAX_CLUBS,
-    Math.max(2, selectedSlugs.length + (selectedSlugs.length < MAX_CLUBS ? 1 : 0))
-  );
+  const slotsToShow = Math.min(MAX_CLUBS, Math.max(2, selectedSlugs.length + (selectedSlugs.length < MAX_CLUBS ? 1 : 0)));
 
   const views: { id: CompareView; label: string }[] = [
     { id: "stats",    label: "Side by Side" },
@@ -539,7 +456,6 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
     { id: "analysis", label: "Analysis" },
   ];
 
-  // Full population per axis — used for percentile-rank normalisation
   const radarPopulations = useMemo(() => {
     function pop(key: keyof ComparableClub) {
       return allClubs.map((c) => c[key] as number | null).filter((v): v is number => v !== null);
@@ -564,13 +480,7 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
   const radarSeries = selectedClubs.map((club, i) => ({
     name:   club.name,
     color:  CLUB_COLORS[i],
-    values: [
-      club.revenue,
-      club.wage_ratio,
-      club.operating_profit,
-      club.pre_tax_profit,
-      club.net_debt,
-    ],
+    values: [club.revenue, club.wage_ratio, club.operating_profit, club.pre_tax_profit, club.net_debt],
   }));
 
   function copyLink() {
@@ -582,26 +492,21 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
 
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <p style={{ fontSize: "17px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#aaaaaa", marginBottom: "0.5rem" }}>
-          Club Comparison
-        </p>
-        <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.5rem" }}>
+      {/* Selector heading */}
+      <div style={{ marginBottom: "1.75rem" }}>
+        <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.375rem" }}>
           Select clubs to compare
         </p>
-        <p style={{ fontSize: "15px", color: "#999999" }}>
-          Choose a country, then pick a club for each slot. Add up to four clubs across England, Europe, and Japan.
+        <p style={{ fontSize: "14px", color: "#999999" }}>
+          Choose up to four clubs across England, Europe, and Japan.
         </p>
       </div>
 
-      {/* Slot grid — always 2 cols on desktop */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+      {/* Slot grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
         {Array.from({ length: slotsToShow }).map((_, i) => (
           <ClubSlot
-            key={i}
-            slotIndex={i}
-            allClubs={allClubs}
+            key={i} slotIndex={i} allClubs={allClubs}
             selectedSlug={selectedSlugs[i] ?? null}
             otherSlugs={selectedSlugs.filter((_, j) => j !== i)}
             onSelect={(slug) => setSlug(i, slug)}
@@ -610,25 +515,24 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
         ))}
       </div>
 
-      {/* Instructions when only one club selected */}
       {selectedClubs.length === 1 && (
-        <p style={{ fontSize: "15px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
+        <p style={{ fontSize: "14px", color: "#aaaaaa", marginBottom: "1.5rem" }}>
           Select a second club to start the comparison.
         </p>
       )}
 
-      {/* Comparison panel */}
+      {/* Result panel */}
       {selectedClubs.length >= 2 && (
         <div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e0e0e0", marginBottom: "1.5rem" }}>
-            <div style={{ display: "flex", gap: 0 }}>
+          {/* View tab bar */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e0e0e0", marginBottom: "2rem" }}>
+            <div style={{ display: "flex", gap: 0, overflowX: "auto" }}>
               {views.map(({ id, label }) => {
                 const isActive = view === id;
                 return (
                   <button
-                    key={id}
-                    onClick={() => setView(id)}
-                    style={{ padding: "0.625rem 1.25rem", fontSize: "17px", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s" }}
+                    key={id} onClick={() => setView(id)}
+                    style={{ padding: "0.75rem 1.5rem", fontSize: "13px", fontWeight: isActive ? 700 : 500, letterSpacing: "0.08em", textTransform: "uppercase", color: isActive ? "#111111" : "#999999", background: "none", border: "none", borderBottom: `2px solid ${isActive ? "#111111" : "transparent"}`, marginBottom: "-1px", cursor: "pointer", transition: "color 0.15s", whiteSpace: "nowrap" }}
                   >
                     {label}
                   </button>
@@ -637,11 +541,11 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
             </div>
             <button
               onClick={copyLink}
-              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.375rem 0.75rem", border: "1px solid #e0e0e0", fontSize: "17px", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px" }}
+              style={{ display: "flex", alignItems: "center", gap: "0.375rem", padding: "0.5rem 0.875rem", border: "1px solid #e0e0e0", fontSize: "12px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#999999", cursor: "pointer", background: "#ffffff", marginBottom: "1px", whiteSpace: "nowrap", flexShrink: 0 }}
               onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#999999"; el.style.color = "#111111"; }}
               onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.color = "#999999"; }}
             >
-              <svg style={{ width: "13px", height: "13px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg style={{ width: "12px", height: "12px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
               {copied ? "Copied" : "Share"}

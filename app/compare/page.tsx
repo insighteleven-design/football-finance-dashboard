@@ -6,8 +6,7 @@ import { esClubs } from "@/lib/esClubs";
 import { noClubs } from "@/lib/noClubs";
 import { swClubs } from "@/lib/swClubs";
 import { japanClubs, J_DIVISION_LABELS } from "@/lib/japanClubs";
-import ClubVsClub from "@/components/ClubVsClub";
-import LeagueVsLeague from "@/components/LeagueVsLeague";
+import CompareWrapper from "@/components/CompareWrapper";
 import { type ComparableClub } from "@/lib/comparable";
 
 const DIVISION_LABELS: Record<string, string> = {
@@ -95,14 +94,35 @@ const allComparable = [...englishComparable, ...euComparable, ...japanComparable
 
 export default function ComparePage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
-      <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
-        <ClubVsClub allClubs={allComparable} />
-      </Suspense>
+    <div style={{ backgroundColor: "#080808", minHeight: "100vh" }}>
 
-      <div style={{ borderTop: "1px solid #e8e8e8", marginTop: "4rem", paddingTop: "4rem" }}>
-        <LeagueVsLeague allClubs={allComparable} />
+      {/* ── Dark masthead ── */}
+      <header>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
+          <h1
+            className="font-serif font-normal leading-none"
+            style={{ color: "#ffffff", fontSize: "clamp(40px, 10vw, 140px)", letterSpacing: "-0.03em" }}
+          >
+            Compare
+          </h1>
+          <p
+            className="mt-4 sm:mt-6"
+            style={{ color: "#666666", fontSize: "clamp(14px, 2vw, 22px)", letterSpacing: "0.01em" }}
+          >
+            Head-to-head financial benchmarking across clubs and leagues
+          </p>
+        </div>
+      </header>
+
+      {/* ── White content panel ── */}
+      <div style={{ backgroundColor: "#ffffff", borderTop: "1px solid #1a1a1a" }}>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-10 sm:py-14">
+          <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
+            <CompareWrapper allClubs={allComparable} />
+          </Suspense>
+        </div>
       </div>
+
     </div>
   );
 }
