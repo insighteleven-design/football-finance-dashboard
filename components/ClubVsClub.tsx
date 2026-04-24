@@ -491,9 +491,9 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
   }
 
   return (
-    <div>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
       {/* Slot grid */}
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${slotsToShow}, 1fr)`, gap: "0.75rem", marginBottom: "1.5rem", alignItems: "stretch" }}>
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${slotsToShow}, 1fr)`, gap: "0.75rem", marginBottom: selectedClubs.length >= 2 ? "1.5rem" : 0, flex: selectedClubs.length < 2 ? 1 : undefined, alignItems: "stretch" }}>
         {Array.from({ length: slotsToShow }).map((_, i) => (
           <ClubSlot
             key={i} slotIndex={i} allClubs={allClubs}

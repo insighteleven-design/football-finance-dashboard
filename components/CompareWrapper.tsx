@@ -20,7 +20,7 @@ export default function CompareWrapper({ allClubs }: { allClubs: ComparableClub[
   }
 
   return (
-    <div>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
       {/* ── Mode switcher ── */}
       <div className="flex border-b-2 border-[#eeeeee] mb-6 overflow-x-auto">
         {(["clubs", "leagues"] as Mode[]).map((m) => {
@@ -51,8 +51,10 @@ export default function CompareWrapper({ allClubs }: { allClubs: ComparableClub[
         })}
       </div>
 
-      {mode === "clubs"   && <ClubVsClub   allClubs={allClubs} />}
-      {mode === "leagues" && <LeagueVsLeague allClubs={allClubs} />}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {mode === "clubs"   && <ClubVsClub   allClubs={allClubs} />}
+        {mode === "leagues" && <LeagueVsLeague allClubs={allClubs} />}
+      </div>
     </div>
   );
 }
