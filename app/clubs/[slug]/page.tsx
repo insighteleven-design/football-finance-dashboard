@@ -101,7 +101,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     const prevEu = visibleEuClubs[(idx - 1 + visibleEuClubs.length) % visibleEuClubs.length];
 
     return (
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-6 lg:px-12 py-8">
         <div className="mb-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
@@ -174,7 +174,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     if (japanClub.wage_ratio !== null && japanClub.wage_ratio < 60) positives.push("Lean wage bill");
 
     return (
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-6 lg:px-12 py-8">
         <div className="mb-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">

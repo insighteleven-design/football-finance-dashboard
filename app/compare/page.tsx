@@ -94,35 +94,24 @@ const allComparable = [...englishComparable, ...euComparable, ...japanComparable
 
 export default function ComparePage() {
   return (
-    <div style={{ backgroundColor: "#080808", minHeight: "100vh" }}>
-
-      {/* ── Dark masthead ── */}
-      <header>
-        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
-          <h1
-            className="font-serif font-normal leading-none"
-            style={{ color: "#ffffff", fontSize: "clamp(40px, 10vw, 140px)", letterSpacing: "-0.03em" }}
-          >
-            Compare
-          </h1>
-          <p
-            className="mt-4 sm:mt-6"
-            style={{ color: "#666666", fontSize: "clamp(14px, 2vw, 22px)", letterSpacing: "0.01em" }}
-          >
-            Head-to-head financial benchmarking across clubs and leagues
-          </p>
-        </div>
-      </header>
-
-      {/* ── White content panel ── */}
-      <div style={{ backgroundColor: "#ffffff", borderTop: "1px solid #1a1a1a" }}>
-        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 py-10 sm:py-14">
-          <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
-            <CompareWrapper allClubs={allComparable} />
-          </Suspense>
-        </div>
+    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
+      <div className="px-6 lg:px-12 pt-10 sm:pt-16 pb-10 sm:pb-14">
+        <h1
+          className="font-serif font-normal leading-none mb-2"
+          style={{ color: "#111111", fontSize: "clamp(40px, 10vw, 140px)", letterSpacing: "-0.03em" }}
+        >
+          Compare
+        </h1>
+        <p
+          className="mb-8 sm:mb-12"
+          style={{ color: "#999999", fontSize: "clamp(14px, 2vw, 20px)", letterSpacing: "0.01em" }}
+        >
+          Head-to-head financial benchmarking across clubs and leagues
+        </p>
+        <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
+          <CompareWrapper allClubs={allComparable} />
+        </Suspense>
       </div>
-
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function CompareWrapper({ allClubs }: { allClubs: ComparableClub[
   return (
     <div>
       {/* ── Mode switcher ── */}
-      <div className="flex border-b-2 border-[#eeeeee] mb-10 sm:mb-14 overflow-x-auto">
+      <div className="flex border-b-2 border-[#eeeeee] mb-8 overflow-x-auto">
         {(["clubs", "leagues"] as Mode[]).map((m) => {
           const active = mode === m;
           return (
