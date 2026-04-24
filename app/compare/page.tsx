@@ -95,7 +95,7 @@ const allComparable = [...englishComparable, ...euComparable, ...japanComparable
 export default function ComparePage() {
   return (
     <div style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
-      <div className="px-6 lg:px-12 pt-10 sm:pt-16 pb-10 sm:pb-14">
+      <div className="px-6 lg:px-12 pt-10 sm:pt-14 pb-10 sm:pb-14">
         <h1
           className="font-serif font-normal leading-none mb-2"
           style={{ color: "#111111", fontSize: "clamp(40px, 10vw, 140px)", letterSpacing: "-0.03em" }}
@@ -103,7 +103,7 @@ export default function ComparePage() {
           Compare
         </h1>
         <p
-          className="mb-8 sm:mb-12"
+          className="mb-6 sm:mb-8"
           style={{ color: "#999999", fontSize: "clamp(14px, 2vw, 20px)", letterSpacing: "0.01em" }}
         >
           Head-to-head financial benchmarking across clubs and leagues

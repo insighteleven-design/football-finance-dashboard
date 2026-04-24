@@ -202,7 +202,7 @@ function LeagueSlot({
 
   // ── Country grid ──────────────────────────────────────────────────────────────
   return (
-    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.5rem" }}>
+    <div style={{ border: "1px solid #e0e0e0", backgroundColor: "#ffffff", padding: "1.75rem", minHeight: "200px", display: "flex", flexDirection: "column" }}>
       <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: style.text, marginBottom: "1rem" }}>
         League {label}
       </p>
@@ -412,18 +412,8 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
 
   return (
     <div>
-      {/* Selector heading */}
-      <div style={{ marginBottom: "1.75rem" }}>
-        <p style={{ fontSize: "22px", fontWeight: 300, color: "#111111", letterSpacing: "-0.01em", lineHeight: 1.2, marginBottom: "0.375rem" }}>
-          Select leagues to compare
-        </p>
-        <p style={{ fontSize: "14px", color: "#999999" }}>
-          Compare average financial metrics across up to four leagues. Averages are computed from all clubs with available data.
-        </p>
-      </div>
-
       {/* Slot grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${slotsToShow}, 1fr)`, gap: "0.75rem", marginBottom: "1.5rem", alignItems: "stretch" }}>
         {Array.from({ length: slotsToShow }).map((_, i) => (
           <LeagueSlot
             key={i} slotIndex={i} allLeagues={allLeagues}
