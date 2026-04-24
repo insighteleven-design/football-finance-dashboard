@@ -269,56 +269,40 @@ function ClubRankings({ allClubs }: { allClubs: ComparableClub[] }) {
 
 function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   const [metricKey, setMetricKey] = useState<keyof ComparableClub>("revenue");
-  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+  const [selectedLeagueId, setSelectedLeagueId] = useState<string | null>(null);
 
   const metric = CLUB_METRICS.find((m) => m.key === metricKey)!;
 
-  // Group clubs by league, sort leagues by their average (desc/asc), sort clubs within each league
   const leagueGroups = useMemo(() => {
-    const map = new Map<string, { leagueId: string; country: string; divisionLabel: string; displayName: string; currency: string; clubs: ComparableClub[] }>();
+    const map = new Map<string, { leagueId: string; country: string; divisionLabel: string; displayName: string; clubs: ComparableClub[] }>();
     for (const c of allClubs) {
       const id = `${c.country}::${c.divisionLabel}`;
-      if (!map.has(id)) {
-        map.set(id, {
-          leagueId: id,
-          country: c.country,
-          divisionLabel: c.divisionLabel,
-          displayName: c.divisionLabel.replace(/ · \w+$/, ""),
-          currency: c.currency,
-          clubs: [],
-        });
-      }
+      if (!map.has(id)) map.set(id, { leagueId: id, country: c.country, divisionLabel: c.divisionLabel, displayName: c.divisionLabel.replace(/ · \w+$/, ""), clubs: [] });
       map.get(id)!.clubs.push(c);
     }
-
-    // Sort clubs within each league by metric
-    const groups = [...map.values()].map((g) => {
-      const ranked = [...g.clubs]
-        .filter((c) => (c[metricKey] as number | null) !== null)
-        .sort((a, b) =>
-          metric.lowerIsBetter
-            ? (a[metricKey] as number) - (b[metricKey] as number)
-            : (b[metricKey] as number) - (a[metricKey] as number)
-        );
-      const vals = ranked.map((c) => c[metricKey] as number);
-      const leagueAvg = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
-      return { ...g, ranked, leagueAvg };
-    });
-
-    // Sort leagues by country order
-    groups.sort((a, b) => {
+    return [...map.values()].sort((a, b) => {
       const ci = COUNTRY_ORDER.indexOf(a.country) - COUNTRY_ORDER.indexOf(b.country);
       return ci !== 0 ? ci : a.divisionLabel.localeCompare(b.divisionLabel);
     });
+  }, [allClubs]);
 
-    return groups;
-  }, [allClubs, metricKey, metric.lowerIsBetter]);
+  const selectedGroup = selectedLeagueId ? leagueGroups.find((g) => g.leagueId === selectedLeagueId) : null;
 
-  // Global max for consistent bar scaling across leagues
-  const globalMax = useMemo(() => {
-    const allVals = allClubs.map((c) => c[metricKey] as number | null).filter((v): v is number => v !== null);
-    return Math.max(...allVals.map(Math.abs), 0.01);
-  }, [allClubs, metricKey]);
+  const rankedClubs = useMemo(() => {
+    if (!selectedGroup) return [];
+    return [...selectedGroup.clubs]
+      .filter((c) => (c[metricKey] as number | null) !== null)
+      .sort((a, b) =>
+        metric.lowerIsBetter
+          ? (a[metricKey] as number) - (b[metricKey] as number)
+          : (b[metricKey] as number) - (a[metricKey] as number)
+      );
+  }, [selectedGroup, metricKey, metric.lowerIsBetter]);
+
+  const localMax = useMemo(() =>
+    Math.max(...rankedClubs.map((c) => Math.abs(c[metricKey] as number)), 0.01),
+    [rankedClubs, metricKey]
+  );
 
   function barColor(value: number): string {
     if (metricKey === "pre_tax_profit") return value >= 0 ? "#22c55e" : "#ef4444";
@@ -326,70 +310,91 @@ function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
     return "#4A90D9";
   }
 
-  function toggleCollapse(id: string) {
-    setCollapsed((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
+  // ── League selector ──────────────────────────────────────────────────────────
+  if (!selectedLeagueId) {
+    // Group by country for display
+    const byCountry = new Map<string, typeof leagueGroups>();
+    for (const g of leagueGroups) {
+      if (!byCountry.has(g.country)) byCountry.set(g.country, []);
+      byCountry.get(g.country)!.push(g);
+    }
+
+    return (
+      <div>
+        <p style={{ fontSize: "15px", color: "#999999", marginBottom: "1.75rem" }}>
+          Select a league to see how clubs rank within it.
+        </p>
+        {[...byCountry.entries()].map(([country, groups]) => (
+          <div key={country} style={{ marginBottom: "1.5rem" }}>
+            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#bbbbbb", marginBottom: "0.625rem" }}>
+              {COUNTRY_FLAGS[country] ?? ""} {country}
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              {groups.map((g) => (
+                <button
+                  key={g.leagueId}
+                  onClick={() => setSelectedLeagueId(g.leagueId)}
+                  style={{ padding: "0.6rem 1.1rem", border: "1px solid #e0e0e0", background: "#ffffff", cursor: "pointer", fontSize: "15px", color: "#333333", fontWeight: 500, transition: "all 0.12s" }}
+                  onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#111111"; el.style.backgroundColor = "#f9f9f9"; }}
+                  onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "#e0e0e0"; el.style.backgroundColor = "#ffffff"; }}
+                >
+                  {g.displayName}
+                  <span style={{ fontSize: "12px", color: "#bbbbbb", marginLeft: "0.5rem" }}>{g.clubs.length}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
+  // ── Club list for selected league ────────────────────────────────────────────
   return (
     <div>
-      <MetricTabs metrics={CLUB_METRICS as { key: keyof ComparableClub; label: string }[]} active={metricKey} onChange={(k) => setMetricKey(k)} />
-      <div>
-        {leagueGroups.map((group) => {
-          const isCollapsed = collapsed.has(group.leagueId);
-          return (
-            <div key={group.leagueId} style={{ marginBottom: "2rem" }}>
-              {/* League header */}
-              <button
-                onClick={() => toggleCollapse(group.leagueId)}
-                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.75rem 0", background: "none", border: "none", borderBottom: "2px solid #111111", cursor: "pointer", textAlign: "left" }}
-              >
-                <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem" }}>
-                  <span style={{ fontSize: "18px", fontWeight: 700, color: "#111111", letterSpacing: "-0.01em" }}>
-                    {COUNTRY_FLAGS[group.country] ?? ""} {group.displayName}
-                  </span>
-                  <span style={{ fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaaaaa" }}>
-                    {group.ranked.length} clubs
-                  </span>
-                </div>
-                <span style={{ fontSize: "13px", color: "#aaaaaa", fontWeight: 500 }}>
-                  {isCollapsed ? "Show ↓" : "Hide ↑"}
-                </span>
-              </button>
-
-              {/* Club rows */}
-              {!isCollapsed && (
-                <div>
-                  {group.ranked.length === 0 ? (
-                    <p style={{ fontSize: "14px", color: "#cccccc", padding: "1rem 0" }}>No data available for this metric.</p>
-                  ) : (
-                    group.ranked.map((club, i) => {
-                      const value = club[metricKey] as number;
-                      return (
-                        <BarRow
-                          key={club.slug}
-                          rank={i + 1}
-                          name={club.name}
-                          slug={club.slug}
-                          subtitle=""
-                          value={value}
-                          formattedValue={fmtVal(value, metric.isRatio, club.currency)}
-                          barPct={Math.min((Math.abs(value) / globalMax) * 100, 100)}
-                          color={barColor(value)}
-                          isDiverg={!!metric.diverging}
-                        />
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+      {/* Back + league name */}
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.75rem" }}>
+        <button
+          onClick={() => setSelectedLeagueId(null)}
+          style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#999999"; }}
+        >
+          ← All leagues
+        </button>
+        <span style={{ fontSize: "22px", fontWeight: 700, color: "#111111", letterSpacing: "-0.01em" }}>
+          {COUNTRY_FLAGS[selectedGroup!.country] ?? ""} {selectedGroup!.displayName}
+        </span>
+        <span style={{ fontSize: "13px", color: "#aaaaaa", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          {selectedGroup!.clubs.length} clubs
+        </span>
       </div>
+
+      <MetricTabs metrics={CLUB_METRICS as { key: keyof ComparableClub; label: string }[]} active={metricKey} onChange={(k) => setMetricKey(k)} />
+
+      {rankedClubs.length === 0 ? (
+        <p style={{ fontSize: "15px", color: "#aaaaaa" }}>No data available for this metric.</p>
+      ) : (
+        <div>
+          {rankedClubs.map((club, i) => {
+            const value = club[metricKey] as number;
+            return (
+              <BarRow
+                key={club.slug}
+                rank={i + 1}
+                name={club.name}
+                slug={club.slug}
+                subtitle=""
+                value={value}
+                formattedValue={fmtVal(value, metric.isRatio, club.currency)}
+                barPct={Math.min((Math.abs(value) / localMax) * 100, 100)}
+                color={barColor(value)}
+                isDiverg={!!metric.diverging}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
