@@ -22,6 +22,10 @@ export interface EUHistoricalYear {
   net_profit: number | null;
   equity?: number | null;
   total_liabilities?: number | null;
+  operating_profit?: number | null;
+  profit_from_player_sales?: number | null;
+  pre_tax_profit?: number | null;
+  net_debt?: number | null;
 }
 
 /** Prior-year financial snapshot — same optional fields as financials */

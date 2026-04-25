@@ -108,8 +108,8 @@ const FR_METRICS: MetricConfig[] = [
 ];
 
 const DK_METRICS: MetricConfig[] = [
-  { key: "revenue",             label: "Revenue (USD)",                  higherBetter: true },
-  { key: "wage_bill",           label: "Wage Bill (USD)",                higherBetter: false },
+  { key: "revenue",             label: "Revenue (€)",                    higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (€)",                  higherBetter: false },
   { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
   { key: "operating_profit",    label: "Operating Profit / (Loss)",      diverging: true, higherBetter: true },
   { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
@@ -158,7 +158,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   if (country === "Denmark") {
     return (
       <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
-        Figures converted from Danish Krone (DKK) to US Dollars (USD) using published annual FX rates.
+        Figures converted from Danish Krone (DKK) to Euros (EUR) using published annual EUR/DKK rates.
         Original DKK values are available in the data notes below.
       </div>
     );
@@ -331,10 +331,10 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
         net_profit: h.net_profit,
         equity: h.equity ?? null,
         total_liabilities: h.total_liabilities ?? null,
-        operating_profit: py?.operating_profit ?? null,
-        profit_from_player_sales: py?.profit_from_player_sales ?? null,
-        pre_tax_profit: py?.pre_tax_profit ?? null,
-        net_debt: py?.net_debt ?? null,
+        operating_profit: h.operating_profit ?? py?.operating_profit ?? null,
+        profit_from_player_sales: h.profit_from_player_sales ?? py?.profit_from_player_sales ?? null,
+        pre_tax_profit: h.pre_tax_profit ?? py?.pre_tax_profit ?? null,
+        net_debt: h.net_debt ?? py?.net_debt ?? null,
       };
     });
   // Inject prior_year when not already present in historical
