@@ -26,10 +26,10 @@ export const dkClubs: EUClub[] = [
       net_profit: 27.5,
       total_liabilities: 294.2,
       equity: 194.9,
-      operating_profit: null,
+      operating_profit: 41.1,
       pre_tax_profit: 37.5,
       net_debt: 269.1,
-      data_notes: "PARKEN group (includes Lalandia resort). Original DKK (tDKK): revenue 1,884,619 | wages 658,894 | pre-tax profit 279,904 | equity 1,454,809 | total liabilities 2,196,052 | cash 187,555. EUR/DKK: 0.1340 (FY2025).",
+      data_notes: "PARKEN group (includes Lalandia resort). Original DKK (tDKK): revenue 1,884,619 | wages 658,894 | operating profit 306,600 (primært resultat 297,200 + transfer 10,400 − amortiseringer 1,000) | pre-tax profit 279,904 | equity 1,454,809 | total liabilities 2,196,052 | cash 187,555. EUR/DKK: 0.1340 (FY2025).",
     },
     prior_year: {
       season: "FY2024",
@@ -47,9 +47,6 @@ export const dkClubs: EUClub[] = [
     historical: [
       { season: "FY2023", revenue: 227.5, wage_bill: 78.3, net_profit: 57.8, operating_profit: 64.1, pre_tax_profit: 57.8, net_debt: 154.8 },
       { season: "FY2022", revenue: 176.6, wage_bill: 69.8, net_profit: 35.4, operating_profit: 41.5, pre_tax_profit: 35.4, net_debt: 178.8 },
-      { season: "FY2021", revenue: 159.1, wage_bill: null, net_profit: 14.2, operating_profit: null, pre_tax_profit: 14.2, net_debt: 177.3 },
-      { season: "FY2020", revenue: 72.9, wage_bill: null, net_profit: -38.9, pre_tax_profit: -38.9, net_debt: 186.6 },
-      { season: "FY2019", revenue: 112.3, wage_bill: null, net_profit: 10.1, pre_tax_profit: 10.1, net_debt: 133.3 },
     ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
