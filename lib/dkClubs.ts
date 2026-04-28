@@ -136,7 +136,12 @@ export const dkClubs: EUClub[] = [
       pre_tax_profit: 1.9,
       net_debt: 0.5,
     },
-    historical: [],
+    historical: [
+      // net_profit field stores pre-tax profit (closest available equivalent)
+      // net_debt = total_liabilities − cash (likvide beholdninger); consistent with FY2024 methodology
+      { season: "FY2021/22", revenue: 25.4, wage_bill: 13.0, net_profit: 1.0, operating_profit: 2.6, pre_tax_profit: 1.4, net_debt: 7.7 },
+      // DKK (tDKK): revenue 188,807 | wages 96,745 | op profit 19,251 | pre-tax 10,693 | net profit 7,497 | total liabilities 69,782 | cash 12,617. EUR/DKK: 0.1344 (FY2022).
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
