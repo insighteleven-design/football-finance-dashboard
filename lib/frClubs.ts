@@ -1,5 +1,5 @@
 // French Ligue 1 & Ligue 2 financial data
-// Source: ligue_1_2024_25.csv, ligue_2_2024_25.csv, ligue_1_2023_24.csv, ligue_2_2023_24.csv, ligue_1_et_2_2022_23.csv
+// Source: ligue_1_2024_25.csv, ligue_2_2024_25.csv, ligue_1_2023_24.csv, ligue_2_2023_24.csv, ligue_1_et_2_2022_23.csv, ligue_1_et_2_2021_22.csv
 // Monetary values in EUR millions (source CSV in EUR thousands, divided by 1000).
 // net_profit field in historical[] stores pre-tax profit (closest available equivalent).
 // most_recent_year = 2024/25 season accounts.
@@ -33,6 +33,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 807.9, wage_bill: 658.6, wage_to_revenue_pct: 82, operating_profit: -232.2, profit_from_player_sales: 181.4, pre_tax_profit: -56.3, net_debt: 638.6 },
     historical: [
+            { season: "2021/22", revenue: 669.6, wage_bill: 729.0, net_profit: -375.4, operating_profit: -401.5, profit_from_player_sales: 31.8, pre_tax_profit: -375.4, net_debt: -26.0 },
             { season: "2022/23", revenue: 807.3, wage_bill: 621.2, net_profit: -107.4, operating_profit: -154.9, profit_from_player_sales: 45.4, pre_tax_profit: -107.4, net_debt: 265.8 },
 { season: "2023/24", revenue: 807.9, wage_bill: 658.6, net_profit: -56.3 },
       { season: "2024/25", revenue: 837.0, wage_bill: 535.0, net_profit: -40.4 },
@@ -66,6 +67,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 287.0, wage_bill: 148.3, wage_to_revenue_pct: 52, operating_profit: -44.8, profit_from_player_sales: 7.8, pre_tax_profit: -38.4, net_debt: 167.1 },
     historical: [
+            { season: "2021/22", revenue: 237.5, wage_bill: 135.5, net_profit: -31.0, operating_profit: -16.9, profit_from_player_sales: -16.0, pre_tax_profit: -31.0, net_debt: -50.0 },
             { season: "2022/23", revenue: 258.4, wage_bill: 147.4, net_profit: -12.7, operating_profit: -25.1, profit_from_player_sales: 18.6, pre_tax_profit: -12.7, net_debt: 99.4 },
 { season: "2023/24", revenue: 287.0, wage_bill: 148.3, net_profit: -38.4 },
       { season: "2024/25", revenue: 188.7, wage_bill: 153.7, net_profit: -103.4 },
@@ -99,6 +101,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 118.3, wage_bill: 74.7, wage_to_revenue_pct: 63, operating_profit: -19.9, profit_from_player_sales: 42.1, pre_tax_profit: 19.2, net_debt: 51.4 },
     historical: [
+            { season: "2021/22", revenue: 147.6, wage_bill: 84.2, net_profit: 22.7, operating_profit: -37.2, profit_from_player_sales: 52.5, pre_tax_profit: 22.7, net_debt: -17.0 },
             { season: "2022/23", revenue: 107.0, wage_bill: 73.3, net_profit: 34.9, operating_profit: -37.3, profit_from_player_sales: 72.7, pre_tax_profit: 34.9, net_debt: 73.2 },
 { season: "2023/24", revenue: 118.3, wage_bill: 74.7, net_profit: 19.2 },
       { season: "2024/25", revenue: 191.8, wage_bill: 89.0, net_profit: 101.1 },
@@ -132,6 +135,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 264.1, wage_bill: 161.9, wage_to_revenue_pct: 61, operating_profit: 26.5, profit_from_player_sales: 75.9, pre_tax_profit: -8.4, net_debt: 33.4 },
     historical: [
+            { season: "2021/22", revenue: 160.5, wage_bill: 99.4, net_profit: -56.8, operating_profit: -41.1, profit_from_player_sales: 53.6, pre_tax_profit: -56.8, net_debt: 311.6 },
             { season: "2022/23", revenue: 199.1, wage_bill: 156.7, net_profit: -99.1, operating_profit: -1.8, profit_from_player_sales: 77.3, pre_tax_profit: -99.1, net_debt: 244.9 },
 { season: "2023/24", revenue: 264.1, wage_bill: 161.9, net_profit: -8.4 },
       { season: "2024/25", revenue: 159.0, wage_bill: 155.1, net_profit: -208.6 },
@@ -165,6 +169,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 107.7, wage_bill: 104.9, wage_to_revenue_pct: 97, operating_profit: -30.3, profit_from_player_sales: -4.1, pre_tax_profit: -15.4, net_debt: 193.9 },
     historical: [
+            { season: "2021/22", revenue: 86.2, wage_bill: 118.0, net_profit: -0.2, operating_profit: -145.5, profit_from_player_sales: 41.9, pre_tax_profit: -0.2, net_debt: 211.5 },
             { season: "2022/23", revenue: 110.9, wage_bill: 112.9, net_profit: -0.2, operating_profit: -43.2, profit_from_player_sales: 39.8, pre_tax_profit: -0.2, net_debt: 154.2 },
 { season: "2023/24", revenue: 107.7, wage_bill: 104.9, net_profit: -15.4 },
       { season: "2024/25", revenue: 116.9, wage_bill: 109.4, net_profit: -2.7 },
@@ -198,6 +203,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: null,
     historical: [
+            { season: "2021/22", revenue: 44.4, wage_bill: 29.5, net_profit: 14.0, operating_profit: -8.2, profit_from_player_sales: 19.9, pre_tax_profit: 14.0, net_debt: -0.8 },
             { season: "2022/23", revenue: 51.5, wage_bill: 33.1, net_profit: -4.7, operating_profit: -8.9, profit_from_player_sales: 0.8, pre_tax_profit: -4.7, net_debt: 8.4 },
 { season: "2024/25", revenue: 94.9, wage_bill: 44.0, net_profit: 6.6 },
     ],
@@ -230,6 +236,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 107.1, wage_bill: 111.7, wage_to_revenue_pct: 104, operating_profit: -30.8, profit_from_player_sales: 37.0, pre_tax_profit: -0.2, net_debt: 195.2 },
     historical: [
+            { season: "2021/22", revenue: 83.5, wage_bill: 87.4, net_profit: -12.2, operating_profit: -4.0, profit_from_player_sales: -6.6, pre_tax_profit: -12.2, net_debt: 31.6 },
             { season: "2022/23", revenue: 109.1, wage_bill: 116.2, net_profit: -14.0, operating_profit: -31.5, profit_from_player_sales: 21.2, pre_tax_profit: -14.0, net_debt: 143.8 },
 { season: "2023/24", revenue: 107.1, wage_bill: 111.7, net_profit: -0.2 },
       { season: "2024/25", revenue: 93.4, wage_bill: 116.1, net_profit: -27.0 },
@@ -263,6 +270,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 161.9, wage_bill: 93.0, wage_to_revenue_pct: 57, operating_profit: -13.1, profit_from_player_sales: -7.7, pre_tax_profit: -26.7, net_debt: 83.3 },
     historical: [
+            { season: "2021/22", revenue: 78.4, wage_bill: 70.9, net_profit: -59.6, operating_profit: -57.1, profit_from_player_sales: 1.9, pre_tax_profit: -59.6, net_debt: 36.2 },
             { season: "2022/23", revenue: 97.8, wage_bill: 104.5, net_profit: -64.0, operating_profit: -96.9, profit_from_player_sales: 32.5, pre_tax_profit: -64.0, net_debt: 96.3 },
 { season: "2023/24", revenue: 161.9, wage_bill: 93.0, net_profit: -26.7 },
       { season: "2024/25", revenue: 93.4, wage_bill: 89.8, net_profit: -40.5 },
@@ -296,6 +304,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 144.5, wage_bill: 84.8, wage_to_revenue_pct: 59, operating_profit: -13.7, profit_from_player_sales: 28.2, pre_tax_profit: 8.6, net_debt: 73.5 },
     historical: [
+            { season: "2021/22", revenue: 47.5, wage_bill: 38.0, net_profit: 1.8, operating_profit: -24.1, profit_from_player_sales: 25.1, pre_tax_profit: 1.8, net_debt: 19.2 },
             { season: "2022/23", revenue: 85.1, wage_bill: 65.1, net_profit: 3.4, operating_profit: -30.3, profit_from_player_sales: 33.5, pre_tax_profit: 3.4, net_debt: 82.5 },
 { season: "2023/24", revenue: 144.5, wage_bill: 84.8, net_profit: 8.6 },
       { season: "2024/25", revenue: 68.8, wage_bill: 59.8, net_profit: 4.4 },
@@ -329,6 +338,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 64.4, wage_bill: 56.5, wage_to_revenue_pct: 88, operating_profit: -30.2, profit_from_player_sales: 31.7, pre_tax_profit: 0.1, net_debt: 25.9 },
     historical: [
+            { season: "2021/22", revenue: 51.5, wage_bill: 43.0, net_profit: 0.1, operating_profit: -21.6, profit_from_player_sales: 1.2, pre_tax_profit: 0.1, net_debt: 9.3 },
             { season: "2022/23", revenue: 80.6, wage_bill: 50.1, net_profit: 0.9, operating_profit: -8.5, profit_from_player_sales: 2.8, pre_tax_profit: 0.9, net_debt: 28.3 },
 { season: "2023/24", revenue: 64.4, wage_bill: 56.5, net_profit: 0.1 },
       { season: "2024/25", revenue: 41.4, wage_bill: 55.6, net_profit: 0.1 },
@@ -362,6 +372,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 58.6, wage_bill: 56.7, wage_to_revenue_pct: 97, operating_profit: -36.9, profit_from_player_sales: 43.2, pre_tax_profit: 0.8, net_debt: 50.4 },
     historical: [
+            { season: "2021/22", revenue: 36.4, wage_bill: 27.5, net_profit: 1.2, operating_profit: -23.3, profit_from_player_sales: 18.9, pre_tax_profit: 1.2, net_debt: 15.1 },
             { season: "2022/23", revenue: 58.0, wage_bill: 44.0, net_profit: 0.2, operating_profit: -26.3, profit_from_player_sales: 26.2, pre_tax_profit: 0.2, net_debt: 31.5 },
 { season: "2023/24", revenue: 58.6, wage_bill: 56.7, net_profit: 0.8 },
       { season: "2024/25", revenue: 40.7, wage_bill: 42.0, net_profit: 0.4 },
@@ -395,6 +406,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 26.8, wage_bill: 23.1, wage_to_revenue_pct: 86, operating_profit: -13.1, profit_from_player_sales: -0.1, pre_tax_profit: -14.0, net_debt: 16.5 },
     historical: [
+            { season: "2021/22", revenue: 13.1, wage_bill: 14.9, net_profit: -8.6, operating_profit: -10.5, profit_from_player_sales: 0.8, pre_tax_profit: -8.6, net_debt: -13.7 },
             { season: "2022/23", revenue: 37.9, wage_bill: 30.3, net_profit: -7.6, operating_profit: -7.7, profit_from_player_sales: 1.5, pre_tax_profit: -7.6, net_debt: 10.8 },
 { season: "2023/24", revenue: 26.8, wage_bill: 23.1, net_profit: -14.0 },
       { season: "2024/25", revenue: 39.3, wage_bill: 38.0, net_profit: -16.5 },
@@ -428,6 +440,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 50.0, wage_bill: 29.3, wage_to_revenue_pct: 59, operating_profit: -8.3, profit_from_player_sales: 15.2, pre_tax_profit: -0.9, net_debt: 3.9 },
     historical: [
+            { season: "2021/22", revenue: 72.2, wage_bill: 38.8, net_profit: -6.6, operating_profit: -2.6, profit_from_player_sales: 5.9, pre_tax_profit: -6.6, net_debt: 10.8 },
             { season: "2022/23", revenue: 20.4, wage_bill: 27.4, net_profit: 0.4, operating_profit: -7.0, profit_from_player_sales: 31.1, pre_tax_profit: 0.4, net_debt: 1.1 },
 { season: "2023/24", revenue: 50.0, wage_bill: 29.3, net_profit: -0.9 },
       { season: "2024/25", revenue: 39.0, wage_bill: 38.7, net_profit: -28.5 },
@@ -461,6 +474,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 64.9, wage_bill: 51.2, wage_to_revenue_pct: 79, operating_profit: -41.7, profit_from_player_sales: 28.6, pre_tax_profit: -14.3, net_debt: 63.4 },
     historical: [
+            { season: "2021/22", revenue: 57.5, wage_bill: 37.1, net_profit: 3.2, operating_profit: -10.3, profit_from_player_sales: 13.7, pre_tax_profit: 3.2, net_debt: -6.9 },
             { season: "2022/23", revenue: 62.1, wage_bill: 45.1, net_profit: -3.0, operating_profit: -14.1, profit_from_player_sales: 13.5, pre_tax_profit: -3.0, net_debt: 6.3 },
 { season: "2023/24", revenue: 64.9, wage_bill: 51.2, net_profit: -14.3 },
       { season: "2024/25", revenue: 38.8, wage_bill: 66.9, net_profit: -78.3 },
@@ -494,6 +508,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 63.2, wage_bill: 38.3, wage_to_revenue_pct: 61, operating_profit: -9.8, profit_from_player_sales: 20.7, pre_tax_profit: 7.8, net_debt: 16.0 },
     historical: [
+            { season: "2021/22", revenue: 27.1, wage_bill: 22.7, net_profit: 0.6, operating_profit: -12.2, profit_from_player_sales: 18.0, pre_tax_profit: 0.6, net_debt: -12.4 },
             { season: "2022/23", revenue: 46.7, wage_bill: 32.5, net_profit: 0.2, operating_profit: -13.7, profit_from_player_sales: 12.5, pre_tax_profit: 0.2, net_debt: 14.1 },
 { season: "2023/24", revenue: 63.2, wage_bill: 38.3, net_profit: 7.8 },
       { season: "2024/25", revenue: 36.1, wage_bill: 32.4, net_profit: 2.1 },
@@ -527,6 +542,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 37.7, wage_bill: 31.0, wage_to_revenue_pct: 82, operating_profit: -14.3, profit_from_player_sales: 1.4, pre_tax_profit: -13.6, net_debt: 18.5 },
     historical: [
+            { season: "2021/22", revenue: 11.6, wage_bill: 12.9, net_profit: 5.2, operating_profit: -12.6, profit_from_player_sales: 11.8, pre_tax_profit: 5.2, net_debt: 4.2 },
             { season: "2022/23", revenue: 19.2, wage_bill: 15.7, net_profit: -2.7, operating_profit: -10.1, profit_from_player_sales: 3.9, pre_tax_profit: -2.7, net_debt: 7.1 },
 { season: "2023/24", revenue: 37.7, wage_bill: 31.0, net_profit: -13.6 },
       { season: "2024/25", revenue: 32.5, wage_bill: 30.6, net_profit: -9.7 },
@@ -560,6 +576,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 33.5, wage_bill: 19.7, wage_to_revenue_pct: 59, operating_profit: 0.1, profit_from_player_sales: 14.4, pre_tax_profit: 13.5, net_debt: -16.7 },
     historical: [
+            { season: "2021/22", revenue: 35.2, wage_bill: 27.4, net_profit: 10.0, operating_profit: -14.8, profit_from_player_sales: 25.8, pre_tax_profit: 10.0, net_debt: 6.5 },
             { season: "2022/23", revenue: 46.7, wage_bill: 36.4, net_profit: 4.0, operating_profit: -13.4, profit_from_player_sales: 21.7, pre_tax_profit: 4.0, net_debt: 21.3 },
 { season: "2023/24", revenue: 33.5, wage_bill: 19.7, net_profit: 13.5 },
       { season: "2024/25", revenue: 20.6, wage_bill: 27.2, net_profit: -5.8 },
@@ -593,6 +610,7 @@ const l1Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 54.7, wage_bill: 51.7, wage_to_revenue_pct: 95, operating_profit: -25.2, profit_from_player_sales: 36.1, pre_tax_profit: 0.0, net_debt: 29.2 },
     historical: [
+            { season: "2021/22", revenue: 38.6, wage_bill: 40.7, net_profit: 3.0, operating_profit: -26.5, profit_from_player_sales: 16.6, pre_tax_profit: 3.0, net_debt: -3.2 },
             { season: "2022/23", revenue: 52.5, wage_bill: 51.7, net_profit: -2.1, operating_profit: -25.1, profit_from_player_sales: 6.8, pre_tax_profit: -2.1, net_debt: 13.5 },
 { season: "2023/24", revenue: 54.7, wage_bill: 51.7, net_profit: 0.0 },
       { season: "2024/25", revenue: 28.8, wage_bill: 42.7, net_profit: -4.1 },
@@ -629,6 +647,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 54.4, wage_bill: 30.5, wage_to_revenue_pct: 56, operating_profit: -15.5, profit_from_player_sales: 21.8, pre_tax_profit: -4.6, net_debt: 19.6 },
     historical: [
+            { season: "2021/22", revenue: 35.6, wage_bill: 34.5, net_profit: -12.7, operating_profit: -28.1, profit_from_player_sales: 16.7, pre_tax_profit: -12.7, net_debt: 7.9 },
             { season: "2022/23", revenue: 31.9, wage_bill: 21.8, net_profit: 1.0, operating_profit: -17.6, profit_from_player_sales: 21.7, pre_tax_profit: 1.0, net_debt: 5.8 },
 { season: "2023/24", revenue: 54.4, wage_bill: 30.5, net_profit: -4.6 },
       { season: "2024/25", revenue: 23.5, wage_bill: 20.0, net_profit: -0.6 },
@@ -662,6 +681,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 47.0, wage_bill: 47.2, wage_to_revenue_pct: 100, operating_profit: -37.1, profit_from_player_sales: 37.9, pre_tax_profit: 1.1, net_debt: 59.8 },
     historical: [
+            { season: "2021/22", revenue: 33.6, wage_bill: 30.1, net_profit: -2.8, operating_profit: -17.8, profit_from_player_sales: 9.0, pre_tax_profit: -2.8, net_debt: 10.2 },
             { season: "2022/23", revenue: 46.1, wage_bill: 38.8, net_profit: 9.0, operating_profit: -23.6, profit_from_player_sales: 32.8, pre_tax_profit: 9.0, net_debt: 35.6 },
 { season: "2023/24", revenue: 47.0, wage_bill: 47.2, net_profit: 1.1 },
       { season: "2024/25", revenue: 17.2, wage_bill: 26.4, net_profit: 1.1 },
@@ -695,6 +715,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 16.2, wage_bill: 16.7, wage_to_revenue_pct: 103, operating_profit: -11.1, profit_from_player_sales: 2.6, pre_tax_profit: -9.4, net_debt: 3.3 },
     historical: [
+            { season: "2021/22", revenue: 15.5, wage_bill: 9.3, net_profit: 1.4, operating_profit: -4.5, profit_from_player_sales: 5.9, pre_tax_profit: 1.4, net_debt: -7.9 },
             { season: "2022/23", revenue: 14.8, wage_bill: 14.7, net_profit: -2.8, operating_profit: -9.1, profit_from_player_sales: 6.4, pre_tax_profit: -2.8, net_debt: -3.5 },
 { season: "2023/24", revenue: 16.2, wage_bill: 16.7, net_profit: -9.4 },
       { season: "2024/25", revenue: 16.2, wage_bill: 15.8, net_profit: -2.8 },
@@ -728,6 +749,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 13.6, wage_bill: 11.0, wage_to_revenue_pct: 81, operating_profit: -7.5, profit_from_player_sales: 6.2, pre_tax_profit: -0.9, net_debt: -4.0 },
     historical: [
+            { season: "2021/22", revenue: 18.2, wage_bill: 8.5, net_profit: 2.1, operating_profit: -1.1, profit_from_player_sales: 2.8, pre_tax_profit: 2.1, net_debt: -7.5 },
             { season: "2022/23", revenue: 12.8, wage_bill: 10.2, net_profit: -2.3, operating_profit: -6.3, profit_from_player_sales: 3.6, pre_tax_profit: -2.3, net_debt: -5.1 },
 { season: "2023/24", revenue: 13.6, wage_bill: 11.0, net_profit: -0.9 },
       { season: "2024/25", revenue: 15.5, wage_bill: 10.2, net_profit: 0.7 },
@@ -761,6 +783,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 14.7, wage_bill: 18.7, wage_to_revenue_pct: 127, operating_profit: -15.6, profit_from_player_sales: 1.4, pre_tax_profit: -14.1, net_debt: 11.4 },
     historical: [
+            { season: "2021/22", revenue: 13.2, wage_bill: 12.2, net_profit: -1.3, operating_profit: -6.1, profit_from_player_sales: 4.1, pre_tax_profit: -1.3, net_debt: -4.0 },
             { season: "2022/23", revenue: 15.1, wage_bill: 16.2, net_profit: -2.9, operating_profit: -10.3, profit_from_player_sales: 7.1, pre_tax_profit: -2.9, net_debt: -2.8 },
 { season: "2023/24", revenue: 14.7, wage_bill: 18.7, net_profit: -14.1 },
       { season: "2024/25", revenue: 12.3, wage_bill: 31.6, net_profit: -33.5 },
@@ -794,6 +817,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 12.3, wage_bill: 7.8, wage_to_revenue_pct: 63, operating_profit: -4.0, profit_from_player_sales: 4.7, pre_tax_profit: 0.1, net_debt: 1.7 },
     historical: [
+            { season: "2021/22", revenue: 10.2, wage_bill: 5.6, net_profit: 0.2, operating_profit: 0.0, profit_from_player_sales: 0.1, pre_tax_profit: 0.2, net_debt: -0.3 },
             { season: "2022/23", revenue: 12.7, wage_bill: 6.5, net_profit: 0.4, operating_profit: -0.1, profit_from_player_sales: 0.8, pre_tax_profit: 0.4, net_debt: 0.2 },
 { season: "2023/24", revenue: 12.3, wage_bill: 7.8, net_profit: 0.1 },
       { season: "2024/25", revenue: 12.1, wage_bill: 8.1, net_profit: -0.7 },
@@ -827,6 +851,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 33.4, wage_bill: 22.2, wage_to_revenue_pct: 67, operating_profit: -17.2, profit_from_player_sales: 18.4, pre_tax_profit: -2.1, net_debt: 1.3 },
     historical: [
+            { season: "2021/22", revenue: 26.3, wage_bill: 34.6, net_profit: -31.1, operating_profit: -28.0, profit_from_player_sales: -1.4, pre_tax_profit: -31.1, net_debt: -13.5 },
             { season: "2022/23", revenue: 41.1, wage_bill: 37.8, net_profit: -20.0, operating_profit: -23.8, profit_from_player_sales: 4.7, pre_tax_profit: -20.0, net_debt: 13.9 },
 { season: "2023/24", revenue: 33.4, wage_bill: 22.2, net_profit: -2.1 },
       { season: "2024/25", revenue: 11.2, wage_bill: 22.3, net_profit: -11.2 },
@@ -860,6 +885,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: null,
     historical: [
+            { season: "2021/22", revenue: 25.6, wage_bill: 17.6, net_profit: 0.0, operating_profit: -4.4, profit_from_player_sales: 4.3, pre_tax_profit: 0.0, net_debt: 0.0 },
             { season: "2022/23", revenue: 46.0, wage_bill: 25.4, net_profit: 19.7, operating_profit: 1.9, profit_from_player_sales: 19.2, pre_tax_profit: 19.7, net_debt: -8.9 },
 { season: "2024/25", revenue: 11.5, wage_bill: 12.7, net_profit: -7.1 },
     ],
@@ -892,6 +918,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 8.7, wage_bill: 7.2, wage_to_revenue_pct: 83, operating_profit: -3.2, profit_from_player_sales: 0.5, pre_tax_profit: -0.1, net_debt: -0.4 },
     historical: [
+      { season: "2021/22", revenue: 6.8, wage_bill: 5.1, net_profit: -0.8, operating_profit: -1.2, profit_from_player_sales: 0.4, pre_tax_profit: -0.8, net_debt: 0.0 },
       { season: "2023/24", revenue: 8.7, wage_bill: 7.2, net_profit: -0.1 },
       { season: "2024/25", revenue: 10.5, wage_bill: 8.3, net_profit: 0.2 },
     ],
@@ -924,6 +951,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 12.2, wage_bill: 12.6, wage_to_revenue_pct: 104, operating_profit: -15.2, profit_from_player_sales: 9.6, pre_tax_profit: -5.8, net_debt: 8.7 },
     historical: [
+            { season: "2021/22", revenue: 12.1, wage_bill: 11.4, net_profit: -5.0, operating_profit: -14.5, profit_from_player_sales: 9.7, pre_tax_profit: -5.0, net_debt: 5.7 },
             { season: "2022/23", revenue: 12.0, wage_bill: 10.6, net_profit: 0.2, operating_profit: -13.1, profit_from_player_sales: 14.2, pre_tax_profit: 0.2, net_debt: 7.1 },
 { season: "2023/24", revenue: 12.2, wage_bill: 12.6, net_profit: -5.8 },
       { season: "2024/25", revenue: 10.4, wage_bill: 9.4, net_profit: -1.4 },
@@ -957,6 +985,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 10.0, wage_bill: 6.0, wage_to_revenue_pct: 60, operating_profit: 0.1, profit_from_player_sales: 0.3, pre_tax_profit: 0.0, net_debt: -1.5 },
     historical: [
+            { season: "2021/22", revenue: 7.7, wage_bill: 4.9, net_profit: 0.2, operating_profit: -0.2, profit_from_player_sales: 0.7, pre_tax_profit: 0.2, net_debt: -0.8 },
             { season: "2022/23", revenue: 9.5, wage_bill: 6.1, net_profit: -0.1, operating_profit: -0.5, profit_from_player_sales: 0.8, pre_tax_profit: -0.1, net_debt: 0.3 },
 { season: "2023/24", revenue: 10.0, wage_bill: 6.0, net_profit: 0.0 },
       { season: "2024/25", revenue: 8.4, wage_bill: 5.4, net_profit: -0.1 },
@@ -990,6 +1019,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 8.8, wage_bill: 5.7, wage_to_revenue_pct: 66, operating_profit: -1.5, profit_from_player_sales: 1.4, pre_tax_profit: 0.0, net_debt: -1.8 },
     historical: [
+            { season: "2021/22", revenue: 7.1, wage_bill: 4.6, net_profit: 0.3, operating_profit: 0.2, profit_from_player_sales: 0.1, pre_tax_profit: 0.3, net_debt: -2.3 },
             { season: "2022/23", revenue: 9.6, wage_bill: 5.8, net_profit: 0.5, operating_profit: -0.1, profit_from_player_sales: 0.6, pre_tax_profit: 0.5, net_debt: -2.9 },
 { season: "2023/24", revenue: 8.8, wage_bill: 5.7, net_profit: 0.0 },
       { season: "2024/25", revenue: 8.9, wage_bill: 6.0, net_profit: 0.0 },
@@ -1023,6 +1053,7 @@ const l2Clubs: EUClub[] = [
     },
     prior_year: { season: "2023/24", revenue: 10.2, wage_bill: 8.0, wage_to_revenue_pct: 79, operating_profit: -4.6, profit_from_player_sales: 1.0, pre_tax_profit: -3.8, net_debt: 1.7 },
     historical: [
+            { season: "2021/22", revenue: 8.3, wage_bill: 6.0, net_profit: 0.4, operating_profit: -2.4, profit_from_player_sales: 2.9, pre_tax_profit: 0.4, net_debt: -2.8 },
             { season: "2022/23", revenue: 10.6, wage_bill: 7.8, net_profit: -0.2, operating_profit: -2.9, profit_from_player_sales: 2.2, pre_tax_profit: -0.2, net_debt: -0.5 },
 { season: "2023/24", revenue: 10.2, wage_bill: 8.0, net_profit: -3.8 },
       { season: "2024/25", revenue: 8.1, wage_bill: 7.8, net_profit: -3.7 },
