@@ -646,9 +646,6 @@ export const dkClubs: EUClub[] = [
     },
     historical: [
       { season: "FY2022", revenue: 29.7, wage_bill: 17.9, net_profit: -1.6, operating_profit: -5.9, pre_tax_profit: -1.6, net_debt: -4.3 },
-      { season: "FY2021", revenue: 39.0, wage_bill: null, net_profit: 11.2, operating_profit: 8.7, pre_tax_profit: 11.2, net_debt: null },
-      { season: "FY2020", revenue: 15.2, wage_bill: null, net_profit: -3.5, operating_profit: null, pre_tax_profit: -3.5, net_debt: null },
-      { season: "FY2019", revenue: 23.6, wage_bill: null, net_profit: -10.6, operating_profit: null, pre_tax_profit: -10.6, net_debt: null },
     ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
