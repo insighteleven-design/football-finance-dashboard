@@ -333,7 +333,7 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
         total_liabilities: h.total_liabilities ?? null,
         operating_profit: h.operating_profit ?? py?.operating_profit ?? null,
         profit_from_player_sales: h.profit_from_player_sales ?? py?.profit_from_player_sales ?? null,
-        pre_tax_profit: h.pre_tax_profit ?? py?.pre_tax_profit ?? null,
+        pre_tax_profit: h.pre_tax_profit ?? h.net_profit ?? py?.pre_tax_profit ?? null,
         net_debt: h.net_debt ?? py?.net_debt ?? null,
       };
     });
