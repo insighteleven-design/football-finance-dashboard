@@ -1228,35 +1228,4 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
     postBalanceSheetNote: null,
   },
 
-  // ─── Harrogate Town ─────────────────────────────────────────────────────────
-  // FY Jun 2025 / Jun 2024 · FRS 102 · Harrogate Town AFC Limited
-  // Reconciliation in Note 27 (detail not included in published accounts reviewed)
-  harrogate: {
-    slug: "harrogate",
-    currentFY: "FY2025",
-    priorFY: "FY2024",
-    operating: [
-      { label: "Cash absorbed by operations (Note 27)",                 current: -1738795, prior: -2356823 },
-      { label: "Interest paid",                                         current:     -533, prior:     -533 },
-    ],
-    netOperating: { current: -1739328, prior: -2357356 },
-    investing: [
-      { label: "Purchase of intangible assets",                         current:   -47127, prior:  -342978 },
-      { label: "Proceeds from disposal of intangibles",                 current:   312843, prior:    65188 },
-      { label: "Purchase of tangible fixed assets",                     current:  -134658, prior: -1429314 },
-    ],
-    netInvesting: { current: 131058, prior: -1707104 },
-    financing: [
-      { label: "Proceeds from borrowings",                              current:  1149046, prior:  2796500 },
-      { label: "Payment of finance lease obligations",                  current:   -13341, prior:   -13341 },
-      { label: "Capital contributions",                                 current:   500000, prior:  1203500 },
-    ],
-    netFinancing: { current: 1635705, prior: 3986659 },
-    openingCash: { current: 80264, prior: 158065 },
-    closingCash: { current: 107699, prior: 80264 },
-    reconciliation: null,
-    reconciliationTitle: "Note 27 — Cash absorbed by operations (detail not available)",
-    reconciliationNote: null,
-    postBalanceSheetNote: null,
-  },
 };

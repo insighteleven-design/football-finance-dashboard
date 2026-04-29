@@ -285,17 +285,9 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Lamex Stadium", capacity: 7318, ownership: "leased", ownership_detail: "leased from the council, long term lease", leasehold_notes: "Long-term lease from Stevenage Borough Council." },
     training_ground: { ownership: "owned", notes: null },
   },
-  stockport: {
-    stadium: { stadium_name: "Edgeley Park", capacity: 10582, ownership: "leased", ownership_detail: "250 year lease with council signed in 2022", leasehold_notes: "250-year lease with Stockport Metropolitan Borough Council (signed 2022). Effectively long-term freehold equivalent." },
-    training_ground: { ownership: "leased", notes: "Leased from Sale Sharks" },
-  },
   wigan: {
     stadium: { stadium_name: "Brick Community Stadium", capacity: 25138, ownership: "leased", ownership_detail: "Owned by Mike Danson (current owner)", leasehold_notes: "Stadium owned by Mike Danson, the current club owner, who purchased it as part of his acquisition. Club leases it back from him." },
     training_ground: { ownership: "owned", notes: null },
-  },
-  wycombe: {
-    stadium: { stadium_name: "Adams Park", capacity: 10446, ownership: "leased", ownership_detail: "Owned by fan trust, 50 year lease", leasehold_notes: "50-year lease from the Wycombe Wanderers Trust (fan trust), which owns the freehold." },
-    training_ground: { ownership: "leased", notes: "Leased from Imperial College London" },
   },
 
   // League Two
@@ -310,14 +302,6 @@ export const fixedAssets: Record<string, ClubAssets> = {
   barrow: {
     stadium: { stadium_name: "Holker Street", capacity: 6500, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "Lease from FC United" },
-  },
-  bristol_rovers: {
-    stadium: { stadium_name: "Memorial Stadium", capacity: 12300, ownership: "owned", ownership_detail: null, leasehold_notes: null },
-    training_ground: { ownership: "owned", notes: null },
-  },
-  bromley: {
-    stadium: { stadium_name: "Hayes Lane", capacity: 6100, ownership: "owned", ownership_detail: null, leasehold_notes: null },
-    training_ground: { ownership: "owned", notes: null },
   },
   cambridge: {
     stadium: { stadium_name: "Cledara Abbey Stadium", capacity: 7937, ownership: "owned", ownership_detail: null, leasehold_notes: null },
@@ -335,10 +319,6 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Broadfield Stadium", capacity: 5567, ownership: "leased", ownership_detail: "Leased from local council", leasehold_notes: "Leased from Crawley Borough Council." },
     training_ground: { ownership: "leased", notes: "Lease from University of Sussex" },
   },
-  crewe: {
-    stadium: { stadium_name: "Gresty Road", capacity: 10153, ownership: "owned", ownership_detail: null, leasehold_notes: null },
-    training_ground: { ownership: "leased", notes: "Long term lease from 1995" },
-  },
   fleetwood: {
     stadium: { stadium_name: "Highbury Stadium", capacity: 5327, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
@@ -350,10 +330,6 @@ export const fixedAssets: Record<string, ClubAssets> = {
   grimsby: {
     stadium: { stadium_name: "Blundell Park", capacity: 9546, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
-  },
-  harrogate: {
-    stadium: { stadium_name: "Exercise Stadium", capacity: 5000, ownership: "owned", ownership_detail: null, leasehold_notes: null },
-    training_ground: { ownership: "leased", notes: "Long-term lease with Wetherby Racecourse" },
   },
   mk_dons: {
     stadium: { stadium_name: "Stadium MK", capacity: 30500, ownership: "owned", ownership_detail: null, leasehold_notes: null },

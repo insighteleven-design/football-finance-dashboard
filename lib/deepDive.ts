@@ -1955,23 +1955,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 2.85
   },
-  "stockport": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": null,
-      "bank_debt": {
-        "amount": 1.08,
-        "facility_type": "Term Loan and Overdraft",
-        "repayment_date": null,
-        "security": "Floating charge against all assets of the company (English Sports Council loan)"
-      },
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": "Finance lease obligations of \u00a30.65m (\u00a30.12m within one year, \u00a30.53m in two to five years).",
-      "total_debt_notes": "Bank loans and overdrafts total \u00a31.08m (\u00a30.15m current, \u00a30.93m non-current), including a secured loan from The English Sports Council of \u00a31.07m. During the year, a loan in creditors falling due after more than one year was converted to equity, with \u00a310.28m of new share capital issued to convert the loan. The directors have received a letter of support from director Mark Stott to continue supporting the company for at least 12 months."
-    },
-    "land_buildings": null
-  },
   "wigan": {
     "revenue_breakdown": {
       "matchday": 2.11,
@@ -2000,23 +1983,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "notes": "Entirely shareholder-funded. Net debt (excl. transfer payables) = \u00a318.7m. Owner has confirmed support for at least 12 months."
     },
     "land_buildings": null
-  },
-  "wycombe": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 20.48,
-        "interest_rate": null,
-        "repayment_date": null,
-        "secured": null
-      },
-      "bank_debt": null,
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": null,
-      "total_debt_notes": "Other loans due after more than one year totalled \u00a320.48m (2024: \u00a37.16m), a significant increase year-on-year. The company received capital contributions of \u00a35.3m from its immediate parent undertaking, Feliciana EFL Limited, recorded in other reserves. The going concern basis is noted as being integral to the continued support of the ultimate owner."
-    },
-    "land_buildings": 1.77
   },
   "accrington": {
     "revenue_breakdown": null,
@@ -2068,65 +2034,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "total_debt_notes": "The company has \u00a31,775,769 in creditors due within one year and \u00a3903,831 due after more than one year. Deferred government grants of \u00a3124,815 are secured by a legal charge over the freehold property. The company is reliant on ongoing owner support as the financial statements are prepared on a going concern basis given ongoing losses. 777,500 ordinary shares of \u00a31 were issued during the year for cash of \u00a3777,500."
     },
     "land_buildings": null
-  },
-  "bristol_rovers": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 15.23,
-        "interest_rate": null,
-        "repayment_date": "Repayable only when the club is in a position to repay",
-        "secured": null
-      },
-      "bank_debt": {
-        "amount": 0.39,
-        "facility_type": "Bank loans",
-        "repayment_date": null,
-        "security": "Fixed and floating charges over the company's assets"
-      },
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": "Finance lease obligations of \u00a30.15m relating to motor vehicles with a lease-back arrangement.",
-      "total_debt_notes": "The club has net liabilities of \u00a313.21m and relies on the continued support of owner Mr Hussain AlSaeed via a funding facility provided by Dwane Sports Limited, repayable only when the club is in a position to repay. Amounts owed to group undertakings increased from \u00a37.33m to \u00a316.17m during the year."
-    },
-    "debt_breakdown": {
-      "segments": [
-        { "label": "Group undertakings (Bristol Rovers (1883) Ltd / H. AlSaeed)", "amount": 16.165, "note": "Repayable only when club is in a position to repay; increased from \u00a37.3m in FY2024", "type": "quasi_equity" },
-        { "label": "Bank loans", "amount": 0.389, "note": "All current; secured by fixed and floating charges over assets", "type": "bank" },
-        { "label": "Finance leases \u2014 current", "amount": 0.054, "note": "Motor vehicles; lease-back arrangement expiring Oct 2027", "type": "lease" },
-        { "label": "Finance leases \u2014 non-current", "amount": 0.092, "note": "Motor vehicles; due in 2\u20135 year band", "type": "lease" }
-      ],
-      "cash": 1.306,
-      "notes": "No CF statement (FRS 102 \u00a77 qualifying entity exemption \u2014 Bristol Rovers (1883) Limited prepares consolidated accounts). Net liabilities \u00a313.2m. Bank loans all repayable within one year per Note 17."
-    },
-    "land_buildings": 2.18
-  },
-  "bromley": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 5.83,
-        "interest_rate": null,
-        "repayment_date": "No fixed date - repayable only when the club is in a position to repay",
-        "secured": false
-      },
-      "bank_debt": null,
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": "\u00a30.64m loan owed to The English Sports Council, secured by a floating charge over all assets of the company. Additional other loans within one year of \u00a30.07m and due after one year of \u00a30.85m.",
-      "total_debt_notes": "The company has net liabilities of \u00a35.61m and relies on continued financial support from the ultimate parent R Stanton-Gleaves UK Limited, which provides day-to-day funding and working capital through a facility. Amounts owed to group undertakings (\u00a32.74m) and to parent undertaking (\u00a33.05m due >1yr plus \u00a30.05m due <1yr) form the majority of long-term debt."
-    },
-    "debt_breakdown": {
-      "segments": [
-        { "label": "Group undertakings \u2014 current (Stanton-Gleaves group)", "amount": 2.735, "note": null, "type": "quasi_equity" },
-        { "label": "Parent undertaking loan (R Stanton-Gleaves UK Ltd)", "amount": 3.095, "note": "No fixed repayment date; primarily non-current", "type": "quasi_equity" },
-        { "label": "ESC loan (English Sports Council)", "amount": 0.635, "note": "Secured by floating charge over all assets", "type": "other" },
-        { "label": "Other commercial loans", "amount": 0.285, "note": null, "type": "other" }
-      ],
-      "cash": 0.500,
-      "notes": "No CF statement (FRS 102 \u00a71A small company exemption). Year ended 31 December 2024. Net liabilities \u00a35.6m. Total group/parent funding of \u00a35.83m provides day-to-day working capital."
-    },
-    "land_buildings": 2.3
   },
   "cambridge": {
     "revenue_breakdown": null,
@@ -2254,38 +2161,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 0.04
   },
-  "crewe": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 3.3,
-        "interest_rate": "0%",
-        "repayment_date": null,
-        "secured": false
-      },
-      "bank_debt": {
-        "amount": 0.01,
-        "facility_type": "Overdraft",
-        "repayment_date": null,
-        "security": null
-      },
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": "Other loans of \u00a31.25 million (\u00a30.09m due within one year and \u00a31.16m due after more than one year), secured against the assets acquired.",
-      "total_debt_notes": "Directors loans of \u00a33.30m are unsecured and interest free. Bank loans are unsecured. Other loans are secured against the assets acquired. The company is financially supported by related companies and the Board of Directors to assist with cash flow, with a going concern emphasis of matter in the auditor's report."
-    },
-    "debt_breakdown": {
-      "segments": [
-        { "label": "Director loans (interest-free)", "amount": 3.301, "note": "Unsecured, interest-free", "type": "quasi_equity" },
-        { "label": "Group undertakings", "amount": 0.156, "note": null, "type": "quasi_equity" },
-        { "label": "Other loans (secured)", "amount": 1.246, "note": "Secured against assets acquired; \u00a30.09m current, \u00a31.16m non-current", "type": "other" },
-        { "label": "Bank loans", "amount": 0.010, "note": null, "type": "bank" }
-      ],
-      "cash": 0.096,
-      "notes": "No CF statement (FRS 102 \u00a71A small company exemption). Net debt = \u00a34.62m. Going concern dependent on continued support from related companies and board of directors."
-    },
-    "land_buildings": 0.42
-  },
   "fleetwood": {
     "revenue_breakdown": null,
     "debt_profile": null,
@@ -2332,31 +2207,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
       "total_debt_notes": "Amounts owed to group undertakings (1878 Partners Limited, the ultimate parent company) of \u00a31.297m are classified as falling due after more than one year, down from \u00a33.529m in the prior year. The company has net liabilities of \u00a30.71m and relies on investor support for going concern. Called up share capital increased from \u00a32.38m to \u00a35.89m during the period, suggesting equity injections partly replaced intercompany debt."
     },
     "land_buildings": 0.65
-  },
-  "harrogate": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 6.4,
-        "interest_rate": "0%",
-        "repayment_date": "No fixed date",
-        "secured": false
-      },
-      "bank_debt": null,
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": "Finance lease obligations of \u00a30.00 million (\u00a33,335 total, all due within one year).",
-      "total_debt_notes": "The company's debt is almost entirely comprised of interest-free, unsecured loans from the controlling party R I Weaver (\u00a36,403,620), classified as payable within one year but with no intention to seek repayment. The company has net current liabilities of \u00a36.37m and negative total equity of \u00a31.37m, with going concern dependent on continued shareholder support."
-    },
-    "debt_breakdown": {
-      "segments": [
-        { "label": "Owner loan (R I Weaver)", "amount": 6.403, "note": "Interest-free, unsecured, no fixed repayment; \u00a31.15m additional drawn in FY2025 per cash flow statement", "type": "quasi_equity" },
-        { "label": "Finance leases", "amount": 0.003, "note": "FY2024 balance; \u00a313,341 lease payments made in FY2025", "type": "lease" }
-      ],
-      "cash": 0.108,
-      "notes": "FY2025 cash balance confirmed from balance sheet (\u00a3107,699). Net debt = \u00a36.30m. Total borrowings increased during year; closing balance pending note disclosure. Going concern dependent on continued R I Weaver support."
-    },
-    "land_buildings": 5.33
   },
   "mk_dons": {
     "revenue_breakdown": {
