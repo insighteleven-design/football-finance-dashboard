@@ -318,15 +318,6 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 30000,
     uncertain: false,
   },
-  doncaster: {
-    local_authority: "Doncaster",
-    population: 319765,
-    gva_area: "Doncaster",
-    gva_per_head: 22889,
-    region: "Yorkshire and The Humber",
-    median_pay: 30486,
-    uncertain: false,
-  },
   everton: {
     local_authority: "Liverpool",
     population: 508961,

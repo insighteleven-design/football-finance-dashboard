@@ -233,10 +233,6 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Cardiff City Stadium", capacity: 33316, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "New training ground currently under construction" },
   },
-  doncaster: {
-    stadium: { stadium_name: "Eco-Power Stadium", capacity: 15231, ownership: "leased", ownership_detail: "99 year lease from Council in 2012", leasehold_notes: "99-year lease from Doncaster Council (signed 2012). Club in ongoing discussions about acquiring the freehold." },
-    training_ground: { ownership: "leased", notes: "99 year lease from 2012; discussions regarding acquisition of freehold interest from council ongoing" },
-  },
   exeter: {
     stadium: { stadium_name: "St James Park", capacity: 8720, ownership: "leased", ownership_detail: "25 year lease from council in 2020", leasehold_notes: "25-year lease from Exeter City Council (signed 2020)." },
     training_ground: { ownership: "owned", notes: "Purchased in 2018; recent £3.5m redevelopment" },

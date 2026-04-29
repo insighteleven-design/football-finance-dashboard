@@ -244,7 +244,7 @@ const chRaw: Record<string, RawEntry> = {
 // ─── League One 2025/26 ───────────────────────────────────────────────────────
 // Promoted to Championship: Birmingham City, Charlton Athletic, Wrexham
 // Relegated from Championship: Cardiff City, Luton Town, Plymouth Argyle
-// Promoted from L2: AFC Wimbledon, Bradford City, Doncaster Rovers, Port Vale
+// Promoted from L2: AFC Wimbledon, Bradford City, Port Vale
 // Relegated to L2: Bristol Rovers, Cambridge Utd, Crawley Town, Shrewsbury Town
 const l1Raw: Record<string, RawEntry> = {
   afc_wimbledon:  { revenue:  9.78, wage_bill:  5.74, operating_profit:  -1.40, profit_from_player_sales:  0.97, pre_tax_profit:  -1.30, net_debt:  -1.26, cash:  1.34, fiscal_year_end: "2025-06-30", data_confidence: "high", compare_division: "league-two",
@@ -275,8 +275,6 @@ const l1Raw: Record<string, RawEntry> = {
     prior_year: { fiscal_year_end: "2024-05-31", revenue: 22.55, wage_bill: 28.42, wage_ratio: 126, operating_profit: -20.57, profit_from_player_sales:  5.17, pre_tax_profit: -19.84, net_debt:  -2.56, compare_division: "championship" },
     data2023:   { fiscal_year_end: "2023-05-31", revenue: 26.23, wage_bill: 22.29, wage_ratio:  85, operating_profit: -11.09, profit_from_player_sales:  1.66, pre_tax_profit: -11.40, net_debt:  -2.99, compare_division: "championship" },
     data2022:   { fiscal_year_end: "2022-05-31", revenue: 19.88, wage_bill: 29.22, wage_ratio: 147, operating_profit: -29.03, profit_from_player_sales:  4.23, pre_tax_profit: -30.42, net_debt:   1.94, compare_division: "championship" } },
-  doncaster:      { revenue: null,  wage_bill: null,  operating_profit:  null,  profit_from_player_sales: null, pre_tax_profit:  -3.20, net_debt:  12.23, cash: null, fiscal_year_end: "2025-06-30", compare_division: "league-two",
-    prior_year: { fiscal_year_end: "2024-06-30", revenue:  5.60, wage_bill: null,  wage_ratio: null, operating_profit: -3.06, profit_from_player_sales: null, pre_tax_profit: null, net_debt:   8.25, compare_division: "league-two" } },
   exeter:         { revenue:  8.21, wage_bill:  6.88, operating_profit:  -4.39, profit_from_player_sales:  4.93, pre_tax_profit:   0.53, net_debt:  -0.35, cash:  0.35, fiscal_year_end: "2025-06-30", data_confidence: "high",
     prior_year: { fiscal_year_end: "2024-06-30", revenue:  6.57, wage_bill:  5.13, wage_ratio:  78, operating_profit: -2.95, profit_from_player_sales:  3.11, pre_tax_profit:  0.18, net_debt:   2.61 },
     data2022:   { fiscal_year_end: "2022-06-30", revenue:  4.53, wage_bill:  4.01, wage_ratio:  89, operating_profit:  -0.27, profit_from_player_sales:  1.50, pre_tax_profit:  1.23, net_debt:  -3.00, compare_division: "league-two" } },
@@ -330,7 +328,7 @@ const l1Raw: Record<string, RawEntry> = {
 };
 
 // ─── League Two 2025/26 ───────────────────────────────────────────────────────
-// Promoted to L1: AFC Wimbledon, Bradford City, Doncaster Rovers, Port Vale
+// Promoted to L1: AFC Wimbledon, Bradford City, Port Vale
 // Relegated from L1: Bristol Rovers, Cambridge Utd, Crawley Town, Shrewsbury Town
 // Promoted from National League: Barnet, Oldham Athletic
 // Relegated to National League: Carlisle Utd, Morecambe (+ 2 others)
@@ -409,7 +407,7 @@ const NAMES: Record<string, string> = {
   afc_wimbledon: "AFC Wimbledon", barnsley: "Barnsley",
   blackpool: "Blackpool",         bolton: "Bolton Wanderers",
   bradford: "Bradford City",      burton: "Burton Albion",
-  cardiff: "Cardiff City",        doncaster: "Doncaster Rovers",
+  cardiff: "Cardiff City",
   exeter: "Exeter City",          huddersfield: "Huddersfield Town",
   leyton_orient: "Leyton Orient", lincoln: "Lincoln City",
   luton: "Luton Town",            northampton: "Northampton",

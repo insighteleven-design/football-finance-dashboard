@@ -1653,23 +1653,6 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 82.31
   },
-  "doncaster": {
-    "revenue_breakdown": null,
-    "debt_profile": {
-      "owner_loans": {
-        "amount": 0.26,
-        "interest_rate": null,
-        "repayment_date": "No fixed date",
-        "secured": null
-      },
-      "bank_debt": null,
-      "transfer_payables": null,
-      "bond_debt": null,
-      "other_debt": null,
-      "total_debt_notes": "The company has net liabilities of \u00a30.26m. Its principal creditor is Westferry Limited (parent company, Isle of Man) with \u00a30.07m owed within one year, and a former director D O'Brien is owed \u00a30.19m due after more than one year, with informal arrangements that neither will demand repayment until the company is financially able. The company was not trading during the year."
-    },
-    "land_buildings": null
-  },
   "exeter": {
     "revenue_breakdown": {
       "matchday": 2.17,
