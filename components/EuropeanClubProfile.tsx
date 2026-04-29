@@ -35,10 +35,11 @@ function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): s
   return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
 }
 
-// Strip trailing parenthetical qualifiers so "FY2024/25 (Jun)" and "FY2024/25" compare equal
+// Strip trailing parenthetical qualifiers and leading "FY" prefix so
+// "FY2025" and "2025" (or "FY2024/25" and "2024/25") compare equal.
 function normalizeSeason(s: string | null | undefined): string {
   if (!s) return "";
-  return s.replace(/\s*\(.*$/, "").trim();
+  return s.replace(/\s*\(.*$/, "").replace(/^FY/, "").trim();
 }
 
 function snapStats(snaps: EUYearSnap[], key: keyof EUYearSnap) {
