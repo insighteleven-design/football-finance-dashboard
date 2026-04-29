@@ -44,7 +44,15 @@ export const noClubs: EUClub[] = [
       net_profit: 6.1,
       net_debt: -12.1,
     },
-    historical: [],
+    historical: [
+      // Source: FK Bodø-Glimt Årsrapport 2023 (morselskap). Conversion: ×0.0947 (FY2023), ×0.1009 (FY2022) USD/NOK.
+      // Player sales processed via Nordlandsglimt AS partnership — only net share appears in parent accounts as "Netto salg/utleie spillere".
+      // Net debt = short-term bank debt (kassekredit/kredittlinje) less cash; no long-term bank debt (confirmed Note 13).
+      // FY2023 original NOK: revenue 270,036,637 | wages 107,179,979 | op profit 48,264,582 | net profit 50,396,222 | bank debt 38,289,245 | cash 65,582,219 | equity 202,165,009. Conference League group stage 2023-24; net player sales via NL-Glimt 1,333,907.
+      // FY2022 original NOK: revenue 307,471,482 | wages 109,910,065 | op profit 66,699,874 | net profit 71,518,829 | bank debt 40,175,756 | cash 134,936,076 | equity 151,768,787. Exceptional UEFA year — CL qualifying + Conference League; UEFA income 175,129,174.
+      { season: "FY2023", revenue: 25.6, wage_bill: 10.2, net_profit: 4.8, operating_profit: 4.6, pre_tax_profit: 4.8, net_debt: -2.6 },
+      { season: "FY2022", revenue: 31.0, wage_bill: 11.1, net_profit: 7.2, operating_profit: 6.7, pre_tax_profit: 7.2, net_debt: -9.6 },
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "LOW",
