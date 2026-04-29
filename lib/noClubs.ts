@@ -180,7 +180,16 @@ export const noClubs: EUClub[] = [
       net_profit: -1.8,
       net_debt: -0.1,
     },
-    historical: [],
+    historical: [
+      // Source: Lillestrøm Årsberetning 2023 (LSK parent entity / morselskap). FY = Jan–Dec.
+      // Player rights gains (Gevinst/tap spillerrettighet) included in revenue: 73,576 kNOK (2023), 12,112 kNOK (2022).
+      // Net debt = external LT debt (Øvrig langsiktig gjeld) less cash; intercompany debt (Gjeld til foretak i samme konsern) excluded.
+      // Conversion: FY2023 ×0.0947 USD/NOK | FY2022 ×0.1009 USD/NOK.
+      // Original NOK FY2023: revenue 184,716,078 | wages 75,486,811 | op profit 51,329,749 | net profit 52,844,778 | equity 67,335,373 | total liabilities 72,627,958 | cash 27,291,701 | external LT debt 5,422,700.
+      // Original NOK FY2022: revenue 122,007,025 | wages 69,416,260 | op profit 2,848,011 | net profit 2,671,096 | equity 14,490,595 | total liabilities 62,794,179 | cash 5,996,923 | external LT debt 6,192,700.
+      { season: "FY2023", revenue: 17.5, wage_bill: 7.1, net_profit: 5.0, operating_profit: 4.9, pre_tax_profit: 5.0, net_debt: -2.1 },
+      { season: "FY2022", revenue: 12.3, wage_bill: 7.0, net_profit: 0.3, operating_profit: 0.3, pre_tax_profit: 0.3, net_debt: 0.0 },
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
