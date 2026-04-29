@@ -551,9 +551,9 @@ export const dkClubs: EUClub[] = [
     },
     prior_year: {
       season: "FY2023",
-      revenue: null,
+      revenue: 4.4,
       wage_bill: 6.1,
-      wage_to_revenue_pct: null,
+      wage_to_revenue_pct: 140.3,
       net_profit: -2.1,
       total_liabilities: 4.9,
       equity: -2.2,
@@ -572,7 +572,9 @@ export const dkClubs: EUClub[] = [
   },
 
   // ─── Hvidovre IF ─────────────────────────────────────────────────────────
-  // FY = calendar year (Jan–Dec 2024); small club, currently in lower divisions
+  // Entity: Hvidovre Fodbold A/S (CVR 14746889) — commercial football subsidiary of Hvidovre IF.
+  // FY = calendar year (Jan–Dec). Source: annual reports filed with Erhvervsstyrelsen.
+  // Net debt = total liabilities − cash (likvide beholdninger).
   {
     slug: "hvidovre-if",
     name: "Hvidovre IF",
@@ -581,36 +583,40 @@ export const dkClubs: EUClub[] = [
     city: "Hvidovre",
     currency: "EUR",
     stadium: { name: "Pro Ventilation Arena", capacity: 8000, ownership: "Club-related" },
-    ownership: { summary: "Hvidovre IF — non-profit association structure", category: "Non-profit sports club", fifty_plus_one: "N/A" },
+    ownership: { summary: "Hvidovre Fodbold A/S (CVR 14746889) — commercial subsidiary of Hvidovre IF sports association", category: "Limited company (A/S)", fifty_plus_one: "N/A" },
     financials: {
-      most_recent_year: "FY2024",
-      revenue: 0.7,
-      wage_bill: 0.3,
-      wage_to_revenue_pct: 37.1,
-      net_profit: 0.0,
-      total_liabilities: 0.2,
-      equity: 0.0,
-      operating_profit: 0.0,
-      pre_tax_profit: 0.0,
-      net_debt: 0.1,
-      data_notes: "Non-profit community club structure; revenue from membership fees and local sponsorships. Original DKK (tDKK): revenue 5,340 | wages 1,980 | operating result -83 | equity 180 | total assets 1,523. EUR/DKK: 0.1340 (FY2024).",
+      most_recent_year: "FY2025",
+      revenue: 3.4,
+      wage_bill: 2.7,
+      wage_to_revenue_pct: 79.9,
+      net_profit: 0.3,
+      total_liabilities: 1.3,
+      equity: -0.5,
+      operating_profit: 0.3,
+      pre_tax_profit: 0.3,
+      net_debt: 1.2,
+      data_notes: "Entity: Hvidovre Fodbold A/S (CVR 14746889). FY = calendar year. Net debt = total liabilities − cash. Original DKK (tDKK): revenue 25,627 | wages 20,468 | operating profit 2,600 | pre-tax profit 1,917 | equity −3,762 | total liabilities 9,339 | cash 156. EUR/DKK: 0.1340 (FY2025).",
     },
     prior_year: {
-      season: "FY2023",
-      revenue: 0.6,
-      wage_bill: 0.2,
-      wage_to_revenue_pct: 28.6,
-      net_profit: 0.0,
-      total_liabilities: 0.2,
-      equity: 0.0,
-      operating_profit: 0.0,
+      season: "FY2024",
+      revenue: 3.5,
+      wage_bill: 3.1,
+      wage_to_revenue_pct: 88.9,
+      net_profit: 0.2,
+      total_liabilities: 2.6,
+      equity: -0.8,
+      operating_profit: 0.3,
       profit_from_player_sales: null,
-      pre_tax_profit: 0.0,
-      net_debt: 0.1,
+      pre_tax_profit: 0.2,
+      net_debt: 2.6,
     },
     historical: [
-      { season: "FY2022", revenue: 0.7, wage_bill: null, net_profit: 0.0, operating_profit: 0.0, pre_tax_profit: 0.0, net_debt: -0.1 },
-      { season: "FY2021", revenue: 0.6, wage_bill: null, net_profit: 0.0, operating_profit: 0.0, pre_tax_profit: 0.0, net_debt: null },
+      // Source: Hvidore 23.pdf. FY2023 original DKK (tDKK): revenue 19,477 | wages 15,778 | op profit 3,541 | net profit 3,132 | liabilities 17,165 | cash 2,294. EUR/DKK: 0.1342.
+      { season: "FY2023", revenue: 2.6, wage_bill: 2.1, net_profit: 0.4, operating_profit: 0.5, pre_tax_profit: 0.4, net_debt: 2.0 },
+      // Source: Hvidore 22.pdf. FY2022 original DKK (tDKK): revenue 8,121 | wages 8,277 | op profit −156 | net profit 391 | liabilities 11,968 | cash 75. EUR/DKK: 0.1344.
+      { season: "FY2022", revenue: 1.1, wage_bill: 1.1, net_profit: 0.1, operating_profit: 0.0, pre_tax_profit: 0.1, net_debt: 1.6 },
+      // Source: FY2022 report comparative column. FY2021 original DKK (tDKK): revenue 7,693 | wages 7,529 | op profit 111 | net profit 35 | liabilities 13,333 | cash 568. EUR/DKK: 0.1345.
+      { season: "FY2021", revenue: 1.0, wage_bill: 1.0, net_profit: 0.0, operating_profit: 0.0, pre_tax_profit: 0.0, net_debt: 1.7 },
     ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
