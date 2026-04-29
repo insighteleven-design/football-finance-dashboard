@@ -98,8 +98,16 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       (c) => c.league === euClub.league && c.country === euClub.country && hasEuFinancialData(c)
     );
 
-    // Next/prev club: skip data-less clubs
-    const visibleEuClubs = euClubs.filter(hasEuFinancialData);
+    // Next/prev club: skip data-less clubs, sort to match directory (country → league → name)
+    const visibleEuClubs = euClubs
+      .filter(hasEuFinancialData)
+      .sort((a, b) => {
+        const cc = a.country.localeCompare(b.country);
+        if (cc !== 0) return cc;
+        const lc = a.league.localeCompare(b.league);
+        if (lc !== 0) return lc;
+        return a.name.localeCompare(b.name);
+      });
     const idx = visibleEuClubs.findIndex((c) => c.slug === slug);
     const nextEu = visibleEuClubs[(idx + 1) % visibleEuClubs.length];
     const prevEu = visibleEuClubs[(idx - 1 + visibleEuClubs.length) % visibleEuClubs.length];
