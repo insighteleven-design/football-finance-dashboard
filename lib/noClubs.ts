@@ -362,8 +362,21 @@ export const noClubs: EUClub[] = [
       net_debt: -0.4,
       data_notes: "Parent entity. FY2024 — most recent filing available. Figures converted from NOK to USD at FY2024 rate ×0.093. Original NOK: revenue 92,725,486 | wages 53,626,147 | operating result 2,853,829 | pre-tax result 2,766,504 | equity 6,209,392 | total liabilities 37,691,800 | cash 4,216,938. No external bank debt.",
     },
-    prior_year: null,
-    historical: [],
+    prior_year: {
+      season: "FY2023",
+      revenue: 5.0,
+      wage_bill: 3.2,
+      wage_to_revenue_pct: 62.7,
+      operating_profit: 0.0,
+      profit_from_player_sales: null,
+      pre_tax_profit: 0.1,
+      net_profit: 0.1,
+      net_debt: -0.2,
+    },
+    historical: [
+      // Source: Fredrikstad Årsmøtedokument 2023. FY2022 original NOK: revenue 39,397,788 | wages 25,171,984 | op result 118,141 | net result 195,989 | LT debt 1,984,453 | cash 3,420,745. Rate ×0.1009 USD/NOK.
+      { season: "FY2022", revenue: 4.0, wage_bill: 2.5, net_profit: 0.0, operating_profit: 0.0, pre_tax_profit: 0.0, net_debt: -0.1 },
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
@@ -461,38 +474,6 @@ export const noClubs: EUClub[] = [
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
-  },
-
-  // ─── KFUM Oslo ───────────────────────────────────────────────────────────────
-  // FY2025. Wage and balance sheet data not available in published report.
-  {
-    slug: "kfum-oslo",
-    name: "KFUM Oslo",
-    country: "Norway",
-    league: "norwegian-eliteserien",
-    city: "Oslo",
-    currency: "USD",
-    stadium: { name: "Ekeberg Stadion", capacity: 7000, ownership: "Club/municipality" },
-    ownership: { summary: "Member-owned idrettslag (non-profit sports association)", category: "Idrettslag", fifty_plus_one: "Yes — member-owned" },
-    financials: {
-      most_recent_year: "FY2025",
-      revenue: 9.6,
-      wage_bill: null,
-      wage_to_revenue_pct: null,
-      net_profit: 1.4,
-      total_liabilities: null,
-      equity: null,
-      operating_profit: null,
-      pre_tax_profit: 1.4,
-      profit_from_player_sales: null,
-      net_debt: null,
-      data_notes: "FY2025 partial data — revenue and profit from narrative disclosure only. Figures converted from NOK to USD at FY2025 rate ×0.092. Original NOK: revenue 104,422,828 | annual result 14,932,207. Wage and balance sheet figures not available in published 16-page annual report.",
-    },
-    prior_year: null,
-    historical: [],
-    tm_squad_value_eur_m: null,
-    data_status: "PARTIAL",
-    volatility_tier: null,
   },
 
   // ─── Sandefjord Fotball ──────────────────────────────────────────────────────
