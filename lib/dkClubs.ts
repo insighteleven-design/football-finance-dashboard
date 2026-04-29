@@ -240,7 +240,8 @@ export const dkClubs: EUClub[] = [
   },
 
   // ─── Randers FC ───────────────────────────────────────────────────────────
-  // FY = Jul–Jun (2024/25); Randers FC Holding A/S (consolidated group)
+  // FY = Jul–Jun; FY2024/25 = Randers FC Holding A/S (consolidated group)
+  // FY2023/24 + FY2022/23 = Randers FC A/S (football club subsidiary, CVR 83940816)
   {
     slug: "randers-fc",
     name: "Randers FC",
@@ -261,22 +262,28 @@ export const dkClubs: EUClub[] = [
       operating_profit: 1.0,
       pre_tax_profit: 1.0,
       net_debt: 2.8,
-      data_notes: "Group (consolidated) figures. Original DKK (tDKK): revenue 100,720 | wages 77,735 | operating profit 7,930 | pre-tax profit 7,791 | equity 66,114 | total liabilities 47,517 | cash 26,277. EUR/DKK: 0.1340 (FY2025).",
+      data_notes: "FY2024/25 = Randers FC Holding A/S consolidated group (includes Business Park Randers ApS + other subs). FY2023/24 and FY2022/23 = Randers FC A/S (football club subsidiary) — balance sheet totals not directly comparable across years. Original DKK (tDKK): revenue 100,720 | wages 77,735 | operating profit 7,930 | pre-tax profit 7,791 | equity 66,114 | total liabilities 47,517 | cash 26,277. EUR/DKK: 0.1340 (FY2025).",
     },
     prior_year: {
+      // Randers FC A/S (football club subsidiary); source: FY2024/25 annual report comparative column
       season: "FY2023/24",
-      revenue: null,
-      wage_bill: null,
-      wage_to_revenue_pct: null,
-      net_profit: null,
-      total_liabilities: null,
-      equity: null,
-      operating_profit: null,
+      revenue: 10.2,
+      wage_bill: 8.5,
+      wage_to_revenue_pct: 83.2,
+      net_profit: 0.6,
+      total_liabilities: 4.4,
+      equity: 5.7,
+      operating_profit: 0.5,
       profit_from_player_sales: null,
-      pre_tax_profit: null,
-      net_debt: null,
+      pre_tax_profit: 0.7,
+      net_debt: 2.0,
     },
-    historical: [],
+    historical: [
+      // Randers FC A/S; source: FY2022/23 annual report (Redmark audit, filed 26 Oct 2023).
+      // Note: FY2024/25 five-year summary shows restated revenue 74,810 tDKK and equity 37,860 tDKK due to subsequent accounting policy correction (domicile property depreciation). Original filed figures used here.
+      // Original DKK: revenue 61,744,974 | wages 54,229,295 | operating profit -428,373 | pre-tax 2,139,805 | net profit 2,194,737 | equity 41,705,212 | total liabilities 30,275,800 | cash 11,464,548. EUR/DKK: 0.1342 (FY2023).
+      { season: "FY2022/23", revenue: 8.3, wage_bill: 7.3, net_profit: 0.3, operating_profit: -0.1, pre_tax_profit: 0.3, net_debt: 2.5 },
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
@@ -459,7 +466,11 @@ export const dkClubs: EUClub[] = [
       pre_tax_profit: -2.0,
       net_debt: 3.6,
     },
-    historical: [],
+    historical: [
+      // Source: soenderjyske_2021_22.csv. FY = Oct–Sep. Revenue = gross profit (§32). Net profit not available; net debt = bank + LT debt less cash.
+      // Converted from DKK at ~7.44 DKK/EUR (2021/22 avg). Original kEUR: revenue 2,884 | wages 6,761 | operating -4,229 | pre-tax -4,301 | net debt 1,312.
+      { season: "FY2021/22", revenue: 2.9, wage_bill: 6.8, net_profit: null, operating_profit: -4.2, pre_tax_profit: -4.3, net_debt: 1.3 },
+    ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
