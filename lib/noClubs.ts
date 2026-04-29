@@ -525,7 +525,9 @@ export const noClubs: EUClub[] = [
   },
 
   // ─── Vålerenga FK ────────────────────────────────────────────────────────────
-  // NO_DATA — professional entity is Vålerenga Fotball Elite AS, accounts not available.
+  // Vålerenga Fotball Elite (idrettslag, org.nr. 914 175 232). FY2025.
+  // Commercial partner: Vålerenga Fotball AS (VFAS) — holds player rights and commercial revenues.
+  // Player sales book as VFE operating revenue; gains transferred back to VFAS as Annen finanskostnad.
   {
     slug: "valerenga-fk",
     name: "Vålerenga FK",
@@ -534,26 +536,44 @@ export const noClubs: EUClub[] = [
     city: "Oslo",
     currency: "USD",
     stadium: { name: "Intility Arena", capacity: 17600, ownership: "Oslo kommune" },
-    ownership: { summary: "Vålerenga idrettslag (parent). Professional football via Vålerenga Fotball Elite AS", category: "Commercial AS", fifty_plus_one: "N/A" },
+    ownership: { summary: "Vålerenga Fotball Elite — member-owned idrettslag. Commercial operations via Vålerenga Fotball AS (VFAS)", category: "Idrettslag with commercial AS structure", fifty_plus_one: "Yes — member-owned" },
     financials: {
-      most_recent_year: null,
-      revenue: null,
-      wage_bill: null,
-      wage_to_revenue_pct: null,
-      net_profit: null,
-      total_liabilities: null,
-      equity: null,
-      operating_profit: null,
-      pre_tax_profit: null,
+      most_recent_year: "FY2025",
+      revenue: 15.8,
+      wage_bill: 7.1,
+      wage_to_revenue_pct: 45.3,
+      net_profit: 0.0,
+      total_liabilities: 5.8,
+      equity: 0.1,
+      operating_profit: 3.1,
+      pre_tax_profit: 0.0,
       profit_from_player_sales: null,
-      net_debt: null,
-      data_notes: "No data available. Professional operations conducted by Vålerenga Fotball Elite AS — accounts not publicly filed. Available document covers only the women's section (Toppserien).",
+      net_debt: -0.8,
+      data_notes: "Vålerenga Fotball Elite (idrettslag), org.nr. 914 175 232. Returned to Eliteserien in 2025 (6th place). Figures converted from NOK to USD at FY2025 rate ×0.092. Original NOK: revenue 171,395,128 (incl. samarbeidsavtale transfer from VFAS 77,872,250 + player sales/loans 82,988,362, of which Jones El-Abdellaoui to Celta Vigo 81,081,739) | wages 77,621,246 | operating result 33,494,191 | annual result 394,172 | equity 1,550,671 | total liabilities 63,376,203 | cash 9,143,893. No bank debt. Intercompany payable to Vålerenga Fotball AS (20,924,925) excluded from net debt. Player gain transfer to VFAS (77,203,408) booked as Annen finanskostnad — VFE retains only ~5.8m NOK net from player transactions. Tax exempt (§2-32).",
     },
-    prior_year: null,
-    historical: [],
+    prior_year: {
+      season: "FY2024",
+      revenue: 12.4,
+      wage_bill: 5.6,
+      wage_to_revenue_pct: 44.9,
+      operating_profit: 2.6,
+      profit_from_player_sales: null,
+      pre_tax_profit: 0.0,
+      net_profit: 0.0,
+      net_debt: -0.5,
+    },
+    historical: [
+      // Source: Vålerenga Fotball Elite Årsregnskap 2023. FY = Jan–Dec. Conversion: ×0.0947 (FY2023), ×0.1009 (FY2022) USD/NOK.
+      // Player gains transferred to VFAS as finanskostnad each year — VFE net result near zero throughout.
+      // Net debt = bank debt less cash; intercompany payable to VFAS excluded.
+      // FY2023 original NOK: revenue 187,997,590 | wages 85,424,087 | op result 35,674,093 | net result 184,751 | cash 3,547,215 | no bank debt. Club relegated at end of 2023 season.
+      // FY2022 original NOK: revenue 82,377,756 | wages 59,772,611 | op result -10,500,633 | net result 136,702 | cash 2,442,628 | kassekredit drawn 1,518,515.
+      { season: "FY2023", revenue: 17.8, wage_bill: 8.1, net_profit: 0.0, operating_profit: 3.4, pre_tax_profit: 0.0, net_debt: -0.3 },
+      { season: "FY2022", revenue: 8.3, wage_bill: 6.0, net_profit: 0.0, operating_profit: -1.1, pre_tax_profit: 0.0, net_debt: -0.1 },
+    ],
     tm_squad_value_eur_m: null,
-    data_status: "NO_DATA",
-    volatility_tier: null,
+    data_status: "VERIFIED",
+    volatility_tier: "HIGH",
   },
 
   // ─── Viking FK ───────────────────────────────────────────────────────────────
