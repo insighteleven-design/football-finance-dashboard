@@ -1358,6 +1358,8 @@ const beClubs: EUClub[] = [
 
 export const euClubs: EUClub[] = [
   ...frClubs,
+  ...nlClubs,
+  ...beClubs,
   ...dkClubs,
   ...noClubs,
   ...swClubs,
