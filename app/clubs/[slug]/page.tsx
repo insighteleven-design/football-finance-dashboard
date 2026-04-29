@@ -168,7 +168,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     const leagueClubs = japanClubs.filter((c) => c.division === japanClub.division);
     const dd = japanDeepDive[slug] ?? null;
 
-    const visibleJapanClubs = japanClubs;
+    // Sort to match directory: division (j1 < j2 < j3) → name
+    const visibleJapanClubs = [...japanClubs].sort((a, b) =>
+      a.division.localeCompare(b.division) || a.name.localeCompare(b.name)
+    );
     const jIdx = visibleJapanClubs.findIndex((c) => c.slug === slug);
     const nextJp = visibleJapanClubs[(jIdx + 1) % visibleJapanClubs.length];
     const prevJp = visibleJapanClubs[(jIdx - 1 + visibleJapanClubs.length) % visibleJapanClubs.length];
@@ -253,9 +256,15 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const ctx      = marketContext[slug] ?? null;
   const cf       = cashFlowData[slug] ?? null;
 
-  const currentIndex = clubs.findIndex((c) => c.slug === slug);
-  const nextClub     = clubs[(currentIndex + 1) % clubs.length];
-  const prevClub     = clubs[(currentIndex - 1 + clubs.length) % clubs.length];
+  // Sort to match directory: division (PL → Championship → L1 → L2) → name
+  const divOrder = (d: string) =>
+    d === "premier-league" ? 0 : d === "championship" ? 1 : d === "league-one" ? 2 : 3;
+  const sortedClubs = [...clubs].sort((a, b) =>
+    divOrder(a.division) - divOrder(b.division) || a.name.localeCompare(b.name)
+  );
+  const currentIndex = sortedClubs.findIndex((c) => c.slug === slug);
+  const nextClub     = sortedClubs[(currentIndex + 1) % sortedClubs.length];
+  const prevClub     = sortedClubs[(currentIndex - 1 + sortedClubs.length) % sortedClubs.length];
 
   const compareDivision = club.division;
   const compareLabel    = DIVISION_LABELS[compareDivision];
