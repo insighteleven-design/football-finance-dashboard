@@ -420,8 +420,8 @@ export const swClubs: EUClub[] = [
       data_notes: "Won Superettan 2025; promoted to Allsvenskan 2026. Revenue includes player sale income (SEK 8.2m gross).",
     },
     historical: [
-      { season: "2024", revenue: 4.7, wage_bill: null, net_profit: 0.5 },
-      { season: "2025", revenue: 7.1, wage_bill: 4.1, net_profit: -0.1 },
+      { season: "2024", revenue: 4.7, wage_bill: 2.3, net_profit: 0.5, operating_profit: 0.4, net_debt: -0.7 },
+      { season: "2025", revenue: 7.1, wage_bill: 4.1, net_profit: -0.1, operating_profit: -0.1, net_debt: -0.1 },
     ],
     tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
