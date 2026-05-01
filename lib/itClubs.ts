@@ -1628,11 +1628,11 @@ export const itClubs: EUClub[] = [
       operating_profit: -8.1,
       profit_from_player_sales: null,
       pre_tax_profit: -8.1,
-      net_debt: null,
+      net_debt: 2.88,
       net_profit: -6.5,
     },
     historical: [
-      { season: "FY2023/24", revenue: 16.8, wage_bill: 13.6, net_profit: -6.5 },
+      { season: "FY2023/24", revenue: 16.8, wage_bill: 13.6, net_profit: -6.5, net_debt: 2.88 },
       { season: "FY2024/25", revenue: 14.0, wage_bill: 16.4, net_profit: -11.6 },
     ],
     tm_squad_value_eur_m: null,
