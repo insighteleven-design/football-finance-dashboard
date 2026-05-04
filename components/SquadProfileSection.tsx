@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ComingSoonPanel from "./ComingSoonPanel";
-import { type SquadProfile } from "@/lib/squadProfile";
+import { type LeaguePositionData, type SquadProfile } from "@/lib/squadProfile";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -323,6 +322,60 @@ function LeagueValueRankingPanel({
   );
 }
 
+// ─── League Performance ───────────────────────────────────────────────────────
+
+const TIER_COLORS: Record<number, string> = {
+  1: "#333333",
+  2: "#666666",
+  3: "#999999",
+};
+
+function LeaguePerformancePanel({ positions }: { positions: LeaguePositionData[] }) {
+  const rows = [...positions].sort((a, b) => a.season.localeCompare(b.season));
+
+  return (
+    <div>
+      <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+        League Performance
+      </p>
+      {rows.length === 0 ? (
+        <p className="text-sm text-[#aaaaaa]">No league position data available.</p>
+      ) : (
+        <div className="border border-[#e0e0e0] overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#e0e0e0] bg-[#fafafa]">
+                <th className="px-4 py-2.5 text-left font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Season</th>
+                <th className="px-4 py-2.5 text-left font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">League</th>
+                <th className="px-4 py-2.5 text-right font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Position</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr
+                  key={`${r.season}-${r.league_name}`}
+                  className={i < rows.length - 1 ? "border-b border-[#f0f0f0]" : ""}
+                >
+                  <td className="px-4 py-2.5 tabular-nums text-[#555555]">{r.season}</td>
+                  <td className="px-4 py-2.5 text-[#555555]">
+                    <span style={{ color: TIER_COLORS[r.tier] ?? "#999999" }}>{r.league_name}</span>
+                  </td>
+                  <td className="px-4 py-2.5 text-right tabular-nums font-semibold text-[#111111]">
+                    {r.position != null ? r.position : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="px-4 py-2 text-xs text-[#bbbbbb] border-t border-[#f0f0f0]">
+            Source: Wikipedia
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function SquadProfileSection({
@@ -419,13 +472,8 @@ export default function SquadProfileSection({
         />
       </div>
 
-      {/* ── Section 4: League Performance (Coming soon) ──────────────────── */}
-      <div>
-        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
-          League Performance
-        </p>
-        <ComingSoonPanel label="League Performance" />
-      </div>
+      {/* ── Section 4: League Performance ────────────────────────────────── */}
+      <LeaguePerformancePanel positions={profile.league_positions} />
 
     </div>
   );
