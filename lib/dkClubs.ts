@@ -48,7 +48,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2023", revenue: 227.5, wage_bill: 78.3, net_profit: 57.8, operating_profit: 64.1, pre_tax_profit: 57.8, net_debt: 154.8 },
       { season: "FY2022", revenue: 176.6, wage_bill: 69.8, net_profit: 35.4, operating_profit: 41.5, pre_tax_profit: 35.4, net_debt: 178.8 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "LOW",
   },
@@ -94,7 +93,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2022/23", revenue: 46.5, wage_bill: 19.6, net_profit: 14.7, operating_profit: 14.8, pre_tax_profit: 14.7, net_debt: -2.4 },
       { season: "FY2021/22", revenue: 33.0, wage_bill: 16.0, net_profit: 4.7, operating_profit: 4.9, pre_tax_profit: 4.7, net_debt: -19.3 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
   },
@@ -142,7 +140,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2021/22", revenue: 25.4, wage_bill: 13.0, net_profit: 1.0, operating_profit: 2.6, pre_tax_profit: 1.4, net_debt: 7.7 },
       // DKK (tDKK): revenue 188,807 | wages 96,745 | op profit 19,251 | pre-tax 10,693 | net profit 7,497 | total liabilities 69,782 | cash 12,617. EUR/DKK: 0.1344 (FY2022).
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
   },
@@ -188,7 +185,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2023", revenue: 9.6, wage_bill: 5.9, net_profit: 3.7, operating_profit: 3.4, pre_tax_profit: 3.7, net_debt: -6.8 },
       { season: "FY2022", revenue: 15.2, wage_bill: 6.1, net_profit: 9.5, operating_profit: 9.5, pre_tax_profit: 9.5, net_debt: -4.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "LOW",
   },
@@ -234,7 +230,6 @@ export const dkClubs: EUClub[] = [
     historical: [
       { season: "FY2022", revenue: 8.5, wage_bill: 14.5, net_profit: -7.8, operating_profit: -8.1, pre_tax_profit: -7.8, net_debt: 3.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "PARTIAL",
     volatility_tier: "HIGH",
   },
@@ -284,7 +279,6 @@ export const dkClubs: EUClub[] = [
       // Original DKK: revenue 61,744,974 | wages 54,229,295 | operating profit -428,373 | pre-tax 2,139,805 | net profit 2,194,737 | equity 41,705,212 | total liabilities 30,275,800 | cash 11,464,548. EUR/DKK: 0.1342 (FY2023).
       { season: "FY2022/23", revenue: 8.3, wage_bill: 7.3, net_profit: 0.3, operating_profit: -0.1, pre_tax_profit: 0.3, net_debt: 2.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
   },
@@ -330,7 +324,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2022/23", revenue: 11.6, wage_bill: 5.7, net_profit: 4.5, operating_profit: 4.5, pre_tax_profit: 4.5, net_debt: -5.0 },
       { season: "FY2021/22", revenue: 7.6, wage_bill: 4.3, net_profit: 0.9, operating_profit: 0.9, pre_tax_profit: 0.9, net_debt: -6.7 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "MEDIUM",
   },
@@ -379,7 +372,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2020", revenue: 5.9, wage_bill: 7.8, net_profit: 1.6, operating_profit: 1.6, pre_tax_profit: 1.6, net_debt: -5.6 },
       { season: "FY2019", revenue: 8.1, wage_bill: 7.4, net_profit: -4.5, operating_profit: -4.7, pre_tax_profit: -4.5, net_debt: -0.9 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },
@@ -424,7 +416,6 @@ export const dkClubs: EUClub[] = [
     historical: [
       { season: "FY2022", revenue: 3.1, wage_bill: 4.7, net_profit: -2.0, operating_profit: -1.9, pre_tax_profit: -2.0, net_debt: 6.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },
@@ -471,7 +462,6 @@ export const dkClubs: EUClub[] = [
       // Converted from DKK at ~7.44 DKK/EUR (2021/22 avg). Original kEUR: revenue 2,884 | wages 6,761 | operating -4,229 | pre-tax -4,301 | net debt 1,312.
       { season: "FY2021/22", revenue: 2.9, wage_bill: 6.8, net_profit: null, operating_profit: -4.2, pre_tax_profit: -4.3, net_debt: 1.3 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },
@@ -516,7 +506,6 @@ export const dkClubs: EUClub[] = [
     historical: [
       { season: "FY2023", revenue: 5.7, wage_bill: 4.8, net_profit: 0.8, operating_profit: 0.8, pre_tax_profit: 0.8, net_debt: -4.8 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },
@@ -562,7 +551,6 @@ export const dkClubs: EUClub[] = [
       { season: "FY2022", revenue: 5.6, wage_bill: 6.1, net_profit: -0.9, operating_profit: -1.0, pre_tax_profit: -0.9, net_debt: -1.2 },
       { season: "FY2021", revenue: 7.8, wage_bill: 6.4, net_profit: 1.1, operating_profit: 1.0, pre_tax_profit: 1.1, net_debt: null },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "PARTIAL",
     volatility_tier: "HIGH",
   },
@@ -614,7 +602,6 @@ export const dkClubs: EUClub[] = [
       // Source: FY2022 report comparative column. FY2021 original DKK (tDKK): revenue 7,693 | wages 7,529 | op profit 111 | net profit 35 | liabilities 13,333 | cash 568. EUR/DKK: 0.1345.
       { season: "FY2021", revenue: 1.0, wage_bill: 1.0, net_profit: 0.0, operating_profit: 0.0, pre_tax_profit: 0.0, net_debt: 1.7 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },
@@ -660,7 +647,6 @@ export const dkClubs: EUClub[] = [
     historical: [
       { season: "FY2022", revenue: 29.7, wage_bill: 17.9, net_profit: -1.6, operating_profit: -5.9, pre_tax_profit: -1.6, net_debt: -4.3 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: "HIGH",
   },

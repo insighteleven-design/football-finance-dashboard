@@ -123,8 +123,8 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
   // ─── Nottingham Forest ──────────────────────────────────────────────────────
   // FY Jun 2025 / Jun 2024 · FRS 102 · Interest classified in investing (not operating)
   // Opening/closing cash figures are stated net of overdraft
-  nottm_forest: {
-    slug: "nottm_forest",
+  "nottm-forest": {
+    slug: "nottm-forest",
     currentFY: "FY2025",
     priorFY: "FY2024",
     operating: [
@@ -498,8 +498,8 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
 
   // ─── Sheffield Wednesday ────────────────────────────────────────────────────
   // FY Jul 2024 / Jul 2023 · FRS 102 · Values in £'000 (converted to £)
-  sheff_wed: {
-    slug: "sheff_wed",
+  "sheff-wed": {
+    slug: "sheff-wed",
     currentFY: "FY2024",
     priorFY: "FY2023",
     operating: [
@@ -565,8 +565,8 @@ export const cashFlowData: Record<string, ClubCashFlowData> = {
 
   // ─── Oxford United ──────────────────────────────────────────────────────────
   // FY Jun 2025 / Jun 2024 · FRS 102 · Values in £
-  oxford_utd: {
-    slug: "oxford_utd",
+  "oxford-utd": {
+    slug: "oxford-utd",
     currentFY: "FY2025",
     priorFY: "FY2024",
     operating: [

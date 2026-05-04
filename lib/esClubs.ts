@@ -58,7 +58,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 1185.0, wage_bill: 510.0, net_profit: 24.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -101,7 +100,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 964.2, wage_bill: 510.0, net_profit: -16.9 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -144,7 +142,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 416.1, wage_bill: 279.9, net_profit: -6.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -187,7 +184,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 166.4, wage_bill: 122.1, net_profit: 7.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -230,7 +226,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 126.5, wage_bill: 97.6, net_profit: 17.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -272,7 +267,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 150.6, wage_bill: 102.7, net_profit: 4.6 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -315,7 +309,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 115.2, wage_bill: 114.0, net_profit: -54.1 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -358,7 +351,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 110.9, wage_bill: 76.6, net_profit: 16.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -400,7 +392,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 72.6, wage_bill: 53.5, net_profit: -10.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -443,7 +434,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 97.6, wage_bill: 83.2, net_profit: 0.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -485,7 +475,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 58.0, wage_bill: 43.0, net_profit: -1.7 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -528,7 +517,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 61.1, wage_bill: 42.2, net_profit: 0.2 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -571,7 +559,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 56.0, wage_bill: 35.3, net_profit: 1.5 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -614,7 +601,6 @@ export const esClubs: EUClub[] = [
       { season: "FY2023/24", revenue: 23.7, wage_bill: null, net_profit: -13.8 },
       { season: "FY2024/25", revenue: 68.6, wage_bill: 51.5, net_profit: 2.3 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -647,7 +633,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2022/23", revenue: 69.9, wage_bill: 55.9, net_profit: -13.3 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -680,7 +665,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 23.1, wage_bill: 19.6, net_profit: -5.6 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -713,7 +697,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 66.5, wage_bill: 46.3, net_profit: 3.9 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -740,7 +723,6 @@ export const esClubs: EUClub[] = [
     },
     prior_year: null,
     historical: [],
-    tm_squad_value_eur_m: null,
     data_status: "NO_DATA",
     volatility_tier: null,
   },
@@ -767,7 +749,6 @@ export const esClubs: EUClub[] = [
     },
     prior_year: null,
     historical: [],
-    tm_squad_value_eur_m: null,
     data_status: "NO_DATA",
     volatility_tier: null,
   },
@@ -794,7 +775,6 @@ export const esClubs: EUClub[] = [
     },
     prior_year: null,
     historical: [],
-    tm_squad_value_eur_m: null,
     data_status: "NO_DATA",
     volatility_tier: null,
   },
@@ -831,7 +811,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 9.8, wage_bill: 7.8, net_profit: -0.7 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -864,7 +843,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 11.2, wage_bill: 8.1, net_profit: -1.6 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -897,7 +875,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 19.9, wage_bill: 18.9, net_profit: 1.6 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -930,7 +907,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 11.3, wage_bill: 8.5, net_profit: -3.9 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -963,7 +939,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 10.7, wage_bill: 11.3, net_profit: -1.9 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -996,7 +971,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 14.0, wage_bill: 15.7, net_profit: 9.0 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1023,7 +997,6 @@ export const esClubs: EUClub[] = [
     },
     prior_year: null,
     historical: [],
-    tm_squad_value_eur_m: null,
     data_status: "NO_DATA",
     volatility_tier: null,
   },
@@ -1056,7 +1029,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 9.5, wage_bill: 9.7, net_profit: -5.1 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1089,7 +1061,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 11.3, wage_bill: 14.2, net_profit: -5.8 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1116,7 +1087,6 @@ export const esClubs: EUClub[] = [
     },
     prior_year: null,
     historical: [],
-    tm_squad_value_eur_m: null,
     data_status: "NO_DATA",
     volatility_tier: null,
   },
@@ -1149,7 +1119,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 10.8, wage_bill: 8.7, net_profit: 4.2 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1182,7 +1151,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2022/23", revenue: 7.5, wage_bill: 5.4, net_profit: 0.1 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1215,7 +1183,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 19.3, wage_bill: 12.8, net_profit: 0.7 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1248,7 +1215,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2024/25", revenue: 17.9, wage_bill: 15.7, net_profit: -0.1 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },
@@ -1281,7 +1247,6 @@ export const esClubs: EUClub[] = [
     historical: [
       { season: "FY2023/24", revenue: 17.6, wage_bill: 29.9, net_profit: 0.2 },
     ],
-    tm_squad_value_eur_m: null,
     data_status: "VERIFIED",
     volatility_tier: null,
   },

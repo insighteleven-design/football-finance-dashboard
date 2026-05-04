@@ -39,7 +39,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31489,
     uncertain: false,
   },
-  afc_wimbledon: {
+  "afc-wimbledon": {
     local_authority: "Greater London",
     population: 8978074,
     gva_area: "Merton, Kingston upon Thames and Sutton",
@@ -57,7 +57,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 43190,
     uncertain: false,
   },
-  aston_villa: {
+  "aston-villa": {
     local_authority: "Birmingham",
     population: 1183618,
     gva_area: "Birmingham",
@@ -165,7 +165,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 33499,
     uncertain: false,
   },
-  bristol_city: {
+  "bristol-city": {
     local_authority: "Bristol, City of",
     population: 494399,
     gva_area: "Bristol, City of",
@@ -273,7 +273,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 33499,
     uncertain: true,
   },
-  crystal_palace: {
+  "crystal-palace": {
     local_authority: "Greater London",
     population: 8978074,
     gva_area: "Croydon",
@@ -390,7 +390,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 30000,
     uncertain: false,
   },
-  leyton_orient: {
+  "leyton-orient": {
     local_authority: "Greater London",
     population: 8978074,
     gva_area: "Redbridge and Waltham Forest",
@@ -426,7 +426,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31513,
     uncertain: true,
   },
-  man_city: {
+  "man-city": {
     local_authority: "Manchester",
     population: 589670,
     gva_area: "Manchester",
@@ -435,7 +435,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31489,
     uncertain: false,
   },
-  man_united: {
+  "man-united": {
     local_authority: "Trafford",
     population: 241025,
     gva_area: "Greater Manchester South West",
@@ -471,7 +471,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 43190,
     uncertain: false,
   },
-  mk_dons: {
+  "mk-dons": {
     local_authority: "Milton Keynes",
     population: 305884,
     gva_area: "Milton Keynes",
@@ -516,7 +516,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31513,
     uncertain: true,
   },
-  nottm_forest: {
+  "nottm-forest": {
     local_authority: "Nottingham",
     population: 331077,
     gva_area: "Nottingham",
@@ -525,7 +525,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 30000,
     uncertain: false,
   },
-  notts_county: {
+  "notts-county": {
     local_authority: "Nottingham",
     population: 331077,
     gva_area: "Nottingham",
@@ -543,7 +543,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31489,
     uncertain: false,
   },
-  oxford_utd: {
+  "oxford-utd": {
     local_authority: "Oxford",
     population: 166034,
     gva_area: "Oxfordshire CC",
@@ -570,7 +570,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31047,
     uncertain: false,
   },
-  port_vale: {
+  "port-vale": {
     local_authority: "Stoke-on-Trent",
     population: 270425,
     gva_area: "Stoke-on-Trent",
@@ -633,7 +633,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31489,
     uncertain: false,
   },
-  sheff_utd: {
+  "sheff-utd": {
     local_authority: "Sheffield",
     population: 582493,
     gva_area: "Sheffield",
@@ -642,7 +642,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 30486,
     uncertain: false,
   },
-  sheff_wed: {
+  "sheff-wed": {
     local_authority: "Sheffield",
     population: 582493,
     gva_area: "Sheffield",
@@ -750,7 +750,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31513,
     uncertain: false,
   },
-  west_brom: {
+  "west-brom": {
     local_authority: "Sandwell",
     population: 353860,
     gva_area: "Dudley",
@@ -759,7 +759,7 @@ export const marketContext: Record<string, MarketContext> = {
     median_pay: 31360,
     uncertain: true,
   },
-  west_ham: {
+  "west-ham": {
     local_authority: "Greater London",
     population: 8978074,
     gva_area: "Hackney and Newham",

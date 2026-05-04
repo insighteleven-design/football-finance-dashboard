@@ -2,7 +2,6 @@
 
 import { useState, Fragment } from "react";
 import { EUClub } from "@/lib/euClubs";
-import EUMarketContextPanel from "@/components/EUMarketContextPanel";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -14,8 +13,6 @@ function fmtCurrency(v: number | null, currency: "EUR" | "USD" | "SEK", isRatio 
   const sym = currency === "USD" ? "$" : "€";
   return `${v < 0 ? "-" : ""}${sym}${abs.toFixed(1)}m`;
 }
-
-// ─── League stats ─────────────────────────────────────────────────────────────
 
 type FinKey = keyof EUClub["financials"];
 
@@ -35,8 +32,6 @@ function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): s
   return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
 }
 
-// Strip trailing parenthetical qualifiers and leading "FY" prefix so
-// "FY2025" and "2025" (or "FY2024/25" and "2024/25") compare equal.
 function normalizeSeason(s: string | null | undefined): string {
   if (!s) return "";
   return s.replace(/\s*\(.*$/, "").replace(/^FY/, "").trim();
@@ -109,39 +104,39 @@ const FR_METRICS: MetricConfig[] = [
 ];
 
 const DK_METRICS: MetricConfig[] = [
-  { key: "revenue",             label: "Revenue (€)",                    higherBetter: true },
-  { key: "wage_bill",           label: "Wage Bill (€)",                  higherBetter: false },
-  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
-  { key: "operating_profit",    label: "Operating Profit / (Loss)",      diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
-  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+  { key: "revenue",             label: "Revenue (€)",               higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (€)",             higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "Operating Profit / (Loss)", diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",         diverging: true, higherBetter: false },
 ];
 
 const SW_METRICS: MetricConfig[] = [
-  { key: "revenue",             label: "Revenue (USD)",                  higherBetter: true },
-  { key: "wage_bill",           label: "Wage Bill (USD)",                higherBetter: false },
-  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
-  { key: "operating_profit",    label: "Operating Profit / (Loss)",      diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
-  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+  { key: "revenue",             label: "Revenue (USD)",             higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (USD)",           higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "Operating Profit / (Loss)", diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",         diverging: true, higherBetter: false },
 ];
 
 const IT_METRICS: MetricConfig[] = [
-  { key: "revenue",             label: "Revenue (€)",                    higherBetter: true },
-  { key: "wage_bill",           label: "Wage Bill (€)",                  higherBetter: false },
-  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
-  { key: "operating_profit",    label: "EBIT / Operating Profit",        diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
-  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+  { key: "revenue",             label: "Revenue (€)",               higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (€)",             higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "EBIT / Operating Profit",   diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",         diverging: true, higherBetter: false },
 ];
 
 const ES_METRICS: MetricConfig[] = [
-  { key: "revenue",             label: "Revenue (€)",                    higherBetter: true },
-  { key: "wage_bill",           label: "Wage Bill (€)",                  higherBetter: false },
-  { key: "wage_to_revenue_pct", label: "Wage Ratio",                     isRatio: true, higherBetter: false },
-  { key: "operating_profit",    label: "EBIT / Operating Profit",        diverging: true, higherBetter: true },
-  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",        diverging: true, higherBetter: true },
-  { key: "net_debt",            label: "Net Debt / (Cash)",              diverging: true, higherBetter: false },
+  { key: "revenue",             label: "Revenue (€)",               higherBetter: true },
+  { key: "wage_bill",           label: "Wage Bill (€)",             higherBetter: false },
+  { key: "wage_to_revenue_pct", label: "Wage Ratio",                isRatio: true, higherBetter: false },
+  { key: "operating_profit",    label: "EBIT / Operating Profit",   diverging: true, higherBetter: true },
+  { key: "pre_tax_profit",      label: "Pre-tax Profit / (Loss)",   diverging: true, higherBetter: true },
+  { key: "net_debt",            label: "Net Debt / (Cash)",         diverging: true, higherBetter: false },
 ];
 
 function getMetrics(country: string): MetricConfig[] {
@@ -153,7 +148,7 @@ function getMetrics(country: string): MetricConfig[] {
   return EU_METRICS;
 }
 
-// ─── Country disclaimers ───────────────────────────────────────────────────────
+// ─── Country disclaimers ──────────────────────────────────────────────────────
 
 function CountryDisclaimer({ country }: { country: string }) {
   if (country === "Denmark") {
@@ -187,7 +182,7 @@ function CountryDisclaimer({ country }: { country: string }) {
       <div className="mb-4 px-4 py-3 border border-[#e8e8e8] bg-[#fafafa] text-xs text-[#888888] leading-relaxed">
         Figures in EUR millions. FY typically ends 30 June (football year); clubs using a December fiscal year are noted.
         Revenue (Valore della Produzione) includes gains on player sales. EBIT shown as Differenza A−B.
-        Source: bilancio d'esercizio / bilancio consolidato. Half-year accounts (Juventus, Lazio) cover 6 months only — not comparable to full-year figures.
+        Source: bilancio d&apos;esercizio / bilancio consolidato. Half-year accounts (Juventus, Lazio) cover 6 months only — not comparable to full-year figures.
       </div>
     );
   }
@@ -204,7 +199,7 @@ function CountryDisclaimer({ country }: { country: string }) {
   return null;
 }
 
-// ─── Current year financial tab (with league comparison) ───────────────────────
+// ─── Current-year financial tab ───────────────────────────────────────────────
 
 function FinancialTab({
   club,
@@ -317,8 +312,6 @@ type EUYearSnap = {
 function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
   const currentSeason = club.financials.most_recent_year;
   const currentNorm = normalizeSeason(currentSeason);
-  // Skip historical entries whose season matches the current season (different string, same year)
-  // — the current year snap is added below from club.financials as the authoritative source.
   const snaps: EUYearSnap[] = club.historical
     .filter((h) => normalizeSeason(h.season) !== currentNorm)
     .map((h) => {
@@ -338,7 +331,6 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
         net_debt: h.net_debt ?? py?.net_debt ?? null,
       };
     });
-  // Inject prior_year when not already present in historical
   const py = club.prior_year;
   if (
     py &&
@@ -359,7 +351,6 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
       net_debt: py.net_debt ?? null,
     });
   }
-  // Ensure current year is present (use financials as authoritative source)
   if (currentSeason && !snaps.find((s) => normalizeSeason(s.season) === currentNorm)) {
     snaps.push({
       season: currentSeason,
@@ -378,7 +369,7 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
   return snaps;
 }
 
-// ─── Historical year tab (bar chart with league comparison) ──────────────────
+// ─── Historical year tab ──────────────────────────────────────────────────────
 
 function HistoricalYearTab({
   snap,
@@ -509,7 +500,6 @@ function fmtChartLabel(v: number, isRatio: boolean | undefined): string {
   return `${v.toFixed(0)}m`;
 }
 
-// Build a parallel array of league-average EUYearSnap for each season in allYears
 function buildLeagueAvgSnaps(allYears: EUYearSnap[], leagueClubs: EUClub[]): EUYearSnap[] {
   return allYears.map((yr) => {
     const matchingSnaps = leagueClubs.flatMap((c) =>
@@ -632,11 +622,9 @@ function EUTrendChart({
         <line x1={ML} y1={zeroY} x2={ML + PW} y2={zeroY} stroke="#d8d8d8" strokeWidth={0.75} strokeDasharray="3 3" />
       )}
       {areaPaths.map((d, i) => <path key={i} d={d} fill="rgba(17,17,17,0.04)" />)}
-      {/* League average dashed line — behind club line */}
       {avgSegs.map((s, i) => (
         <polyline key={i} points={s.join(" ")} fill="none" stroke="#cccccc" strokeWidth={0.75} strokeDasharray="5 4" strokeLinejoin="round" strokeLinecap="round" />
       ))}
-      {/* Club line */}
       {clubSegs.map((s, i) => (
         <polyline key={i} points={s.join(" ")} fill="none" stroke="#111111" strokeWidth={1} strokeLinejoin="round" strokeLinecap="round" />
       ))}
@@ -702,7 +690,7 @@ function ChgBadge({
   );
 }
 
-// ─── Year-on-year section (table + chart) ─────────────────────────────────────
+// ─── Year-on-year section ─────────────────────────────────────────────────────
 
 function EUYoYSection({
   club,
@@ -720,7 +708,6 @@ function EUYoYSection({
 
   const leagueAvgYears = buildLeagueAvgSnaps(allYears, leagueClubs);
 
-  // Only show metrics that have at least one data point in history
   type SnapKey = keyof EUYearSnap;
   const chartMetrics = metrics.filter((m) =>
     allYears.some((y) => {
@@ -735,7 +722,6 @@ function EUYoYSection({
 
   return (
     <div>
-      {/* ── Table ── */}
       <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
           <thead>
@@ -787,7 +773,6 @@ function EUYoYSection({
         </table>
       </div>
 
-      {/* ── Chart ── */}
       <div style={{ marginTop: "28px", borderTop: "1px solid #eeeeee", paddingTop: "20px" }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "16px" }}>
           {chartMetrics.map((m, i) => (
@@ -838,56 +823,9 @@ function EUYoYSection({
   );
 }
 
+// ─── Exported component ───────────────────────────────────────────────────────
 
-// ─── Club info tab ────────────────────────────────────────────────────────────
-
-function ClubInfoTab({ club }: { club: EUClub }) {
-  const hasStadium = !!club.stadium?.name;
-  const hasOwnership = !!(club.ownership?.summary || club.ownership?.category);
-
-  if (!hasStadium && !hasOwnership) {
-    return <p className="text-sm text-[#aaaaaa] italic">No club information available.</p>;
-  }
-
-  return (
-    <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
-      {hasStadium && club.stadium && (
-        <div
-          className={`px-4 sm:px-6 py-4 sm:py-5 bg-white ${
-            hasOwnership ? "border-b lg:border-b-0 border-r border-[#e0e0e0]" : "lg:col-span-2"
-          }`}
-        >
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">Stadium</p>
-          <p className="text-sm font-medium text-[#111111] mb-1">{club.stadium.name}</p>
-          {club.stadium.capacity && (
-            <p className="text-xs text-[#666666] mb-1.5">{club.stadium.capacity.toLocaleString()} capacity</p>
-          )}
-          {club.stadium.ownership && (
-            <p className="text-xs text-[#aaaaaa] leading-relaxed">{club.stadium.ownership}</p>
-          )}
-        </div>
-      )}
-      {hasOwnership && club.ownership && (
-        <div className={`px-4 sm:px-6 py-4 sm:py-5 bg-white ${!hasStadium ? "lg:col-span-2" : ""}`}>
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">Ownership</p>
-          {club.ownership.category && (
-            <p className="text-xs text-[#666666] mb-1">{club.ownership.category}</p>
-          )}
-          {club.ownership.fifty_plus_one && (
-            <p className="text-xs text-[#aaaaaa] mb-1.5">50+1: {club.ownership.fifty_plus_one}</p>
-          )}
-          {club.ownership.summary && (
-            <p className="text-xs text-[#aaaaaa] leading-relaxed">{club.ownership.summary}</p>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── Financials section (outer tab content) ────────────────────────────────────
-
-function FinancialsSection({
+export default function EUFinancialsSection({
   club,
   leagueClubs,
   leagueLabel,
@@ -896,12 +834,12 @@ function FinancialsSection({
   leagueClubs: EUClub[];
   leagueLabel: string;
 }) {
+  const fin = club.financials;
   const metrics  = getMetrics(club.country);
   const curr     = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
   const allYears = buildEUYearSnaps(club).sort((a, b) => a.season.localeCompare(b.season));
 
-  // Historical year tabs: up to 3 most recent non-current seasons (oldest → newest)
-  const currentSeason  = club.financials.most_recent_year;
+  const currentSeason  = fin.most_recent_year;
   const historicalTabs = allYears
     .filter((y) => normalizeSeason(y.season) !== normalizeSeason(currentSeason))
     .slice(-3);
@@ -920,7 +858,6 @@ function FinancialsSection({
 
   const activeHistSnap = historicalTabs.find((y) => y.season === innerTab) ?? null;
 
-  // Build league snaps for each historical season (for bar chart comparison)
   const historicalLeagueSnaps = new Map<string, EUYearSnap[]>(
     historicalTabs.map((histSnap) => [
       histSnap.season,
@@ -932,7 +869,19 @@ function FinancialsSection({
 
   return (
     <div>
-      {/* Inner tab bar */}
+      {(currentSeason || fin.data_notes) && (
+        <p className="text-sm text-[#999999] mb-6">
+          {currentSeason && (
+            <>Financial year: <span className="text-[#666666]">{currentSeason}</span></>
+          )}
+          {fin.data_notes && (
+            <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs text-[#999999]">
+              {fin.data_notes}
+            </span>
+          )}
+        </p>
+      )}
+
       {(hasHistory || hasYoY) && (
         <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
           {innerTabs.map(({ key, label }) => (
@@ -951,7 +900,6 @@ function FinancialsSection({
         </div>
       )}
 
-      {/* Historical year tab */}
       {activeHistSnap !== null && innerTab !== "current" && innerTab !== "yoy" && (
         <HistoricalYearTab
           snap={activeHistSnap}
@@ -963,80 +911,13 @@ function FinancialsSection({
         />
       )}
 
-      {/* Current year tab */}
       {innerTab === "current" && (
         <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} metrics={metrics} />
       )}
 
-      {/* Year on Year tab */}
       {innerTab === "yoy" && hasYoY && (
         <EUYoYSection club={club} leagueClubs={leagueClubs} metrics={metrics} currency={curr} />
       )}
-    </div>
-  );
-}
-
-// ─── Main component ───────────────────────────────────────────────────────────
-
-const OUTER_TABS = [
-  { key: "financials", label: "Financials" },
-  { key: "market",     label: "Market Context" },
-  { key: "info",       label: "Club Info" },
-] as const;
-type OuterTabKey = (typeof OUTER_TABS)[number]["key"];
-
-export default function EuropeanClubProfile({
-  club,
-  leagueClubs,
-  leagueLabel,
-}: {
-  club: EUClub;
-  leagueClubs: EUClub[];
-  leagueLabel: string;
-}) {
-  const [tab, setTab] = useState<OuterTabKey>("financials");
-  const fin = club.financials;
-
-  return (
-    <div>
-      {/* Metadata line */}
-      {(fin.most_recent_year || fin.data_notes) && (
-        <p className="text-sm text-[#999999] mb-6">
-          {fin.most_recent_year && (
-            <>Financial year: <span className="text-[#666666]">{fin.most_recent_year}</span></>
-          )}
-          {fin.data_notes && (
-            <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs text-[#999999]">
-              {fin.data_notes}
-            </span>
-          )}
-        </p>
-      )}
-
-      {/* Outer tab bar */}
-      <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
-        {OUTER_TABS.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setTab(key)}
-            className={`px-5 sm:px-7 py-4 text-base font-bold tracking-[0.04em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
-              tab === key
-                ? "border-[#111111] text-[#111111]"
-                : "border-transparent text-[#aaaaaa] hover:text-[#555555]"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {tab === "financials" && (
-        <FinancialsSection club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
-      )}
-      {tab === "market" && (
-        <EUMarketContextPanel club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
-      )}
-      {tab === "info" && <ClubInfoTab club={club} />}
     </div>
   );
 }

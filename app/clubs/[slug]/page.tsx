@@ -11,8 +11,11 @@ import FinancialYearTabs from "@/components/FinancialYearTabs";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
 import FixedAssetsPanel from "@/components/FixedAssetsPanel";
 import MarketContextPanel from "@/components/MarketContextPanel";
-import EuropeanClubProfile from "@/components/EuropeanClubProfile";
-import JapanClubProfile from "@/components/JapanClubProfile";
+import EUFinancialsSection from "@/components/EUFinancialsSection";
+import EUClubInfoPanel from "@/components/EUClubInfoPanel";
+import EUMarketContextPanel from "@/components/EUMarketContextPanel";
+import JapanFinancialsSection from "@/components/JapanFinancialsSection";
+import ComingSoonPanel from "@/components/ComingSoonPanel";
 import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSection";
 import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
 import { cashFlowData } from "@/lib/cashFlowData";
@@ -156,7 +159,28 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
-        <EuropeanClubProfile club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />
+        <ClubProfileTabs
+          tabs={[
+            {
+              key: "financials",
+              label: "Financials",
+              labelFull: "Financial Information",
+              content: <EUFinancialsSection club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />,
+            },
+            {
+              key: "market",
+              label: "Market",
+              labelFull: "Market Context",
+              content: <EUMarketContextPanel club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />,
+            },
+            {
+              key: "info",
+              label: "Info",
+              labelFull: "Club Information",
+              content: <EUClubInfoPanel club={euClub} />,
+            },
+          ]}
+        />
       </div>
     );
   }
@@ -243,7 +267,28 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
         </div>
-        <JapanClubProfile club={japanClub} leagueClubs={leagueClubs} deepDive={dd} />
+        <ClubProfileTabs
+          tabs={[
+            {
+              key: "financials",
+              label: "Financials",
+              labelFull: "Financial Information",
+              content: <JapanFinancialsSection club={japanClub} leagueClubs={leagueClubs} deepDive={dd} />,
+            },
+            {
+              key: "market",
+              label: "Market",
+              labelFull: "Market Context",
+              content: <ComingSoonPanel label="Market Context" />,
+            },
+            {
+              key: "info",
+              label: "Info",
+              labelFull: "Club Information",
+              content: <ComingSoonPanel label="Club Information" />,
+            },
+          ]}
+        />
       </div>
     );
   }
@@ -412,67 +457,75 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <ClubProfileTabs
-        financial={
-          <FinancialYearTabs
-            club={club}
-            currentData={currentData}
-            currentDivisionData={currentDivData}
-            currentLabel={currentLabel}
-            compareLabel={compareLabel}
-            breakdown={dd?.revenue_breakdown ?? null}
-            debtBreakdown={dd?.debt_breakdown ?? null}
-            extraSection={
-              slug === "plymouth" ? <CashFlowSection /> :
-              cf ? <ClubCashFlowSection data={cf} /> :
-              undefined
-            }
-            priorExtraSection={
-              slug === "plymouth" ? <CashFlowSectionSimple /> :
-              cf ? (
-                <ClubCashFlowSectionSimple
-                  value={cf.netOperating.prior}
-                  fyLabel={cf.priorFY}
-                  scale={Math.max(
-                    Math.abs(cf.netOperating.current / 1_000_000),
-                    Math.abs(cf.netOperating.prior / 1_000_000),
-                    1
-                  )}
-                />
-              ) :
-              undefined
-            }
-            priorData={priorData}
-            priorDivisionData={priorDivData}
-            priorLabel={priorLabel}
-            priorCompareLabel={priorCompareLabel}
-            data2023={data2023Snap}
-            data2023DivisionData={data2023DivData}
-            data2023Label={data2023Label}
-            data2023CompareLabel={data2023CompareLabel}
-            data2022={data2022Snap}
-            data2022DivisionData={data2022DivData}
-            data2022Label={data2022Label}
-            data2022CompareLabel={data2022CompareLabel}
-          />
-        }
-        assets={
-          assets ? (
-            <FixedAssetsPanel
-              assets={assets}
-              division={club.division}
-              landBuildings={dd?.land_buildings ?? null}
-            />
-          ) : (
-            <p className="text-sm text-[#aaaaaa] italic">No fixed assets data available.</p>
-          )
-        }
-        market={
-          ctx ? (
-            <MarketContextPanel ctx={ctx} division={club.division} slug={slug} />
-          ) : (
-            <p className="text-sm text-[#aaaaaa] italic">No market context data available.</p>
-          )
-        }
+        tabs={[
+          {
+            key: "financials",
+            label: "Financials",
+            labelFull: "Financial Information",
+            content: (
+              <FinancialYearTabs
+                club={club}
+                currentData={currentData}
+                currentDivisionData={currentDivData}
+                currentLabel={currentLabel}
+                compareLabel={compareLabel}
+                breakdown={dd?.revenue_breakdown ?? null}
+                debtBreakdown={dd?.debt_breakdown ?? null}
+                extraSection={
+                  slug === "plymouth" ? <CashFlowSection /> :
+                  cf ? <ClubCashFlowSection data={cf} /> :
+                  undefined
+                }
+                priorExtraSection={
+                  slug === "plymouth" ? <CashFlowSectionSimple /> :
+                  cf ? (
+                    <ClubCashFlowSectionSimple
+                      value={cf.netOperating.prior}
+                      fyLabel={cf.priorFY}
+                      scale={Math.max(
+                        Math.abs(cf.netOperating.current / 1_000_000),
+                        Math.abs(cf.netOperating.prior / 1_000_000),
+                        1
+                      )}
+                    />
+                  ) :
+                  undefined
+                }
+                priorData={priorData}
+                priorDivisionData={priorDivData}
+                priorLabel={priorLabel}
+                priorCompareLabel={priorCompareLabel}
+                data2023={data2023Snap}
+                data2023DivisionData={data2023DivData}
+                data2023Label={data2023Label}
+                data2023CompareLabel={data2023CompareLabel}
+                data2022={data2022Snap}
+                data2022DivisionData={data2022DivData}
+                data2022Label={data2022Label}
+                data2022CompareLabel={data2022CompareLabel}
+              />
+            ),
+          },
+          {
+            key: "assets",
+            label: "Fixed Assets",
+            content: assets ? (
+              <FixedAssetsPanel
+                assets={assets}
+                division={club.division}
+                landBuildings={dd?.land_buildings ?? null}
+              />
+            ) : null,
+          },
+          {
+            key: "market",
+            label: "Market",
+            labelFull: "Market Context",
+            content: ctx ? (
+              <MarketContextPanel ctx={ctx} division={club.division} slug={slug} />
+            ) : null,
+          },
+        ]}
       />
     </div>
   );

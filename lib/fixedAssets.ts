@@ -29,7 +29,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Emirates Stadium", capacity: 60704, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  aston_villa: {
+  "aston-villa": {
     stadium: { stadium_name: "Villa Park", capacity: 42918, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: "Purchased in 2018" },
   },
@@ -53,7 +53,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Stamford Bridge", capacity: 40173, ownership: "leased", ownership_detail: "Chelsea Pitch Owners (non-profit supporter organisation)", leasehold_notes: "Freehold owned by Chelsea Pitch Owners (fan trust). Club must continue to play at Stamford Bridge or forfeit the right to use the Chelsea FC name." },
     training_ground: { ownership: "owned", notes: "Owned by BlueCo - transferrred in 2022 to help PSR" },
   },
-  crystal_palace: {
+  "crystal-palace": {
     stadium: { stadium_name: "Selhurst Park", capacity: 26255, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: "Purchased 2013 for £2.3m" },
   },
@@ -73,11 +73,11 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Anfield", capacity: 61276, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  man_city: {
+  "man-city": {
     stadium: { stadium_name: "Etihad Stadium", capacity: 55097, ownership: "leased", ownership_detail: "Manchester City Council", leasehold_notes: "250-year lease from Manchester City Council at approximately £4m/year. Freehold remains with the council." },
     training_ground: { ownership: "owned", notes: null },
   },
-  man_united: {
+  "man-united": {
     stadium: { stadium_name: "Old Trafford", capacity: 74140, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -85,7 +85,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "St James' Park", capacity: 52409, ownership: "leased", ownership_detail: "PZ Holdings Ltd (PIF / Reuben Brothers)", leasehold_notes: "Stadium sold to sister company PZ Holdings in 2024/25 for £172m to generate a PSR accounting profit. The club now leases back the ground from its own owners." },
     training_ground: { ownership: "owned", notes: "New £200m facility planned at Wollsington" },
   },
-  nottm_forest: {
+  "nottm-forest": {
     stadium: { stadium_name: "City Ground", capacity: 30404, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -97,7 +97,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Tottenham Hotspur Stadium", capacity: 62303, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  west_ham: {
+  "west-ham": {
     stadium: { stadium_name: "London Stadium", capacity: 62500, ownership: "leased", ownership_detail: "London Stadium LLP (Greater London Authority)", leasehold_notes: "Club holds a 99-year lease from the Greater London Authority. Does not benefit from naming rights revenue or non-football events at the stadium." },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -115,7 +115,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Ewood Park", capacity: 31367, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: "Sold to Venky portfolio company in 2021 to comply with EFL reg rules" },
   },
-  bristol_city: {
+  "bristol-city": {
     stadium: { stadium_name: "Ashton Gate", capacity: 27000, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -155,7 +155,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Carrow Road", capacity: 27150, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  oxford_utd: {
+  "oxford-utd": {
     stadium: { stadium_name: "The Kassam Stadium", capacity: 12500, ownership: "leased", ownership_detail: "Owned by Firoka Group - new stadium anticipated in 2026", leasehold_notes: "Kassam Stadium leased from the Firoka Group. A new 16,000-seat stadium at Stratfield Brake is anticipated for 2026–27." },
     training_ground: { ownership: "leased", notes: "23 year lease signed in 2019" },
   },
@@ -171,11 +171,11 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Loftus Road", capacity: 18439, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  sheff_utd: {
+  "sheff-utd": {
     stadium: { stadium_name: "Bramall Lane", capacity: 32050, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: "New training ground planned at Dore site, purchased in March 2024" },
   },
-  sheff_wed: {
+  "sheff-wed": {
     stadium: { stadium_name: "Hillsborough", capacity: 34835, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -195,7 +195,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Vicarage Road", capacity: 22220, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  west_brom: {
+  "west-brom": {
     stadium: { stadium_name: "Hawthorns", capacity: 26850, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -205,7 +205,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
   },
 
   // League One
-  afc_wimbledon: {
+  "afc-wimbledon": {
     stadium: { stadium_name: "Plough Lane", capacity: 9215, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "Owned by KCL University" },
   },
@@ -241,7 +241,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Accu Stadium", capacity: 24121, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "Leased from local council" },
   },
-  leyton_orient: {
+  "leyton-orient": {
     stadium: { stadium_name: "Brisbane Road", capacity: 9271, ownership: "leased", ownership_detail: "Owned by former owners (Matchroom);  20 year lease in 2023", leasehold_notes: "20-year lease signed in 2023 with Barry Hearn's Matchroom, who retained the freehold following their period of ownership." },
     training_ground: { ownership: "leased", notes: "Leased from Chigwell School" },
   },
@@ -269,7 +269,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Home Park", capacity: 17000, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  port_vale: {
+  "port-vale": {
     stadium: { stadium_name: "Vale Park", capacity: 16800, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
@@ -331,7 +331,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Blundell Park", capacity: 9546, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "owned", notes: null },
   },
-  mk_dons: {
+  "mk-dons": {
     stadium: { stadium_name: "Stadium MK", capacity: 30500, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "25 year lease from the council" },
   },
@@ -339,7 +339,7 @@ export const fixedAssets: Record<string, ClubAssets> = {
     stadium: { stadium_name: "Rodney Parade", capacity: 8700, ownership: "leased", ownership_detail: "10 year deal in early 2025", leasehold_notes: "New 10-year deal agreed in early 2025." },
     training_ground: { ownership: "leased", notes: "Leased from University of South Wales" },
   },
-  notts_county: {
+  "notts-county": {
     stadium: { stadium_name: "Meadow Lane", capacity: 19841, ownership: "owned", ownership_detail: null, leasehold_notes: null },
     training_ground: { ownership: "leased", notes: "Joint venture with university" },
   },

@@ -24,9 +24,9 @@ export interface ClubNews {
 
 export const ownershipNews: Record<string, ClubNews> = {
   accrington: { scraped_at: "2026-04-14T19:20:16.090788+00:00", stories: [] },
-  afc_wimbledon: { scraped_at: "2026-04-14T19:21:21.567544+00:00", stories: [] },
+  "afc-wimbledon": { scraped_at: "2026-04-14T19:21:21.567544+00:00", stories: [] },
   arsenal: { scraped_at: "2026-04-14T19:19:25.751398+00:00", stories: [] },
-  aston_villa: { scraped_at: "2026-04-14T19:21:39.028959+00:00", stories: [
+  "aston-villa": { scraped_at: "2026-04-14T19:21:39.028959+00:00", stories: [
     { headline: "Lerner agrees Aston Villa sale to Dr Tony Xia's Recon Group", source: "FotMob", date: null, url: "https://www.fotmob.com/news/1ql7xnh4xhngb10k0eth1tq6eu/lerner-agrees-aston-villa-sale", summary: "Randy Lerner agreed to sell 100% ownership of Aston Villa to Dr Tony Jiantong Xia's Recon Group for reported £60million, subject to Premier League approval.", category: "ownership_change" },
     { headline: "Randy Lerner puts Aston Villa up for sale", source: "Wikipedia", date: null, url: "https://en.wikipedia.org/wiki/Aston_Villa_F.C.", summary: "Aston Villa owner Randy Lerner announced the club was being put up for sale.", category: "general" },
     { headline: "Aston Villa takeover by US billionaire Randy Lerner", source: "The Economic Times", date: null, url: "https://economictimes.indiatimes.com/news/international/after-manu-aston-villa-goes-to-us-billionaire/articleshow/1894222.cms", summary: "Aston Villa agreed a $119 million cash takeover by a group led by US billionaire Randy Lerner.", category: "ownership_change" }
@@ -76,7 +76,7 @@ export const ownershipNews: Record<string, ClubNews> = {
   brighton: { scraped_at: "2026-04-14T19:24:52.211770+00:00", stories: [
     { headline: "Newcastle United takeover speculation continues amid Brighton transfer window", source: "Sussex Express", date: null, url: "https://www.sussexexpress.co.uk/sport/football/brighton-and-hove-albion/nigerian-reveals-failed-brighton-move-gossip-2881073", summary: "Speculation ongoing regarding Newcastle United takeover as transfer window approaches, with player revealing failed Brighton move.", category: "rumour" }
   ] },
-  bristol_city: { scraped_at: "2026-04-14T19:25:09.019231+00:00", stories: [
+  "bristol-city": { scraped_at: "2026-04-14T19:25:09.019231+00:00", stories: [
     { headline: "Bristol City owner denies club 'close' to takeover", source: "BBC Sport", date: null, url: "https://www.bbc.com/sport/football/articles/cd0ney12jkpo", summary: "Bristol City owner Steve Lansdown has stated the club are 'not close' to a potential takeover or new investment.", category: "denial" },
     { headline: "Saudi Arabian takeover reports 'purely speculation'", source: "BBC Sport", date: null, url: "https://www.bbc.com/sport/football/articles/cx270ek2rmvo", summary: "Bristol Sport Group CEO Gavin Marshall has dismissed reports of a Saudi Arabian takeover as 'purely speculation'.", category: "denial" },
     { headline: "Fresh takeover update as deal tipped involving Turki Alalshikh", source: "Bristol World", date: null, url: "https://www.bristolworld.com/sport/football/bristol-city/bristol-city-takeover-latest-turki-alalshikh-championship-5332490", summary: "Reports emerge linking Saudi businessman Turki Alalshikh to a potential Bristol City takeover, though details remain uncertain.", category: "rumour" }
@@ -117,7 +117,7 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "Crawley Town ownership undergoes big change ahead of new season", source: "The Lower Tiers", date: "Jul 21, 2025", url: "https://lowertiers.co.uk/crawley-town-ownership-update/", summary: "Crawley Town's ownership structure set to undergo significant change with official update expected, 11 days before KB Sports takeover announcement.", category: "ownership_change" },
     { headline: "KB Sports and Leisure commits to sustainable growth at Crawley Town", source: "Fundz", date: "2025-08-01", url: "https://app.fundz.net/acquisitions/acquires-eaa9", summary: "New ownership pledges investment in infrastructure and operational strategies for the newly acquired League Two club.", category: "investment" }
   ] },
-  crystal_palace: { scraped_at: "2026-04-14T19:28:33.032798+00:00", stories: [] },
+  "crystal-palace": { scraped_at: "2026-04-14T19:28:33.032798+00:00", stories: [] },
   derby: { scraped_at: "2026-04-14T19:28:51.485382+00:00", stories: [
     { headline: "David Clowes seeks investment to build Derby County as Championship force", source: "Derby Telegraph", date: null, url: "https://www.derbytelegraph.co.uk/sport/football/football-news/ffp-academy-david-clowes-plea-9583872", summary: "Derby County owner David Clowes is looking for investment into the club to help them build as a Championship force.", category: "investment" },
     { headline: "David Clowes drops Derby County ownership update amid takeover talk", source: "Football League World", date: null, url: "https://footballleagueworld.co.uk/david-clowes-derby-county-ownership-update-rams-takeover-talk/", summary: "David Clowes has brought stability to Derby County, establishing financial health and a second division position amidst takeover speculation.", category: "rumour" },
@@ -160,7 +160,7 @@ export const ownershipNews: Record<string, ClubNews> = {
   leicester: { scraped_at: "2026-04-14T19:31:51.636696+00:00", stories: [
     { headline: "Leicester City referred to independent commission after relegation", source: "Inside World Football", date: "May 21", url: "https://www.insideworldfootball.com/category/finance/page/11/", summary: "Leicester City, relegated from the Premier League, face an uncertain future after being referred to an independent commission.", category: "general" }
   ] },
-  leyton_orient: { scraped_at: "2026-04-14T19:32:09.213264+00:00", stories: [
+  "leyton-orient": { scraped_at: "2026-04-14T19:32:09.213264+00:00", stories: [
     { headline: "American consortium GSG LOFC completes Leyton Orient takeover", source: "BBC Sport", date: "25 April 2025", url: "https://www.bbc.com/sport/football/articles/c0qn9vwz173o?xtor=AL-72-[partner]-[yahoo.north.america]-[headline]-[sport]-[bizdev]-[isapi]", summary: "American consortium GSG LOFC Limited has completed its takeover of League One club Leyton Orient.", category: "ownership_change" },
     { headline: "Nigel Travis completes Leyton Orient takeover from Becchetti", source: "Daily Mail Online", date: null, url: null, summary: "Dunkin' Donuts CEO Nigel Travis completed takeover of Leyton Orient, ending Francesco Becchetti's ownership with fan-led consortium involvement.", category: "ownership_change" },
     { headline: "Barry Hearn sells Leyton Orient stake to Francesco Becchetti", source: "The Independent", date: null, url: null, summary: "Long-serving chairman Barry Hearn sold his stake in Leyton Orient to Italian businessman Francesco Becchetti.", category: "ownership_change" }
@@ -172,10 +172,10 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "Liverpool FC ownership saga takes new twist with Gulf-based regime buyout", source: "Birmingham Mail", date: null, url: "https://www.birminghammail.co.uk/sport/football/football-news/liverpool-fc-ownership-saga-takes-124682", summary: "Liverpool has moved closer to a buy-out deal under a proposed new Gulf-based ownership regime.", category: "active_takeover" }
   ] },
   luton: { scraped_at: "2026-04-14T19:32:48.697101+00:00", stories: [] },
-  man_city: { scraped_at: "2026-04-14T19:33:05.370409+00:00", stories: [
+  "man-city": { scraped_at: "2026-04-14T19:33:05.370409+00:00", stories: [
     { headline: "Manchester City owner Sheikh Mansour invests £595m in RedBird", source: "Football Today", date: "2023-05-10", url: "https://footballtoday.com/2023/05/10/manchester-city-owner-sheikh-mansour-invests-595m-in-one-of-liverpools-partners/", summary: "Manchester City owner Sheikh Mansour has invested £595m in RedBird Capital Partners, with more acquisitions expected from the investment firm.", category: "investment" }
   ] },
-  man_united: { scraped_at: "2026-04-14T19:33:28.257575+00:00", stories: [
+  "man-united": { scraped_at: "2026-04-14T19:33:28.257575+00:00", stories: [
     { headline: "£6 billion Manchester United takeover deal gets closer", source: "United In Focus", date: null, url: "https://www.unitedinfocus.com/takeover/6-billion-manchester-united-takeover-deal-gets-closer-with-exclusive-bidder-set-to-be-named/", summary: "An exclusive buyer for Manchester United will be named by The Raine Group this week according to reports of a £6 billion takeover deal.", category: "active_takeover" },
     { headline: "Turki AlAlShikh's tweet fuels Manchester United takeover rumours", source: "Free Press Journal on MSN", date: "2025-10-08", url: "https://www.msn.com/en-in/autos/news/will-manchester-united-get-new-owners-turki-alalshikh-s-viral-tweet-fuels-takeover-rumours/ar-AA1O8Gof?ocid=BingNewsVerp", summary: "Saudi Arabia's General Entertainment Authority Chairman Turki AlAlShikh sparked widespread speculation about potential ownership change at Manchester United.", category: "rumour" },
     { headline: "Jim Ratcliffe acquires 25% stake as Glazers consider sale", source: "Manchester Evening News", date: null, url: "https://www.manchestereveningnews.co.uk/all-about/manchester-united-takeover", summary: "British billionaire Sir Jim Ratcliffe of INEOS Group agreed to acquire 25% of Manchester United from the Glazer family ownership.", category: "ownership_change" }
@@ -188,7 +188,7 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "Derby County owner accuses Middlesbrough of breaking sustainability rules", source: "Nottingham Post", date: null, url: "https://www.nottinghampost.com/sport/football/football-news/derby-county-owner-mel-morris-2911423", summary: "Middlesbrough were accused by Derby County owner Mel Morris of breaching Football League profitability rules after reporting a £14.6m profit largely from stadium sale.", category: "general" }
   ] },
   millwall: { scraped_at: "2026-04-14T19:34:10.310867+00:00", stories: [] },
-  mk_dons: { scraped_at: "2026-04-14T19:34:26.583047+00:00", stories: [
+  "mk-dons": { scraped_at: "2026-04-14T19:34:26.583047+00:00", stories: [
     { headline: "MK Dons Winter Transfer Policy Emerges: More Incomings Expected", source: "The Real EFL", date: "2024-10-22", url: "https://therealefl.co.uk/2024/10/22/mk-dons-winter-transfer-policy-emerges-more-incomings-expected/", summary: "Owner Fahad Al Ghanim plans to strengthen the squad in January transfer window under head coach Scott Lindsey.", category: "general" },
     { headline: "Pete Winkelman defends MK Dons ahead of AFC Wimbledon clash", source: "Daily Mail Online", date: "2012-11-27", url: "https://www.dailymail.co.uk/sport/football/article-2239203/Pete-Winkelman-defends-MK-Dons-ahead-AFC-Wimbledon-clash.html", summary: "MK Dons owner Pete Winkelman defends the club's relocation from Wimbledon to Milton Keynes in 2003.", category: "general" }
   ] },
@@ -204,21 +204,21 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "Norfolk FB Holdings secures majority stake in Norwich City", source: "Evening News", date: "Mar 3, 2025", url: "https://www.eveningnews24.co.uk/sport/24978326.norwich-city-mark-attanasio-completes-delia-smith-takeover/", summary: "Norfolk Holdings completes conversion of D Preference Shares into Ordinary Shares, formalizing Mark Attanasio's control of Norwich City Football Club.", category: "ownership_change" },
     { headline: "Norfolk FB Holdings increases stake to 40.4% in Norwich City", source: "Football Business Journal", date: "Apr 26, 2024", url: "https://www.footballbusinessjournal.com/post/norfolk-fb-holdings-secures-joint-majority-in-norwich-city-football-club-with-strategic-share-increa", summary: "Norfolk FB Holdings increases shareholding to 40.4%, equal to Delia Smith and Michael Wynn Jones, in strategic move to align with club's operational vision.", category: "investment" }
   ] },
-  nottm_forest: { scraped_at: "2026-04-14T19:35:48.246935+00:00", stories: [
+  "nottm-forest": { scraped_at: "2026-04-14T19:35:48.246935+00:00", stories: [
     { headline: "Nottingham Forest owner converts £17m in loans to shares", source: "The Business Desk", date: null, url: "https://www.thebusinessdesk.com/eastmidlands/news/2100038-nottingham-forest-owner-converts-17m-in-loans-to-shares-marking-nearly-250m-in-investment", summary: "Marinakis converts £17m in loans to shares, marking nearly £250m in total investment since Forest's return to top flight in 2022.", category: "investment" }
   ] },
-  notts_county: { scraped_at: "2026-04-14T19:36:04.746529+00:00", stories: [] },
+  "notts-county": { scraped_at: "2026-04-14T19:36:04.746529+00:00", stories: [] },
   oldham: { scraped_at: "2026-04-14T19:36:22.124053+00:00", stories: [
     { headline: "Oldham Athletic owner seeks sale to credible bidders", source: "Business Live", date: null, url: "https://www.business-live.co.uk/enterprise/oldham-athletic-owner-abdallah-lemsagam-22712753", summary: "Abdallah Lemsagam revealed plans to sell League Two Oldham Athletic, stating his ownership has caused unrest and the club would benefit from new owners.", category: "ownership_change" },
     { headline: "Oldham Athletic takeover agreed with local business", source: "Daily Mail Online", date: null, url: "https://www.dailymail.co.uk/sport/football/article-10969339/Takeover-Oldham-Athletic-AGREED-major-boost-crisis-hit-club.html", summary: "A takeover of crisis-hit Oldham Athletic has been agreed following local business interest and fan protests against owner Abdallah Lemsagam.", category: "active_takeover" },
     { headline: "Frank Rothwell completes Oldham Athletic takeover", source: "Tovisorga.com", date: null, url: "https://tovisorga.com/oldham/who-will-buy-oldham-athletic/", summary: "Local businessman Frank Rothwell has agreed to purchase Oldham Athletic and secured ownership of Boundary Park Stadium.", category: "ownership_change" }
   ] },
-  oxford_utd: { scraped_at: "2026-04-14T19:36:38.211159+00:00", stories: [] },
+  "oxford-utd": { scraped_at: "2026-04-14T19:36:38.211159+00:00", stories: [] },
   peterborough: { scraped_at: "2026-04-14T19:36:53.619458+00:00", stories: [] },
   plymouth: { scraped_at: "2026-04-14T19:37:09.688583+00:00", stories: [
     { headline: "Plymouth State Athletics announces five-year partnership with Under Armour", source: "Plymouth State Athletics", date: "Jul 28, 2025", url: "https://athletics.plymouth.edu/news/2025/7/28/general-plymouth-state-athletics-announces-five-year-partnership-with-under-armour-bsn-sports.aspx", summary: "Plymouth State University Athletics Department announced a new five-year partnership with Under Armour, Inc. as equipment provider.", category: "investment" }
   ] },
-  port_vale: { scraped_at: "2026-04-14T19:37:27.002632+00:00", stories: [
+  "port-vale": { scraped_at: "2026-04-14T19:37:27.002632+00:00", stories: [
     { headline: "Port Vale Chief Executive Colin Garlick to Leave", source: "BBC Sport", date: null, url: "https://www.bbc.com/sport/football/65133009", summary: "Chief executive Colin Garlick to depart his role and leave as trustee of Port Vale Foundation after League One fixture against Cambridge United.", category: "general" },
     { headline: "Port Vale Owners Shanahan Resolve Manager Contract After Takeover", source: "Port Vale FC", date: "February 2020", url: "https://www.port-vale.co.uk/news/2020/february/askey-first-year-in-charge", summary: "Following their takeover, owners Carol and Kevin Shanahan prioritized resolving manager contract situation to move club away from relegation.", category: "ownership_change" }
   ] },
@@ -243,12 +243,12 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "Salford City announces acquisition by Beckham and Neville-led group", source: "Touchline Tales", date: null, url: "https://touchlinetales.com/salford-city-football-club-takeover-news/", summary: "Salford City has been acquired by a new ownership group led by David Beckham and Gary Neville, including US-based investors.", category: "ownership_change" },
     { headline: "Council ends negotiations over Salford Community Stadium sale", source: "The Stadium Business", date: "2025-05-16", url: "https://www.thestadiumbusiness.com/2025/05/16/council-ends-negotiations-over-salford-community-stadium-sale/", summary: "Salford City Council has ended negotiations with a company linked to the club's new owners regarding stadium sale.", category: "general" }
   ] },
-  sheff_utd: { scraped_at: "2026-04-14T19:40:28.734969+00:00", stories: [
+  "sheff-utd": { scraped_at: "2026-04-14T19:40:28.734969+00:00", stories: [
     { headline: "Sheffield United takeover by US consortium set to complete", source: "Goal.com English", date: null, url: "https://www.goal.com/en-qa/lists/sheffield-united-takeover-almost-complete-us-consortium-announce-deal-championship-leaders/blt76f7591adc5de3d4", summary: "Championship leaders Sheffield United's takeover by a US consortium is imminent with an announcement expected soon.", category: "active_takeover" },
     { headline: "Americans interested in full Sheffield United takeover", source: "Examiner Live", date: null, url: "https://www.examinerlive.co.uk/sport/football/news/american-full-takeover-sheffield-united-27008714", summary: "Current owner Prince Abdullah expressed uncertainty about whether a sale will happen and is planning accordingly for the club's future.", category: "rumour" },
     { headline: "Wilder's managerial turnaround key issue amid Sheffield United takeover", source: "The Star", date: null, url: "https://www.thestar.co.uk/sport/football/sheffield-united/alan-biggs-sheffield-united-takeover-or-not-one-major-thing-needs-sorted-very-soon-4888158", summary: "Manager Chris Wilder has implemented a masterclass turnaround of the relegated squad, with major issues needing resolution amid ongoing takeover speculation.", category: "general" }
   ] },
-  sheff_wed: { scraped_at: "2026-04-14T19:40:52.869936+00:00", stories: [
+  "sheff-wed": { scraped_at: "2026-04-14T19:40:52.869936+00:00", stories: [
     { headline: "Jordanian royal family member part of potential Sheffield Wednesday ownership", source: "MSN", date: "2026-01-06", url: "https://www.msn.com/en-nz/news/other/member-of-jordanian-royal-family-revealed-as-key-part-of-potential-new-sheffield-wednesday-ownership/ar-AA1TGuFg?ocid=BingNewsVerp", summary: "James Bord, co-owner of Dunfermline Athletic, is leading a consortium including a member of the Jordanian royal family in a potential takeover of Sheffield Wednesday.", category: "active_takeover" }
   ] },
   shrewsbury: { scraped_at: "2026-04-14T19:41:26.497450+00:00", stories: [
@@ -288,12 +288,12 @@ export const ownershipNews: Record<string, ClubNews> = {
     { headline: "EFL Championship Team Watford FC to Offer Equity Shares", source: "Republic", date: null, url: "https://europe.republic.com/insights/blog/efl-championship-team-watford-fc-to-offer-equity-shares-in-the-club-through-digital-investment-platform-republic", summary: "Watford FC offers equity shares through digital investment platform to deliver ownership shares to fans and a wide range of investors.", category: "investment" },
     { headline: "Republic, Seedrs List Securities Offering For Watford FC", source: "Crowdfund Insider", date: null, url: "https://www.crowdfundinsider.com/2024/06/225925-republic-seedrs-list-securities-offering-for-premier-league-team-watford-fc/", summary: "Watford FC selling shares to investors on Republic and Seedrs platforms to offer ownership to fans and investors.", category: "investment" }
   ] },
-  west_brom: { scraped_at: "2026-04-14T19:47:05.856419+00:00", stories: [
+  "west-brom": { scraped_at: "2026-04-14T19:47:05.856419+00:00", stories: [
     { headline: "Bilkul WBA completes takeover of West Bromwich Albion", source: "BBC Sport", date: "2024", url: "https://www.bbc.co.uk/sport/football/articles/cr5lqyydz9no", summary: "Bilkul WBA completed their takeover of West Bromwich Albion Football Club in 2024, ending the ownership period of previous owner Guochuan Lai.", category: "ownership_change" },
     { headline: "West Bromwich Albion records £11m loss for 2022-23 season", source: "BBC Sport", date: "2023-24", url: "https://www.bbc.co.uk/sport/football/68673443", summary: "West Bromwich Albion reported an £11m loss for the 2022-23 campaign, the final full season under Chinese owner Guochuan Lai's ownership.", category: "general" },
     { headline: "West Brom sold to Chinese investment group led by Guochuan Lai", source: "BBC Sport", date: "2016", url: "https://www.bbc.co.uk/sport/football/36983933", summary: "West Brom chairman Jeremy Peace agreed a deal to sell the club to a Chinese investment group led by entrepreneur Guochuan Lai.", category: "ownership_change" }
   ] },
-  west_ham: { scraped_at: "2026-04-14T19:47:36.883662+00:00", stories: [
+  "west-ham": { scraped_at: "2026-04-14T19:47:36.883662+00:00", stories: [
     { headline: "News from US could shape West Ham takeover as billionaire speaks out", source: "TBR Football", date: null, url: "https://tbrfootball.com/news-from-us-could-shape-west-ham-takeover-as-billionaire-speaks-out-on-795m-deal/", summary: "US news developments may impact West Ham's takeover prospects as a billionaire investor comments on a potential £795m deal.", category: "active_takeover" },
     { headline: "Three West Ham takeover clues emerge as Shaquille O'Neal engaged in talks", source: "TBR Football", date: null, url: "https://tbrfootball.com/three-west-ham-takeover-clues-emerge-as-600m-daniel-kretinsky-business-deal-now-back-on/", summary: "Shaquille O'Neal is reportedly in talks regarding West Ham, with clues emerging about a potential £600m takeover involving Daniel Kretinsky.", category: "rumour" }
   ] },

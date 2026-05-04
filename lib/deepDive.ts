@@ -96,7 +96,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 35.71
   },
-  "aston_villa": {
+  "aston-villa": {
     "revenue_breakdown": null,
     "debt_profile": {
       "owner_loans": {
@@ -288,7 +288,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 110.0
   },
-  "crystal_palace": {
+  "crystal-palace": {
     "revenue_breakdown": {
       "matchday": 13.81,
       "broadcasting": 145.45,
@@ -469,7 +469,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 10.73
   },
-  "man_city": {
+  "man-city": {
     "revenue_breakdown": {
       "matchday": 75.08,
       "broadcasting": 278.63,
@@ -500,7 +500,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 164.17
   },
-  "man_united": {
+  "man-united": {
     "revenue_breakdown": {
       "matchday": 162.12,
       "broadcasting": 166.05,
@@ -566,7 +566,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 69.41
   },
-  "nottm_forest": {
+  "nottm-forest": {
     "revenue_breakdown": {
       "matchday": 20.25,
       "broadcasting": 158.6,
@@ -666,7 +666,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 1521.49
   },
-  "west_ham": {
+  "west-ham": {
     "revenue_breakdown": {
       "matchday": 38.57,
       "broadcasting": 132.38,
@@ -807,7 +807,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 20.74
   },
-  "bristol_city": {
+  "bristol-city": {
     "revenue_breakdown": {
       "matchday": 7.3,
       "broadcasting": 12.76,
@@ -1131,7 +1131,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 34.55
   },
-  "oxford_utd": {
+  "oxford-utd": {
     "revenue_breakdown": {
       "matchday": 3.63,
       "broadcasting": 11.45,
@@ -1247,7 +1247,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": null
   },
-  "sheff_utd": {
+  "sheff-utd": {
     "revenue_breakdown": {
       "matchday": 13.08,
       "broadcasting": 57.93,
@@ -1283,7 +1283,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 38.09
   },
-  "sheff_wed": {
+  "sheff-wed": {
     "revenue_breakdown": {
       "matchday": 17.95,
       "broadcasting": null,
@@ -1430,7 +1430,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 120.49
   },
-  "west_brom": {
+  "west-brom": {
     "revenue_breakdown": {
       "matchday": 6.77,
       "broadcasting": 12.79,
@@ -1493,7 +1493,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": null
   },
-  "afc_wimbledon": {
+  "afc-wimbledon": {
     "revenue_breakdown": {
       "matchday": 5.86,
       "broadcasting": null,
@@ -1702,7 +1702,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 7.32
   },
-  "leyton_orient": {
+  "leyton-orient": {
     "revenue_breakdown": null,
     "debt_profile": {
       "owner_loans": {
@@ -1869,7 +1869,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": null
   },
-  "port_vale": {
+  "port-vale": {
     "revenue_breakdown": null,
     "debt_profile": {
       "owner_loans": {
@@ -2208,7 +2208,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": 0.65
   },
-  "mk_dons": {
+  "mk-dons": {
     "revenue_breakdown": {
       "matchday": 2.34,
       "broadcasting": 0.14,
@@ -2259,7 +2259,7 @@ export const deepDive: Record<string, ClubDeepDive> = {
     },
     "land_buildings": null
   },
-  "notts_county": {
+  "notts-county": {
     "revenue_breakdown": null,
     "debt_profile": {
       "owner_loans": {
