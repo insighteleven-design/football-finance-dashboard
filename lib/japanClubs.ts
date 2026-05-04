@@ -352,9 +352,6 @@ const j3Data: Omit<JapanClub, "slug" | "name" | "division" | "cash">[] = [
   // Gainare Tottori
   { revenue: j(540), wage_bill: j(142), wage_ratio: wr(142, 540), operating_profit: j(11), profit_from_player_sales: j(23 - 3), pre_tax_profit: j(-78), net_debt: nd(591, 63), fiscal_year_end: "2025-01-31", data_confidence: "high",
     prior_year: null },
-  // Kagawa Olive Giken
-  { revenue: j(443), wage_bill: j(173), wage_ratio: wr(173, 443), operating_profit: j(-162), profit_from_player_sales: j(25 - 0), pre_tax_profit: j(-78), net_debt: nd(376, 209), fiscal_year_end: "2025-01-31", data_confidence: "high",
-    prior_year: null },
   // FC Imabari
   { revenue: j(1353), wage_bill: j(399), wage_ratio: wr(399, 1353), operating_profit: j(-191), profit_from_player_sales: j(15 - 51), pre_tax_profit: j(-172), net_debt: nd(600, 603), fiscal_year_end: "2025-01-31", data_confidence: "high",
     prior_year: { fiscal_year_end: "2024-01-31", revenue: j(1045), wage_bill: j(304), wage_ratio: wr(304, 1045), operating_profit: j(-43), profit_from_player_sales: null, pre_tax_profit: j(10), net_debt: nd(590, 939) } },
@@ -379,7 +376,7 @@ const J3_SLUGS: string[] = [
   "hachinohe", "iwate-grulla", "fukushima-utd", "omiya", "ys-yokohama",
   "sagamihara", "matsumoto", "nagano", "toyama", "kanazawa",
   "numazu", "fc-gifu", "fc-osaka", "nara", "tottori",
-  "kagawa", "imabari", "kitakyushu", "miyazaki", "ryukyu",
+  "imabari", "kitakyushu", "miyazaki", "ryukyu",
   "tochigi-city", "kochi",
 ];
 
@@ -387,7 +384,7 @@ const J3_NAMES: string[] = [
   "Vanraure Hachinohe", "Iwate Grulla Morioka", "Fukushima United", "Omiya Ardija",
   "Y.S.C.C. Yokohama", "SC Sagamihara", "Matsumoto Yamaga FC", "Nagano Parceiro",
   "Kataller Toyama", "Zweigen Kanazawa", "Azul Claro Numazu", "FC Gifu",
-  "FC Osaka", "Nara Club", "Gainare Tottori", "Kagawa Olive Giken",
+  "FC Osaka", "Nara Club", "Gainare Tottori",
   "FC Imabari", "Giravanz Kitakyushu", "Tegevajaro Miyazaki", "FC Ryukyu",
   "Tochigi City FC", "Kochi United SC",
 ];

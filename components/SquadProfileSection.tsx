@@ -1,0 +1,432 @@
+"use client";
+
+import { useState } from "react";
+import ComingSoonPanel from "./ComingSoonPanel";
+import { type SquadProfile } from "@/lib/squadProfile";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function numAvg(arr: (number | null)[]): number | null {
+  const vals = arr.filter((v): v is number => typeof v === "number");
+  return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+}
+
+function ageLabel(age: number): { text: string; color: string } {
+  if (age < 24)  return { text: "Young squad",  color: "#4a9a6a" };
+  if (age <= 27) return { text: "Peak age",      color: "#888888" };
+  return              { text: "Ageing squad",    color: "#c8884a" };
+}
+
+function deltaColor(delta: number, higherBetter: boolean): string {
+  if (Math.abs(delta) < 0.05) return "#aaaaaa";
+  return (higherBetter ? delta > 0 : delta < 0) ? "#4a9a6a" : "#9a4a4a";
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function StatCard({
+  label,
+  value,
+  sub,
+  subColor,
+  delta,
+  deltaHigherBetter,
+  avgLabel,
+  border,
+  children,
+}: {
+  label:              string;
+  value:              string;
+  sub?:               string;
+  subColor?:          string;
+  delta?:             number | null;
+  deltaHigherBetter?: boolean;
+  avgLabel?:          string;
+  border:             string;
+  children?:          React.ReactNode;
+}) {
+  const dColor = delta != null && deltaHigherBetter != null
+    ? deltaColor(delta, deltaHigherBetter) : "#aaaaaa";
+  const sign = delta != null && delta >= 0 ? "+" : "";
+
+  return (
+    <div className={`${border}`}>
+      <div className="px-4 sm:px-6 py-5">
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-2">
+          {label}
+        </p>
+        {value === "—" ? (
+          <p className="text-3xl sm:text-5xl font-medium text-[#cccccc]">—</p>
+        ) : (
+          <p className="text-3xl sm:text-5xl font-medium tabular-nums text-[#111111]">{value}</p>
+        )}
+        {sub && (
+          <p className="text-sm font-medium mt-1" style={{ color: subColor ?? "#888888" }}>{sub}</p>
+        )}
+        {delta != null && avgLabel && (
+          <p className="text-sm mt-1.5">
+            <span className="tabular-nums font-medium" style={{ color: dColor }}>
+              {sign}{delta.toFixed(1)}
+            </span>
+            <span className="text-[#bbbbbb]"> vs {avgLabel} avg</span>
+          </p>
+        )}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ─── Age Distribution Dropdown ────────────────────────────────────────────────
+
+const AGE_BANDS = [
+  { key: "under_21"  as const, label: "Under 21" },
+  { key: "age_21_23" as const, label: "21–23" },
+  { key: "age_24_26" as const, label: "24–26" },
+  { key: "age_27_29" as const, label: "27–29" },
+  { key: "over_30"   as const, label: "30+" },
+];
+
+function AgeDistributionDropdown({ profile }: { profile: SquadProfile }) {
+  const [open, setOpen] = useState(false);
+  const bands = profile.age_bands ?? null;
+
+  const total = bands
+    ? AGE_BANDS.reduce((sum, b) => sum + (bands[b.key] ?? 0), 0)
+    : 0;
+
+  const maxCount = bands
+    ? Math.max(...AGE_BANDS.map(b => bands[b.key] ?? 0), 1)
+    : 1;
+
+  return (
+    <div className="border-t border-[#e0e0e0] overflow-hidden">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full px-4 sm:px-6 py-3 flex items-center justify-between text-left bg-white hover:bg-[#fafafa] transition-colors"
+        aria-expanded={open}
+      >
+        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#aaaaaa]">
+          Age Distribution
+        </p>
+        <span
+          className="text-sm text-[#cccccc] transition-transform duration-200 shrink-0"
+          style={{ display: "inline-block", transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
+        >
+          →
+        </span>
+      </button>
+      <div
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{ maxHeight: open ? "400px" : "0px" }}
+      >
+        <div className="px-4 sm:px-6 pb-5 pt-2 border-t border-[#f0f0f0] bg-white">
+          {!bands || total === 0 ? (
+            <p className="text-sm text-[#bbbbbb]">Age distribution data not yet available.</p>
+          ) : (
+            <div className="space-y-2.5">
+              {AGE_BANDS.map(({ key, label }) => {
+                const count = bands[key] ?? 0;
+                const pct = (count / maxCount) * 100;
+                return (
+                  <div key={key} className="flex items-center gap-3">
+                    <span className="text-sm text-[#888888] w-16 shrink-0">{label}</span>
+                    <div className="flex-1 h-4 bg-[#f5f5f5] overflow-hidden">
+                      <div
+                        className="h-full transition-all duration-300"
+                        style={{ width: `${pct}%`, backgroundColor: "#cccccc" }}
+                      />
+                    </div>
+                    <span className="text-sm tabular-nums text-[#555555] w-5 text-right shrink-0">
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+              <p className="text-xs text-[#bbbbbb] mt-1">
+                {total} players · Source: Transfermarkt
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Contract Risk ────────────────────────────────────────────────────────────
+
+function ContractRiskPanel({ profile }: { profile: SquadProfile }) {
+  const exp = profile.contract_expiry;
+
+  if (!exp) {
+    return (
+      <div>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+          Contract Risk
+        </p>
+        <p className="text-sm text-[#aaaaaa]">Contract data unavailable.</p>
+      </div>
+    );
+  }
+
+  const r     = exp["0-12m"]  ?? 0;
+  const a     = exp["12-24m"] ?? 0;
+  const g     = exp["24m+"]   ?? 0;
+  const total = r + a + g;
+
+  if (total === 0) {
+    return (
+      <div>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+          Contract Risk
+        </p>
+        <p className="text-sm text-[#aaaaaa]">No contract data available.</p>
+      </div>
+    );
+  }
+
+  const rPct = (r / total) * 100;
+  const aPct = (a / total) * 100;
+  const gPct = (g / total) * 100;
+
+  const risk = r >= 8 ? "elevated renewal risk" : r >= 4 ? "moderate renewal risk" : "low renewal risk";
+  const summary = `${r} player${r !== 1 ? "s" : ""} out of contract within 12 months — ${risk}`;
+
+  return (
+    <div>
+      <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+        Contract Risk
+      </p>
+      <div className="border border-[#e0e0e0] overflow-hidden">
+        {/* Stacked bar */}
+        <div className="flex h-14">
+          {rPct > 0 && (
+            <div
+              className="flex items-center justify-center text-white text-sm font-semibold tabular-nums shrink-0 min-w-0"
+              style={{ width: `${rPct}%`, backgroundColor: "#9a4a4a" }}
+            >
+              {rPct > 8 && r}
+            </div>
+          )}
+          {aPct > 0 && (
+            <div
+              className="flex items-center justify-center text-white text-sm font-semibold tabular-nums shrink-0 min-w-0"
+              style={{ width: `${aPct}%`, backgroundColor: "#c8884a" }}
+            >
+              {aPct > 8 && a}
+            </div>
+          )}
+          {gPct > 0 && (
+            <div
+              className="flex items-center justify-center text-white text-sm font-semibold tabular-nums shrink-0 min-w-0"
+              style={{ width: `${gPct}%`, backgroundColor: "#4a9a6a" }}
+            >
+              {gPct > 8 && g}
+            </div>
+          )}
+        </div>
+
+        {/* Legend + summary */}
+        <div className="px-4 sm:px-6 py-4 border-t border-[#e0e0e0]">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 mb-3">
+            {[
+              { label: "0–12 months",  count: r, color: "#9a4a4a" },
+              { label: "12–24 months", count: a, color: "#c8884a" },
+              { label: "24+ months",   count: g, color: "#4a9a6a" },
+            ].map(({ label, count, color }) => (
+              <div key={label} className="flex items-center gap-2">
+                <div className="w-3 h-3 shrink-0" style={{ backgroundColor: color }} />
+                <span className="text-sm text-[#555555]">
+                  <span className="font-semibold tabular-nums">{count}</span>
+                  <span className="text-[#999999]"> {label}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-[#555555]">{summary}</p>
+          <p className="text-xs text-[#aaaaaa] mt-2">
+            Source: Transfermarkt (crowdsourced — may not reflect current contracts)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── League Value Ranking ─────────────────────────────────────────────────────
+
+function LeagueValueRankingPanel({
+  currentSlug,
+  leagueEntries,
+  leagueLabel,
+}: {
+  currentSlug:   string;
+  leagueEntries: { name: string; slug: string; profile: SquadProfile }[];
+  leagueLabel:   string;
+}) {
+  const ranked = [...leagueEntries]
+    .filter(e => e.profile.squad_value_eur_m != null)
+    .sort((a, b) => (b.profile.squad_value_eur_m ?? 0) - (a.profile.squad_value_eur_m ?? 0));
+
+  if (ranked.length === 0) {
+    return (
+      <p className="text-sm text-[#aaaaaa]">
+        No squad value data available for {leagueLabel} clubs.
+      </p>
+    );
+  }
+
+  const maxValue = ranked[0].profile.squad_value_eur_m!;
+
+  return (
+    <div className="space-y-2.5">
+      {ranked.map((entry, i) => {
+        const isCurrent = entry.slug === currentSlug;
+        const val = entry.profile.squad_value_eur_m!;
+        const pct = maxValue > 0 ? (val / maxValue) * 100 : 0;
+        return (
+          <div key={entry.slug} className="flex items-center gap-3">
+            <span className="w-5 text-right text-xs text-[#bbbbbb] tabular-nums shrink-0">
+              {i + 1}
+            </span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between mb-1">
+                <span
+                  className={`text-sm truncate ${isCurrent ? "font-semibold text-[#111111]" : "text-[#666666]"}`}
+                >
+                  {entry.name}
+                </span>
+                <span
+                  className={`text-sm tabular-nums shrink-0 ml-3 ${isCurrent ? "font-semibold text-[#111111]" : "text-[#999999]"}`}
+                >
+                  €{val.toFixed(0)}m
+                </span>
+              </div>
+              <div className="h-1.5 bg-[#f0f0f0] overflow-hidden">
+                <div
+                  className="h-full"
+                  style={{
+                    width: `${pct}%`,
+                    backgroundColor: isCurrent ? "#333333" : "#dddddd",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      <p className="text-xs text-[#bbbbbb] pt-1">
+        Source: Transfermarkt · {leagueLabel} clubs in database only
+      </p>
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function SquadProfileSection({
+  currentSlug,
+  profile,
+  clubName,
+  leagueEntries,
+  leagueLabel,
+}: {
+  currentSlug:   string;
+  profile:       SquadProfile | undefined;
+  clubName:      string;
+  leagueEntries: { name: string; slug: string; profile: SquadProfile }[];
+  leagueLabel:   string;
+}) {
+  const leagueProfiles = leagueEntries.map(e => e.profile);
+
+  // ── League averages ──────────────────────────────────────────────────────────
+  const avgAge   = numAvg(leagueProfiles.map(p => p.avg_age));
+  const avgSize  = numAvg(leagueProfiles.map(p => p.squad_size));
+  const avgValue = numAvg(leagueProfiles.map(p => p.squad_value_eur_m));
+
+  // ── No profile ───────────────────────────────────────────────────────────────
+  if (!profile) {
+    return (
+      <div className="border border-[#e0e0e0] px-6 py-12 flex flex-col items-center justify-center text-center">
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#cccccc] mb-2">
+          Squad Profile
+        </p>
+        <p className="text-sm text-[#aaaaaa]">Data unavailable</p>
+      </div>
+    );
+  }
+
+  const sv = profile.squad_value_eur_m ?? null;
+
+  const ageDelta   = profile.avg_age   != null && avgAge   != null ? profile.avg_age   - avgAge   : null;
+  const sizeDelta  = profile.squad_size != null && avgSize  != null ? profile.squad_size - avgSize  : null;
+  const valueDelta = sv                 != null && avgValue != null ? sv                 - avgValue  : null;
+
+  const ageMeta = profile.avg_age != null ? ageLabel(profile.avg_age) : null;
+
+  const cardBorder1 = "border-b sm:border-b-0 sm:border-r border-[#e0e0e0]";
+  const cardBorder2 = "border-b sm:border-b-0 sm:border-r border-[#e0e0e0]";
+  const cardBorder3 = "";
+
+  return (
+    <div className="space-y-8">
+
+      {/* ── Section 1: Top stat cards ─────────────────────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 border border-[#e0e0e0] overflow-hidden">
+        <StatCard
+          label="Average Age"
+          value={profile.avg_age != null ? profile.avg_age.toFixed(1) : "—"}
+          sub={ageMeta?.text}
+          subColor={ageMeta?.color}
+          delta={ageDelta}
+          deltaHigherBetter={false}
+          avgLabel={leagueLabel}
+          border={cardBorder1}
+        >
+          <AgeDistributionDropdown profile={profile} />
+        </StatCard>
+        <StatCard
+          label="Squad Size"
+          value={profile.squad_size != null ? String(profile.squad_size) : "—"}
+          delta={sizeDelta}
+          deltaHigherBetter={true}
+          avgLabel={leagueLabel}
+          border={cardBorder2}
+        />
+        <StatCard
+          label="Est. Squad Market Value"
+          value={sv != null ? `€${sv.toFixed(0)}m` : "—"}
+          delta={valueDelta}
+          deltaHigherBetter={true}
+          avgLabel={leagueLabel}
+          border={cardBorder3}
+        />
+      </div>
+
+      {/* ── Section 2: Contract Risk ──────────────────────────────────────── */}
+      <ContractRiskPanel profile={profile} />
+
+      {/* ── Section 3: League Value Ranking ──────────────────────────────── */}
+      <div>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+          Est. Squad Value — {leagueLabel} Ranking
+        </p>
+        <LeagueValueRankingPanel
+          currentSlug={currentSlug}
+          leagueEntries={leagueEntries}
+          leagueLabel={leagueLabel}
+        />
+      </div>
+
+      {/* ── Section 4: League Performance (Coming soon) ──────────────────── */}
+      <div>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+          League Performance
+        </p>
+        <ComingSoonPanel label="League Performance" />
+      </div>
+
+    </div>
+  );
+}

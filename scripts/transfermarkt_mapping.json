@@ -1,0 +1,2361 @@
+{
+  "arsenal": {
+    "tm_id": "11",
+    "tm_name": "Arsenal FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "aston-villa": {
+    "tm_id": "405",
+    "tm_name": "Aston Villa",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "bournemouth": {
+    "tm_id": "989",
+    "tm_name": "AFC Bournemouth",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "brentford": {
+    "tm_id": "1148",
+    "tm_name": "Brentford FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "brighton": {
+    "tm_id": "1237",
+    "tm_name": "Brighton & Hove Albion",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "burnley": {
+    "tm_id": "1132",
+    "tm_name": "Burnley FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "chelsea": {
+    "tm_id": "631",
+    "tm_name": "Chelsea FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "crystal-palace": {
+    "tm_id": "873",
+    "tm_name": "Crystal Palace",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "everton": {
+    "tm_id": "29",
+    "tm_name": "Everton FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "fulham": {
+    "tm_id": "931",
+    "tm_name": "Fulham FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "leeds": {
+    "tm_id": "399",
+    "tm_name": "Leeds United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "liverpool": {
+    "tm_id": "31",
+    "tm_name": "Liverpool FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "man-city": {
+    "tm_id": "281",
+    "tm_name": "Manchester City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "man-united": {
+    "tm_id": "985",
+    "tm_name": "Manchester United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "newcastle": {
+    "tm_id": "762",
+    "tm_name": "Newcastle United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "nottm-forest": {
+    "tm_id": "703",
+    "tm_name": "Nottingham Forest",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "sunderland": {
+    "tm_id": "289",
+    "tm_name": "Sunderland AFC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "tottenham": {
+    "tm_id": "148",
+    "tm_name": "Tottenham Hotspur",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "west-ham": {
+    "tm_id": "379",
+    "tm_name": "West Ham United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "wolves": {
+    "tm_id": "543",
+    "tm_name": "Wolverhampton Wanderers",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "birmingham": {
+    "tm_id": "337",
+    "tm_name": "Birmingham City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "blackburn": {
+    "tm_id": "164",
+    "tm_name": "Blackburn Rovers",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "bristol-city": {
+    "tm_id": "698",
+    "tm_name": "Bristol City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "charlton": {
+    "tm_id": "358",
+    "tm_name": "Charlton Athletic",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "coventry": {
+    "tm_id": "990",
+    "tm_name": "Coventry City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "derby": {
+    "tm_id": "22",
+    "tm_name": "Derby County",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "hull": {
+    "tm_id": "3008",
+    "tm_name": "Hull City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "ipswich": {
+    "tm_id": "677",
+    "tm_name": "Ipswich Town",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "leicester": {
+    "tm_id": "1003",
+    "tm_name": "Leicester City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "middlesbrough": {
+    "tm_id": "641",
+    "tm_name": "Middlesbrough FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "millwall": {
+    "tm_id": "1028",
+    "tm_name": "Millwall FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "norwich": {
+    "tm_id": "1123",
+    "tm_name": "Norwich City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "oxford-utd": {
+    "tm_id": "988",
+    "tm_name": "Oxford United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "portsmouth": {
+    "tm_id": "1020",
+    "tm_name": "Portsmouth FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "preston": {
+    "tm_id": "466",
+    "tm_name": "Preston North End",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "qpr": {
+    "tm_id": "1039",
+    "tm_name": "Queens Park Rangers",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "sheff-utd": {
+    "tm_id": "350",
+    "tm_name": "Sheffield United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "sheff-wed": {
+    "tm_id": "1035",
+    "tm_name": "Sheffield Wednesday",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "southampton": {
+    "tm_id": "180",
+    "tm_name": "Southampton FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "stoke": {
+    "tm_id": "512",
+    "tm_name": "Stoke City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "swansea": {
+    "tm_id": "2288",
+    "tm_name": "Swansea City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "watford": {
+    "tm_id": "1010",
+    "tm_name": "Watford FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "west-brom": {
+    "tm_id": "984",
+    "tm_name": "West Bromwich Albion",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "wrexham": {
+    "tm_id": "1112",
+    "tm_name": "Wrexham AFC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "afc-wimbledon": {
+    "tm_id": "3884",
+    "tm_name": "AFC Wimbledon",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "barnsley": {
+    "tm_id": "349",
+    "tm_name": "Barnsley FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "blackpool": {
+    "tm_id": "1181",
+    "tm_name": "Blackpool FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "bolton": {
+    "tm_id": "355",
+    "tm_name": "Bolton Wanderers",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "bradford": {
+    "tm_id": "1027",
+    "tm_name": "Bradford City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "burton": {
+    "tm_id": "2963",
+    "tm_name": "Burton Albion",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "cardiff": {
+    "tm_id": "603",
+    "tm_name": "Cardiff City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "exeter": {
+    "tm_id": "6699",
+    "tm_name": "Exeter City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "huddersfield": {
+    "tm_id": "1110",
+    "tm_name": "Huddersfield Town",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "leyton-orient": {
+    "tm_id": "1150",
+    "tm_name": "Leyton Orient",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "lincoln": {
+    "tm_id": "1198",
+    "tm_name": "Lincoln City",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "luton": {
+    "tm_id": "1031",
+    "tm_name": "Luton Town",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "northampton": {
+    "tm_id": "1302",
+    "tm_name": "Northampton Town",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "peterborough": {
+    "tm_id": "1072",
+    "tm_name": "Peterborough United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "plymouth": {
+    "tm_id": "2262",
+    "tm_name": "Plymouth Argyle",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "reading": {
+    "tm_id": "1032",
+    "tm_name": "Reading FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "rotherham": {
+    "tm_id": "1194",
+    "tm_name": "Rotherham United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "wigan": {
+    "tm_id": "1071",
+    "tm_name": "Wigan Athletic",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "cambridge": {
+    "tm_id": "986",
+    "tm_name": "Cambridge United",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "chesterfield": {
+    "tm_id": "1219",
+    "tm_name": "Chesterfield FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "gillingham": {
+    "tm_id": "2814",
+    "tm_name": "Gillingham FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "mk-dons": {
+    "tm_id": "991",
+    "tm_name": "Milton Keynes Dons",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "shrewsbury": {
+    "tm_id": "3054",
+    "tm_name": "Shrewsbury Town",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "tranmere": {
+    "tm_id": "1074",
+    "tm_name": "Tranmere Rovers",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "walsall": {
+    "tm_id": "899",
+    "tm_name": "Walsall FC",
+    "confidence": "high",
+    "region": "english",
+    "country": "England"
+  },
+  "paris-saint-germain": {
+    "tm_id": "583",
+    "tm_name": "Paris Saint-Germain",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "olympique-de-marseille": {
+    "tm_id": "244",
+    "tm_name": "Olympique Marseille",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "losc-lille": {
+    "tm_id": "1082",
+    "tm_name": "LOSC Lille",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "olympique-lyonnais": {
+    "tm_id": "1041",
+    "tm_name": "Olympique Lyon",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "as-monaco": {
+    "tm_id": "162",
+    "tm_name": "AS Monaco",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "stade-brestois": {
+    "tm_id": "3911",
+    "tm_name": "Stade Brestois 29",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "stade-rennais": {
+    "tm_id": "273",
+    "tm_name": "Stade Rennais FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "ogc-nice": {
+    "tm_id": "417",
+    "tm_name": "OGC Nice",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "rc-lens": {
+    "tm_id": "826",
+    "tm_name": "RC Lens",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "fc-nantes": {
+    "tm_id": "995",
+    "tm_name": "FC Nantes",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "stade-de-reims": {
+    "tm_id": "1421",
+    "tm_name": "Stade Reims",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "aj-auxerre": {
+    "tm_id": "290",
+    "tm_name": "AJ Auxerre",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "as-saint-etienne": {
+    "tm_id": "618",
+    "tm_name": "AS Saint-Étienne",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "rc-strasbourg": {
+    "tm_id": "667",
+    "tm_name": "RC Strasbourg Alsace",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "toulouse-fc": {
+    "tm_id": "415",
+    "tm_name": "FC Toulouse",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "le-havre-ac": {
+    "tm_id": "738",
+    "tm_name": "Le Havre AC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "angers-sco": {
+    "tm_id": "1420",
+    "tm_name": "Angers SCO",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "montpellier-hsc": {
+    "tm_id": "969",
+    "tm_name": "Montpellier HSC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "fc-metz": {
+    "tm_id": "347",
+    "tm_name": "FC Metz",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "fc-lorient": {
+    "tm_id": "1158",
+    "tm_name": "FC Lorient",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "sm-caen": {
+    "tm_id": "1162",
+    "tm_name": "SM Caen",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "ea-guingamp": {
+    "tm_id": "855",
+    "tm_name": "EA Guingamp",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "paris-fc": {
+    "tm_id": "10004",
+    "tm_name": "Paris FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "sc-bastia": {
+    "tm_id": "595",
+    "tm_name": "SC Bastia",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "estac-troyes": {
+    "tm_id": "1095",
+    "tm_name": "ESTAC Troyes",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "clermont-foot": {
+    "tm_id": "3524",
+    "tm_name": "Clermont Foot 63",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "usl-dunkerque": {
+    "tm_id": "9202",
+    "tm_name": "USL Dunkerque",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "amiens-sc": {
+    "tm_id": "1416",
+    "tm_name": "Amiens SC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "rodez-af": {
+    "tm_id": "11273",
+    "tm_name": "Rodez AF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "pau-fc": {
+    "tm_id": "3166",
+    "tm_name": "Pau FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "grenoble-foot": {
+    "tm_id": "1290",
+    "tm_name": "Grenoble Foot 38",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "annecy-fc": {
+    "tm_id": "85249",
+    "tm_name": "FC Annecy B",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "stade-lavallois": {
+    "tm_id": "1080",
+    "tm_name": "Stade Lavallois",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "red-star-fc": {
+    "tm_id": "1154",
+    "tm_name": "Red Star FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "France"
+  },
+  "fc-kobenhavn": {
+    "tm_id": "190",
+    "tm_name": "FC Copenhagen",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "fc-midtjylland": {
+    "tm_id": "865",
+    "tm_name": "FC Midtjylland",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "agf": {
+    "tm_id": "678",
+    "tm_name": "Aarhus GF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "silkeborg-if": {
+    "tm_id": "1177",
+    "tm_name": "Silkeborg IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "fc-nordsjaelland": {
+    "tm_id": "2778",
+    "tm_name": "FC Nordsjaelland",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "randers-fc": {
+    "tm_id": "5724",
+    "tm_name": "Randers FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "viborg-ff": {
+    "tm_id": "1063",
+    "tm_name": "Viborg FF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "aab": {
+    "tm_id": "1053",
+    "tm_name": "Aalborg BK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "lyngby-bk": {
+    "tm_id": "369",
+    "tm_name": "Lyngby Boldklub",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "sonderjyske": {
+    "tm_id": "5817",
+    "tm_name": "Sönderjyske Fodbold",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "ac-horsens": {
+    "tm_id": "2414",
+    "tm_name": "AC Horsens",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "vejle-bk": {
+    "tm_id": "443",
+    "tm_name": "Vejle Boldklub",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "hvidovre-if": {
+    "tm_id": "1894",
+    "tm_name": "Hvidovre IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "brondby-if": {
+    "tm_id": "206",
+    "tm_name": "Bröndby IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Denmark"
+  },
+  "fk-bodo-glimt": {
+    "tm_id": "501",
+    "tm_name": "FK Bodø/Glimt",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "sk-brann": {
+    "tm_id": "1100",
+    "tm_name": "SK Brann",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "rosenborg-bk": {
+    "tm_id": "195",
+    "tm_name": "Rosenborg BK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "lillestrom-sk": {
+    "tm_id": "353",
+    "tm_name": "Lillestrøm SK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "tromso-il": {
+    "tm_id": "1293",
+    "tm_name": "Tromsø IL",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "kristiansund-bk": {
+    "tm_id": "21101",
+    "tm_name": "Kristiansund BK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "molde-fk": {
+    "tm_id": "687",
+    "tm_name": "Molde FK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "fredrikstad-fk": {
+    "tm_id": "3837",
+    "tm_name": "Fredrikstad FK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "ik-start": {
+    "tm_id": "267",
+    "tm_name": "IK Start",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "hamkam": {
+    "tm_id": "4309",
+    "tm_name": "Hamarkameratene",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "sandefjord-fotball": {
+    "tm_id": "6399",
+    "tm_name": "Sandefjord Fotball",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "valerenga-fk": {
+    "tm_id": "76",
+    "tm_name": "Vålerenga FK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "viking-fk": {
+    "tm_id": "239",
+    "tm_name": "Viking FK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "aalesund-fk": {
+    "tm_id": "5619",
+    "tm_name": "Aalesunds FK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "sarpsborg-08": {
+    "tm_id": "10217",
+    "tm_name": "Sarpsborg 08 FF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Norway"
+  },
+  "malmo-ff": {
+    "tm_id": "496",
+    "tm_name": "Malmö FF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "hammarby-if": {
+    "tm_id": "1059",
+    "tm_name": "Hammarby IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "djurgarden": {
+    "tm_id": "1044",
+    "tm_name": "Djurgårdens IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "aik": {
+    "tm_id": "272",
+    "tm_name": "AIK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "if-elfsborg": {
+    "tm_id": "1101",
+    "tm_name": "IF Elfsborg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "ifk-goteborg": {
+    "tm_id": "801",
+    "tm_name": "IFK Göteborg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "ik-sirius": {
+    "tm_id": "7945",
+    "tm_name": "IK Sirius",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "if-brommapojkarna": {
+    "tm_id": "1092",
+    "tm_name": "IF Brommapojkarna",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "gais": {
+    "tm_id": "7009",
+    "tm_name": "GAIS",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "vsk-fotboll": {
+    "tm_id": "5202",
+    "tm_name": "Västerås SK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "kalmar-ff": {
+    "tm_id": "3654",
+    "tm_name": "Kalmar FF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "mjallby-aif": {
+    "tm_id": "2719",
+    "tm_name": "Mjällby AIF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "degerfors-if": {
+    "tm_id": "3641",
+    "tm_name": "Degerfors IF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "halmstads-bk": {
+    "tm_id": "1011",
+    "tm_name": "Halmstads BK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "orgryte-is": {
+    "tm_id": "1118",
+    "tm_name": "Örgryte IS",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "bk-hacken-ff": {
+    "tm_id": "1109",
+    "tm_name": "BK Häcken",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Sweden"
+  },
+  "ac-milan": {
+    "tm_id": "5",
+    "tm_name": "AC Milan",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "inter-milan": {
+    "tm_id": "46",
+    "tm_name": "Inter Milan",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "juventus": {
+    "tm_id": "506",
+    "tm_name": "Juventus FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "napoli": {
+    "tm_id": "6195",
+    "tm_name": "SSC Napoli",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "as-roma": {
+    "tm_id": "12",
+    "tm_name": "AS Roma",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "atalanta": {
+    "tm_id": "800",
+    "tm_name": "Atalanta BC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "lazio": {
+    "tm_id": "398",
+    "tm_name": "SS Lazio",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "fiorentina": {
+    "tm_id": "430",
+    "tm_name": "ACF Fiorentina",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "bologna": {
+    "tm_id": "1025",
+    "tm_name": "Bologna FC 1909",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "udinese": {
+    "tm_id": "410",
+    "tm_name": "Udinese Calcio",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "hellas-verona": {
+    "tm_id": "276",
+    "tm_name": "Hellas Verona",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "torino-fc": {
+    "tm_id": "416",
+    "tm_name": "Torino FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "genoa-cfc": {
+    "tm_id": "252",
+    "tm_name": "Genoa CFC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "ac-monza": {
+    "tm_id": "2919",
+    "tm_name": "AC Monza",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "cagliari-calcio": {
+    "tm_id": "1390",
+    "tm_name": "Cagliari Calcio",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "us-sassuolo": {
+    "tm_id": "6574",
+    "tm_name": "US Sassuolo",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "parma-calcio": {
+    "tm_id": "130",
+    "tm_name": "Parma Calcio 1913",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "us-cremonese": {
+    "tm_id": "2239",
+    "tm_name": "US Cremonese",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "como-1907": {
+    "tm_id": "1047",
+    "tm_name": "Como 1907",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "venezia-fc": {
+    "tm_id": "607",
+    "tm_name": "Venezia FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "us-lecce": {
+    "tm_id": "1005",
+    "tm_name": "US Lecce",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "ac-reggiana": {
+    "tm_id": "5621",
+    "tm_name": "AC Reggiana 1919",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "us-catanzaro": {
+    "tm_id": "4097",
+    "tm_name": "US Catanzaro",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "modena-fc": {
+    "tm_id": "1385",
+    "tm_name": "Modena FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "juve-stabia": {
+    "tm_id": "5587",
+    "tm_name": "SS Juve Stabia",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "delfino-pescara": {
+    "tm_id": "2921",
+    "tm_name": "Delfino Pescara 1936",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "calcio-padova": {
+    "tm_id": "3037",
+    "tm_name": "Calcio Padova",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "virtus-entella": {
+    "tm_id": "20519",
+    "tm_name": "Virtus Entella",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "us-avellino": {
+    "tm_id": "2331",
+    "tm_name": "US Avellino 1912",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "ssc-bari": {
+    "tm_id": "332",
+    "tm_name": "SSC Bari",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Italy"
+  },
+  "real-madrid": {
+    "tm_id": "418",
+    "tm_name": "Real Madrid",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "fc-barcelona": {
+    "tm_id": "131",
+    "tm_name": "FC Barcelona",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "atletico-madrid": {
+    "tm_id": "13",
+    "tm_name": "Atlético de Madrid",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "athletic-club": {
+    "tm_id": "64918",
+    "tm_name": "Athletic Club",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "real-sociedad": {
+    "tm_id": "681",
+    "tm_name": "Real Sociedad",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "real-betis": {
+    "tm_id": "150",
+    "tm_name": "Real Betis Balompié",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "sevilla-fc": {
+    "tm_id": "368",
+    "tm_name": "Sevilla FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "girona-fc": {
+    "tm_id": "12321",
+    "tm_name": "Girona FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "rcd-mallorca": {
+    "tm_id": "237",
+    "tm_name": "RCD Mallorca",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "valencia-cf": {
+    "tm_id": "1049",
+    "tm_name": "Valencia CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "getafe-cf": {
+    "tm_id": "3709",
+    "tm_name": "Getafe CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "deportivo-alaves": {
+    "tm_id": "1108",
+    "tm_name": "Deportivo Alavés",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "rayo-vallecano": {
+    "tm_id": "367",
+    "tm_name": "Rayo Vallecano",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "rcd-espanyol": {
+    "tm_id": "10773",
+    "tm_name": "RCD Espanyol B",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "rc-celta": {
+    "tm_id": "940",
+    "tm_name": "Celta de Vigo",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "real-oviedo": {
+    "tm_id": "2497",
+    "tm_name": "Real Oviedo",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "ud-almeria": {
+    "tm_id": "3302",
+    "tm_name": "UD Almería",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "levante-ud": {
+    "tm_id": "3368",
+    "tm_name": "Levante UD",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "ca-osasuna": {
+    "tm_id": "331",
+    "tm_name": "CA Osasuna",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "villarreal-cf": {
+    "tm_id": "1050",
+    "tm_name": "Villarreal CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "albacete-bp": {
+    "tm_id": "1532",
+    "tm_name": "Albacete Balompié",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "burgos-cf": {
+    "tm_id": "1536",
+    "tm_name": "Burgos CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "cadiz-cf": {
+    "tm_id": "2687",
+    "tm_name": "Cádiz CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "cd-castellon": {
+    "tm_id": "2502",
+    "tm_name": "CD Castellón",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "sd-eibar": {
+    "tm_id": "1533",
+    "tm_name": "SD Eibar",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "elche-cf": {
+    "tm_id": "1531",
+    "tm_name": "Elche CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "granada-cf": {
+    "tm_id": "16795",
+    "tm_name": "Granada CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "sd-huesca": {
+    "tm_id": "5358",
+    "tm_name": "SD Huesca",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "cd-leganes": {
+    "tm_id": "1244",
+    "tm_name": "CD Leganés",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "ud-las-palmas": {
+    "tm_id": "472",
+    "tm_name": "UD Las Palmas",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "malaga-cf": {
+    "tm_id": "1084",
+    "tm_name": "Málaga CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "cd-mirandes": {
+    "tm_id": "13222",
+    "tm_name": "CD Mirandés",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "racing-santander": {
+    "tm_id": "630",
+    "tm_name": "Racing Santander",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "real-zaragoza": {
+    "tm_id": "142",
+    "tm_name": "Real Zaragoza",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "real-valladolid": {
+    "tm_id": "366",
+    "tm_name": "Real Valladolid CF",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Spain"
+  },
+  "1-fc-heidenheim": {
+    "tm_id": "2036",
+    "tm_name": "1.FC Heidenheim 1846",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fc-koeln": {
+    "tm_id": "3",
+    "tm_name": "1.FC Köln",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fc-union-berlin": {
+    "tm_id": "21099",
+    "tm_name": "1.FC Union Berlin U17",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fsv-mainz-05": {
+    "tm_id": "39",
+    "tm_name": "1.FSV Mainz 05",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "bayer-04-leverkusen": {
+    "tm_id": "15",
+    "tm_name": "Bayer 04 Leverkusen",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "borussia-dortmund": {
+    "tm_id": "16",
+    "tm_name": "Borussia Dortmund",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "borussia-moenchengladbach": {
+    "tm_id": "18",
+    "tm_name": "Borussia Mönchengladbach",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "eintracht-frankfurt": {
+    "tm_id": "24",
+    "tm_name": "Eintracht Frankfurt",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fc-augsburg": {
+    "tm_id": "167",
+    "tm_name": "FC Augsburg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fc-bayern-muenchen": {
+    "tm_id": "18936",
+    "tm_name": "FC Bayern München Youth",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fc-st-pauli": {
+    "tm_id": "35",
+    "tm_name": "FC St. Pauli",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "hamburger-sv": {
+    "tm_id": "41",
+    "tm_name": "Hamburger SV",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "rb-leipzig": {
+    "tm_id": "23826",
+    "tm_name": "RB Leipzig",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "sc-freiburg": {
+    "tm_id": "60",
+    "tm_name": "SC Freiburg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "tsg-hoffenheim": {
+    "tm_id": "533",
+    "tm_name": "TSG 1899 Hoffenheim",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "vfb-stuttgart": {
+    "tm_id": "79",
+    "tm_name": "VfB Stuttgart",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "vfl-wolfsburg": {
+    "tm_id": "82",
+    "tm_name": "VfL Wolfsburg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "werder-bremen": {
+    "tm_id": "86",
+    "tm_name": "SV Werder Bremen",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "holstein-kiel": {
+    "tm_id": "269",
+    "tm_name": "Holstein Kiel",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fc-kaiserslautern": {
+    "tm_id": "2",
+    "tm_name": "1.FC Kaiserslautern",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fc-magdeburg": {
+    "tm_id": "187",
+    "tm_name": "1.FC Magdeburg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "1-fc-nuernberg": {
+    "tm_id": "4",
+    "tm_name": "1.FC Nuremberg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "dsc-arminia-bielefeld": {
+    "tm_id": "10",
+    "tm_name": "Arminia Bielefeld",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "eintracht-braunschweig": {
+    "tm_id": "23",
+    "tm_name": "Eintracht Braunschweig",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fc-schalke-04": {
+    "tm_id": "33",
+    "tm_name": "FC Schalke 04",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fortuna-duesseldorf": {
+    "tm_id": "38",
+    "tm_name": "Fortuna Düsseldorf",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "hannover-96": {
+    "tm_id": "42",
+    "tm_name": "Hannover 96",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "hertha-bsc": {
+    "tm_id": "44",
+    "tm_name": "Hertha BSC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "karlsruher-sc": {
+    "tm_id": "48",
+    "tm_name": "Karlsruher SC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "sc-paderborn-07": {
+    "tm_id": "127",
+    "tm_name": "SC Paderborn 07",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "sc-preussen-muenster": {
+    "tm_id": "7019",
+    "tm_name": "Preußen Münster II",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "sv-07-elversberg": {
+    "tm_id": "64",
+    "tm_name": "SV 07 Elversberg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "sv-darmstadt-98": {
+    "tm_id": "105",
+    "tm_name": "SV Darmstadt 98",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "spvgg-greuther-fuerth": {
+    "tm_id": "65",
+    "tm_name": "SpVgg Greuther Fürth",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "vfl-bochum": {
+    "tm_id": "80",
+    "tm_name": "VfL Bochum",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Germany"
+  },
+  "fc-blau-weiss-linz": {
+    "tm_id": "2157",
+    "tm_name": "FC Blau-Weiss Linz",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "fc-red-bull-salzburg": {
+    "tm_id": "409",
+    "tm_name": "Red Bull Salzburg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "fk-austria-wien": {
+    "tm_id": "14",
+    "tm_name": "Austria Vienna",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "gak": {
+    "tm_id": "316",
+    "tm_name": "Grazer AK 1902",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "lask": {
+    "tm_id": "413",
+    "tm_name": "LASK",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "scr-altach": {
+    "tm_id": "3551",
+    "tm_name": "SCR Altach",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "sk-rapid": {
+    "tm_id": "170",
+    "tm_name": "Rapid Vienna",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "sk-sturm-graz": {
+    "tm_id": "122",
+    "tm_name": "SK Sturm Graz",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "tsv-hartberg": {
+    "tm_id": "4467",
+    "tm_name": "TSV Hartberg",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "wsg-tirol": {
+    "tm_id": "2446",
+    "tm_name": "WSG Tirol",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "wolfsberger-ac": {
+    "tm_id": "4441",
+    "tm_name": "Wolfsberger AC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "admira-wacker": {
+    "tm_id": "503",
+    "tm_name": "Admira Wacker",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "fc-liefering": {
+    "tm_id": "37024",
+    "tm_name": "FC Liefering",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "first-vienna-fc": {
+    "tm_id": "2364",
+    "tm_name": "First Vienna FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "sc-austria-lustenau": {
+    "tm_id": "541",
+    "tm_name": "SC Austria Lustenau",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "skn-st-poelten": {
+    "tm_id": "2662",
+    "tm_name": "SKN St. Pölten",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "sv-ried": {
+    "tm_id": "266",
+    "tm_name": "SV Ried",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Austria"
+  },
+  "bsc-young-boys": {
+    "tm_id": "452",
+    "tm_name": "BSC Young Boys",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-basel-1893": {
+    "tm_id": "26",
+    "tm_name": "FC Basel 1893",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-lausanne-sport": {
+    "tm_id": "527",
+    "tm_name": "FC Lausanne-Sport",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-lugano": {
+    "tm_id": "2790",
+    "tm_name": "FC Lugano",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-luzern": {
+    "tm_id": "434",
+    "tm_name": "FC Luzern",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-sion": {
+    "tm_id": "321",
+    "tm_name": "FC Sion",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-st-gallen-1879": {
+    "tm_id": "257",
+    "tm_name": "FC St. Gallen 1879",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-winterthur": {
+    "tm_id": "242",
+    "tm_name": "FC Winterthur",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "fc-zuerich": {
+    "tm_id": "260",
+    "tm_name": "FC Zürich",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "grasshopper-club-zuerich": {
+    "tm_id": "504",
+    "tm_name": "Grasshopper Club Zurich",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "servette-fc": {
+    "tm_id": "61",
+    "tm_name": "Servette FC",
+    "confidence": "high",
+    "region": "eu",
+    "country": "Switzerland"
+  },
+  "sapporo": {
+    "tm_id": "16032",
+    "tm_name": "Hokkaido Consadole Sapporo",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kashima": {
+    "tm_id": "2241",
+    "tm_name": "Kashima Antlers",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "urawa": {
+    "tm_id": "828",
+    "tm_name": "Urawa Red Diamonds",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kashiwa": {
+    "tm_id": "6632",
+    "tm_name": "Kashiwa Reysol",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fc-tokyo": {
+    "tm_id": "6631",
+    "tm_name": "FC Tokyo",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tokyo-verdy": {
+    "tm_id": "3734",
+    "tm_name": "Tokyo Verdy",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "machida": {
+    "tm_id": "23568",
+    "tm_name": "Machida Zelvia",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kawasaki": {
+    "tm_id": "9598",
+    "tm_name": "Kawasaki Frontale",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "yokohama-fm": {
+    "tm_id": "3828",
+    "tm_name": "Yokohama F. Marinos",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "shonan": {
+    "tm_id": "8457",
+    "tm_name": "Shonan Bellmare",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "niigata": {
+    "tm_id": "8344",
+    "tm_name": "Albirex Niigata",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "iwata": {
+    "tm_id": "937",
+    "tm_name": "Júbilo Iwata",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "nagoya": {
+    "tm_id": "1066",
+    "tm_name": "Nagoya Grampus",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kyoto": {
+    "tm_id": "593",
+    "tm_name": "Kyoto Sanga",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "gamba-osaka": {
+    "tm_id": "596",
+    "tm_name": "Gamba Osaka",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "cerezo-osaka": {
+    "tm_id": "1022",
+    "tm_name": "Cerezo Osaka",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "vissel-kobe": {
+    "tm_id": "3958",
+    "tm_name": "Vissel Kobe",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "hiroshima": {
+    "tm_id": "2697",
+    "tm_name": "Sanfrecce Hiroshima",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fukuoka": {
+    "tm_id": "9597",
+    "tm_name": "Avispa Fukuoka",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tosu": {
+    "tm_id": "22177",
+    "tm_name": "Sagan Tosu",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "sendai": {
+    "tm_id": "6395",
+    "tm_name": "Vegalta Sendai",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "akita": {
+    "tm_id": "23580",
+    "tm_name": "Blaublitz Akita",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "yamagata": {
+    "tm_id": "16190",
+    "tm_name": "Montedio Yamagata",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "iwaki": {
+    "tm_id": "53668",
+    "tm_name": "Iwaki FC",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "mito": {
+    "tm_id": "21975",
+    "tm_name": "Mito HollyHock",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tochigi-sc": {
+    "tm_id": "22179",
+    "tm_name": "Tochigi SC",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "gunma": {
+    "tm_id": "39352",
+    "tm_name": "Thespakusatsu Gunma",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "chiba": {
+    "tm_id": "672",
+    "tm_name": "JEF United Chiba",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "yokohama-fc": {
+    "tm_id": "943",
+    "tm_name": "Yokohama FC",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kofu": {
+    "tm_id": "10999",
+    "tm_name": "Ventforet Kofu",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "shimizu": {
+    "tm_id": "1062",
+    "tm_name": "Shimizu S-Pulse",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fujeda": {
+    "tm_id": "25716",
+    "tm_name": "Fujieda MYFC",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "okayama": {
+    "tm_id": "22171",
+    "tm_name": "Fagiano Okayama",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "yamaguchi": {
+    "tm_id": "28730",
+    "tm_name": "Renofa Yamaguchi",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tokushima": {
+    "tm_id": "17832",
+    "tm_name": "Tokushima Vortis",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "ehime": {
+    "tm_id": "20682",
+    "tm_name": "Ehime FC",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "nagasaki": {
+    "tm_id": "23581",
+    "tm_name": "V-Varen Nagasaki",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kumamoto": {
+    "tm_id": "22175",
+    "tm_name": "Roasso Kumamoto",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "oita": {
+    "tm_id": "3935",
+    "tm_name": "Oita Trinita",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kagoshima": {
+    "tm_id": "42629",
+    "tm_name": "Kagoshima United",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "hachinohe": {
+    "tm_id": "35000",
+    "tm_name": "Vanraure Hachinohe",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "iwate-grulla": {
+    "tm_id": "16005",
+    "tm_name": "Iwate Grulla Morioka",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fukushima-utd": {
+    "tm_id": "28753",
+    "tm_name": "Fukushima United",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "omiya": {
+    "tm_id": "7452",
+    "tm_name": "RB Omiya Ardija",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "ys-yokohama": {
+    "tm_id": "34177",
+    "tm_name": "Yokohama Sports & Culture Club",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "sagamihara": {
+    "tm_id": "23548",
+    "tm_name": "SC Sagamihara",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "matsumoto": {
+    "tm_id": "25765",
+    "tm_name": "Matsumoto Yamaga",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "nagano": {
+    "tm_id": "25738",
+    "tm_name": "Nagano Parceiro",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "toyama": {
+    "tm_id": "22173",
+    "tm_name": "Kataller Toyama",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kanazawa": {
+    "tm_id": "24321",
+    "tm_name": "Zweigen Kanazawa",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "numazu": {
+    "tm_id": "42628",
+    "tm_name": "azul claro Numazu",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fc-gifu": {
+    "tm_id": "13600",
+    "tm_name": "FC Gifu",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "fc-osaka": {
+    "tm_id": "29172",
+    "tm_name": "FC Osaka",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "nara": {
+    "tm_id": "34997",
+    "tm_name": "Nara Club",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tottori": {
+    "tm_id": "20805",
+    "tm_name": "Gainare Tottori",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "imabari": {
+    "tm_id": "37689",
+    "tm_name": "FC Imabari",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kitakyushu": {
+    "tm_id": "23575",
+    "tm_name": "Giravanz Kitakyushu",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "miyazaki": {
+    "tm_id": "50673",
+    "tm_name": "Tegevajaro Miyazaki",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "ryukyu": {
+    "tm_id": "23569",
+    "tm_name": "Ryukyu Okinawa",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "tochigi-city": {
+    "tm_id": "29307",
+    "tm_name": "Tochigi City",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  },
+  "kochi": {
+    "tm_id": "55744",
+    "tm_name": "Kochi United",
+    "confidence": "high",
+    "region": "japan",
+    "country": "Japan"
+  }
+}

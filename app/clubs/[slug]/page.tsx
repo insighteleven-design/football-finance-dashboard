@@ -21,6 +21,8 @@ import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/Clu
 import { cashFlowData } from "@/lib/cashFlowData";
 import CopyLinkButton from "@/components/CopyLinkButton";
 import ImmigrationBadge from "@/components/ImmigrationBadge";
+import SquadProfileSection from "@/components/SquadProfileSection";
+import { squadProfiles, type SquadProfile } from "@/lib/squadProfile";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -101,6 +103,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       (c) => c.league === euClub.league && c.country === euClub.country && hasEuFinancialData(c)
     );
 
+    const euLeagueEntries = leagueClubs
+      .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
+      .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
+
     // Next/prev club: skip data-less clubs, sort to match directory (country → league → name)
     const visibleEuClubs = euClubs
       .filter(hasEuFinancialData)
@@ -179,6 +185,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               labelFull: "Club Information",
               content: <EUClubInfoPanel club={euClub} />,
             },
+            {
+              key: "squad",
+              label: "Squad",
+              labelFull: "Squad Profile",
+              content: (
+                <SquadProfileSection
+                  currentSlug={slug}
+                  profile={squadProfiles[slug]}
+                  clubName={euClub.name}
+                  leagueEntries={euLeagueEntries}
+                  leagueLabel={leagueLabel}
+                />
+              ),
+            },
           ]}
         />
       </div>
@@ -190,6 +210,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   if (japanClub) {
     const divisionLabel = J_DIVISION_LABELS[japanClub.division];
     const leagueClubs = japanClubs.filter((c) => c.division === japanClub.division);
+
+    const jpLeagueEntries = leagueClubs
+      .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
+      .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
     const dd = japanDeepDive[slug] ?? null;
 
     // Sort to match directory: division (j1 < j2 < j3) → name
@@ -287,6 +311,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               labelFull: "Club Information",
               content: <ComingSoonPanel label="Club Information" />,
             },
+            {
+              key: "squad",
+              label: "Squad",
+              labelFull: "Squad Profile",
+              content: (
+                <SquadProfileSection
+                  currentSlug={slug}
+                  profile={squadProfiles[slug]}
+                  clubName={japanClub.name}
+                  leagueEntries={jpLeagueEntries}
+                  leagueLabel={divisionLabel}
+                />
+              ),
+            },
           ]}
         />
       </div>
@@ -317,6 +355,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const fyDate = new Date(club.fiscal_year_end).toLocaleDateString("en-GB", {
     day: "numeric", month: "long", year: "numeric",
   });
+
+  // ─── Squad profile data ──────────────────────────────────────────────────────
+  const enLeagueEntries = clubs
+    .filter(c => c.division === compareDivision)
+    .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
+    .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
 
   // ─── Financial year tabs data ────────────────────────────────────────────────
 
@@ -524,6 +568,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             content: ctx ? (
               <MarketContextPanel ctx={ctx} division={club.division} slug={slug} />
             ) : null,
+          },
+          {
+            key: "squad",
+            label: "Squad",
+            labelFull: "Squad Profile",
+            content: (
+              <SquadProfileSection
+                currentSlug={slug}
+                profile={squadProfiles[slug]}
+                clubName={club.name}
+                leagueEntries={enLeagueEntries}
+                leagueLabel={compareLabel}
+              />
+            ),
           },
         ]}
       />

@@ -1,0 +1,7264 @@
+{
+  "arsenal": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 1230.0,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 4,
+      "24m+": 19,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "11",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 2,
+      "age_24_26": 7,
+      "age_27_29": 9,
+      "over_30": 4
+    }
+  },
+  "aston-villa": {
+    "avg_age": 28.2,
+    "squad_value_eur_m": 547.5,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 5,
+      "24m+": 13,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "405",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 4,
+      "age_27_29": 8,
+      "over_30": 8
+    }
+  },
+  "bournemouth": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 507.1,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 2,
+      "24m+": 18,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "989",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 2,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 3
+    }
+  },
+  "brentford": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 470.4,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 3,
+      "24m+": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1148",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 10,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "brighton": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 494.0,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 9,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1237",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 3,
+      "over_30": 8
+    }
+  },
+  "burnley": {
+    "avg_age": 27.8,
+    "squad_value_eur_m": 252.7,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 16,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1132",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 8
+    }
+  },
+  "chelsea": {
+    "avg_age": 23.7,
+    "squad_value_eur_m": 1160.0,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 0,
+      "12-24m": 0,
+      "24m+": 30,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "631",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 12,
+      "age_24_26": 11,
+      "age_27_29": 3,
+      "over_30": 0
+    }
+  },
+  "crystal-palace": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 541.3,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 6,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "873",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "everton": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 450.4,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 8,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "29",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "fulham": {
+    "avg_age": 28.3,
+    "squad_value_eur_m": 386.9,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 9,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "931",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 2,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 8
+    }
+  },
+  "leeds": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 346.0,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 6,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "399",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 2,
+      "age_24_26": 8,
+      "age_27_29": 12,
+      "over_30": 3
+    }
+  },
+  "liverpool": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 1020.0,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 8,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "31",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "man-city": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 1310.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 2,
+      "12-24m": 5,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "281",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "man-united": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 747.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 5,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "985",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 6,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "newcastle": {
+    "avg_age": 28.1,
+    "squad_value_eur_m": 708.2,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 4,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "762",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 8
+    }
+  },
+  "nottm-forest": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 568.0,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 3,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "703",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "sunderland": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 381.9,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 3,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "289",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 10,
+      "age_24_26": 7,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "tottenham": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 802.5,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 1,
+      "24m+": 22,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "148",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 10,
+      "over_30": 2
+    }
+  },
+  "west-ham": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 362.9,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 2,
+      "24m+": 16,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "379",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "wolves": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 277.1,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 2,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "543",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 4,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "birmingham": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 107.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 2,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "337",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 8,
+      "over_30": 3
+    }
+  },
+  "blackburn": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 45.9,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 12,
+      "24m+": 9,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "164",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 3,
+      "age_24_26": 12,
+      "age_27_29": 10,
+      "over_30": 4
+    }
+  },
+  "bristol-city": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 74.6,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 6,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "698",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 10,
+      "over_30": 3
+    }
+  },
+  "charlton": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 30.4,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 9,
+      "24m+": 10,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "358",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "coventry": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 193.9,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 10,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "990",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 3,
+      "age_24_26": 11,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "derby": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 63.7,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 7,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 9
+    }
+  },
+  "hull": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 81.8,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 16,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3008",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 10,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "ipswich": {
+    "avg_age": 27.9,
+    "squad_value_eur_m": 198.7,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 0,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "677",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 2,
+      "age_24_26": 10,
+      "age_27_29": 6,
+      "over_30": 7
+    }
+  },
+  "leicester": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 145.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 6,
+      "24m+": 8,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1003",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 7
+    }
+  },
+  "middlesbrough": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 128.9,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 6,
+      "24m+": 14,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "641",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 5,
+      "over_30": 7
+    }
+  },
+  "millwall": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 82.9,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1028",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 7,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "norwich": {
+    "avg_age": 24.9,
+    "squad_value_eur_m": 98.5,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 3,
+      "24m+": 25
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1123",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 12,
+      "age_24_26": 10,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "oxford-utd": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 37.6,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 3,
+      "24m+": 1,
+      "unknown": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "988",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 12,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 7
+    }
+  },
+  "portsmouth": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 35.5,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 9,
+      "24m+": 13,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1020",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 9,
+      "age_24_26": 9,
+      "age_27_29": 8,
+      "over_30": 8
+    }
+  },
+  "preston": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 58.1,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 6,
+      "24m+": 13,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "466",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 3,
+      "age_27_29": 9,
+      "over_30": 6
+    }
+  },
+  "qpr": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 56.1,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 0,
+      "24m+": 6,
+      "unknown": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1039",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "sheff-utd": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 132.5,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 7,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "350",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 9,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "sheff-wed": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 20.6,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 5,
+      "24m+": 2,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1035",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 5,
+      "age_24_26": 3,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "southampton": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 157.6,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 3,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "180",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "stoke": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 91.1,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "512",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 9,
+      "age_24_26": 6,
+      "age_27_29": 3,
+      "over_30": 7
+    }
+  },
+  "swansea": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 89.8,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 3,
+      "24m+": 16,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2288",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 3,
+      "age_24_26": 11,
+      "age_27_29": 2,
+      "over_30": 6
+    }
+  },
+  "watford": {
+    "avg_age": 24.7,
+    "squad_value_eur_m": 79.8,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 2,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1010",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 10,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 2
+    }
+  },
+  "west-brom": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 63.0,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 4,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "984",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 3
+    }
+  },
+  "wrexham": {
+    "avg_age": 27.5,
+    "squad_value_eur_m": 66.1,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 10,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1112",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 2,
+      "age_24_26": 7,
+      "age_27_29": 10,
+      "over_30": 7
+    }
+  },
+  "afc-wimbledon": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 5.4,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 8,
+      "24m+": 1,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3884",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 3,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "barnsley": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 8.1,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 6,
+      "24m+": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "349",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "blackpool": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 14.8,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 6,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1181",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 7,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "bolton": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 20.4,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 6,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "355",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "bradford": {
+    "avg_age": 28.5,
+    "squad_value_eur_m": 8.6,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 8,
+      "24m+": 3,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1027",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 3,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 11
+    }
+  },
+  "burton": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 8.0,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 16,
+      "24m+": 1,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2963",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 12,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "cardiff": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 29.4,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 13,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "603",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 2
+    }
+  },
+  "exeter": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 7.1,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 13,
+      "24m+": 0
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6699",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "huddersfield": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 18.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 10,
+      "24m+": 9,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1110",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 5,
+      "age_27_29": 8,
+      "over_30": 9
+    }
+  },
+  "leyton-orient": {
+    "avg_age": 25.0,
+    "squad_value_eur_m": 13.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 12,
+      "24m+": 7,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1150",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 10,
+      "age_24_26": 6,
+      "age_27_29": 8,
+      "over_30": 2
+    }
+  },
+  "lincoln": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 8.0,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 7,
+      "24m+": 14,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1198",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 2,
+      "over_30": 6
+    }
+  },
+  "luton": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 29.1,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 1,
+      "24m+": 0,
+      "unknown": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1031",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 7
+    }
+  },
+  "northampton": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 5.4,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 11,
+      "24m+": 1,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1302",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "peterborough": {
+    "avg_age": 23.9,
+    "squad_value_eur_m": 7.2,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 4,
+      "24m+": 13,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1072",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 11,
+      "age_24_26": 5,
+      "age_27_29": 3,
+      "over_30": 1
+    }
+  },
+  "plymouth": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 10.8,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 1,
+      "24m+": 11,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2262",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "reading": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 13.3,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 8,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1032",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 13,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 6
+    }
+  },
+  "rotherham": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 10.4,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 21,
+      "12-24m": 9,
+      "24m+": 2,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1194",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 9,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "wigan": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 9.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 19,
+      "12-24m": 5,
+      "24m+": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1071",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 10,
+      "age_24_26": 10,
+      "age_27_29": 2,
+      "over_30": 4
+    }
+  },
+  "cambridge": {
+    "avg_age": 27.8,
+    "squad_value_eur_m": 4.4,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 9,
+      "24m+": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "986",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 7,
+      "age_24_26": 2,
+      "age_27_29": 7,
+      "over_30": 8
+    }
+  },
+  "chesterfield": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 4.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 6,
+      "24m+": 6,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1219",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 8,
+      "age_27_29": 2,
+      "over_30": 8
+    }
+  },
+  "gillingham": {
+    "avg_age": 26.9,
+    "squad_value_eur_m": 3.9,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 6,
+      "24m+": 4,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2814",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 6,
+      "age_27_29": 7,
+      "over_30": 7
+    }
+  },
+  "mk-dons": {
+    "avg_age": 28.5,
+    "squad_value_eur_m": 9.6,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 0,
+      "24m+": 1,
+      "unknown": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "991",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 1,
+      "age_24_26": 4,
+      "age_27_29": 11,
+      "over_30": 10
+    }
+  },
+  "shrewsbury": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 3.5,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 5,
+      "24m+": 2,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3054",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 4,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "tranmere": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 3.8,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 9,
+      "24m+": 2,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1074",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 4,
+      "age_27_29": 2,
+      "over_30": 13
+    }
+  },
+  "walsall": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 4.3,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 8,
+      "24m+": 2,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "899",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 10,
+      "age_24_26": 9,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "paris-saint-germain": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 1210.0,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 0,
+      "12-24m": 2,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "583",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 5,
+      "age_24_26": 6,
+      "age_27_29": 3,
+      "over_30": 3
+    }
+  },
+  "olympique-de-marseille": {
+    "avg_age": 27.0,
+    "squad_value_eur_m": 386.0,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 6,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "244",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 8,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "losc-lille": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 271.5,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 2,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1082",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 9,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "olympique-lyonnais": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 282.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 4,
+      "24m+": 18,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1041",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "as-monaco": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 391.6,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 5,
+      "24m+": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "162",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 8,
+      "over_30": 4
+    }
+  },
+  "stade-brestois": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 88.4,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 10,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3911",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 3,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "stade-rennais": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 242.2,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 2,
+      "12-24m": 1,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "273",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 3,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "ogc-nice": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 169.1,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 6,
+      "24m+": 14,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "417",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "rc-lens": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 193.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 3,
+      "24m+": 17,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "826",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 5,
+      "age_24_26": 2,
+      "age_27_29": 4,
+      "over_30": 10
+    }
+  },
+  "fc-nantes": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 110.8,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 5,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "995",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 2,
+      "age_27_29": 6,
+      "over_30": 9
+    }
+  },
+  "stade-de-reims": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 93.9,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 2,
+      "24m+": 14,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1421",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 10,
+      "age_24_26": 5,
+      "age_27_29": 2,
+      "over_30": 2
+    }
+  },
+  "aj-auxerre": {
+    "avg_age": 24.3,
+    "squad_value_eur_m": 78.5,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 6,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "290",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 9,
+      "age_24_26": 9,
+      "age_27_29": 5,
+      "over_30": 1
+    }
+  },
+  "as-saint-etienne": {
+    "avg_age": 24.2,
+    "squad_value_eur_m": 82.7,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 2,
+      "24m+": 21,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "618",
+    "age_bands": {
+      "under_21": 10,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "rc-strasbourg": {
+    "avg_age": 22.9,
+    "squad_value_eur_m": 361.8,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 2,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "667",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 15,
+      "age_24_26": 1,
+      "age_27_29": 1,
+      "over_30": 1
+    }
+  },
+  "toulouse-fc": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 146.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 10,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "415",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 1
+    }
+  },
+  "le-havre-ac": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 73.0,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 9,
+      "24m+": 2,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "738",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 3,
+      "age_24_26": 10,
+      "age_27_29": 1,
+      "over_30": 7
+    }
+  },
+  "angers-sco": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 72.7,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 4,
+      "24m+": 10,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1420",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 3,
+      "age_24_26": 5,
+      "age_27_29": 2,
+      "over_30": 6
+    }
+  },
+  "montpellier-hsc": {
+    "avg_age": 24.4,
+    "squad_value_eur_m": 22.8,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 4,
+      "24m+": 7,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "969",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 9,
+      "age_24_26": 2,
+      "age_27_29": 1,
+      "over_30": 5
+    }
+  },
+  "fc-metz": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 62.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 5,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "347",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "fc-lorient": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 101.2,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1158",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 3
+    }
+  },
+  "sm-caen": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 5.4,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 15,
+      "24m+": 2,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1162",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 7,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "ea-guingamp": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 17.5,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 11,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "855",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "paris-fc": {
+    "avg_age": 28.6,
+    "squad_value_eur_m": 134.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 11,
+      "24m+": 7,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "10004",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 3,
+      "age_24_26": 4,
+      "age_27_29": 13,
+      "over_30": 9
+    }
+  },
+  "sc-bastia": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 13.0,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 7,
+      "24m+": 8,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "595",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 3,
+      "over_30": 6
+    }
+  },
+  "estac-troyes": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 40.8,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 10,
+      "24m+": 6,
+      "unknown": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1095",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 4,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "clermont-foot": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 17.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 8,
+      "24m+": 7,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3524",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 10,
+      "age_24_26": 2,
+      "age_27_29": 1,
+      "over_30": 9
+    }
+  },
+  "usl-dunkerque": {
+    "avg_age": 25.0,
+    "squad_value_eur_m": 25.4,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 3,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "9202",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 8,
+      "age_24_26": 3,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "amiens-sc": {
+    "avg_age": 24.7,
+    "squad_value_eur_m": 24.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 8,
+      "24m+": 4,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1416",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "rodez-af": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 14.9,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 6,
+      "24m+": 13,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "11273",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 10,
+      "age_27_29": 4,
+      "over_30": 0
+    }
+  },
+  "pau-fc": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 18.9,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 6,
+      "24m+": 4,
+      "unknown": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3166",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 12,
+      "age_24_26": 3,
+      "age_27_29": 1,
+      "over_30": 5
+    }
+  },
+  "grenoble-foot": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 12.8,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 8,
+      "24m+": 8,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1290",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 13,
+      "age_27_29": 1,
+      "over_30": 5
+    }
+  },
+  "annecy-fc": {
+    "avg_age": 21.2,
+    "squad_value_eur_m": null,
+    "squad_size": 19,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 0,
+      "24m+": 0,
+      "unknown": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "85249",
+    "age_bands": {
+      "under_21": 14,
+      "age_21_23": 3,
+      "age_24_26": 0,
+      "age_27_29": 1,
+      "over_30": 1
+    }
+  },
+  "stade-lavallois": {
+    "avg_age": 27.2,
+    "squad_value_eur_m": 11.8,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 5,
+      "24m+": 8,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1080",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "red-star-fc": {
+    "avg_age": 27.0,
+    "squad_value_eur_m": 16.1,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 8,
+      "24m+": 3,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1154",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "fc-kobenhavn": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 74.0,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 6,
+      "24m+": 16,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "190",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 5,
+      "age_24_26": 4,
+      "age_27_29": 6,
+      "over_30": 7
+    }
+  },
+  "fc-midtjylland": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 96.5,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 2,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "865",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 11,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 4
+    }
+  },
+  "agf": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 28.4,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 4,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "678",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 2,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "silkeborg-if": {
+    "avg_age": 24.4,
+    "squad_value_eur_m": 21.1,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 7,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1177",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 9,
+      "age_24_26": 5,
+      "age_27_29": 2,
+      "over_30": 4
+    }
+  },
+  "fc-nordsjaelland": {
+    "avg_age": 22.6,
+    "squad_value_eur_m": 39.8,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 5,
+      "24m+": 15,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2778",
+    "age_bands": {
+      "under_21": 18,
+      "age_21_23": 3,
+      "age_24_26": 1,
+      "age_27_29": 3,
+      "over_30": 4
+    }
+  },
+  "randers-fc": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 15.5,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 2,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5724",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 4,
+      "age_24_26": 5,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "viborg-ff": {
+    "avg_age": 24.2,
+    "squad_value_eur_m": 24.9,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 2,
+      "12-24m": 6,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1063",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 3,
+      "over_30": 1
+    }
+  },
+  "aab": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 10.2,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 7,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1053",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 3,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 3
+    }
+  },
+  "lyngby-bk": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 11.5,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 10,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "369",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "sonderjyske": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 13.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 2,
+      "12-24m": 10,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5817",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 3,
+      "age_24_26": 8,
+      "age_27_29": 4,
+      "over_30": 4
+    }
+  },
+  "ac-horsens": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 9.9,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 10,
+      "24m+": 13,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2414",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "vejle-bk": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 14.3,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 8,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "443",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 9,
+      "age_24_26": 2,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "hvidovre-if": {
+    "avg_age": 27.8,
+    "squad_value_eur_m": 5.9,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1894",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 0,
+      "age_27_29": 6,
+      "over_30": 10
+    }
+  },
+  "brondby-if": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 54.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 4,
+      "24m+": 18,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "206",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 4
+    }
+  },
+  "fk-bodo-glimt": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 82.5,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "501",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 5,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "sk-brann": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 26.9,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 6,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1100",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "rosenborg-bk": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 25.1,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "195",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 3,
+      "age_24_26": 9,
+      "age_27_29": 2,
+      "over_30": 4
+    }
+  },
+  "lillestrom-sk": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 11.8,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 5,
+      "24m+": 10,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "353",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 2,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "tromso-il": {
+    "avg_age": 24.3,
+    "squad_value_eur_m": 25.1,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 7,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1293",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 3,
+      "age_27_29": 3,
+      "over_30": 3
+    }
+  },
+  "kristiansund-bk": {
+    "avg_age": 23.3,
+    "squad_value_eur_m": 10.5,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 8,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "21101",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 11,
+      "age_24_26": 4,
+      "age_27_29": 1,
+      "over_30": 2
+    }
+  },
+  "molde-fk": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 26.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 8,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "687",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 4,
+      "age_24_26": 8,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "fredrikstad-fk": {
+    "avg_age": 23.9,
+    "squad_value_eur_m": 16.3,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 4,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3837",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 7,
+      "age_24_26": 3,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "ik-start": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 6.8,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 6,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "267",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "hamkam": {
+    "avg_age": 24.6,
+    "squad_value_eur_m": 9.1,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 5,
+      "24m+": 7,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "4309",
+    "age_bands": {
+      "under_21": 10,
+      "age_21_23": 4,
+      "age_24_26": 4,
+      "age_27_29": 8,
+      "over_30": 4
+    }
+  },
+  "sandefjord-fotball": {
+    "avg_age": 23.3,
+    "squad_value_eur_m": 12.4,
+    "squad_size": 22,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 5,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6399",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 9,
+      "age_24_26": 7,
+      "age_27_29": 2,
+      "over_30": 0
+    }
+  },
+  "valerenga-fk": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 16.8,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 8,
+      "24m+": 11,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "76",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 3,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 4
+    }
+  },
+  "viking-fk": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 33.2,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 8,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "239",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 3,
+      "over_30": 6
+    }
+  },
+  "aalesund-fk": {
+    "avg_age": 24.2,
+    "squad_value_eur_m": 9.4,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 8,
+      "24m+": 13,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5619",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 8,
+      "age_24_26": 10,
+      "age_27_29": 3,
+      "over_30": 1
+    }
+  },
+  "sarpsborg-08": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 17.6,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 2,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "10217",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "malmo-ff": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 29.4,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 9,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "496",
+    "age_bands": {
+      "under_21": 13,
+      "age_21_23": 5,
+      "age_24_26": 4,
+      "age_27_29": 3,
+      "over_30": 8
+    }
+  },
+  "hammarby-if": {
+    "avg_age": 24.3,
+    "squad_value_eur_m": 25.7,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 4,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1059",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 9,
+      "age_24_26": 3,
+      "age_27_29": 1,
+      "over_30": 4
+    }
+  },
+  "djurgarden": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 21.2,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 7,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1044",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 4,
+      "age_24_26": 8,
+      "age_27_29": 3,
+      "over_30": 7
+    }
+  },
+  "aik": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 20.4,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 11,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "272",
+    "age_bands": {
+      "under_21": 11,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 4
+    }
+  },
+  "if-elfsborg": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 14.9,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 4,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1101",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 6,
+      "age_24_26": 3,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "ifk-goteborg": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 18.6,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 6,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "801",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 9,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 2
+    }
+  },
+  "ik-sirius": {
+    "avg_age": 23.6,
+    "squad_value_eur_m": 14.0,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 6,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "7945",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 7,
+      "age_24_26": 4,
+      "age_27_29": 2,
+      "over_30": 3
+    }
+  },
+  "if-brommapojkarna": {
+    "avg_age": 23.0,
+    "squad_value_eur_m": 8.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 5,
+      "24m+": 3,
+      "unknown": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1092",
+    "age_bands": {
+      "under_21": 12,
+      "age_21_23": 11,
+      "age_24_26": 3,
+      "age_27_29": 1,
+      "over_30": 4
+    }
+  },
+  "gais": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 10.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "7009",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 9,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 4
+    }
+  },
+  "vsk-fotboll": {
+    "avg_age": 24.3,
+    "squad_value_eur_m": 8.9,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 4,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5202",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 9,
+      "age_24_26": 2,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "kalmar-ff": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 9.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 8,
+      "24m+": 6,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3654",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 10,
+      "age_27_29": 1,
+      "over_30": 4
+    }
+  },
+  "mjallby-aif": {
+    "avg_age": 23.8,
+    "squad_value_eur_m": 18.9,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 3,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2719",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 13,
+      "age_24_26": 2,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "degerfors-if": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 6.4,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 8,
+      "24m+": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3641",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "halmstads-bk": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 7.4,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 9,
+      "24m+": 6,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1011",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 3,
+      "age_27_29": 4,
+      "over_30": 4
+    }
+  },
+  "orgryte-is": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 6.2,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 8,
+      "24m+": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1118",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 7
+    }
+  },
+  "bk-hacken-ff": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 21.2,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 4,
+      "24m+": 14,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1109",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 6,
+      "age_24_26": 2,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "ac-milan": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 483.5,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 3,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "inter-milan": {
+    "avg_age": 29.4,
+    "squad_value_eur_m": 636.3,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 2,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "46",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 3,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 10
+    }
+  },
+  "juventus": {
+    "avg_age": 27.4,
+    "squad_value_eur_m": 544.2,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 3,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "506",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 3,
+      "age_24_26": 8,
+      "age_27_29": 9,
+      "over_30": 4
+    }
+  },
+  "napoli": {
+    "avg_age": 28.7,
+    "squad_value_eur_m": 417.3,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 7,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6195",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 4,
+      "age_27_29": 7,
+      "over_30": 10
+    }
+  },
+  "as-roma": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 454.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 3,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "12",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "atalanta": {
+    "avg_age": 27.4,
+    "squad_value_eur_m": 403.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 4,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "800",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 3,
+      "age_24_26": 11,
+      "age_27_29": 2,
+      "over_30": 7
+    }
+  },
+  "lazio": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 217.6,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 9,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "398",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 3,
+      "over_30": 10
+    }
+  },
+  "fiorentina": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 243.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 2,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "430",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 4,
+      "age_24_26": 7,
+      "age_27_29": 8,
+      "over_30": 4
+    }
+  },
+  "bologna": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 275.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 6,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1025",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "udinese": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 152.6,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 4,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "410",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 3,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "hellas-verona": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 93.5,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 2,
+      "24m+": 16,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "276",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "torino-fc": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 134.9,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 8,
+      "24m+": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "416",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 6,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 7
+    }
+  },
+  "genoa-cfc": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 150.6,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 0,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "252",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "ac-monza": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 46.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 10,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2919",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 2,
+      "age_24_26": 8,
+      "age_27_29": 7,
+      "over_30": 7
+    }
+  },
+  "cagliari-calcio": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 145.7,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 2,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1390",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 4,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "us-sassuolo": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 184.1,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 4,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6574",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 7,
+      "over_30": 3
+    }
+  },
+  "parma-calcio": {
+    "avg_age": 24.6,
+    "squad_value_eur_m": 172.5,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 4,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "130",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 11,
+      "age_24_26": 9,
+      "age_27_29": 3,
+      "over_30": 1
+    }
+  },
+  "us-cremonese": {
+    "avg_age": 28.5,
+    "squad_value_eur_m": 72.2,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 3,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2239",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 3,
+      "age_27_29": 10,
+      "over_30": 8
+    }
+  },
+  "como-1907": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 351.7,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 1,
+      "24m+": 18,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1047",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 0,
+      "over_30": 8
+    }
+  },
+  "venezia-fc": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 64.8,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 3,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "607",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 7,
+      "age_24_26": 12,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "us-lecce": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 93.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 8,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1005",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 7,
+      "age_24_26": 14,
+      "age_27_29": 2,
+      "over_30": 3
+    }
+  },
+  "ac-reggiana": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 19.2,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 21,
+      "12-24m": 9,
+      "24m+": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5621",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 7,
+      "age_24_26": 6,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "us-catanzaro": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 39.0,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 8,
+      "24m+": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "4097",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "modena-fc": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 34.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 5,
+      "24m+": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1385",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 11,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "juve-stabia": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 23.4,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 6,
+      "24m+": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5587",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 11,
+      "age_27_29": 6,
+      "over_30": 1
+    }
+  },
+  "delfino-pescara": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 19.5,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 19,
+      "12-24m": 5,
+      "24m+": 4,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2921",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "calcio-padova": {
+    "avg_age": 27.2,
+    "squad_value_eur_m": 16.9,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 9,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3037",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 11
+    }
+  },
+  "virtus-entella": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 11.2,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 8,
+      "24m+": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "20519",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "us-avellino": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 20.5,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2331",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 4,
+      "over_30": 9
+    }
+  },
+  "ssc-bari": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 27.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 21,
+      "12-24m": 4,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "332",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 9,
+      "age_27_29": 9,
+      "over_30": 6
+    }
+  },
+  "real-madrid": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 1340.0,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "418",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 8,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "fc-barcelona": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 1170.0,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 2,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "131",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 4,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "atletico-madrid": {
+    "avg_age": 27.7,
+    "squad_value_eur_m": 587.0,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 4,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "13",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 8
+    }
+  },
+  "athletic-club": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 9.6,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 29,
+      "12-24m": 1,
+      "24m+": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "64918",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 20,
+      "age_24_26": 4,
+      "age_27_29": 3,
+      "over_30": 7
+    }
+  },
+  "real-sociedad": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 272.7,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 3,
+      "24m+": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "681",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 7,
+      "age_24_26": 6,
+      "age_27_29": 8,
+      "over_30": 3
+    }
+  },
+  "real-betis": {
+    "avg_age": 29.1,
+    "squad_value_eur_m": 248.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 2,
+      "24m+": 21
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "150",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 2,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 12
+    }
+  },
+  "sevilla-fc": {
+    "avg_age": 28.0,
+    "squad_value_eur_m": 140.4,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 7,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "368",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 7,
+      "age_24_26": 6,
+      "age_27_29": 7,
+      "over_30": 8
+    }
+  },
+  "girona-fc": {
+    "avg_age": 28.6,
+    "squad_value_eur_m": 153.2,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 5,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "12321",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 4,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 11
+    }
+  },
+  "rcd-mallorca": {
+    "avg_age": 27.8,
+    "squad_value_eur_m": 89.0,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 8,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "237",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 4,
+      "over_30": 9
+    }
+  },
+  "valencia-cf": {
+    "avg_age": 28.2,
+    "squad_value_eur_m": 163.6,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 7,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1049",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 3,
+      "age_24_26": 7,
+      "age_27_29": 9,
+      "over_30": 8
+    }
+  },
+  "getafe-cf": {
+    "avg_age": 28.2,
+    "squad_value_eur_m": 82.9,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 4,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3709",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 3,
+      "age_27_29": 6,
+      "over_30": 10
+    }
+  },
+  "deportivo-alaves": {
+    "avg_age": 28.0,
+    "squad_value_eur_m": 66.9,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 6,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1108",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 2,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 7
+    }
+  },
+  "rayo-vallecano": {
+    "avg_age": 28.8,
+    "squad_value_eur_m": 107.3,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 6,
+      "24m+": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "367",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 2,
+      "age_27_29": 9,
+      "over_30": 11
+    }
+  },
+  "rcd-espanyol": {
+    "avg_age": 21.0,
+    "squad_value_eur_m": 2.1,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 5,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "10773",
+    "age_bands": {
+      "under_21": 13,
+      "age_21_23": 9,
+      "age_24_26": 2,
+      "age_27_29": 0,
+      "over_30": 0
+    }
+  },
+  "rc-celta": {
+    "avg_age": 27.0,
+    "squad_value_eur_m": 172.9,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 4,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "940",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 9,
+      "age_24_26": 7,
+      "age_27_29": 3,
+      "over_30": 8
+    }
+  },
+  "real-oviedo": {
+    "avg_age": 27.9,
+    "squad_value_eur_m": 63.9,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 7,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2497",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 1,
+      "age_24_26": 9,
+      "age_27_29": 7,
+      "over_30": 8
+    }
+  },
+  "ud-almeria": {
+    "avg_age": 27.4,
+    "squad_value_eur_m": 50.3,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 2,
+      "24m+": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3302",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 10,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "levante-ud": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 86.7,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 6,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3368",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "ca-osasuna": {
+    "avg_age": 28.0,
+    "squad_value_eur_m": 100.8,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 7,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "331",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 3,
+      "over_30": 9
+    }
+  },
+  "villarreal-cf": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 286.3,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 3,
+      "24m+": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1050",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "albacete-bp": {
+    "avg_age": 27.7,
+    "squad_value_eur_m": 13.1,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 11,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1532",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "burgos-cf": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 20.7,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1536",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 7,
+      "age_24_26": 6,
+      "age_27_29": 8,
+      "over_30": 4
+    }
+  },
+  "cadiz-cf": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 22.9,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 5,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2687",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "cd-castellon": {
+    "avg_age": 28.1,
+    "squad_value_eur_m": 20.4,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 7,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2502",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 8
+    }
+  },
+  "sd-eibar": {
+    "avg_age": 28.4,
+    "squad_value_eur_m": 15.2,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 11,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1533",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 2,
+      "age_24_26": 10,
+      "age_27_29": 2,
+      "over_30": 9
+    }
+  },
+  "elche-cf": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 85.1,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 8,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1531",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "granada-cf": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 22.8,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 5,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "16795",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 2,
+      "over_30": 6
+    }
+  },
+  "sd-huesca": {
+    "avg_age": 28.2,
+    "squad_value_eur_m": 13.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 8,
+      "24m+": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "5358",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 9,
+      "over_30": 7
+    }
+  },
+  "cd-leganes": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 21.3,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 9,
+      "24m+": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1244",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "ud-las-palmas": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 45.0,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 2,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "472",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "malaga-cf": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 27.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 5,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1084",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "cd-mirandes": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 18.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 26,
+      "12-24m": 1,
+      "24m+": 0
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "13222",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 1,
+      "over_30": 3
+    }
+  },
+  "racing-santander": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 61.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 3,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "630",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 2
+    }
+  },
+  "real-zaragoza": {
+    "avg_age": 27.4,
+    "squad_value_eur_m": 22.1,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 6,
+      "24m+": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "142",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 3,
+      "age_24_26": 7,
+      "age_27_29": 11,
+      "over_30": 7
+    }
+  },
+  "real-valladolid": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 31.7,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 7,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "366",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 11,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 2
+    }
+  },
+  "1-fc-heidenheim": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 64.0,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 10,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2036",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 2,
+      "age_24_26": 11,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "1-fc-koeln": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 136.8,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 7,
+      "24m+": 11,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "1-fc-union-berlin": {
+    "avg_age": 16.8,
+    "squad_value_eur_m": null,
+    "squad_size": 22,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 5,
+      "24m+": 6,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "21099",
+    "age_bands": {
+      "under_21": 21,
+      "age_21_23": 0,
+      "age_24_26": 0,
+      "age_27_29": 0,
+      "over_30": 0
+    }
+  },
+  "1-fsv-mainz-05": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 138.7,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 4,
+      "24m+": 15,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "39",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 6,
+      "age_27_29": 7,
+      "over_30": 9
+    }
+  },
+  "bayer-04-leverkusen": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 449.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 5,
+      "24m+": 21
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "15",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 2,
+      "age_27_29": 4,
+      "over_30": 9
+    }
+  },
+  "borussia-dortmund": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 498.4,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 8,
+      "24m+": 14,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "16",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 6,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "borussia-moenchengladbach": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 149.3,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 9,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "18",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 4,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "eintracht-frankfurt": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 388.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 4,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "24",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 9,
+      "age_24_26": 4,
+      "age_27_29": 3,
+      "over_30": 7
+    }
+  },
+  "fc-augsburg": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 159.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 10,
+      "24m+": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "167",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 8,
+      "over_30": 4
+    }
+  },
+  "fc-bayern-muenchen": {
+    "avg_age": 15.7,
+    "squad_value_eur_m": null,
+    "squad_size": 21,
+    "contract_expiry": {
+      "0-12m": 0,
+      "12-24m": 3,
+      "24m+": 6,
+      "unknown": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "18936",
+    "age_bands": {
+      "under_21": 21,
+      "age_21_23": 0,
+      "age_24_26": 0,
+      "age_27_29": 0,
+      "over_30": 0
+    }
+  },
+  "fc-st-pauli": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 69.7,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 2,
+      "24m+": 2,
+      "unknown": 21
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "35",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 9,
+      "age_24_26": 6,
+      "age_27_29": 8,
+      "over_30": 5
+    }
+  },
+  "hamburger-sv": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 168.8,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 6,
+      "24m+": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "41",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 4,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "rb-leipzig": {
+    "avg_age": 23.7,
+    "squad_value_eur_m": 471.2,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 4,
+      "24m+": 23
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23826",
+    "age_bands": {
+      "under_21": 11,
+      "age_21_23": 7,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "sc-freiburg": {
+    "avg_age": 28.0,
+    "squad_value_eur_m": 191.0,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "60",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 10
+    }
+  },
+  "tsg-hoffenheim": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 246.1,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 1,
+      "24m+": 18,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "533",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 1,
+      "over_30": 7
+    }
+  },
+  "vfb-stuttgart": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 383.1,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 3,
+      "24m+": 22
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "79",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 7,
+      "age_24_26": 8,
+      "age_27_29": 8,
+      "over_30": 2
+    }
+  },
+  "vfl-wolfsburg": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 234.6,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 10,
+      "24m+": 15,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "82",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 10,
+      "age_24_26": 5,
+      "age_27_29": 7,
+      "over_30": 6
+    }
+  },
+  "werder-bremen": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 176.3,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 5,
+      "24m+": 8,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "86",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 3,
+      "age_24_26": 9,
+      "age_27_29": 7,
+      "over_30": 4
+    }
+  },
+  "holstein-kiel": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 32.3,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 5,
+      "24m+": 16,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "269",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 9,
+      "age_24_26": 5,
+      "age_27_29": 3,
+      "over_30": 6
+    }
+  },
+  "1-fc-kaiserslautern": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 32.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 8,
+      "over_30": 2
+    }
+  },
+  "1-fc-magdeburg": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 24.9,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 1,
+      "24m+": 2,
+      "unknown": 19
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "187",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 7,
+      "over_30": 9
+    }
+  },
+  "1-fc-nuernberg": {
+    "avg_age": 23.5,
+    "squad_value_eur_m": 38.1,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 4,
+      "24m+": 11,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "4",
+    "age_bands": {
+      "under_21": 11,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 4,
+      "over_30": 3
+    }
+  },
+  "dsc-arminia-bielefeld": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 18.5,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 10,
+      "24m+": 3,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "10",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 8,
+      "age_27_29": 12,
+      "over_30": 2
+    }
+  },
+  "eintracht-braunschweig": {
+    "avg_age": 24.9,
+    "squad_value_eur_m": 21.6,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 12,
+      "24m+": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 7,
+      "age_24_26": 11,
+      "age_27_29": 6,
+      "over_30": 1
+    }
+  },
+  "fc-schalke-04": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 45.2,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 10,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "33",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 4,
+      "age_27_29": 9,
+      "over_30": 6
+    }
+  },
+  "fortuna-duesseldorf": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 33.6,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 3,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "38",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "hannover-96": {
+    "avg_age": 24.7,
+    "squad_value_eur_m": 45.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 4,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "42",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 6,
+      "age_24_26": 10,
+      "age_27_29": 7,
+      "over_30": 2
+    }
+  },
+  "hertha-bsc": {
+    "avg_age": 26.0,
+    "squad_value_eur_m": 62.6,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 13,
+      "24m+": 6,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "44",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 8,
+      "over_30": 6
+    }
+  },
+  "karlsruher-sc": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 35.5,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 2,
+      "24m+": 3,
+      "unknown": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "48",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 9,
+      "age_24_26": 3,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "sc-paderborn-07": {
+    "avg_age": 24.6,
+    "squad_value_eur_m": 40.6,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 6,
+      "24m+": 3,
+      "unknown": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "127",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 9,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 3
+    }
+  },
+  "sc-preussen-muenster": {
+    "avg_age": 22.5,
+    "squad_value_eur_m": null,
+    "squad_size": 22,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 1,
+      "24m+": 0,
+      "unknown": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "7019",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 10,
+      "age_24_26": 0,
+      "age_27_29": 1,
+      "over_30": 2
+    }
+  },
+  "sv-07-elversberg": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 28.1,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 9,
+      "24m+": 11,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "64",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "sv-darmstadt-98": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 32.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 0,
+      "unknown": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "105",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 1,
+      "age_24_26": 9,
+      "age_27_29": 9,
+      "over_30": 4
+    }
+  },
+  "spvgg-greuther-fuerth": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 26.7,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 13,
+      "24m+": 6,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "65",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "vfl-bochum": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 48.0,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 5,
+      "24m+": 12,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "80",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 4,
+      "age_24_26": 3,
+      "age_27_29": 6,
+      "over_30": 8
+    }
+  },
+  "fc-blau-weiss-linz": {
+    "avg_age": 26.6,
+    "squad_value_eur_m": 11.9,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 7,
+      "24m+": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2157",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 9,
+      "over_30": 4
+    }
+  },
+  "fc-red-bull-salzburg": {
+    "avg_age": 22.9,
+    "squad_value_eur_m": 130.4,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 8,
+      "24m+": 21
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "409",
+    "age_bands": {
+      "under_21": 11,
+      "age_21_23": 12,
+      "age_24_26": 4,
+      "age_27_29": 0,
+      "over_30": 3
+    }
+  },
+  "fk-austria-wien": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 23.2,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 8,
+      "24m+": 15,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "14",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 5,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "gak": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 9.8,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 9,
+      "24m+": 3,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "316",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "lask": {
+    "avg_age": 24.4,
+    "squad_value_eur_m": 33.3,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 4,
+      "24m+": 13,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "413",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 1
+    }
+  },
+  "scr-altach": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 9.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 10,
+      "24m+": 3,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3551",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 7,
+      "age_24_26": 8,
+      "age_27_29": 3,
+      "over_30": 6
+    }
+  },
+  "sk-rapid": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 43.2,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 12,
+      "24m+": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "170",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 11,
+      "age_24_26": 8,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "sk-sturm-graz": {
+    "avg_age": 24.2,
+    "squad_value_eur_m": 43.1,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 7,
+      "24m+": 5,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "122",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 2,
+      "over_30": 4
+    }
+  },
+  "tsv-hartberg": {
+    "avg_age": 23.9,
+    "squad_value_eur_m": 13.0,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 7,
+      "24m+": 5,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "4467",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 15,
+      "age_24_26": 3,
+      "age_27_29": 4,
+      "over_30": 2
+    }
+  },
+  "wsg-tirol": {
+    "avg_age": 24.0,
+    "squad_value_eur_m": 10.9,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 9,
+      "12-24m": 2,
+      "24m+": 0,
+      "unknown": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2446",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 9,
+      "age_24_26": 10,
+      "age_27_29": 2,
+      "over_30": 1
+    }
+  },
+  "wolfsberger-ac": {
+    "avg_age": 25.0,
+    "squad_value_eur_m": 20.9,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 9,
+      "24m+": 8,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "4441",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 12,
+      "age_24_26": 4,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "admira-wacker": {
+    "avg_age": 24.5,
+    "squad_value_eur_m": 4.4,
+    "squad_size": 26,
+    "contract_expiry": {
+      "0-12m": 1,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 20
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "503",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 2,
+      "over_30": 4
+    }
+  },
+  "fc-liefering": {
+    "avg_age": 19.9,
+    "squad_value_eur_m": 7.8,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 4,
+      "24m+": 6,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "37024",
+    "age_bands": {
+      "under_21": 20,
+      "age_21_23": 3,
+      "age_24_26": 1,
+      "age_27_29": 0,
+      "over_30": 0
+    }
+  },
+  "first-vienna-fc": {
+    "avg_age": 25.2,
+    "squad_value_eur_m": 4.4,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 13,
+      "24m+": 6,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2364",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 3,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "sc-austria-lustenau": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 4.2,
+    "squad_size": 24,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 6,
+      "24m+": 0,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "541",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 3,
+      "over_30": 4
+    }
+  },
+  "skn-st-poelten": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 4.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 1,
+      "24m+": 1,
+      "unknown": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2662",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 3,
+      "age_24_26": 9,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "sv-ried": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 9.7,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 9,
+      "24m+": 8,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "266",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 7,
+      "age_24_26": 2,
+      "age_27_29": 2,
+      "over_30": 10
+    }
+  },
+  "bsc-young-boys": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 65.8,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "452",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 4,
+      "age_27_29": 5,
+      "over_30": 7
+    }
+  },
+  "fc-basel-1893": {
+    "avg_age": 24.8,
+    "squad_value_eur_m": 57.4,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 7,
+      "24m+": 17
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "26",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 3
+    }
+  },
+  "fc-lausanne-sport": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 34.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 9,
+      "24m+": 10,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "527",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 2,
+      "over_30": 3
+    }
+  },
+  "fc-lugano": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 45.1,
+    "squad_size": 28,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 10,
+      "24m+": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2790",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "fc-luzern": {
+    "avg_age": 23.8,
+    "squad_value_eur_m": 28.8,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 8,
+      "12-24m": 8,
+      "24m+": 12,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "434",
+    "age_bands": {
+      "under_21": 10,
+      "age_21_23": 9,
+      "age_24_26": 3,
+      "age_27_29": 7,
+      "over_30": 1
+    }
+  },
+  "fc-sion": {
+    "avg_age": 25.5,
+    "squad_value_eur_m": 18.6,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 10,
+      "24m+": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "321",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 4
+    }
+  },
+  "fc-st-gallen-1879": {
+    "avg_age": 24.1,
+    "squad_value_eur_m": 36.5,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 8,
+      "24m+": 18,
+      "unknown": 1
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "257",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 9,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 3
+    }
+  },
+  "fc-winterthur": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 10.0,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 8,
+      "24m+": 5,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "242",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "fc-zuerich": {
+    "avg_age": 24.3,
+    "squad_value_eur_m": 23.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 5,
+      "24m+": 18
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "260",
+    "age_bands": {
+      "under_21": 10,
+      "age_21_23": 6,
+      "age_24_26": 7,
+      "age_27_29": 1,
+      "over_30": 5
+    }
+  },
+  "grasshopper-club-zuerich": {
+    "avg_age": 24.4,
+    "squad_value_eur_m": 22.4,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 10,
+      "24m+": 14,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "504",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 10,
+      "age_24_26": 5,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "servette-fc": {
+    "avg_age": 27.2,
+    "squad_value_eur_m": 18.9,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 4,
+      "12-24m": 7,
+      "24m+": 16
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "61",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 3,
+      "age_24_26": 2,
+      "age_27_29": 10,
+      "over_30": 7
+    }
+  },
+  "sapporo": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 8.6,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 22,
+      "12-24m": 4,
+      "24m+": 1,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "16032",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 13
+    }
+  },
+  "kashima": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 23.0,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 19,
+      "12-24m": 4,
+      "24m+": 8,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2241",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 7,
+      "age_27_29": 4,
+      "over_30": 12
+    }
+  },
+  "urawa": {
+    "avg_age": 26.9,
+    "squad_value_eur_m": 17.7,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 8,
+      "24m+": 5,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "828",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 4,
+      "age_27_29": 9,
+      "over_30": 9
+    }
+  },
+  "kashiwa": {
+    "avg_age": 27.2,
+    "squad_value_eur_m": 18.4,
+    "squad_size": 39,
+    "contract_expiry": {
+      "0-12m": 20,
+      "12-24m": 8,
+      "24m+": 4,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6632",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 9,
+      "age_24_26": 7,
+      "age_27_29": 12,
+      "over_30": 10
+    }
+  },
+  "fc-tokyo": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 15.7,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 6,
+      "24m+": 9,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6631",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 3,
+      "over_30": 10
+    }
+  },
+  "tokyo-verdy": {
+    "avg_age": 24.9,
+    "squad_value_eur_m": 8.7,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 6,
+      "24m+": 4,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3734",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 7,
+      "over_30": 3
+    }
+  },
+  "machida": {
+    "avg_age": 28.4,
+    "squad_value_eur_m": 19.3,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 3,
+      "24m+": 5,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23568",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 2,
+      "age_24_26": 6,
+      "age_27_29": 11,
+      "over_30": 10
+    }
+  },
+  "kawasaki": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 21.3,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 5,
+      "12-24m": 6,
+      "24m+": 16,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "9598",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 6,
+      "age_24_26": 6,
+      "age_27_29": 10,
+      "over_30": 6
+    }
+  },
+  "yokohama-fm": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 14.4,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 7,
+      "24m+": 8,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3828",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 7,
+      "age_27_29": 6,
+      "over_30": 9
+    }
+  },
+  "shonan": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 8.1,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 7,
+      "24m+": 4,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "8457",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 4,
+      "age_24_26": 11,
+      "age_27_29": 5,
+      "over_30": 10
+    }
+  },
+  "niigata": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 7.4,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 6,
+      "24m+": 1,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "8344",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 2,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 10
+    }
+  },
+  "iwata": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 12.1,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 5,
+      "24m+": 2,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "937",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 3,
+      "age_27_29": 12,
+      "over_30": 8
+    }
+  },
+  "nagoya": {
+    "avg_age": 27.7,
+    "squad_value_eur_m": 15.9,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 21,
+      "12-24m": 3,
+      "24m+": 5,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1066",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 4,
+      "age_24_26": 5,
+      "age_27_29": 9,
+      "over_30": 12
+    }
+  },
+  "kyoto": {
+    "avg_age": 27.7,
+    "squad_value_eur_m": 15.7,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 5,
+      "24m+": 3,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "593",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 6,
+      "age_27_29": 10,
+      "over_30": 9
+    }
+  },
+  "gamba-osaka": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 15.4,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 5,
+      "24m+": 4,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "596",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 9,
+      "over_30": 8
+    }
+  },
+  "cerezo-osaka": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 14.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 1,
+      "24m+": 2,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1022",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 5,
+      "age_24_26": 8,
+      "age_27_29": 6,
+      "over_30": 8
+    }
+  },
+  "vissel-kobe": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 17.7,
+    "squad_size": 44,
+    "contract_expiry": {
+      "0-12m": 23,
+      "12-24m": 3,
+      "24m+": 9,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3958",
+    "age_bands": {
+      "under_21": 9,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 7,
+      "over_30": 14
+    }
+  },
+  "hiroshima": {
+    "avg_age": 27.7,
+    "squad_value_eur_m": 20.9,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 5,
+      "24m+": 3,
+      "unknown": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "2697",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 10
+    }
+  },
+  "fukuoka": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 10.8,
+    "squad_size": 38,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 5,
+      "24m+": 3,
+      "unknown": 15
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "9597",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 5,
+      "age_24_26": 10,
+      "age_27_29": 8,
+      "over_30": 9
+    }
+  },
+  "tosu": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 8.5,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 2,
+      "24m+": 4,
+      "unknown": 14
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22177",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 6,
+      "age_24_26": 10,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "sendai": {
+    "avg_age": 25.6,
+    "squad_value_eur_m": 8.6,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 2,
+      "24m+": 7,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "6395",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 5,
+      "age_24_26": 13,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "akita": {
+    "avg_age": 28.7,
+    "squad_value_eur_m": 4.5,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 2,
+      "24m+": 1,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23580",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 1,
+      "age_24_26": 4,
+      "age_27_29": 11,
+      "over_30": 10
+    }
+  },
+  "yamagata": {
+    "avg_age": 27.0,
+    "squad_value_eur_m": 9.0,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 20,
+      "12-24m": 6,
+      "24m+": 3,
+      "unknown": 2
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "16190",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 8,
+      "age_27_29": 8,
+      "over_30": 7
+    }
+  },
+  "iwaki": {
+    "avg_age": 23.8,
+    "squad_value_eur_m": 4.1,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 1,
+      "24m+": 13,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "53668",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 14,
+      "age_24_26": 6,
+      "age_27_29": 5,
+      "over_30": 1
+    }
+  },
+  "mito": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 9.7,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 7,
+      "24m+": 7,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "21975",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 9,
+      "over_30": 5
+    }
+  },
+  "tochigi-sc": {
+    "avg_age": 26.4,
+    "squad_value_eur_m": 1.7,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 10,
+      "12-24m": 7,
+      "24m+": 2,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22179",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 12,
+      "age_24_26": 10,
+      "age_27_29": 2,
+      "over_30": 5
+    }
+  },
+  "gunma": {
+    "avg_age": 28.9,
+    "squad_value_eur_m": null,
+    "squad_size": 15,
+    "contract_expiry": null,
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "39352",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 1,
+      "age_24_26": 3,
+      "age_27_29": 6,
+      "over_30": 4
+    }
+  },
+  "chiba": {
+    "avg_age": 27.6,
+    "squad_value_eur_m": 11.9,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 22,
+      "12-24m": 4,
+      "24m+": 1,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "672",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 9,
+      "age_27_29": 6,
+      "over_30": 12
+    }
+  },
+  "yokohama-fc": {
+    "avg_age": 26.1,
+    "squad_value_eur_m": 6.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 7,
+      "24m+": 5,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "943",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 9,
+      "age_24_26": 7,
+      "age_27_29": 5,
+      "over_30": 5
+    }
+  },
+  "kofu": {
+    "avg_age": 27.4,
+    "squad_value_eur_m": 4.7,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 22,
+      "12-24m": 4,
+      "24m+": 2,
+      "unknown": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "10999",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 10,
+      "age_24_26": 9,
+      "age_27_29": 5,
+      "over_30": 8
+    }
+  },
+  "shimizu": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 12.9,
+    "squad_size": 37,
+    "contract_expiry": {
+      "0-12m": 14,
+      "12-24m": 5,
+      "24m+": 6,
+      "unknown": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "1062",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 6,
+      "age_24_26": 4,
+      "age_27_29": 11,
+      "over_30": 8
+    }
+  },
+  "fujeda": {
+    "avg_age": 25.7,
+    "squad_value_eur_m": 5.2,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 7,
+      "24m+": 5,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "25716",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 8,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 6
+    }
+  },
+  "okayama": {
+    "avg_age": 26.5,
+    "squad_value_eur_m": 11.2,
+    "squad_size": 36,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 4,
+      "24m+": 3,
+      "unknown": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22171",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 5,
+      "age_24_26": 9,
+      "age_27_29": 8,
+      "over_30": 8
+    }
+  },
+  "yamaguchi": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 4.4,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 21,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "28730",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 4,
+      "age_24_26": 11,
+      "age_27_29": 7,
+      "over_30": 10
+    }
+  },
+  "tokushima": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 8.4,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 5,
+      "24m+": 2,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "17832",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 3,
+      "age_24_26": 11,
+      "age_27_29": 6,
+      "over_30": 7
+    }
+  },
+  "ehime": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 4.5,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 6,
+      "12-24m": 14,
+      "24m+": 0,
+      "unknown": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "20682",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 7,
+      "age_24_26": 8,
+      "age_27_29": 9,
+      "over_30": 3
+    }
+  },
+  "nagasaki": {
+    "avg_age": 28.5,
+    "squad_value_eur_m": 14.9,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 6,
+      "24m+": 5,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23581",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 5,
+      "age_24_26": 6,
+      "age_27_29": 9,
+      "over_30": 12
+    }
+  },
+  "kumamoto": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 3.7,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 6,
+      "24m+": 5,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22175",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 13,
+      "age_24_26": 7,
+      "age_27_29": 3,
+      "over_30": 5
+    }
+  },
+  "oita": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": 4.3,
+    "squad_size": 34,
+    "contract_expiry": {
+      "0-12m": 20,
+      "12-24m": 2,
+      "24m+": 5,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "3935",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 11,
+      "age_24_26": 9,
+      "age_27_29": 3,
+      "over_30": 8
+    }
+  },
+  "kagoshima": {
+    "avg_age": 26.8,
+    "squad_value_eur_m": 1.2,
+    "squad_size": 25,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 3
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "42629",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 7,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "hachinohe": {
+    "avg_age": 26.7,
+    "squad_value_eur_m": 0.8,
+    "squad_size": 27,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 1,
+      "24m+": 3,
+      "unknown": 7
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "35000",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 5,
+      "age_24_26": 8,
+      "age_27_29": 7,
+      "over_30": 5
+    }
+  },
+  "iwate-grulla": {
+    "avg_age": 26.3,
+    "squad_value_eur_m": null,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 0,
+      "12-24m": 13,
+      "24m+": 0,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "16005",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 3
+    }
+  },
+  "fukushima-utd": {
+    "avg_age": 27.2,
+    "squad_value_eur_m": 0.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 4,
+      "24m+": 3,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "28753",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 8,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 6
+    }
+  },
+  "omiya": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 9.4,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 2,
+      "24m+": 2,
+      "unknown": 13
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "7452",
+    "age_bands": {
+      "under_21": 8,
+      "age_21_23": 8,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "ys-yokohama": {
+    "avg_age": 24.7,
+    "squad_value_eur_m": null,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 3,
+      "12-24m": 20,
+      "24m+": 0,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "34177",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 15,
+      "age_24_26": 11,
+      "age_27_29": 2,
+      "over_30": 2
+    }
+  },
+  "sagamihara": {
+    "avg_age": 28.0,
+    "squad_value_eur_m": 0.6,
+    "squad_size": 23,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 3,
+      "24m+": 2,
+      "unknown": 5
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23548",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 6,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 6
+    }
+  },
+  "matsumoto": {
+    "avg_age": 25.4,
+    "squad_value_eur_m": 1.2,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 12,
+      "12-24m": 2,
+      "24m+": 5,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "25765",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 10,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 3
+    }
+  },
+  "nagano": {
+    "avg_age": 27.0,
+    "squad_value_eur_m": 0.5,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 3,
+      "24m+": 4,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "25738",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 10,
+      "age_24_26": 4,
+      "age_27_29": 12,
+      "over_30": 5
+    }
+  },
+  "toyama": {
+    "avg_age": 27.3,
+    "squad_value_eur_m": 5.0,
+    "squad_size": 35,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 7,
+      "24m+": 1,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "22173",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 10,
+      "age_24_26": 12,
+      "age_27_29": 4,
+      "over_30": 8
+    }
+  },
+  "kanazawa": {
+    "avg_age": 28.6,
+    "squad_value_eur_m": 0.3,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 20,
+      "12-24m": 4,
+      "24m+": 1,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "24321",
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 8,
+      "age_24_26": 5,
+      "age_27_29": 6,
+      "over_30": 12
+    }
+  },
+  "numazu": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": null,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 7,
+      "12-24m": 19,
+      "24m+": 0,
+      "unknown": 4
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "42628",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 11,
+      "age_24_26": 8,
+      "age_27_29": 4,
+      "over_30": 5
+    }
+  },
+  "fc-gifu": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 0.8,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 15,
+      "12-24m": 4,
+      "24m+": 3,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "13600",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 6,
+      "age_24_26": 8,
+      "age_27_29": 5,
+      "over_30": 9
+    }
+  },
+  "fc-osaka": {
+    "avg_age": 25.8,
+    "squad_value_eur_m": 0.6,
+    "squad_size": 42,
+    "contract_expiry": {
+      "0-12m": 24,
+      "12-24m": 2,
+      "24m+": 5,
+      "unknown": 11
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "29172",
+    "age_bands": {
+      "under_21": 7,
+      "age_21_23": 8,
+      "age_24_26": 14,
+      "age_27_29": 5,
+      "over_30": 8
+    }
+  },
+  "nara": {
+    "avg_age": 25.3,
+    "squad_value_eur_m": 0.3,
+    "squad_size": 30,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 5,
+      "24m+": 4,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "34997",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 8,
+      "age_24_26": 6,
+      "age_27_29": 6,
+      "over_30": 5
+    }
+  },
+  "tottori": {
+    "avg_age": 24.5,
+    "squad_value_eur_m": 0.9,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 13,
+      "12-24m": 2,
+      "24m+": 6,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "20805",
+    "age_bands": {
+      "under_21": 3,
+      "age_21_23": 12,
+      "age_24_26": 11,
+      "age_27_29": 3,
+      "over_30": 2
+    }
+  },
+  "imabari": {
+    "avg_age": 25.9,
+    "squad_value_eur_m": 5.9,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 3,
+      "24m+": 6,
+      "unknown": 6
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "37689",
+    "age_bands": {
+      "under_21": 6,
+      "age_21_23": 7,
+      "age_24_26": 5,
+      "age_27_29": 7,
+      "over_30": 6
+    }
+  },
+  "kitakyushu": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 0.9,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 18,
+      "12-24m": 0,
+      "24m+": 5,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23575",
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 6,
+      "age_24_26": 9,
+      "age_27_29": 4,
+      "over_30": 7
+    }
+  },
+  "miyazaki": {
+    "avg_age": 25.1,
+    "squad_value_eur_m": 0.8,
+    "squad_size": 33,
+    "contract_expiry": {
+      "0-12m": 17,
+      "12-24m": 3,
+      "24m+": 5,
+      "unknown": 8
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "50673",
+    "age_bands": {
+      "under_21": 4,
+      "age_21_23": 9,
+      "age_24_26": 10,
+      "age_27_29": 7,
+      "over_30": 3
+    }
+  },
+  "ryukyu": {
+    "avg_age": 27.1,
+    "squad_value_eur_m": 1.0,
+    "squad_size": 31,
+    "contract_expiry": {
+      "0-12m": 16,
+      "12-24m": 4,
+      "24m+": 2,
+      "unknown": 9
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "23569",
+    "age_bands": {
+      "under_21": 1,
+      "age_21_23": 6,
+      "age_24_26": 10,
+      "age_27_29": 8,
+      "over_30": 6
+    }
+  },
+  "tochigi-city": {
+    "avg_age": 29.1,
+    "squad_value_eur_m": 2.6,
+    "squad_size": 32,
+    "contract_expiry": {
+      "0-12m": 20,
+      "12-24m": 1,
+      "24m+": 1,
+      "unknown": 10
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "29307",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 2,
+      "age_24_26": 4,
+      "age_27_29": 11,
+      "over_30": 13
+    }
+  },
+  "kochi": {
+    "avg_age": 26.2,
+    "squad_value_eur_m": 0.6,
+    "squad_size": 29,
+    "contract_expiry": {
+      "0-12m": 11,
+      "12-24m": 3,
+      "24m+": 3,
+      "unknown": 12
+    },
+    "transfer_activity": [],
+    "league_positions": [],
+    "data_as_of": "2026-05-04",
+    "tm_id": "55744",
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 10,
+      "age_27_29": 9,
+      "over_30": 2
+    }
+  }
+}
