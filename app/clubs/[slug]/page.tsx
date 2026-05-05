@@ -13,6 +13,7 @@ import FinancialsSection from "@/components/FinancialsSection";
 import { squadProfiles, type SquadProfile } from "@/lib/squadProfile";
 import { stadiumData } from "@/lib/stadiumData";
 import ClubCompareTab, { type DivisionPeer, type PriorYearSnap, type H2HPeer } from "@/components/ClubCompareTab";
+import SummaryTab from "@/components/SummaryTab";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -611,6 +612,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       <ClubProfileTabs
         tabs={[
+          ...(slug === "arsenal" ? [{
+            key: "summary",
+            label: "Summary",
+            labelFull: "Club Summary",
+            content: <SummaryTab club={club} />,
+          }] : []),
           {
             key: "financials",
             label: "Financials",
