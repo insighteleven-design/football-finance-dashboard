@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ClubFinancials, Division } from "@/lib/clubs";
 import { EUClub, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
@@ -261,6 +261,15 @@ function ClubsView({
   japanClubs: JapanClub[];
   onBack: () => void;
 }) {
+  const [hasAccess, setHasAccess] = useState(false);
+  useEffect(() => {
+    const val = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith("intelligence_access="))
+      ?.split("=")[1];
+    if (val) setHasAccess(true);
+  }, []);
+
   type ClubRow = { name: string; slug: string; revenue: number | null };
   let clubList: ClubRow[];
 
@@ -281,9 +290,8 @@ function ClubsView({
       .map((c) => ({ name: c.name, slug: c.slug, revenue: c.financials.revenue }));
   }
 
-  // Only Premier League clubs are freely accessible.
-  // Middleware handles the actual gate; the lock icon is a visual premium signal.
   const isFreeLeague = country === "England" && leagueKey === "premier-league";
+  const showUnlocked = isFreeLeague || hasAccess;
 
   return (
     <div>
@@ -310,14 +318,14 @@ function ClubsView({
           <p
             className="font-serif font-light leading-none transition-colors"
             style={{
-              color: isFreeLeague ? "#ffffff" : "#555555",
+              color: showUnlocked ? "#ffffff" : "#555555",
               fontSize: "clamp(18px, 3vw, 32px)",
               letterSpacing: "-0.02em",
             }}
           >
             {club.name}
           </p>
-          {isFreeLeague ? (
+          {showUnlocked ? (
             <span
               className="shrink-0 ml-4 group-hover:text-[#666666] transition-colors"
               style={{ color: "#777777", fontSize: "1.1rem" }}

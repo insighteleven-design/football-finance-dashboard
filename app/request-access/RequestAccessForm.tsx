@@ -93,9 +93,8 @@ export default function RequestAccessForm({ from }: { from: string }) {
         return;
       }
 
-      // Code accepted — navigate to the page they originally requested
-      router.push(from);
-      router.refresh();
+      // Code accepted — hard redirect so middleware re-evaluates the new cookie
+      window.location.href = from;
     } catch {
       setCodeError("Something went wrong — please try again.");
       setCodeStatus("error");
