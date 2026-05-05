@@ -21,8 +21,8 @@ interface Props {
   series: RadarSeries[];
 }
 
-const CX       = 350;
-const CY       = 350;
+const CX       = 420;
+const CY       = 420;
 const RADIUS   = 240;
 const LABEL_R  = 306;
 const GRID_STEPS = 5;
@@ -109,8 +109,8 @@ function AxisLabel({ axis, index, total }: { axis: RadarAxis; index: number; tot
 
 export default function RadarChart({ axes, series }: Props) {
   const n     = axes.length;
-  const viewW = 700;
-  const viewH = 700;
+  const viewW = 840;
+  const viewH = 840;
 
   const sortedPops = axes.map((axis) => [...axis.population].sort((a, b) => a - b));
 
@@ -121,7 +121,7 @@ export default function RadarChart({ axes, series }: Props) {
   );
 
   return (
-    <div style={{ width: "100%", maxWidth: "720px", margin: "0 auto" }}>
+    <div style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}>
       <svg
         viewBox={`0 0 ${viewW} ${viewH}`}
         style={{ width: "100%", height: "auto", display: "block" }}
