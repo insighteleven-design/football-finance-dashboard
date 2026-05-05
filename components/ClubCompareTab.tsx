@@ -216,7 +216,7 @@ function InlineRanking({
   if (sorted.length === 0) return null;
 
   return (
-    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", marginTop: "-1px" }}>
+    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", marginTop: "-1px", border: "1px solid #bbbbbb", borderTop: "none" }}>
       {note && <p style={{ fontSize: "10px", color: "#aaaaaa", margin: "0 0 10px 0" }}>{note}</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {displayed.map((d, listIdx) => {
@@ -350,7 +350,7 @@ function ScoreCard({
 
         {/* Right — ranking */}
         <div style={{
-          width: "100px", flexShrink: 0, padding: "22px 14px 18px",
+          width: "120px", flexShrink: 0, padding: "22px 14px 18px",
           background: rBg, display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center", gap: "4px",
         }}>
@@ -362,8 +362,9 @@ function ScoreCard({
             League<br />ranking
           </p>
           <p style={{
-            fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700,
+            fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700,
             color: rColor, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: 0,
+            whiteSpace: "nowrap",
           }}>
             {rank !== null ? ordinal(rank) : "—"}
           </p>
