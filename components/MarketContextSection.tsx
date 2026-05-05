@@ -152,15 +152,12 @@ export default function MarketContextSection({
       ? Math.round((sd.attendance_pct - leagueAvgFill) * 10) / 10
       : null;
 
-  // Stadium utilisation label
-  const utilisation =
-    sd?.attendance_pct != null
-      ? sd.attendance_pct < 70
-        ? { label: "High headroom",    color: C_GREEN, bg: "#f0faf4" }
-        : sd.attendance_pct < 85
-        ? { label: "Moderate headroom", color: C_AMBER, bg: "#fdf8f0" }
-        : { label: "Near capacity",     color: C_GREEN, bg: "#f0faf4" }
-      : null;
+  // Stadium utilisation card colour: ≥85% green, 60–85% amber, <60% red
+  const utilColour =
+    sd?.attendance_pct == null ? null
+    : sd.attendance_pct >= 85  ? { signal: SIG_GREEN, bg: SIG_BG[SIG_GREEN] }
+    : sd.attendance_pct >= 60  ? { signal: SIG_AMBER, bg: SIG_BG[SIG_AMBER] }
+    :                            { signal: SIG_RED,   bg: SIG_BG[SIG_RED]   };
 
   const hasStadium = sd != null && (sd.stadium_name != null || sd.capacity != null);
 
@@ -244,15 +241,24 @@ export default function MarketContextSection({
               </SourceNote>
             </div>
 
-            {/* Row 2 — Attendance Rate (hidden if no capacity; "Data unavailable" if no avg) */}
+            {/* Row 2 — Stadium Utilisation (hidden if no capacity; colour-coded by fill %) */}
             {sd?.capacity != null && (
-              <div className="px-4 sm:px-6 py-5 border-t border-[#e0e0e0]">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-2">
-                  Attendance Rate
+              <div
+                className="px-4 sm:px-6 py-5 border-t border-[#e0e0e0]"
+                style={utilColour ? { borderLeft: `4px solid ${utilColour.signal}`, background: utilColour.bg } : undefined}
+              >
+                <p
+                  className="text-base font-semibold tracking-[0.04em] uppercase mb-2"
+                  style={{ color: utilColour?.signal ?? "#555555" }}
+                >
+                  Stadium Utilisation
                 </p>
                 {sd?.attendance_pct != null ? (
                   <>
-                    <p className="text-3xl sm:text-5xl font-medium tabular-nums text-[#111111]">
+                    <p
+                      className="text-3xl sm:text-5xl font-medium tabular-nums"
+                      style={{ color: utilColour?.signal ?? "#111111" }}
+                    >
                       {sd.attendance_pct.toFixed(1)}%
                     </p>
                     {fillDeltaPp !== null && (
@@ -277,27 +283,6 @@ export default function MarketContextSection({
             )}
 
           </div>
-
-          {/* Stadium Utilisation insight row */}
-          {utilisation && (
-            <div className="mt-3 border border-[#e0e0e0] px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <p className="text-xs font-semibold tracking-[0.12em] uppercase text-[#aaaaaa]">
-                  Stadium Utilisation
-                </p>
-                <span
-                  className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                  style={{ color: utilisation.color, background: utilisation.bg }}
-                >
-                  {utilisation.label}
-                </span>
-              </div>
-              <p className="text-sm font-medium tabular-nums text-[#111111]">
-                {sd!.attendance_pct!.toFixed(1)}%
-              </p>
-            </div>
-          )}
-
         </div>
       )}
 
