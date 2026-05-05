@@ -221,6 +221,25 @@ function LeaguesView({
   );
 }
 
+// ─── Lock icon ────────────────────────────────────────────────────────────────
+
+function LockIcon() {
+  return (
+    <svg
+      width="14" height="14" viewBox="0 0 14 14" fill="none"
+      aria-hidden="true"
+      style={{ display: "block", flexShrink: 0 }}
+    >
+      <rect x="2" y="6.5" width="10" height="6.5" rx="1.2" fill="currentColor" opacity="0.45" />
+      <path
+        d="M4.5 6.5V4.5a2.5 2.5 0 0 1 5 0v2"
+        stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"
+        fill="none" opacity="0.45"
+      />
+    </svg>
+  );
+}
+
 // ─── Level 3: Clubs ───────────────────────────────────────────────────────────
 
 function ClubsView({
@@ -262,6 +281,10 @@ function ClubsView({
       .map((c) => ({ name: c.name, slug: c.slug, revenue: c.financials.revenue }));
   }
 
+  // Only Premier League clubs are freely accessible.
+  // Middleware handles the actual gate; the lock icon is a visual premium signal.
+  const isFreeLeague = country === "England" && leagueKey === "premier-league";
+
   return (
     <div>
       <BackButton label={country} onClick={onBack} />
@@ -285,17 +308,27 @@ function ClubsView({
           }}
         >
           <p
-            className="font-serif font-light leading-none group-hover:text-[#cccccc] transition-colors"
-            style={{ color: "#ffffff", fontSize: "clamp(18px, 3vw, 32px)", letterSpacing: "-0.02em" }}
+            className="font-serif font-light leading-none transition-colors"
+            style={{
+              color: isFreeLeague ? "#ffffff" : "#555555",
+              fontSize: "clamp(18px, 3vw, 32px)",
+              letterSpacing: "-0.02em",
+            }}
           >
             {club.name}
           </p>
-          <span
-            className="shrink-0 ml-4 group-hover:text-[#666666] transition-colors"
-            style={{ color: "#777777", fontSize: "1.1rem" }}
-          >
-            →
-          </span>
+          {isFreeLeague ? (
+            <span
+              className="shrink-0 ml-4 group-hover:text-[#666666] transition-colors"
+              style={{ color: "#777777", fontSize: "1.1rem" }}
+            >
+              →
+            </span>
+          ) : (
+            <span className="shrink-0 ml-4" style={{ color: "#3a3a3a" }}>
+              <LockIcon />
+            </span>
+          )}
         </Link>
       ))}
     </div>
