@@ -216,7 +216,7 @@ function InlineRanking({
   if (sorted.length === 0) return null;
 
   return (
-    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", marginTop: "-1px", border: "1px solid #bbbbbb", borderTop: "none" }}>
+    <div className="px-3 py-3 sm:px-5 sm:pt-4 sm:pb-3.5" style={{ background: "#f9f9f9", marginTop: "-1px", border: "1px solid #bbbbbb", borderTop: "none" }}>
       {note && <p style={{ fontSize: "10px", color: "#aaaaaa", margin: "0 0 10px 0" }}>{note}</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {displayed.map((d, listIdx) => {
@@ -227,34 +227,25 @@ function InlineRanking({
           return (
             <div key={d.slug}>
               {showDvdr && <div style={{ borderTop: "1px dashed #e0e0e0", marginBottom: "8px" }} />}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{
-                  fontSize: "11px", fontWeight: 700, color: "#cccccc",
-                  width: "22px", flexShrink: 0, textAlign: "right", fontVariantNumeric: "tabular-nums",
-                }}>
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="font-bold text-[#cccccc] w-[14px] sm:w-[22px] flex-shrink-0 text-right tabular-nums text-[10px] sm:text-[11px]">
                   {rankPos}
                 </span>
-                <span style={{
-                  fontSize: "13px", fontWeight: isHL ? 700 : 400,
-                  color: isHL ? HIGHLIGHT : "#444444",
-                  flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                }}>
+                <span
+                  className="flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] sm:text-[13px]"
+                  style={{ fontWeight: isHL ? 700 : 400, color: isHL ? HIGHLIGHT : "#444444" }}
+                >
                   {d.name}
                 </span>
-                <div style={{ width: "40px", flexShrink: 0 }}>
-                  <div style={{ height: "5px", background: "#e8e8e8", borderRadius: "2px", overflow: "hidden" }}>
-                    <div style={{
-                      height: "100%", width: `${barPct}%`,
-                      background: isHL ? HIGHLIGHT : "#cccccc", borderRadius: "2px",
-                    }} />
+                <div className="w-5 sm:w-10 flex-shrink-0">
+                  <div className="h-[4px] sm:h-[5px] bg-[#e8e8e8] rounded-sm overflow-hidden">
+                    <div style={{ height: "100%", width: `${barPct}%`, background: isHL ? HIGHLIGHT : "#cccccc", borderRadius: "2px" }} />
                   </div>
                 </div>
-                <span style={{
-                  fontSize: "12px", fontWeight: isHL ? 700 : 400,
-                  color: isHL ? HIGHLIGHT : "#777777",
-                  fontVariantNumeric: "tabular-nums",
-                  width: "56px", textAlign: "right", flexShrink: 0,
-                }}>
+                <span
+                  className="tabular-nums text-right flex-shrink-0 text-[11px] sm:text-[12px] w-[44px] sm:w-[56px]"
+                  style={{ fontWeight: isHL ? 700 : 400, color: isHL ? HIGHLIGHT : "#777777" }}
+                >
                   {d.value !== null ? formatFn(d.value) : "—"}
                 </span>
               </div>
@@ -304,78 +295,72 @@ function ScoreCard({
       tabIndex={0}
       onClick={onToggle}
       onKeyDown={e => { if (e.key === "Enter" || e.key === " ") onToggle(); }}
-      style={{
-        border: `1px solid ${expanded ? "#bbbbbb" : "#eeeeee"}`,
-        background: "white", display: "flex", flexDirection: "column",
-        overflow: "hidden", cursor: "pointer", userSelect: "none",
-      }}
+      className="flex flex-col overflow-hidden cursor-pointer select-none"
+      style={{ border: `1px solid ${expanded ? "#bbbbbb" : "#eeeeee"}`, background: "white" }}
     >
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Left — metric */}
-        <div style={{ flex: 1, minWidth: 0, padding: "28px 20px 24px" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "4px", marginBottom: "10px" }}>
-            <p style={{
-              fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
-              textTransform: "uppercase", color: "#888888", margin: 0,
-            }}>
+      {/* Body: stacked on mobile, side-by-side on sm+ */}
+      <div className="flex flex-col sm:flex-row flex-1">
+
+        {/* Metric section */}
+        <div className="flex-1 min-w-0 px-4 py-5 sm:px-5 sm:pt-7 sm:pb-6">
+          <div className="flex items-start justify-between gap-1 mb-2.5">
+            <p className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#888888] m-0 leading-tight">
               {label}
             </p>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-              style={{ flexShrink: 0, transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.18s", marginTop: "2px" }}
+              className="flex-shrink-0 mt-0.5"
+              style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.18s" }}
             >
               <path d="M2 4.5L6 8L10 4.5" stroke="#cccccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <p style={{
-            fontSize: "clamp(28px, 4.5vw, 42px)", fontWeight: 700,
-            color: "#111111", fontVariantNumeric: "tabular-nums",
-            lineHeight: 1, margin: "0 0 8px 0",
-          }}>
+          <p className="font-bold tabular-nums leading-none mb-2 text-[#111111]"
+             style={{ fontSize: "clamp(22px, 5vw, 42px)" }}>
             {value}
           </p>
           {yoyStr !== null ? (
-            <p style={{ fontSize: "12px", fontWeight: 600, color: yoyColor, margin: 0, lineHeight: 1.4 }}>
+            <p className="text-[11px] sm:text-[12px] font-semibold m-0 leading-snug" style={{ color: yoyColor }}>
               {yoyStr} vs prior year
             </p>
           ) : (
-            <p style={{ fontSize: "12px", color: "#dddddd", margin: 0 }}>—</p>
+            <p className="text-[11px] sm:text-[12px] text-[#dddddd] m-0">—</p>
           )}
           {note && (
-            <p style={{ fontSize: "10px", color: "#bbbbbb", margin: "5px 0 0 0" }}>{note}</p>
+            <p className="text-[10px] text-[#bbbbbb] m-0 mt-1">{note}</p>
           )}
         </div>
 
-        {/* Divider */}
-        <div style={{ width: "1px", background: "#eeeeee", flexShrink: 0 }} />
+        {/* Vertical divider — sm+ only */}
+        <div className="hidden sm:block w-px bg-[#eeeeee] flex-shrink-0" />
+        {/* Horizontal divider — mobile only */}
+        <div className="sm:hidden h-px bg-[#eeeeee]" />
 
-        {/* Right — ranking */}
-        <div style={{
-          width: "120px", flexShrink: 0, padding: "22px 14px 18px",
-          background: rBg, display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center", gap: "4px",
-        }}>
-          <p style={{
-            fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em",
-            textTransform: "uppercase", color: rColor, opacity: 0.7,
-            margin: 0, textAlign: "center", lineHeight: 1.3,
-          }}>
-            League<br />ranking
+        {/* Ranking section: horizontal row on mobile, vertical column on sm+ */}
+        <div
+          className="flex flex-row items-center justify-between gap-2 px-4 py-3
+                     sm:flex-col sm:w-[120px] sm:flex-shrink-0 sm:px-[14px] sm:py-[22px]
+                     sm:justify-center sm:items-center sm:gap-1"
+          style={{ background: rBg }}
+        >
+          <p className="text-[9px] font-bold tracking-[0.14em] uppercase leading-tight m-0 sm:text-center"
+             style={{ color: rColor, opacity: 0.7 }}>
+            League ranking
           </p>
-          <p style={{
-            fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 700,
-            color: rColor, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: 0,
-            whiteSpace: "nowrap",
-          }}>
-            {rank !== null ? ordinal(rank) : "—"}
-          </p>
-          <p style={{ fontSize: "11px", color: rColor, opacity: 0.6, margin: 0 }}>
-            of {total}
-          </p>
+          {/* rank + "of N" — inline on mobile, stacked on sm+ */}
+          <div className="flex items-baseline gap-1 sm:flex-col sm:items-center sm:gap-0.5">
+            <p className="font-bold tabular-nums leading-none m-0 whitespace-nowrap"
+               style={{ fontSize: "clamp(20px, 3.5vw, 36px)", color: rColor }}>
+              {rank !== null ? ordinal(rank) : "—"}
+            </p>
+            <p className="text-[11px] m-0" style={{ color: rColor, opacity: 0.6 }}>
+              of {total}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Bottom accent bar */}
-      <div style={{ height: "3px", background: rColor, opacity: rank !== null ? 1 : 0.15 }} />
+      <div className="h-[3px]" style={{ background: rColor, opacity: rank !== null ? 1 : 0.15 }} />
     </div>
   );
 }
