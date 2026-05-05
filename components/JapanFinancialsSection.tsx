@@ -1,10 +1,19 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import type { JapanClub } from "@/lib/japanClubs";
 import { fmtJpy, J_DIVISION_LABELS } from "@/lib/japanClubs";
-import type { JapanClubDeepDive } from "@/lib/japanDeepDive";
-import JapanRevenueBreakdownSection from "./JapanRevenueBreakdownSection";
+
+// ─── Signal colours + tints ───────────────────────────────────────────────────
+const GREEN = "#2e7d52";
+const RED   = "#9a3030";
+const AMBER = "#c47900";
+
+const SIGNAL_BG: Record<string, string> = {
+  [GREEN]: "#f2fbf5",
+  [RED]:   "#fdf3f3",
+  [AMBER]: "#fdfaf0",
+};
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -21,25 +30,6 @@ type Snap = {
 type YearSnap = { label: string; snap: Snap };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function divStats(snaps: Snap[], key: keyof Snap) {
-  const vals = snaps.map((s) => s[key]).filter((v): v is number => v !== null);
-  if (!vals.length) return null;
-  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
-  const sorted = [...vals].sort((a, b) => b - a);
-  return { avg, maxAbs, sorted, count: vals.length };
-}
-
-function vsColor(value: number, avg: number, higherBetter: boolean | null): string {
-  if (higherBetter === null) return "#aaaaaa";
-  return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
-}
-
-function calcPct(curr: number | null, prior: number | null): number | null {
-  if (curr === null || prior === null || prior === 0) return null;
-  return ((curr - prior) / Math.abs(prior)) * 100;
-}
 
 function fyLabel(s: string) {
   return new Date(s).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
@@ -61,40 +51,170 @@ function snapFromPrior(py: NonNullable<JapanClub["prior_year"]>): Snap {
   };
 }
 
-// ─── Bar primitives ───────────────────────────────────────────────────────────
+// ─── Signal helpers ───────────────────────────────────────────────────────────
 
-function StdBar({ pct, color }: { pct: number; color: string }) {
+function wageSignal(ratio: number | null): string {
+  if (ratio === null) return "#cccccc";
+  return ratio < 55 ? GREEN : ratio < 70 ? AMBER : RED;
+}
+function profitSignal(v: number | null): string {
+  if (v === null) return "#cccccc";
+  return v >= 0 ? GREEN : RED;
+}
+function debtDotSignal(v: number | null): string {
+  if (v === null) return "#cccccc";
+  return v <= 0 ? GREEN : RED;
+}
+function debtCardSignal(current: number | null, prior: number | null): string {
+  if (current === null) return "#cccccc";
+  if (current <= 0) return GREEN;
+  if (prior !== null && prior > 0) {
+    const growth = (current - prior) / Math.abs(prior);
+    if (growth <= 0) return GREEN;
+    if (growth <= 0.15) return AMBER;
+  }
+  return RED;
+}
+
+// ─── Subtext helpers ─────────────────────────────────────────────────────────
+
+function wageSubtext(current: number | null, prior: number | null): string {
+  if (current === null) return "";
+  const dir = prior === null ? "" : current < prior ? "Improving" : current > prior ? "Worsening" : "Stable";
+  const pos = current < 55 ? "well below 55% threshold" : current < 70 ? "above 55% threshold" : "exceeds 70%";
+  return dir ? `${dir} · ${pos}` : pos;
+}
+function profitSubtext(current: number | null, prior: number | null): string {
+  if (current === null) return "";
+  if (current >= 0) return prior !== null && current > prior ? "Operating profit growing" : "Operating profit";
+  if (prior !== null && prior < 0) return current < prior ? "Operating loss widening" : "Operating loss narrowing";
+  return prior !== null && prior >= 0 ? "Moved to operating loss" : "Operating loss";
+}
+function debtSubtext(current: number | null, prior: number | null): string {
+  if (current === null) return "";
+  if (current <= 0) return "Net cash position";
+  if (prior === null || prior <= 0) return `Net debt: $${Math.abs(current).toFixed(1)}m`;
+  const diff = current - prior;
+  return `Growing · ${diff > 0 ? "up" : "down"} $${Math.abs(diff).toFixed(1)}m YoY`;
+}
+
+// ─── Sparkline ────────────────────────────────────────────────────────────────
+function Sparkline({ values, higherBetter }: { values: (number | null)[]; higherBetter: boolean | null }) {
+  const nonNull = values
+    .map((v, i): { v: number; i: number } | null => v !== null ? { v, i } : null)
+    .filter((x): x is { v: number; i: number } => x !== null);
+
+  if (nonNull.length < 2) return <div style={{ height: "26px" }} />;
+
+  const first = nonNull[0].v;
+  const last  = nonNull[nonNull.length - 1].v;
+  const trendUp   = last > first;
+  const trendDown = last < first;
+
+  let stroke = "#cccccc";
+  if (trendUp || trendDown) {
+    if (higherBetter === true)  stroke = trendUp  ? GREEN : RED;
+    if (higherBetter === false) stroke = trendDown ? GREEN : RED;
+    if (higherBetter === null)  stroke = trendUp  ? GREEN : "#cccccc";
+  }
+
+  const vals = nonNull.map(x => x.v);
+  const minV = Math.min(...vals);
+  const maxV = Math.max(...vals);
+  const range = maxV - minV;
+
+  const W = 100, H = 24, PAD = 3;
+  const n = nonNull.length;
+  const xOf = (pos: number) => (pos / (n - 1)) * W;
+  const yOf = (v: number) => range === 0 ? H / 2 : PAD + ((maxV - v) / range) * (H - PAD * 2);
+
+  const points = nonNull.map((x, pos) => `${xOf(pos).toFixed(1)},${yOf(x.v).toFixed(1)}`).join(" ");
+
   return (
-    <div className="flex-1 h-7 bg-[#eeeeee] overflow-hidden">
-      <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ width: "100%", height: "26px", display: "block" }}>
+      <polyline points={points} fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// ─── Section heading ──────────────────────────────────────────────────────────
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
+      color: "#111111", margin: "0 0 16px 0", paddingBottom: "10px", borderBottom: "2px solid #111111",
+    }}>
+      {children}
+    </p>
+  );
+}
+
+// ─── Tier 1: KFI card ─────────────────────────────────────────────────────────
+function HealthCard({ label, value, subtext, signal, dots }: {
+  label: string; value: string; subtext: string; signal: string; dots: string[];
+}) {
+  const bg = SIGNAL_BG[signal] ?? "white";
+  return (
+    <div style={{
+      borderTop: "1px solid #eeeeee", borderRight: "1px solid #eeeeee",
+      borderBottom: "1px solid #eeeeee", borderLeft: `4px solid ${signal}`,
+      padding: "28px 24px 22px", background: bg,
+    }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: signal, margin: "0 0 12px 0", opacity: 0.85 }}>
+        {label}
+      </p>
+      <p style={{ fontSize: "clamp(28px, 5vw, 38px)", fontWeight: 700, color: signal, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: "0 0 10px 0" }}>
+        {value}
+      </p>
+      <p style={{ fontSize: "14px", color: signal, margin: "0 0 18px 0", lineHeight: 1.45, opacity: 0.8 }}>
+        {subtext}
+      </p>
+      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+        {dots.map((dotColor, i) => (
+          <span key={i} style={{ width: "8px", height: "8px", borderRadius: "50%", background: dotColor, display: "inline-block", flexShrink: 0 }} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function DivBar({ value, scale, color }: { value: number; scale: number; color: string }) {
-  const pct = Math.min((Math.abs(value) / scale) * 100, 100);
-  const pos = value >= 0;
+// ─── Tier 2: Metric tile ──────────────────────────────────────────────────────
+function MetricTile({ label, value, current, prior, higherBetter, sparkValues }: {
+  label: string; value: string;
+  current: number | null; prior: number | null;
+  higherBetter: boolean | null;
+  sparkValues: (number | null)[];
+}) {
+  const pct = current !== null && prior !== null && prior !== 0
+    ? ((current - prior) / Math.abs(prior)) * 100
+    : null;
+
+  let deltaColor = "#888888";
+  if (pct !== null) {
+    if (higherBetter !== null) {
+      deltaColor = (higherBetter ? current! > prior! : current! < prior!) ? GREEN : RED;
+    } else {
+      deltaColor = pct >= 0 ? GREEN : RED;
+    }
+  }
+
   return (
-    <div className="flex-1 flex h-7">
-      <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
-        {!pos && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
-      </div>
-      <div className="w-px bg-[#e0e0e0] shrink-0" />
-      <div className="flex-1 overflow-hidden bg-[#eeeeee]">
-        {pos && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
-      </div>
+    <div style={{ border: "1px solid #eeeeee", padding: "18px 18px 14px", background: "white", display: "flex", flexDirection: "column" }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", margin: "0 0 8px 0" }}>
+        {label}
+      </p>
+      <p style={{ fontSize: "22px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", lineHeight: 1.1, margin: "0 0 4px 0" }}>
+        {value}
+      </p>
+      {pct !== null ? (
+        <p style={{ fontSize: "12px", fontWeight: 600, color: deltaColor, margin: "0 0 10px 0" }}>
+          {pct >= 0 ? "+" : ""}{pct.toFixed(1)}% YoY
+        </p>
+      ) : (
+        <div style={{ marginBottom: "10px" }} />
+      )}
+      <Sparkline values={sparkValues} higherBetter={higherBetter} />
     </div>
-  );
-}
-
-// ─── Breakdown badge ──────────────────────────────────────────────────────────
-
-function BreakdownBadge({ open }: { open: boolean }) {
-  return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium tracking-[0.08em] uppercase border transition-colors shrink-0 ${open ? "border-[#4A90D9] bg-[#EBF3FC] text-[#4A90D9]" : "border-[#e0e0e0] text-[#aaaaaa]"}`}>
-      Breakdown
-      <span className="inline-block transition-transform duration-200" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>→</span>
-    </span>
   );
 }
 
@@ -103,170 +223,18 @@ function BreakdownBadge({ open }: { open: boolean }) {
 const METRICS: {
   key: keyof Snap;
   label: string;
+  shortLabel: string;
   isRatio?: boolean;
-  diverging?: boolean;
   higherBetter: boolean | null;
-  expandable?: "revenue" | "transfer";
 }[] = [
-  { key: "revenue",                  label: "Revenue",                    higherBetter: true,  expandable: "revenue" },
-  { key: "wage_bill",                label: "Wage Bill",                  higherBetter: false },
-  { key: "wage_ratio",               label: "Wage Ratio",                 isRatio: true, higherBetter: false },
-  { key: "operating_profit",         label: "Operating Profit / (Loss)",  diverging: true, higherBetter: true },
-  { key: "profit_from_player_sales", label: "Net Transfer Cash Flow",     diverging: true, higherBetter: null, expandable: "transfer" },
-  { key: "pre_tax_profit",           label: "Pre-tax Profit / (Loss)",    diverging: true, higherBetter: true },
-  { key: "net_debt",                 label: "Net Debt (proxy)",           diverging: true, higherBetter: false },
+  { key: "revenue",                  label: "Revenue",                    shortLabel: "Revenue",       higherBetter: true },
+  { key: "wage_bill",                label: "Wage Bill",                  shortLabel: "Wages",         higherBetter: false },
+  { key: "wage_ratio",               label: "Wage Ratio",                 shortLabel: "Wage %",        isRatio: true, higherBetter: false },
+  { key: "operating_profit",         label: "Operating Profit / (Loss)",  shortLabel: "Op. Profit",    higherBetter: true },
+  { key: "profit_from_player_sales", label: "Net Transfer Cash Flow",     shortLabel: "Transfers",     higherBetter: null },
+  { key: "pre_tax_profit",           label: "Pre-tax Profit / (Loss)",    shortLabel: "Pre-tax",       higherBetter: true },
+  { key: "net_debt",                 label: "Net Debt (proxy)",           shortLabel: "Net Debt",      higherBetter: false },
 ];
-
-// ─── Transfer panel ───────────────────────────────────────────────────────────
-
-function TransferPanel({ tb }: { tb: JapanClubDeepDive["transfer_breakdown"] }) {
-  if (!tb) return null;
-  const net = tb.income !== null && tb.expenditure !== null ? Math.round((tb.income - tb.expenditure) * 100) / 100 : null;
-  const rows = [
-    { label: "Transfer Income",      value: tb.income,      color: "#4a9a6a" },
-    { label: "Transfer Expenditure", value: tb.expenditure, color: "#9a4a4a" },
-    { label: "Net",                  value: net,            color: net !== null && net >= 0 ? "#4a9a6a" : "#9a4a4a" },
-  ];
-  return (
-    <div className="space-y-2">
-      {rows.map((r) => (
-        <div key={r.label} className="flex items-center justify-between gap-4">
-          <span className="text-sm text-[#666666] w-40 shrink-0">{r.label}</span>
-          <span className="text-sm tabular-nums font-medium" style={{ color: r.color }}>
-            {r.value !== null ? `$${Math.abs(r.value).toFixed(1)}m${r.value < 0 ? " (net cost)" : ""}` : "—"}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ─── Single-year metrics grid ─────────────────────────────────────────────────
-
-function MetricsGrid({
-  data,
-  divData,
-  compareLabel,
-  breakdown,
-  totalRevenue,
-  transferBreakdown,
-}: {
-  data: Snap;
-  divData: Snap[];
-  compareLabel: string;
-  breakdown: JapanClubDeepDive["revenue_breakdown"];
-  totalRevenue: number | null;
-  transferBreakdown: JapanClubDeepDive["transfer_breakdown"];
-}) {
-  const [revOpen, setRevOpen] = useState(false);
-  const [transferOpen, setTransferOpen] = useState(false);
-
-  return (
-    <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
-      {/* Column headers — aligned with EN/EU */}
-      <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">Financial Figures</p>
-      </div>
-      <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">vs {compareLabel} Average</p>
-      </div>
-
-      {METRICS.map((m) => {
-        const val = data[m.key];
-        const stats = divStats(divData, m.key);
-        const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
-        const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : 1;
-        const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-        const avgPct = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
-        const barColor = val !== null && stats ? vsColor(val, stats.avg, m.higherBetter) : "#cccccc";
-        const isRev = m.expandable === "revenue";
-        const isTransfer = m.expandable === "transfer";
-        const canExpand = (isRev && breakdown != null) || (isTransfer && transferBreakdown != null);
-        const toggleExpand = canExpand
-          ? () => { if (isRev) setRevOpen((o) => !o); else setTransferOpen((o) => !o); }
-          : undefined;
-        const expandOpen = isRev ? revOpen : isTransfer ? transferOpen : false;
-
-        return (
-          <Fragment key={m.key as string}>
-            {/* Left cell — aligned with EN/EU */}
-            <div
-              className={`px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white${toggleExpand ? " cursor-pointer hover:bg-[#fafafa] transition-colors" : ""}`}
-              onClick={toggleExpand}
-            >
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">{m.label}</p>
-                {toggleExpand && <BreakdownBadge open={expandOpen} />}
-              </div>
-              {val !== null ? (
-                <p className="text-3xl sm:text-5xl font-medium tabular-nums text-[#111111]">{fmtJpy(val, m.isRatio)}</p>
-              ) : (
-                <p className="text-3xl sm:text-5xl font-medium text-[#cccccc]">—</p>
-              )}
-              {stats && rank !== null && (
-                <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
-              )}
-            </div>
-
-            {/* Right cell — aligned with EN/EU */}
-            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-              <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">{m.label}</p>
-              <div className="mb-1">
-                <div className="flex items-center gap-2 mb-1">
-                  {m.diverging ? (
-                    <DivBar value={val ?? 0} scale={scale / 2} color={val !== null ? barColor : "#cccccc"} />
-                  ) : (
-                    <StdBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
-                  )}
-                  <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
-                    {fmtJpy(val, m.isRatio)}
-                  </span>
-                </div>
-                <p className="text-sm text-[#999999] tracking-[0.04em]">This club</p>
-              </div>
-              <div className="mt-2">
-                <div className="flex items-center gap-2 mb-1">
-                  {m.diverging && stats ? (
-                    <DivBar value={stats.avg} scale={scale / 2} color="#cccccc" />
-                  ) : (
-                    <StdBar pct={avgPct} color="#cccccc" />
-                  )}
-                  <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
-                    {stats ? fmtJpy(stats.avg, m.isRatio) : "—"}
-                  </span>
-                </div>
-                <p className="text-sm text-[#bbbbbb] tracking-[0.04em]">Division avg</p>
-              </div>
-            </div>
-
-            {isRev && (
-              <div
-                className="col-span-full border-b border-[#e0e0e0] overflow-hidden transition-all duration-300 ease-in-out"
-                style={{ maxHeight: revOpen ? "700px" : "0px" }}
-              >
-                <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">Revenue Breakdown</p>
-                  <JapanRevenueBreakdownSection breakdown={breakdown ?? null} totalRevenue={totalRevenue} />
-                </div>
-              </div>
-            )}
-            {isTransfer && (
-              <div
-                className="col-span-full border-b border-[#e0e0e0] overflow-hidden transition-all duration-300 ease-in-out"
-                style={{ maxHeight: transferOpen ? "300px" : "0px" }}
-              >
-                <div className="px-6 py-5 bg-[#fafafa] border-t border-[#e0e0e0]">
-                  <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">Transfer Breakdown</p>
-                  <TransferPanel tb={transferBreakdown ?? null} />
-                </div>
-              </div>
-            )}
-          </Fragment>
-        );
-      })}
-    </div>
-  );
-}
 
 // ─── Change badge ─────────────────────────────────────────────────────────────
 
@@ -325,16 +293,6 @@ function buildTicks(min: number, max: number): number[] {
   return ticks;
 }
 
-function fmtChartTick(v: number, isRatio?: boolean): string {
-  if (isRatio) return `${v}%`;
-  return `$${v}m`;
-}
-
-function fmtChartLabel(v: number, isRatio?: boolean): string {
-  if (isRatio) return `${v.toFixed(1)}%`;
-  return `$${v.toFixed(1)}m`;
-}
-
 function polySegments(
   years: YearSnap[],
   key: keyof Snap,
@@ -356,10 +314,7 @@ function polySegments(
 }
 
 function JapanTrendChart({
-  years,
-  leagueYears,
-  metricKey,
-  isRatio,
+  years, leagueYears, metricKey, isRatio,
 }: {
   years: YearSnap[];
   leagueYears: YearSnap[];
@@ -419,7 +374,7 @@ function JapanTrendChart({
           <g key={tick}>
             <line x1={ML} y1={y} x2={ML + PW} y2={y} stroke="#f0f0f0" strokeWidth={0.5} />
             <text x={ML - 7} y={y} textAnchor="end" dominantBaseline="middle" fontSize={11} fill="#cccccc" style={{ fontVariantNumeric: "tabular-nums" }}>
-              {fmtChartTick(tick, isRatio)}
+              {isRatio ? `${tick}%` : `$${tick}m`}
             </text>
           </g>
         );
@@ -448,7 +403,7 @@ function JapanTrendChart({
           <g key={i}>
             <circle cx={cx} cy={cy} r={2.5} fill="white" stroke="#111111" strokeWidth={1} />
             <text x={lx} y={ly} textAnchor={anchor} fontSize={11} fontWeight={400} fill="#555555" style={{ fontVariantNumeric: "tabular-nums" }}>
-              {fmtChartLabel(v, isRatio)}
+              {isRatio ? `${v.toFixed(1)}%` : `$${v.toFixed(1)}m`}
             </text>
           </g>
         );
@@ -464,7 +419,7 @@ function JapanTrendChart({
   );
 }
 
-// ─── Year-on-year section ─────────────────────────────────────────────────────
+// ─── League average snaps ─────────────────────────────────────────────────────
 
 function buildLeagueAvgSnaps(clubSnaps: YearSnap[], leagueClubs: JapanClub[]): YearSnap[] {
   const hasPrior = clubSnaps.length > 1;
@@ -490,7 +445,15 @@ function buildLeagueAvgSnaps(clubSnaps: YearSnap[], leagueClubs: JapanClub[]): Y
   });
 }
 
-function JapanYoYSection({ club, leagueClubs }: { club: JapanClub; leagueClubs: JapanClub[] }) {
+// ─── Year-on-year section ─────────────────────────────────────────────────────
+
+function JapanYoYSection({
+  club, leagueClubs, view = "all",
+}: {
+  club: JapanClub;
+  leagueClubs: JapanClub[];
+  view?: "all" | "table" | "chart";
+}) {
   const py = club.prior_year;
   if (!py) return <p className="text-sm text-[#aaaaaa] italic">No prior year data available.</p>;
 
@@ -509,6 +472,10 @@ function JapanYoYSection({ club, leagueClubs }: { club: JapanClub; leagueClubs: 
   );
 
   const [activeMetric, setActiveMetric] = useState(0);
+  const [showAllYears, setShowAllYears] = useState(false);
+
+  const showTable = view !== "chart";
+  const showChart = view !== "table";
 
   const cols = clubSnaps.map((ys, i) => ({
     label: ys.label,
@@ -516,59 +483,107 @@ function JapanYoYSection({ club, leagueClubs }: { club: JapanClub; leagueClubs: 
     isCurrent: i === clubSnaps.length - 1,
   }));
 
+  const fullTable = (
+    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
+      <thead>
+        <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+          <th style={{ textAlign: "left", padding: "10px 16px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
+            Metric
+          </th>
+          {cols.map((col, ci) => (
+            <th key={ci} style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "110px" }}>
+              {col.label}
+            </th>
+          ))}
+          <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "70px" }}>
+            Change
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {visibleMetrics.map((m, mi) => {
+          const values = cols.map((col) => col.snap[m.key] as number | null);
+          const latest      = values[values.length - 1];
+          const penultimate = values[values.length - 2] ?? null;
+          return (
+            <tr
+              key={m.key as string}
+              style={{ borderBottom: mi < visibleMetrics.length - 1 ? "1px solid #f2f2f2" : "none", background: "white", cursor: "pointer" }}
+              onClick={() => setActiveMetric(mi)}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
+            >
+              <td style={{ padding: "11px 16px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                {m.label}
+              </td>
+              {values.map((v, ci) => (
+                <td key={ci} style={{ textAlign: "right", padding: "11px 12px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                  {fmtJpy(v, m.isRatio)}
+                </td>
+              ))}
+              <td style={{ textAlign: "right", padding: "11px 12px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
+                <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+
   return (
     <div>
-      {/* ── Table ── */}
-      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
-          <thead>
-            <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "10px 16px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
-                Metric
-              </th>
-              {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "110px" }}>
-                  {col.label}
-                </th>
-              ))}
-              <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "70px" }}>
-                Change
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {visibleMetrics.map((m, mi) => {
-              const values = cols.map((col) => col.snap[m.key] as number | null);
-              const latest      = values[values.length - 1];
-              const penultimate = values[values.length - 2] ?? null;
-              return (
-                <tr
-                  key={m.key as string}
-                  style={{ borderBottom: mi < visibleMetrics.length - 1 ? "1px solid #f2f2f2" : "none", background: "white", cursor: "pointer" }}
-                  onClick={() => setActiveMetric(mi)}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
-                >
-                  <td style={{ padding: "11px 16px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
-                    {m.label}
-                  </td>
-                  {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "11px 12px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
-                      {fmtJpy(v, m.isRatio)}
+      {/* ── Mobile table ── */}
+      {showTable && <div className="sm:hidden">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa" }}>
+            Latest: {cols[cols.length - 1].label}
+          </span>
+          <button
+            onClick={() => setShowAllYears(v => !v)}
+            style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#111111", background: "none", border: "1px solid #e0e0e0", padding: "4px 10px", cursor: "pointer" }}
+          >
+            {showAllYears ? "← Back" : "All years →"}
+          </button>
+        </div>
+        {showAllYears ? (
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>{fullTable}</div>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+                <th style={{ textAlign: "left", padding: "8px 0 6px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888" }}>Metric</th>
+                <th style={{ textAlign: "right", padding: "8px 0 6px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#111111" }}>Value</th>
+                <th style={{ textAlign: "right", padding: "8px 0 6px 8px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa" }}>Chg</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleMetrics.map((m, mi) => {
+                const values = cols.map((col) => col.snap[m.key] as number | null);
+                const latest = values[values.length - 1];
+                const penultimate = values[values.length - 2] ?? null;
+                return (
+                  <tr key={m.key as string} style={{ borderBottom: mi < visibleMetrics.length - 1 ? "1px solid #f2f2f2" : "none" }}>
+                    <td style={{ padding: "9px 0", fontSize: "12px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: "#666666" }}>{m.shortLabel}</td>
+                    <td style={{ textAlign: "right", padding: "9px 0", fontSize: "14px", fontWeight: 600, color: "#111111", fontVariantNumeric: "tabular-nums" }}>{fmtJpy(latest, m.isRatio)}</td>
+                    <td style={{ textAlign: "right", padding: "9px 0 9px 8px", whiteSpace: "nowrap" }}>
+                      <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
                     </td>
-                  ))}
-                  <td style={{ textAlign: "right", padding: "11px 12px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
-                    <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>}
+
+      {/* ── Desktop table ── */}
+      {showTable && <div className="hidden sm:block" style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        {fullTable}
+      </div>}
 
       {/* ── Chart ── */}
-      <div style={{ marginTop: "28px", borderTop: "1px solid #eeeeee", paddingTop: "20px" }}>
+      {showChart && <div style={{ marginTop: showTable ? "28px" : 0, borderTop: showTable ? "1px solid #eeeeee" : "none", paddingTop: showTable ? "20px" : 0 }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "16px" }}>
           {visibleMetrics.map((m, i) => (
             <button
@@ -582,7 +597,7 @@ function JapanYoYSection({ club, leagueClubs }: { club: JapanClub; leagueClubs: 
                 color: activeMetric === i ? "white" : "#888888",
               }}
             >
-              {m.label.replace(" / (Loss)", "").replace(" (proxy)", "")}
+              {m.shortLabel}
             </button>
           ))}
         </div>
@@ -612,92 +627,141 @@ function JapanYoYSection({ club, leagueClubs }: { club: JapanClub; leagueClubs: 
           metricKey={visibleMetrics[activeMetric]?.key ?? "revenue"}
           isRatio={visibleMetrics[activeMetric]?.isRatio}
         />
-      </div>
+      </div>}
     </div>
   );
 }
 
 // ─── Exported component ───────────────────────────────────────────────────────
 
-type TabKey = "current" | "prior" | "yoy";
-
 export default function JapanFinancialsSection({
   club,
   leagueClubs,
-  deepDive,
 }: {
   club: JapanClub;
   leagueClubs: JapanClub[];
-  deepDive: JapanClubDeepDive | null;
 }) {
-  const hasPrior = club.prior_year !== null;
-  const [tab, setTab] = useState<TabKey>(hasPrior ? "yoy" : "current");
+  const py = club.prior_year;
+  const [fullView, setFullView] = useState<"table" | "chart">("table");
 
-  const TABS: { key: TabKey; label: string }[] = [
-    { key: "current", label: fyLabel(club.fiscal_year_end) },
-    ...(hasPrior ? [{ key: "prior" as TabKey, label: fyLabel(club.prior_year!.fiscal_year_end) }] : []),
-    ...(hasPrior ? [{ key: "yoy" as TabKey, label: "Year on Year" }] : []),
+  // ── Trend dots ────────────────────────────────────────────────────────────
+  const snapList = [
+    ...(py ? [{ wage_ratio: py.wage_ratio, operating_profit: py.operating_profit, net_debt: py.net_debt }] : []),
+    { wage_ratio: club.wage_ratio, operating_profit: club.operating_profit, net_debt: club.net_debt },
   ];
 
-  const currentSnap = snapFromClub(club);
+  const wageDots   = snapList.map(s => wageSignal(s.wage_ratio ?? null));
+  const profitDots = snapList.map(s => profitSignal(s.operating_profit ?? null));
+  const debtDots   = snapList.map(s => debtDotSignal(s.net_debt ?? null));
 
-  const priorSnap: Snap | null = club.prior_year ? snapFromPrior(club.prior_year) : null;
+  // ── Sparkline series (prior + current) ───────────────────────────────────
+  const revenueVals: (number | null)[] = [py?.revenue ?? null, club.revenue];
+  const wageVals:    (number | null)[] = [py?.wage_bill ?? null, club.wage_bill];
+  const playerVals:  (number | null)[] = [py?.profit_from_player_sales ?? null, club.profit_from_player_sales];
+  const pretaxVals:  (number | null)[] = [py?.pre_tax_profit ?? null, club.pre_tax_profit];
 
-  const currentDivSnaps: Snap[] = leagueClubs.map(snapFromClub);
-
-  const priorDivSnaps: Snap[] = leagueClubs
-    .filter((c) => c.prior_year !== null)
-    .map((c) => snapFromPrior(c.prior_year!));
-
+  // ── Labels ────────────────────────────────────────────────────────────────
+  const lastLabel  = fyLabel(club.fiscal_year_end);
+  const firstLabel = py ? fyLabel(py.fiscal_year_end) : lastLabel;
   const compareLabel = J_DIVISION_LABELS[club.division];
 
   return (
     <div>
-      {/* Inner tab bar — aligned with EN/EU */}
-      {(hasPrior) && (
-        <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
-          {TABS.map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              className={`px-5 sm:px-7 py-3 text-sm font-semibold tracking-[0.08em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
-                tab === key ? "border-[#111111] text-[#111111]" : "border-transparent text-[#aaaaaa] hover:text-[#555555]"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+      {/* ── TIER 1: Key Financial Indicators ─────────────────────────────────── */}
+      <div style={{ marginBottom: "36px" }}>
+        <SectionHeading>Key Financial Indicators</SectionHeading>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <HealthCard
+            label="Wage Efficiency"
+            value={club.wage_ratio !== null ? `${club.wage_ratio.toFixed(1)}%` : "—"}
+            subtext={wageSubtext(club.wage_ratio, py?.wage_ratio ?? null)}
+            signal={wageSignal(club.wage_ratio)}
+            dots={wageDots}
+          />
+          <HealthCard
+            label="Profitability"
+            value={fmtJpy(club.operating_profit)}
+            subtext={profitSubtext(club.operating_profit, py?.operating_profit ?? null)}
+            signal={profitSignal(club.operating_profit)}
+            dots={profitDots}
+          />
+          <HealthCard
+            label="Debt Position"
+            value={fmtJpy(club.net_debt)}
+            subtext={debtSubtext(club.net_debt, py?.net_debt ?? null)}
+            signal={debtCardSignal(club.net_debt, py?.net_debt ?? null)}
+            dots={debtDots}
+          />
+        </div>
+      </div>
+
+      {/* ── TIER 2: Latest Accounts ───────────────────────────────────────────── */}
+      <div style={{ marginBottom: "36px" }}>
+        <SectionHeading>Latest Accounts · {lastLabel}</SectionHeading>
+        <div className="grid grid-cols-2 gap-3">
+          <MetricTile
+            label="Revenue"
+            value={fmtJpy(club.revenue)}
+            current={club.revenue}
+            prior={py?.revenue ?? null}
+            higherBetter={true}
+            sparkValues={revenueVals}
+          />
+          <MetricTile
+            label="Wage Bill"
+            value={fmtJpy(club.wage_bill)}
+            current={club.wage_bill}
+            prior={py?.wage_bill ?? null}
+            higherBetter={false}
+            sparkValues={wageVals}
+          />
+          <MetricTile
+            label="Net Transfers"
+            value={fmtJpy(club.profit_from_player_sales)}
+            current={club.profit_from_player_sales}
+            prior={py?.profit_from_player_sales ?? null}
+            higherBetter={null}
+            sparkValues={playerVals}
+          />
+          <MetricTile
+            label="Pre-tax Profit"
+            value={fmtJpy(club.pre_tax_profit)}
+            current={club.pre_tax_profit}
+            prior={py?.pre_tax_profit ?? null}
+            higherBetter={true}
+            sparkValues={pretaxVals}
+          />
+        </div>
+      </div>
+
+      {/* ── TIER 3: Full Accounts ─────────────────────────────────────────────── */}
+      {py && (
+        <div>
+          <SectionHeading>Full Accounts · {firstLabel} – {lastLabel}</SectionHeading>
+          <div className="flex overflow-x-auto" style={{ borderBottom: "1px solid #eeeeee", marginBottom: "20px" }}>
+            {(["table", "chart"] as const).map(v => (
+              <button
+                key={v}
+                onClick={() => setFullView(v)}
+                style={{
+                  padding: "12px 24px", fontSize: "13px", fontWeight: 600,
+                  letterSpacing: "0.08em", textTransform: "uppercase", border: "none",
+                  borderBottom: fullView === v ? "2px solid #111111" : "2px solid transparent",
+                  marginBottom: "-1px", background: "none",
+                  color: fullView === v ? "#111111" : "#aaaaaa",
+                  cursor: "pointer", whiteSpace: "nowrap", minHeight: "44px", flexShrink: 0,
+                }}
+              >
+                {v === "table" ? "Table" : "Chart"}
+              </button>
+            ))}
+          </div>
+          <JapanYoYSection club={club} leagueClubs={leagueClubs} view={fullView} />
         </div>
       )}
 
-      {tab === "current" && (
-        <MetricsGrid
-          data={currentSnap}
-          divData={currentDivSnaps}
-          compareLabel={compareLabel}
-          breakdown={deepDive?.revenue_breakdown ?? null}
-          totalRevenue={club.revenue}
-          transferBreakdown={deepDive?.transfer_breakdown ?? null}
-        />
-      )}
-
-      {tab === "prior" && priorSnap && (
-        <MetricsGrid
-          data={priorSnap}
-          divData={priorDivSnaps}
-          compareLabel={compareLabel}
-          breakdown={deepDive?.revenue_breakdown_prior ?? null}
-          totalRevenue={priorSnap.revenue}
-          transferBreakdown={null}
-        />
-      )}
-
-      {tab === "yoy" && hasPrior && (
-        <JapanYoYSection club={club} leagueClubs={leagueClubs} />
-      )}
-
       <p className="text-xs text-[#bbbbbb] mt-6 leading-relaxed">
-        Figures converted from JPY millions at ¥150/$1. Net Debt shown as a proxy (Total Liabilities minus Current Assets) since individual debt instruments are not disclosed separately in J-League financial disclosures.
+        Figures converted from JPY millions at ¥150/$1. Net Debt shown as a proxy (Total Liabilities minus Current Assets) since individual debt instruments are not disclosed separately in J-League financial disclosures. Division: {compareLabel}.
       </p>
     </div>
   );

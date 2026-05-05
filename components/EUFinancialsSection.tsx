@@ -1,7 +1,18 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { EUClub } from "@/lib/euClubs";
+
+// ─── Signal colours + tints ───────────────────────────────────────────────────
+const GREEN = "#2e7d52";
+const RED   = "#9a3030";
+const AMBER = "#c47900";
+
+const SIGNAL_BG: Record<string, string> = {
+  [GREEN]: "#f2fbf5",
+  [RED]:   "#fdf3f3",
+  [AMBER]: "#fdfaf0",
+};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -14,22 +25,8 @@ function fmtCurrency(v: number | null, currency: "EUR" | "USD" | "SEK", isRatio 
   return `${v < 0 ? "-" : ""}${sym}${abs.toFixed(1)}m`;
 }
 
-type FinKey = keyof EUClub["financials"];
-
-function leagueStats(clubs: EUClub[], key: FinKey) {
-  const vals = clubs
-    .map((c) => c.financials[key])
-    .filter((v): v is number => typeof v === "number" && !isNaN(v));
-  if (!vals.length) return null;
-  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
-  const sorted = [...vals].sort((a, b) => b - a);
-  return { avg, maxAbs, sorted, count: vals.length };
-}
-
-function vsAvgColor(value: number, avg: number, higherBetter: boolean | null): string {
-  if (higherBetter === null) return "#aaaaaa";
-  return (higherBetter ? value > avg : value < avg) ? "#4a9a6a" : "#9a4a4a";
+function currSym(currency: "EUR" | "USD" | "SEK"): string {
+  return currency === "USD" ? "$" : currency === "SEK" ? "SEK " : "€";
 }
 
 function normalizeSeason(s: string | null | undefined): string {
@@ -37,47 +34,194 @@ function normalizeSeason(s: string | null | undefined): string {
   return s.replace(/\s*\(.*$/, "").replace(/^FY/, "").trim();
 }
 
-function snapStats(snaps: EUYearSnap[], key: keyof EUYearSnap) {
-  const vals = snaps
-    .map((s) => s[key] as number | null | undefined)
-    .filter((v): v is number => typeof v === "number" && !isNaN(v));
-  if (!vals.length) return null;
-  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-  const maxAbs = Math.max(...vals.map(Math.abs), 0.01);
-  const sorted = [...vals].sort((a, b) => b - a);
-  return { avg, maxAbs, sorted, count: vals.length };
+// ─── Signal helpers ───────────────────────────────────────────────────────────
+
+function wageSignal(ratio: number | null): string {
+  if (ratio === null) return "#cccccc";
+  return ratio < 55 ? GREEN : ratio < 70 ? AMBER : RED;
+}
+function profitSignal(v: number | null): string {
+  if (v === null) return "#cccccc";
+  return v >= 0 ? GREEN : RED;
+}
+function debtDotSignal(v: number | null): string {
+  if (v === null) return "#cccccc";
+  return v <= 0 ? GREEN : RED;
+}
+function debtCardSignal(current: number | null, prior: number | null): string {
+  if (current === null) return "#cccccc";
+  if (current <= 0) return GREEN;
+  if (prior !== null && prior > 0) {
+    const growth = (current - prior) / Math.abs(prior);
+    if (growth <= 0) return GREEN;
+    if (growth <= 0.15) return AMBER;
+  }
+  return RED;
+}
+function liabCardSignal(current: number | null, prior: number | null): string {
+  if (current === null || current <= 0) return "#cccccc";
+  if (prior !== null && prior > 0) {
+    const growth = (current - prior) / Math.abs(prior);
+    if (growth <= 0) return GREEN;
+    if (growth <= 0.15) return AMBER;
+    return RED;
+  }
+  return "#cccccc";
 }
 
-// ─── Bar primitives ───────────────────────────────────────────────────────────
+// ─── Subtext helpers ─────────────────────────────────────────────────────────
 
-function StandardBar({ pct, color }: { pct: number; color: string }) {
+function wageSubtext(current: number | null, prior: number | null): string {
+  if (current === null) return "";
+  const dir = prior === null ? "" : current < prior ? "Improving" : current > prior ? "Worsening" : "Stable";
+  const pos = current < 55 ? "well below 55% threshold" : current < 70 ? "above 55% threshold" : "exceeds 70%";
+  return dir ? `${dir} · ${pos}` : pos;
+}
+function profitSubtext(current: number | null, prior: number | null, isOpProfit: boolean): string {
+  if (current === null) return "";
+  const label = isOpProfit ? "Operating" : "Net";
+  if (current >= 0) return prior !== null && current > prior ? `${label} profit growing` : `${label} profit`;
+  if (prior !== null && prior < 0) return current < prior ? `${label} loss widening` : `${label} loss narrowing`;
+  return prior !== null && prior >= 0 ? `Moved to ${label.toLowerCase()} loss` : `${label} loss`;
+}
+function debtSubtext(current: number | null, prior: number | null, sym: string): string {
+  if (current === null) return "";
+  if (current <= 0) return "Net cash position";
+  if (prior === null || prior <= 0) return `Net debt: ${sym}${Math.abs(current).toFixed(1)}m`;
+  const diff = current - prior;
+  return `Growing · ${diff > 0 ? "up" : "down"} ${sym}${Math.abs(diff).toFixed(1)}m YoY`;
+}
+function liabSubtext(current: number | null, prior: number | null, sym: string): string {
+  if (current === null) return "";
+  if (prior === null) return `${sym}${Math.abs(current).toFixed(1)}m total liabilities`;
+  const diff = current - prior;
+  return `${diff > 0 ? "Rising" : diff < 0 ? "Falling" : "Stable"} · ${diff > 0 ? "up" : "down"} ${sym}${Math.abs(diff).toFixed(1)}m YoY`;
+}
+
+// ─── Sparkline ────────────────────────────────────────────────────────────────
+function Sparkline({ values, higherBetter }: { values: (number | null)[]; higherBetter: boolean | null }) {
+  const nonNull = values
+    .map((v, i): { v: number; i: number } | null => v !== null ? { v, i } : null)
+    .filter((x): x is { v: number; i: number } => x !== null);
+
+  if (nonNull.length < 2) return <div style={{ height: "26px" }} />;
+
+  const first = nonNull[0].v;
+  const last  = nonNull[nonNull.length - 1].v;
+  const trendUp   = last > first;
+  const trendDown = last < first;
+
+  let stroke = "#cccccc";
+  if (trendUp || trendDown) {
+    if (higherBetter === true)  stroke = trendUp  ? GREEN : RED;
+    if (higherBetter === false) stroke = trendDown ? GREEN : RED;
+    if (higherBetter === null)  stroke = trendUp  ? GREEN : "#cccccc";
+  }
+
+  const vals = nonNull.map(x => x.v);
+  const minV = Math.min(...vals);
+  const maxV = Math.max(...vals);
+  const range = maxV - minV;
+
+  const W = 100, H = 24, PAD = 3;
+  const n = nonNull.length;
+  const xOf = (pos: number) => (pos / (n - 1)) * W;
+  const yOf = (v: number) => range === 0 ? H / 2 : PAD + ((maxV - v) / range) * (H - PAD * 2);
+
+  const points = nonNull.map((x, pos) => `${xOf(pos).toFixed(1)},${yOf(x.v).toFixed(1)}`).join(" ");
+
   return (
-    <div className="flex-1 h-7 bg-[#eeeeee] overflow-hidden">
-      <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ width: "100%", height: "26px", display: "block" }}>
+      <polyline points={points} fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// ─── Section heading ──────────────────────────────────────────────────────────
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
+      color: "#111111", margin: "0 0 16px 0", paddingBottom: "10px", borderBottom: "2px solid #111111",
+    }}>
+      {children}
+    </p>
+  );
+}
+
+// ─── Tier 1: KFI card ─────────────────────────────────────────────────────────
+function HealthCard({ label, value, subtext, signal, dots }: {
+  label: string; value: string; subtext: string; signal: string; dots: string[];
+}) {
+  const bg = SIGNAL_BG[signal] ?? "white";
+  return (
+    <div style={{
+      borderTop: "1px solid #eeeeee", borderRight: "1px solid #eeeeee",
+      borderBottom: "1px solid #eeeeee", borderLeft: `4px solid ${signal}`,
+      padding: "28px 24px 22px", background: bg,
+    }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: signal, margin: "0 0 12px 0", opacity: 0.85 }}>
+        {label}
+      </p>
+      <p style={{ fontSize: "clamp(28px, 5vw, 38px)", fontWeight: 700, color: signal, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: "0 0 10px 0" }}>
+        {value}
+      </p>
+      <p style={{ fontSize: "14px", color: signal, margin: "0 0 18px 0", lineHeight: 1.45, opacity: 0.8 }}>
+        {subtext}
+      </p>
+      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+        {dots.map((dotColor, i) => (
+          <span key={i} style={{ width: "8px", height: "8px", borderRadius: "50%", background: dotColor, display: "inline-block", flexShrink: 0 }} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function DivergingBar({ value, scale, color }: { value: number; scale: number; color: string }) {
-  const pct = Math.min((Math.abs(value) / scale) * 100, 100);
-  const isPositive = value >= 0;
+// ─── Tier 2: Metric tile ──────────────────────────────────────────────────────
+function MetricTile({ label, value, current, prior, higherBetter, sparkValues }: {
+  label: string; value: string;
+  current: number | null; prior: number | null;
+  higherBetter: boolean | null;
+  sparkValues: (number | null)[];
+}) {
+  const pct = current !== null && prior !== null && prior !== 0
+    ? ((current - prior) / Math.abs(prior)) * 100
+    : null;
+
+  let deltaColor = "#888888";
+  if (pct !== null) {
+    if (higherBetter !== null) {
+      deltaColor = (higherBetter ? current! > prior! : current! < prior!) ? GREEN : RED;
+    } else {
+      deltaColor = pct >= 0 ? GREEN : RED;
+    }
+  }
+
   return (
-    <div className="flex-1 flex h-7">
-      <div className="flex-1 flex justify-end overflow-hidden bg-[#eeeeee]">
-        {!isPositive && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
-      </div>
-      <div className="w-px bg-[#e0e0e0] shrink-0" />
-      <div className="flex-1 overflow-hidden bg-[#eeeeee]">
-        {isPositive && <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }} />}
-      </div>
+    <div style={{ border: "1px solid #eeeeee", padding: "18px 18px 14px", background: "white", display: "flex", flexDirection: "column" }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", margin: "0 0 8px 0" }}>
+        {label}
+      </p>
+      <p style={{ fontSize: "22px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", lineHeight: 1.1, margin: "0 0 4px 0" }}>
+        {value}
+      </p>
+      {pct !== null ? (
+        <p style={{ fontSize: "12px", fontWeight: 600, color: deltaColor, margin: "0 0 10px 0" }}>
+          {pct >= 0 ? "+" : ""}{pct.toFixed(1)}% YoY
+        </p>
+      ) : (
+        <div style={{ marginBottom: "10px" }} />
+      )}
+      <Sparkline values={sparkValues} higherBetter={higherBetter} />
     </div>
   );
 }
 
-// ─── Metrics config ───────────────────────────────────────────────────────────
+// ─── Metrics config (for YoY section) ────────────────────────────────────────
 
 type MetricConfig = {
-  key: FinKey;
+  key: keyof EUYearSnap;
   label: string;
   isRatio?: boolean;
   diverging?: boolean;
@@ -148,7 +292,7 @@ function getMetrics(country: string): MetricConfig[] {
   return EU_METRICS;
 }
 
-// ─── Country disclaimers ──────────────────────────────────────────────────────
+// ─── Country disclaimer ───────────────────────────────────────────────────────
 
 function CountryDisclaimer({ country }: { country: string }) {
   if (country === "Denmark") {
@@ -197,100 +341,6 @@ function CountryDisclaimer({ country }: { country: string }) {
     );
   }
   return null;
-}
-
-// ─── Current-year financial tab ───────────────────────────────────────────────
-
-function FinancialTab({
-  club,
-  leagueClubs,
-  leagueLabel,
-  metrics,
-}: {
-  club: EUClub;
-  leagueClubs: EUClub[];
-  leagueLabel: string;
-  metrics: MetricConfig[];
-}) {
-  const fin = club.financials;
-  const curr = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
-  const hasAny = metrics.some((m) => fin[m.key] !== null && fin[m.key] !== undefined);
-  if (!hasAny) {
-    return (
-      <p className="text-sm text-[#aaaaaa] italic">No financial data available for this club.</p>
-    );
-  }
-
-  return (
-    <div>
-      <CountryDisclaimer country={club.country} />
-      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
-        <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">Financial Figures</p>
-        </div>
-        <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">vs {leagueLabel} Average</p>
-        </div>
-
-        {metrics.map((m) => {
-          const val = fin[m.key] as number | null;
-          const stats = leagueStats(leagueClubs, m.key);
-          const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
-          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : Math.abs(val ?? 0) || 1;
-          const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-          const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
-          const barColor = val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
-
-          return (
-            <Fragment key={m.key}>
-              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-1.5">{m.label}</p>
-                {val !== null ? (
-                  <p className="text-3xl sm:text-5xl font-medium tabular-nums text-[#111111]">
-                    {fmtCurrency(val, curr, m.isRatio)}
-                  </p>
-                ) : (
-                  <p className="text-3xl sm:text-5xl font-medium text-[#cccccc]">—</p>
-                )}
-                {stats && rank !== null && rank > 0 && (
-                  <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
-                )}
-              </div>
-              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">{m.label}</p>
-                <div className="mb-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging ? (
-                      <DivergingBar value={val ?? 0} scale={scale / 2} color={val !== null ? barColor : "#cccccc"} />
-                    ) : (
-                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
-                    )}
-                    <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
-                      {fmtCurrency(val, curr, m.isRatio)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#999999] tracking-[0.04em]">This club</p>
-                </div>
-                <div className="mt-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging && stats ? (
-                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
-                    ) : (
-                      <StandardBar pct={avgPct} color="#cccccc" />
-                    )}
-                    <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
-                      {stats ? fmtCurrency(stats.avg, curr, m.isRatio) : "—"}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#bbbbbb] tracking-[0.04em]">League avg</p>
-                </div>
-              </div>
-            </Fragment>
-          );
-        })}
-      </div>
-    </div>
-  );
 }
 
 // ─── Historical year snapshot type ───────────────────────────────────────────
@@ -367,101 +417,6 @@ function buildEUYearSnaps(club: EUClub): EUYearSnap[] {
     });
   }
   return snaps;
-}
-
-// ─── Historical year tab ──────────────────────────────────────────────────────
-
-function HistoricalYearTab({
-  snap,
-  leagueSnaps,
-  currency,
-  metrics,
-  leagueLabel,
-  country,
-}: {
-  snap: EUYearSnap;
-  leagueSnaps: EUYearSnap[];
-  currency: "EUR" | "USD" | "SEK";
-  metrics: MetricConfig[];
-  leagueLabel: string;
-  country: string;
-}) {
-  type SnapKey = keyof EUYearSnap;
-  const hasAny = metrics.some((m) => {
-    const v = snap[m.key as SnapKey];
-    return v !== null && v !== undefined;
-  });
-  if (!hasAny) {
-    return <p className="text-sm text-[#aaaaaa] italic">No financial data available for this year.</p>;
-  }
-  return (
-    <div>
-      <CountryDisclaimer country={country} />
-      <div className="grid lg:grid-cols-2 border border-[#e0e0e0] overflow-hidden">
-        <div className="px-4 sm:px-6 py-4 bg-white border-b border-r border-[#e0e0e0]">
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">Financial Figures</p>
-        </div>
-        <div className="px-4 sm:px-6 py-4 bg-white border-b border-[#e0e0e0]">
-          <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555]">vs {leagueLabel} Average</p>
-        </div>
-        {metrics.map((m) => {
-          const val = (snap[m.key as SnapKey] ?? null) as number | null;
-          const stats = snapStats(leagueSnaps, m.key as SnapKey);
-          const rank = val !== null && stats ? stats.sorted.indexOf(val) + 1 : null;
-          const scale = stats ? Math.max(stats.maxAbs, Math.abs(stats.avg), 0.01) : Math.abs(val ?? 0) || 1;
-          const clubPct = val !== null ? Math.min((Math.abs(val) / scale) * 100, 100) : 0;
-          const avgPct  = stats ? Math.min((Math.abs(stats.avg) / scale) * 100, 100) : 0;
-          const barColor = val !== null && stats ? vsAvgColor(val, stats.avg, m.higherBetter) : "#cccccc";
-          return (
-            <Fragment key={m.key}>
-              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-r border-[#e0e0e0] bg-white">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-1.5">{m.label}</p>
-                {val !== null ? (
-                  <p className="text-4xl sm:text-5xl font-medium tabular-nums text-[#111111]">
-                    {fmtCurrency(val, currency, m.isRatio)}
-                  </p>
-                ) : (
-                  <p className="text-4xl sm:text-5xl font-medium text-[#cccccc]">—</p>
-                )}
-                {stats && rank !== null && rank > 0 && (
-                  <p className="text-xs text-[#aaaaaa] mt-1.5">#{rank} <span className="text-[#cccccc]">of {stats.count}</span></p>
-                )}
-              </div>
-              <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#e0e0e0] bg-white">
-                <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-3">{m.label}</p>
-                <div className="mb-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging ? (
-                      <DivergingBar value={val ?? 0} scale={scale / 2} color={val !== null ? barColor : "#cccccc"} />
-                    ) : (
-                      <StandardBar pct={clubPct} color={val !== null ? barColor : "#eeeeee"} />
-                    )}
-                    <span className="text-sm font-semibold tabular-nums text-[#111111] w-16 text-right shrink-0">
-                      {fmtCurrency(val, currency, m.isRatio)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#999999] tracking-[0.04em]">This club</p>
-                </div>
-                <div className="mt-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    {m.diverging && stats ? (
-                      <DivergingBar value={stats.avg} scale={scale / 2} color="#cccccc" />
-                    ) : (
-                      <StandardBar pct={avgPct} color="#cccccc" />
-                    )}
-                    <span className="text-sm tabular-nums text-[#aaaaaa] w-16 text-right shrink-0">
-                      {stats ? fmtCurrency(stats.avg, currency, m.isRatio) : "—"}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#bbbbbb] tracking-[0.04em]">League avg</p>
-                </div>
-              </div>
-            </Fragment>
-          );
-        })}
-      </div>
-    </div>
-  );
 }
 
 // ─── SVG trend chart ──────────────────────────────────────────────────────────
@@ -548,11 +503,7 @@ function euPolySegments(
 }
 
 function EUTrendChart({
-  years,
-  leagueYears,
-  metricKey,
-  isRatio,
-  currency,
+  years, leagueYears, metricKey, isRatio, currency,
 }: {
   years: EUYearSnap[];
   leagueYears: EUYearSnap[];
@@ -693,15 +644,13 @@ function ChgBadge({
 // ─── Year-on-year section ─────────────────────────────────────────────────────
 
 function EUYoYSection({
-  club,
-  leagueClubs,
-  metrics,
-  currency,
+  club, leagueClubs, metrics, currency, view = "all",
 }: {
   club: EUClub;
   leagueClubs: EUClub[];
   metrics: MetricConfig[];
   currency: "EUR" | "USD" | "SEK";
+  view?: "all" | "table" | "chart";
 }) {
   const allYears = buildEUYearSnaps(club).sort((a, b) => a.season.localeCompare(b.season));
   if (allYears.length < 2) return null;
@@ -717,63 +666,131 @@ function EUYoYSection({
   );
 
   const [activeMetric, setActiveMetric] = useState(0);
+  const [showAllYears, setShowAllYears] = useState(false);
 
   const cols = allYears.map((y, i) => ({ label: y.season, snap: y, isCurrent: i === allYears.length - 1 }));
 
+  const showTable = view !== "chart";
+  const showChart = view !== "table";
+
+  const fullTable = (
+    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
+      <thead>
+        <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+          <th style={{ textAlign: "left", padding: "10px 16px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "160px" }}>
+            Metric
+          </th>
+          {cols.map((col, ci) => (
+            <th key={ci} style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
+              {col.label}
+            </th>
+          ))}
+          <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "70px" }}>
+            Change
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {chartMetrics.map((m, mi) => {
+          const values = cols.map((col) => {
+            const v = col.snap[m.key as SnapKey];
+            return (v !== undefined ? v : null) as number | null;
+          });
+          const latest      = values[values.length - 1];
+          const penultimate = values[values.length - 2] ?? null;
+          return (
+            <tr
+              key={m.key}
+              style={{ borderBottom: mi < chartMetrics.length - 1 ? "1px solid #f2f2f2" : "none", background: "white", cursor: "pointer" }}
+              onClick={() => setActiveMetric(mi)}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
+            >
+              <td style={{ padding: "11px 16px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                {m.label}
+              </td>
+              {values.map((v, ci) => (
+                <td key={ci} style={{ textAlign: "right", padding: "11px 12px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                  {fmtCurrency(v, currency, m.isRatio)}
+                </td>
+              ))}
+              <td style={{ textAlign: "right", padding: "11px 12px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
+                <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+
   return (
     <div>
-      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${320 + cols.length * 110}px` }}>
-          <thead>
-            <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "10px 16px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "160px" }}>
-                Metric
-              </th>
-              {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "80px" }}>
-                  {col.label}
+      {/* ── Mobile table ── */}
+      {showTable && <div className="sm:hidden">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa" }}>
+            Latest: {cols[cols.length - 1].label}
+          </span>
+          <button
+            onClick={() => setShowAllYears(v => !v)}
+            style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#888888", background: "none", border: "1px solid #e0e0e0", padding: "4px 10px", cursor: "pointer" }}
+          >
+            {showAllYears ? "← Back" : "All years →"}
+          </button>
+        </div>
+        {showAllYears ? (
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>{fullTable}</div>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+                <th style={{ textAlign: "left", padding: "10px 0 8px 8px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888" }}>
+                  Metric
                 </th>
-              ))}
-              <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "70px" }}>
-                Change
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {chartMetrics.map((m, mi) => {
-              const values = cols.map((col) => {
-                const v = col.snap[m.key as SnapKey];
-                return (v !== undefined ? v : null) as number | null;
-              });
-              const latest      = values[values.length - 1];
-              const penultimate = values[values.length - 2] ?? null;
-              return (
-                <tr
-                  key={m.key}
-                  style={{ borderBottom: mi < chartMetrics.length - 1 ? "1px solid #f2f2f2" : "none", background: "white", cursor: "pointer" }}
-                  onClick={() => setActiveMetric(mi)}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
-                >
-                  <td style={{ padding: "11px 16px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#666666", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
-                    {m.label}
-                  </td>
-                  {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "11px 12px", fontSize: cols[ci].isCurrent ? "16px" : "14px", fontWeight: cols[ci].isCurrent ? 600 : 400, color: cols[ci].isCurrent ? "#111111" : "#888888", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
-                      {fmtCurrency(v, currency, m.isRatio)}
+                <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "13px", fontWeight: 700, color: "#111111" }}>
+                  {cols[cols.length - 1].label}
+                </th>
+                <th style={{ textAlign: "right", padding: "10px 0 8px 8px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap" }}>
+                  Change
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {chartMetrics.map((m, mi) => {
+                const latest = ((): number | null => { const v = cols[cols.length - 1].snap[m.key as SnapKey]; return v !== undefined ? v as number | null : null; })();
+                const prior  = ((): number | null => { const v = cols[cols.length - 2]?.snap[m.key as SnapKey]; return v !== undefined ? v as number | null : null; })();
+                const shortLabel = m.label.replace(" / (Loss)", "").replace(" / (Cash)", "").replace(" (€)", "").replace(" (USD)", "");
+                return (
+                  <tr
+                    key={m.key}
+                    style={{ borderBottom: mi < chartMetrics.length - 1 ? "1px solid #f0f0f0" : "none", cursor: "pointer" }}
+                    onClick={() => setActiveMetric(mi)}
+                  >
+                    <td style={{ padding: "11px 0 11px 8px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.03em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#555555", borderLeft: activeMetric === mi ? "2px solid #111111" : "2px solid transparent" }}>
+                      {shortLabel}
                     </td>
-                  ))}
-                  <td style={{ textAlign: "right", padding: "11px 12px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
-                    <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    <td style={{ textAlign: "right", padding: "11px 12px", fontSize: "17px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                      {fmtCurrency(latest, currency, m.isRatio)}
+                    </td>
+                    <td style={{ textAlign: "right", padding: "11px 0 11px 8px", whiteSpace: "nowrap" }}>
+                      <ChgBadge current={latest} prior={prior} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>}
 
-      <div style={{ marginTop: "28px", borderTop: "1px solid #eeeeee", paddingTop: "20px" }}>
+      {/* ── Desktop table ── */}
+      {showTable && <div className="hidden sm:block" style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        {fullTable}
+      </div>}
+
+      {/* ── Chart ── */}
+      {showChart && <div style={{ marginTop: showTable ? "28px" : 0, borderTop: showTable ? "1px solid #eeeeee" : "none", paddingTop: showTable ? "20px" : 0 }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "16px" }}>
           {chartMetrics.map((m, i) => (
             <button
@@ -818,7 +835,7 @@ function EUYoYSection({
           isRatio={chartMetrics[activeMetric]?.isRatio}
           currency={currency}
         />
-      </div>
+      </div>}
     </div>
   );
 }
@@ -834,90 +851,171 @@ export default function EUFinancialsSection({
   leagueClubs: EUClub[];
   leagueLabel: string;
 }) {
-  const fin = club.financials;
-  const metrics  = getMetrics(club.country);
-  const curr     = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
+  const fin    = club.financials;
+  const curr   = (club.currency === "USD" ? "USD" : club.currency === "SEK" ? "SEK" : "EUR") as "EUR" | "USD" | "SEK";
+  const sym    = currSym(curr);
+  const metrics = getMetrics(club.country);
+  const py     = club.prior_year ?? null;
+
+  const [fullView, setFullView] = useState<"table" | "chart">("table");
+
+  // ── All chronological years for sparklines + trend dots ──────────────────
   const allYears = buildEUYearSnaps(club).sort((a, b) => a.season.localeCompare(b.season));
+  const dotYears = allYears.slice(-4);
 
-  const currentSeason  = fin.most_recent_year;
-  const historicalTabs = allYears
-    .filter((y) => normalizeSeason(y.season) !== normalizeSeason(currentSeason))
-    .slice(-3);
+  // ── KFI values ───────────────────────────────────────────────────────────
+  const profitVal   = fin.operating_profit ?? fin.net_profit;
+  const priorProfit = py?.operating_profit ?? py?.net_profit ?? null;
+  const isOpProfit  = fin.operating_profit != null;
 
-  const hasHistory = historicalTabs.length > 0;
-  const hasYoY     = allYears.length >= 2;
+  const debtVal   = fin.net_debt ?? null;
+  const priorDebt = py?.net_debt ?? null;
+  const hasNetDebt = debtVal !== null || priorDebt !== null;
+  // Fall back to total_liabilities for clubs without net_debt
+  const liabVal   = fin.total_liabilities ?? null;
+  const priorLiab = py?.total_liabilities ?? null;
 
-  const defaultTab = hasYoY ? "yoy" : "current";
-  const [innerTab, setInnerTab] = useState<string>(defaultTab);
+  // ── Signal dots ──────────────────────────────────────────────────────────
+  const wageDots   = dotYears.map(y => wageSignal(y.wage_to_revenue_pct ?? null));
+  const profitDots = dotYears.map(y => profitSignal((y.operating_profit ?? y.net_profit) ?? null));
+  const debtDots   = dotYears.map(y => debtDotSignal((y.net_debt ?? null)));
 
-  const innerTabs: { key: string; label: string }[] = [
-    ...historicalTabs.map((y) => ({ key: y.season, label: y.season })),
-    { key: "current", label: currentSeason ?? "Current" },
-    ...(hasYoY ? [{ key: "yoy", label: "Year on Year" }] : []),
-  ];
+  // ── Sparkline series ─────────────────────────────────────────────────────
+  const revenueVals = allYears.map(y => y.revenue);
+  const wageVals    = allYears.map(y => y.wage_bill);
+  const profitVals  = allYears.map(y => (y.operating_profit ?? y.net_profit) ?? null);
+  const debtVals    = allYears.map(y => hasNetDebt ? (y.net_debt ?? null) : (y.total_liabilities ?? null));
 
-  const activeHistSnap = historicalTabs.find((y) => y.season === innerTab) ?? null;
+  // ── Tile 3: profit metric ─────────────────────────────────────────────────
+  const profit3Val   = profitVal;
+  const priorProfit3 = priorProfit;
 
-  const historicalLeagueSnaps = new Map<string, EUYearSnap[]>(
-    historicalTabs.map((histSnap) => [
-      histSnap.season,
-      leagueClubs.flatMap((c) =>
-        buildEUYearSnaps(c).filter((s) => s.season === histSnap.season)
-      ),
-    ])
-  );
+  // ── Tile 4: debt or liabilities ───────────────────────────────────────────
+  const debt4Val     = hasNetDebt ? debtVal   : liabVal;
+  const priorDebt4   = hasNetDebt ? priorDebt : priorLiab;
+  const debt4Label   = hasNetDebt ? "Net Debt" : "Total Liabilities";
+  const debt4HB: boolean | null = false; // lower is better for both
+
+  // ── Year range for accordion subtitle ────────────────────────────────────
+  const firstSeason = allYears[0]?.season ?? "";
+  const lastSeason  = allYears[allYears.length - 1]?.season ?? fin.most_recent_year ?? "";
+  const hasYoY = allYears.length >= 2;
 
   return (
     <div>
-      {(currentSeason || fin.data_notes) && (
-        <p className="text-sm text-[#999999] mb-6">
-          {currentSeason && (
-            <>Financial year: <span className="text-[#666666]">{currentSeason}</span></>
-          )}
-          {fin.data_notes && (
-            <span className="ml-3 inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs text-[#999999]">
+      {/* ── TIER 1: Key Financial Indicators ─────────────────────────────────── */}
+      <div style={{ marginBottom: "36px" }}>
+        <SectionHeading>Key Financial Indicators</SectionHeading>
+        {fin.data_notes && (
+          <p className="text-sm text-[#999999] mb-4">
+            <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs text-[#999999]">
               {fin.data_notes}
             </span>
-          )}
-        </p>
-      )}
+          </p>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <HealthCard
+            label="Wage Efficiency"
+            value={fin.wage_to_revenue_pct !== null ? `${fin.wage_to_revenue_pct.toFixed(1)}%` : "—"}
+            subtext={wageSubtext(fin.wage_to_revenue_pct, py?.wage_to_revenue_pct ?? null)}
+            signal={wageSignal(fin.wage_to_revenue_pct)}
+            dots={wageDots}
+          />
+          <HealthCard
+            label="Profitability"
+            value={fmtCurrency(profit3Val, curr)}
+            subtext={profitSubtext(profit3Val, priorProfit3, isOpProfit)}
+            signal={profitSignal(profit3Val)}
+            dots={profitDots}
+          />
+          <HealthCard
+            label="Debt Position"
+            value={fmtCurrency(debt4Val, curr)}
+            subtext={hasNetDebt
+              ? debtSubtext(debtVal, priorDebt, sym)
+              : liabSubtext(liabVal, priorLiab, sym)}
+            signal={hasNetDebt
+              ? debtCardSignal(debtVal, priorDebt)
+              : liabCardSignal(liabVal, priorLiab)}
+            dots={debtDots}
+          />
+        </div>
+      </div>
 
-      {(hasHistory || hasYoY) && (
-        <div className="flex border-b border-[#e0e0e0] mb-6 overflow-x-auto">
-          {innerTabs.map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => setInnerTab(key)}
-              className={`px-5 sm:px-7 py-4 text-base font-bold tracking-[0.04em] uppercase border-b-2 -mb-px transition-colors whitespace-nowrap shrink-0 ${
-                innerTab === key
-                  ? "border-[#111111] text-[#111111]"
-                  : "border-transparent text-[#aaaaaa] hover:text-[#555555]"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+      {/* ── TIER 2: Latest Accounts ───────────────────────────────────────────── */}
+      <div style={{ marginBottom: "36px" }}>
+        <SectionHeading>Latest Accounts · {lastSeason || fin.most_recent_year}</SectionHeading>
+        <div className="grid grid-cols-2 gap-3">
+          <MetricTile
+            label="Revenue"
+            value={fmtCurrency(fin.revenue, curr)}
+            current={fin.revenue}
+            prior={py?.revenue ?? null}
+            higherBetter={true}
+            sparkValues={revenueVals}
+          />
+          <MetricTile
+            label="Wage Bill"
+            value={fmtCurrency(fin.wage_bill, curr)}
+            current={fin.wage_bill}
+            prior={py?.wage_bill ?? null}
+            higherBetter={false}
+            sparkValues={wageVals}
+          />
+          <MetricTile
+            label={isOpProfit ? "Operating Profit" : "Net Profit"}
+            value={fmtCurrency(profit3Val, curr)}
+            current={profit3Val}
+            prior={priorProfit3}
+            higherBetter={true}
+            sparkValues={profitVals}
+          />
+          <MetricTile
+            label={debt4Label}
+            value={fmtCurrency(debt4Val, curr)}
+            current={debt4Val}
+            prior={priorDebt4}
+            higherBetter={debt4HB}
+            sparkValues={debtVals}
+          />
+        </div>
+      </div>
+
+      {/* ── TIER 3: Full Accounts ─────────────────────────────────────────────── */}
+      {hasYoY && (
+        <div>
+          <SectionHeading>Full Accounts · {firstSeason} – {lastSeason}</SectionHeading>
+          <CountryDisclaimer country={club.country} />
+          <div className="flex overflow-x-auto" style={{ borderBottom: "1px solid #eeeeee", marginBottom: "20px" }}>
+            {(["table", "chart"] as const).map(v => (
+              <button
+                key={v}
+                onClick={() => setFullView(v)}
+                style={{
+                  padding: "12px 24px", fontSize: "13px", fontWeight: 600,
+                  letterSpacing: "0.08em", textTransform: "uppercase", border: "none",
+                  borderBottom: fullView === v ? "2px solid #111111" : "2px solid transparent",
+                  marginBottom: "-1px", background: "none",
+                  color: fullView === v ? "#111111" : "#aaaaaa",
+                  cursor: "pointer", whiteSpace: "nowrap", minHeight: "44px", flexShrink: 0,
+                }}
+              >
+                {v === "table" ? "Table" : "Chart"}
+              </button>
+            ))}
+          </div>
+          <EUYoYSection
+            club={club}
+            leagueClubs={leagueClubs}
+            metrics={metrics}
+            currency={curr}
+            view={fullView}
+          />
         </div>
       )}
 
-      {activeHistSnap !== null && innerTab !== "current" && innerTab !== "yoy" && (
-        <HistoricalYearTab
-          snap={activeHistSnap}
-          leagueSnaps={historicalLeagueSnaps.get(activeHistSnap.season) ?? []}
-          currency={curr}
-          metrics={metrics}
-          leagueLabel={leagueLabel}
-          country={club.country}
-        />
-      )}
-
-      {innerTab === "current" && (
-        <FinancialTab club={club} leagueClubs={leagueClubs} leagueLabel={leagueLabel} metrics={metrics} />
-      )}
-
-      {innerTab === "yoy" && hasYoY && (
-        <EUYoYSection club={club} leagueClubs={leagueClubs} metrics={metrics} currency={curr} />
-      )}
+      {/* ── League label (for context) ───────────────────────────────────────── */}
+      {leagueLabel && <p style={{ display: "none" }}>{leagueLabel}</p>}
     </div>
   );
 }

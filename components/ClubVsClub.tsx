@@ -545,7 +545,14 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
       {/* Slot grid */}
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${slotsToShow}, 1fr)`, gap: "0.75rem", marginBottom: selectedClubs.length >= 2 ? "1.5rem" : 0, flex: selectedClubs.length < 2 ? 1 : undefined, alignItems: "stretch" }}>
+      <div
+        className={`grid grid-cols-1 gap-3 ${
+          slotsToShow === 2 ? "sm:grid-cols-2" :
+          slotsToShow === 3 ? "sm:grid-cols-2 lg:grid-cols-3" :
+          "sm:grid-cols-2 lg:grid-cols-4"
+        }`}
+        style={{ marginBottom: selectedClubs.length >= 2 ? "1.5rem" : 0, flex: selectedClubs.length < 2 ? 1 : undefined, alignItems: "stretch" }}
+      >
         {Array.from({ length: slotsToShow }).map((_, i) => (
           <ClubSlot
             key={i} slotIndex={i} allClubs={allClubs}
@@ -594,9 +601,9 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
             </button>
           </div>
 
-          {view === "stats"    && <StatsView    clubs={selectedClubs} />}
+          {view === "stats"    && <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}><div style={{ minWidth: "360px" }}><StatsView clubs={selectedClubs} /></div></div>}
           {view === "radar"    && <RadarChart   axes={RADAR_AXES} series={radarSeries} />}
-          {view === "charts"   && <ChartsView   clubs={selectedClubs} />}
+          {view === "charts"   && <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}><div style={{ minWidth: "340px" }}><ChartsView clubs={selectedClubs} /></div></div>}
           {view === "analysis" && <AnalysisView clubs={selectedClubs} />}
         </div>
       )}

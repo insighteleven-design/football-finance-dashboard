@@ -381,68 +381,133 @@ function TrendChart({ years, leagueYears, metric }: {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
+export default function YearOnYearSection({ club, view = "all" }: { club: ClubFinancials; view?: "all" | "table" | "chart" }) {
   const slottedYears = buildSlottedYears(club);
   const cols         = buildColumns(club);
   const leagueYears  = buildLeagueYears(slottedYears, club);
   const [activeMetric, setActiveMetric] = useState(0);
+  const [showAllYears, setShowAllYears] = useState(false);
 
   if (cols.length < 2) return null;
 
+  const showTable = view !== "chart";
+  const showChart = view !== "table";
+
+  const fullTable = (
+    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${280 + cols.length * 150}px` }}>
+      <thead>
+        <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+          <th style={{ textAlign: "left", padding: "14px 16px 12px", fontSize: "14px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
+            Metric
+          </th>
+          {cols.map((col, ci) => (
+            <th key={ci} style={{ textAlign: "right", padding: "14px 16px 12px", fontSize: col.isCurrent ? "16px" : "14px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "110px" }}>
+              {col.label}
+            </th>
+          ))}
+          <th style={{ textAlign: "right", padding: "14px 16px 12px", fontSize: "14px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
+            {cols[cols.length - 2]?.label.split(" ")[1]} → {cols[cols.length - 1]?.label.split(" ")[1]}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {METRICS.map((m, mi) => {
+          const values      = cols.map(col => { const v = col.snap[m.key]; return v !== undefined ? v : null; });
+          const latest      = values[values.length - 1];
+          const penultimate = values[values.length - 2] ?? null;
+
+          return (
+            <tr
+              key={m.key as string}
+              style={{ borderBottom: mi < METRICS.length - 1 ? "1px solid #f0f0f0" : "none", background: "white", cursor: "pointer" }}
+              onClick={() => setActiveMetric(mi)}
+              onMouseEnter={e => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
+            >
+              <td style={{ padding: "16px 16px", fontSize: "15px", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#555555", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "3px solid #111111" : "3px solid transparent" }}>
+                {m.label}
+              </td>
+              {values.map((v, ci) => (
+                <td key={ci} style={{ textAlign: "right", padding: "16px 16px", fontSize: cols[ci].isCurrent ? "19px" : "16px", fontWeight: cols[ci].isCurrent ? 700 : 400, color: cols[ci].isCurrent ? "#111111" : "#999999", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                  {fmt(v, m.isRatio)}
+                </td>
+              ))}
+              <td style={{ textAlign: "right", padding: "16px 16px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
+                <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+
   return (
     <div>
-      {/* ── Table ── */}
-      <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: `${280 + cols.length * 150}px` }}>
-          <thead>
-            <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
-              <th style={{ textAlign: "left", padding: "14px 16px 12px", fontSize: "14px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", width: "200px" }}>
-                Metric
-              </th>
-              {cols.map((col, ci) => (
-                <th key={ci} style={{ textAlign: "right", padding: "14px 16px 12px", fontSize: col.isCurrent ? "16px" : "14px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: col.isCurrent ? "#111111" : "#aaaaaa", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "110px" }}>
-                  {col.label}
+      {/* ── Mobile table ── */}
+      {showTable && <div className="sm:hidden">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#aaaaaa" }}>
+            Latest: {cols[cols.length - 1].label}
+          </span>
+          <button
+            onClick={() => setShowAllYears(v => !v)}
+            style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#888888", background: "none", border: "1px solid #e0e0e0", padding: "4px 10px", cursor: "pointer" }}
+          >
+            {showAllYears ? "← Back" : "All years →"}
+          </button>
+        </div>
+        {showAllYears ? (
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>{fullTable}</div>
+        ) : (
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ borderBottom: "2px solid #e0e0e0" }}>
+                <th style={{ textAlign: "left", padding: "10px 0 8px 8px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888" }}>
+                  Metric
                 </th>
-              ))}
-              <th style={{ textAlign: "right", padding: "14px 16px 12px", fontSize: "14px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap", borderLeft: "1px solid #eeeeee", minWidth: "90px" }}>
-                {cols[cols.length - 2]?.label.split(" ")[1]} → {cols[cols.length - 1]?.label.split(" ")[1]}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {METRICS.map((m, mi) => {
-              const values      = cols.map(col => { const v = col.snap[m.key]; return v !== undefined ? v : null; });
-              const latest      = values[values.length - 1];
-              const penultimate = values[values.length - 2] ?? null;
-
-              return (
-                <tr
-                  key={m.key as string}
-                  style={{ borderBottom: mi < METRICS.length - 1 ? "1px solid #f0f0f0" : "none", background: "white", cursor: "pointer" }}
-                  onClick={() => setActiveMetric(mi)}
-                  onMouseEnter={e => { (e.currentTarget as HTMLTableRowElement).style.background = "#fafafa"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLTableRowElement).style.background = "white"; }}
-                >
-                  <td style={{ padding: "16px 16px", fontSize: "15px", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#555555", whiteSpace: "nowrap", borderLeft: activeMetric === mi ? "3px solid #111111" : "3px solid transparent" }}>
-                    {m.label}
-                  </td>
-                  {values.map((v, ci) => (
-                    <td key={ci} style={{ textAlign: "right", padding: "16px 16px", fontSize: cols[ci].isCurrent ? "19px" : "16px", fontWeight: cols[ci].isCurrent ? 700 : 400, color: cols[ci].isCurrent ? "#111111" : "#999999", borderLeft: "1px solid #eeeeee", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
-                      {fmt(v, m.isRatio)}
+                <th style={{ textAlign: "right", padding: "10px 12px 8px", fontSize: "14px", fontWeight: 700, color: "#111111" }}>
+                  {cols[cols.length - 1].label}
+                </th>
+                <th style={{ textAlign: "right", padding: "10px 0 8px 8px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#888888", whiteSpace: "nowrap" }}>
+                  Change
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {METRICS.map((m, mi) => {
+                const latest = ((): number | null => { const v = cols[cols.length - 1].snap[m.key]; return v !== undefined ? v : null; })();
+                const prior  = ((): number | null => { const v = cols[cols.length - 2]?.snap[m.key]; return v !== undefined ? v : null; })();
+                return (
+                  <tr
+                    key={m.key as string}
+                    style={{ borderBottom: mi < METRICS.length - 1 ? "1px solid #f0f0f0" : "none", cursor: "pointer" }}
+                    onClick={() => setActiveMetric(mi)}
+                  >
+                    <td style={{ padding: "11px 0 11px 8px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: activeMetric === mi ? "#111111" : "#555555", borderLeft: activeMetric === mi ? "3px solid #111111" : "3px solid transparent" }}>
+                      {m.shortLabel}
                     </td>
-                  ))}
-                  <td style={{ textAlign: "right", padding: "16px 16px", borderLeft: "1px solid #eeeeee", whiteSpace: "nowrap" }}>
-                    <ChgBadge current={latest} prior={penultimate} higherBetter={m.higherBetter} isRatio={m.isRatio} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    <td style={{ textAlign: "right", padding: "11px 12px", fontSize: "17px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                      {fmt(latest, m.isRatio)}
+                    </td>
+                    <td style={{ textAlign: "right", padding: "11px 0 11px 8px", whiteSpace: "nowrap" }}>
+                      <ChgBadge current={latest} prior={prior} higherBetter={m.higherBetter} isRatio={m.isRatio} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>}
+
+      {/* ── Desktop table ── */}
+      {showTable && <div className="hidden sm:block" style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+        {fullTable}
+      </div>}
 
       {/* ── Chart ── */}
-      <div style={{ marginTop: "32px", borderTop: "1px solid #eeeeee", paddingTop: "24px" }}>
+      {showChart && <div style={{ marginTop: showTable ? "32px" : 0, borderTop: showTable ? "1px solid #eeeeee" : "none", paddingTop: showTable ? "24px" : 0 }}>
         {/* Metric selector */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "20px" }}>
           {METRICS.map((m, i) => (
@@ -485,7 +550,7 @@ export default function YearOnYearSection({ club }: { club: ClubFinancials }) {
         </div>
 
         <TrendChart years={slottedYears} leagueYears={leagueYears} metric={METRICS[activeMetric]} />
-      </div>
+      </div>}
     </div>
   );
 }

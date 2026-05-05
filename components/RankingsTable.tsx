@@ -125,8 +125,8 @@ function MetricTabs<K extends string>({
             key={m.key}
             onClick={() => onChange(m.key)}
             style={{
-              padding: "0.9rem 1.5rem",
-              fontSize: "13px",
+              padding: "0.7rem 1rem",
+              fontSize: "12px",
               fontWeight: isActive ? 700 : 400,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
@@ -164,29 +164,29 @@ function BarRow({
 }) {
   const isNeg = value < 0;
   const nameEl = slug ? (
-    <Link href={`/clubs/${slug}`} style={{ fontSize: "20px", color: "#111111", fontWeight: 500, textDecoration: "none" }}
+    <Link href={`/clubs/${slug}`} className="text-base sm:text-xl" style={{ color: "#111111", fontWeight: 500, textDecoration: "none" }}
       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4A90D9"; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
     >
       {name}
     </Link>
   ) : (
-    <span style={{ fontSize: "20px", color: "#111111", fontWeight: 500 }}>{name}</span>
+    <span className="text-base sm:text-xl" style={{ color: "#111111", fontWeight: 500 }}>{name}</span>
   );
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0.9rem 0", borderBottom: "1px solid #f5f5f5" }}>
-      <span style={{ fontSize: "16px", fontVariantNumeric: "tabular-nums", width: "2.25rem", textAlign: "right", flexShrink: 0, color: "#cccccc", fontWeight: 500 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 0", borderBottom: "1px solid #f5f5f5" }}>
+      <span style={{ fontSize: "14px", fontVariantNumeric: "tabular-nums", width: "2rem", textAlign: "right", flexShrink: 0, color: "#cccccc", fontWeight: 500 }}>
         {rank}
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "0.625rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
           {nameEl}
-          <span style={{ fontSize: "12px", letterSpacing: "0.07em", textTransform: "uppercase", color: "#bbbbbb" }}>
+          <span style={{ fontSize: "11px", letterSpacing: "0.07em", textTransform: "uppercase", color: "#bbbbbb" }}>
             {subtitle}
           </span>
         </div>
-        <div style={{ marginTop: "7px", height: "6px", backgroundColor: "#f0f0f0", maxWidth: "480px", borderRadius: "3px", overflow: "hidden" }}>
+        <div style={{ marginTop: "6px", height: "5px", backgroundColor: "#f0f0f0", maxWidth: "480px", borderRadius: "3px", overflow: "hidden" }}>
           {isDiverg ? (
             <div style={{ height: "100%", width: `${barPct}%`, backgroundColor: color, opacity: 0.7, marginLeft: isNeg ? "auto" : 0, borderRadius: "3px" }} />
           ) : (
@@ -194,7 +194,7 @@ function BarRow({
           )}
         </div>
       </div>
-      <span style={{ fontSize: "20px", fontWeight: 600, fontVariantNumeric: "tabular-nums", flexShrink: 0, minWidth: "6rem", textAlign: "right", color }}>
+      <span className="text-sm sm:text-lg" style={{ fontWeight: 600, fontVariantNumeric: "tabular-nums", flexShrink: 0, minWidth: "5rem", textAlign: "right", color }}>
         {formattedValue}
       </span>
     </div>
@@ -356,19 +356,19 @@ function ByLeagueRankings({ allClubs }: { allClubs: ComparableClub[] }) {
   return (
     <div>
       {/* Back + league name */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.75rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.75rem", flexWrap: "wrap" }}>
         <button
           onClick={() => setSelectedLeagueId(null)}
-          style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+          style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999", background: "none", border: "none", cursor: "pointer", padding: 0, flexShrink: 0 }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#999999"; }}
         >
           ← All leagues
         </button>
-        <span style={{ fontSize: "22px", fontWeight: 700, color: "#111111", letterSpacing: "-0.01em" }}>
+        <span style={{ fontSize: "20px", fontWeight: 700, color: "#111111", letterSpacing: "-0.01em" }}>
           {COUNTRY_FLAGS[selectedGroup!.country] ?? ""} {selectedGroup!.displayName}
         </span>
-        <span style={{ fontSize: "13px", color: "#aaaaaa", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+        <span style={{ fontSize: "13px", color: "#aaaaaa", letterSpacing: "0.06em", textTransform: "uppercase", flexShrink: 0 }}>
           {selectedGroup!.clubs.length} clubs
         </span>
       </div>
@@ -472,7 +472,7 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
   return (
     <div>
       {/* Mode switcher */}
-      <div style={{ display: "flex", borderBottom: "2px solid #eeeeee", marginBottom: "2rem", overflowX: "auto" }}>
+      <div style={{ display: "flex", borderBottom: "2px solid #eeeeee", marginBottom: "2rem", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
         {MODES.map(({ id, label }) => {
           const active = mode === id;
           return (
@@ -480,10 +480,10 @@ export default function RankingsTable({ allClubs }: { allClubs: ComparableClub[]
               key={id}
               onClick={() => setMode(id)}
               style={{
-                padding: "1.1rem 2.25rem",
-                fontSize: "15px",
+                padding: "0.8rem 1.25rem",
+                fontSize: "13px",
                 fontWeight: active ? 700 : 400,
-                letterSpacing: "0.12em",
+                letterSpacing: "0.10em",
                 textTransform: "uppercase",
                 color: active ? "#111111" : "#aaaaaa",
                 background: "none",
