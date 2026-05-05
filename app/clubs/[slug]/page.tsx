@@ -1,28 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { clubs, getClub, type ClubFinancials, type FinancialSnapshot } from "@/lib/clubs";
+import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
 import { euClubs, getEuClub, type EUClub } from "@/lib/euClubs";
 import { japanClubs, getJapanClub, J_DIVISION_LABELS } from "@/lib/japanClubs";
-import { japanDeepDive } from "@/lib/japanDeepDive";
-import { deepDive } from "@/lib/deepDive";
-import { fixedAssets } from "@/lib/fixedAssets";
-import { marketContext, ENGLAND_BENCHMARKS } from "@/lib/marketContext";
-import FinancialYearTabs from "@/components/FinancialYearTabs";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
-import FixedAssetsPanel from "@/components/FixedAssetsPanel";
-import MarketContextPanel from "@/components/MarketContextPanel";
+import MarketContextSection, { type MarketLeagueEntry } from "@/components/MarketContextSection";
 import EUFinancialsSection from "@/components/EUFinancialsSection";
-import EUClubInfoPanel from "@/components/EUClubInfoPanel";
-import EUMarketContextPanel from "@/components/EUMarketContextPanel";
 import JapanFinancialsSection from "@/components/JapanFinancialsSection";
-import ComingSoonPanel from "@/components/ComingSoonPanel";
-import CashFlowSection, { CashFlowSectionSimple } from "@/components/CashFlowSection";
-import ClubCashFlowSection, { ClubCashFlowSectionSimple } from "@/components/ClubCashFlowSection";
-import { cashFlowData } from "@/lib/cashFlowData";
 import CopyLinkButton from "@/components/CopyLinkButton";
-import ImmigrationBadge from "@/components/ImmigrationBadge";
 import SquadProfileSection from "@/components/SquadProfileSection";
+import FinancialsSection from "@/components/FinancialsSection";
 import { squadProfiles, type SquadProfile } from "@/lib/squadProfile";
+import { stadiumData } from "@/lib/stadiumData";
+import ClubCompareTab, { type DivisionPeer, type PriorYearSnap, type H2HPeer } from "@/components/ClubCompareTab";
 
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
@@ -48,6 +38,32 @@ const DIVISION_LABELS: Record<string, string> = {
   "championship":   "Championship",
   "league-one":     "League One",
   "league-two":     "League Two",
+};
+
+const DIVISION_COLORS: Record<string, string> = {
+  "premier-league": "#3b82f6",
+  "championship":   "#f59e0b",
+  "league-one":     "#10b981",
+  "league-two":     "#8b5cf6",
+};
+
+function euLeagueColor(league: string): string {
+  const map: Record<string, string> = {
+    "Ligue 1":            "#cc6688",
+    "Ligue 2":            "#e07a9a",
+    "1. Bundesliga":      "#e8a020",
+    "2. Bundesliga":      "#f0bc5a",
+    "Austrian Bundesliga":"#cc4444",
+    "Austrian 2. Liga":   "#e06060",
+    "Super League":       "#cc3333",
+  };
+  return map[league] ?? "#8b5cf6";
+}
+
+const JAPAN_DIVISION_COLORS: Record<string, string> = {
+  "j1": "#dc2626",
+  "j2": "#ea580c",
+  "j3": "#d97706",
 };
 
 function HealthBadges({ club }: { club: ClubFinancials }) {
@@ -107,6 +123,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
       .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
 
+    const euMarketLeagueEntries: MarketLeagueEntry[] = euClubs
+      .filter((c) => c.league === euClub.league && c.country === euClub.country)
+      .map((c) => ({ slug: c.slug, name: c.name, revenueMunits: c.financials.revenue }));
+
     // Next/prev club: skip data-less clubs, sort to match directory (country → league → name)
     const visibleEuClubs = euClubs
       .filter(hasEuFinancialData)
@@ -136,7 +156,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   {euClub.country}
                 </span>
-                <ImmigrationBadge country={euClub.country} />
               </div>
               {euClub.city && (
                 <p className="text-sm text-[#999999]">{euClub.city}</p>
@@ -174,18 +193,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               content: <EUFinancialsSection club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />,
             },
             {
-              key: "market",
-              label: "Market",
-              labelFull: "Market Context",
-              content: <EUMarketContextPanel club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />,
-            },
-            {
-              key: "info",
-              label: "Info",
-              labelFull: "Club Information",
-              content: <EUClubInfoPanel club={euClub} />,
-            },
-            {
               key: "squad",
               label: "Squad",
               labelFull: "Squad Profile",
@@ -196,6 +203,21 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                   clubName={euClub.name}
                   leagueEntries={euLeagueEntries}
                   leagueLabel={leagueLabel}
+                />
+              ),
+            },
+            {
+              key: "market",
+              label: "Market",
+              labelFull: "Market Context",
+              content: (
+                <MarketContextSection
+                  slug={slug}
+                  country={euClub.country}
+                  leagueClubs={euMarketLeagueEntries}
+                  leagueLabel={leagueLabel}
+                  currencySymbol="€"
+                  color={euLeagueColor(euClub.league)}
                 />
               ),
             },
@@ -214,7 +236,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     const jpLeagueEntries = leagueClubs
       .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
       .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
-    const dd = japanDeepDive[slug] ?? null;
+
+    const jpMarketLeagueEntries: MarketLeagueEntry[] = leagueClubs
+      .map((c) => ({ slug: c.slug, name: c.name, revenueMunits: c.revenue }));
 
     // Sort to match directory: division (j1 < j2 < j3) → name
     const visibleJapanClubs = [...japanClubs].sort((a, b) =>
@@ -252,7 +276,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#aaaaaa]">
                   Japan
                 </span>
-                <ImmigrationBadge country="Japan" />
               </div>
               <p className="text-sm text-[#999999]">
                 Financial year ending <span className="text-[#666666]">{fyDate}</span>
@@ -297,19 +320,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               key: "financials",
               label: "Financials",
               labelFull: "Financial Information",
-              content: <JapanFinancialsSection club={japanClub} leagueClubs={leagueClubs} deepDive={dd} />,
-            },
-            {
-              key: "market",
-              label: "Market",
-              labelFull: "Market Context",
-              content: <ComingSoonPanel label="Market Context" />,
-            },
-            {
-              key: "info",
-              label: "Info",
-              labelFull: "Club Information",
-              content: <ComingSoonPanel label="Club Information" />,
+              content: <JapanFinancialsSection club={japanClub} leagueClubs={leagueClubs} />,
             },
             {
               key: "squad",
@@ -325,6 +336,21 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 />
               ),
             },
+            {
+              key: "market",
+              label: "Market",
+              labelFull: "Market Context",
+              content: (
+                <MarketContextSection
+                  slug={slug}
+                  country="Japan"
+                  leagueClubs={jpMarketLeagueEntries}
+                  leagueLabel={divisionLabel}
+                  currencySymbol="€"
+                  color={JAPAN_DIVISION_COLORS[japanClub.division] ?? "#dc2626"}
+                />
+              ),
+            },
           ]}
         />
       </div>
@@ -333,11 +359,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
   const club = getClub(slug);
   if (!club) notFound();
-
-  const dd       = deepDive[slug] ?? null;
-  const assets   = fixedAssets[slug] ?? null;
-  const ctx      = marketContext[slug] ?? null;
-  const cf       = cashFlowData[slug] ?? null;
 
   // Sort to match directory: division (PL → Championship → L1 → L2) → name
   const divOrder = (d: string) =>
@@ -356,95 +377,125 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     day: "numeric", month: "long", year: "numeric",
   });
 
+  // ─── Market context data ─────────────────────────────────────────────────────
+  const enMarketLeagueEntries: MarketLeagueEntry[] = clubs
+    .filter((c) => c.division === compareDivision)
+    .map((c) => ({ slug: c.slug, name: c.name, revenueMunits: c.revenue }));
+
   // ─── Squad profile data ──────────────────────────────────────────────────────
   const enLeagueEntries = clubs
     .filter(c => c.division === compareDivision)
     .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
     .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
 
-  // ─── Financial year tabs data ────────────────────────────────────────────────
-
-  function fyLabel(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+  // ─── Compare tab data (Arsenal only for initial build) ───────────────────────
+  function expiryPct(s: string): number | null {
+    const sq = squadProfiles[s];
+    if (!sq?.contract_expiry) return null;
+    const ex = sq.contract_expiry;
+    const total = (ex["0-12m"] ?? 0) + (ex["12-24m"] ?? 0) + (ex["24m+"] ?? 0);
+    if (total === 0) return null;
+    return Math.round((ex["0-12m"] / total) * 100);
   }
 
-  function toSnapshot(c: {
-    revenue: number | null;
-    wage_bill: number | null;
-    wage_ratio: number | null;
-    operating_profit: number | null;
-    profit_from_player_sales?: number | null;
-    pre_tax_profit: number | null;
-    net_debt: number | null;
-  }): FinancialSnapshot {
+  function toDivPeer(c: ClubFinancials): DivisionPeer {
+    const sq = squadProfiles[c.slug];
+    const st = stadiumData[c.slug];
     return {
-      revenue:                  c.revenue,
-      wage_bill:                c.wage_bill,
-      wage_ratio:               c.wage_ratio,
-      operating_profit:         c.operating_profit,
-      profit_from_player_sales: c.profit_from_player_sales ?? null,
-      pre_tax_profit:           c.pre_tax_profit,
-      net_debt:                 c.net_debt,
+      slug:              c.slug,
+      name:              c.name,
+      revenue:           c.revenue,
+      wage_bill:         c.wage_bill,
+      wage_ratio:        c.wage_ratio,
+      operating_profit:  c.operating_profit,
+      pre_tax_profit:    c.pre_tax_profit,
+      net_debt:          c.net_debt,
+      squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+      avg_age:           sq?.avg_age ?? null,
+      expiry_0_12m_pct:  expiryPct(c.slug),
+      capacity:          st?.capacity ?? null,
+      attendance_pct:    st?.attendance_pct ?? null,
     };
   }
 
-  // Current year
-  const currentData    = toSnapshot(club);
-  const currentLabel   = fyLabel(club.fiscal_year_end);
-  const currentDivData = clubs
-    .filter((c) => c.division === compareDivision)
-    .map(toSnapshot);
+  const divisionPeers: DivisionPeer[] = clubs
+    .filter(c => c.division === compareDivision)
+    .map(toDivPeer);
 
-  // data2023 year
-  const d23 = club.data2023 ?? null;
-  const data2023Snap: FinancialSnapshot | null = d23 ? toSnapshot(d23) : null;
-  const data2023Label = d23 ? fyLabel(d23.fiscal_year_end) : null;
-  const data2023CompareDivision = d23?.compare_division ?? compareDivision;
-  const data2023CompareLabel = DIVISION_LABELS[data2023CompareDivision];
-  const data2023DivData = clubs
-    .filter((c) => c.data2023?.compare_division === data2023CompareDivision)
-    .map((c) => toSnapshot(c.data2023!));
-
-  // data2022 year
-  const d22 = club.data2022 ?? null;
-  const data2022Snap: FinancialSnapshot | null = d22 ? toSnapshot(d22) : null;
-  const data2022Label = d22 ? fyLabel(d22.fiscal_year_end) : null;
-  const data2022CompareDivision = d22?.compare_division ?? compareDivision;
-  const data2022CompareLabel = DIVISION_LABELS[data2022CompareDivision];
-  const data2022DivData = clubs
-    .filter((c) => c.data2022?.compare_division === data2022CompareDivision)
-    .map((c) => toSnapshot(c.data2022!));
-
-  // Prior year
-  const py = club.prior_year ?? null;
-  const priorData = py
+  const priorYear: PriorYearSnap | null = club.prior_year
     ? {
-        revenue:                  py.revenue,
-        wage_bill:                py.wage_bill,
-        wage_ratio:               py.wage_ratio,
-        operating_profit:         py.operating_profit,
-        profit_from_player_sales: py.profit_from_player_sales,
-        pre_tax_profit:           py.pre_tax_profit,
-        net_debt:                 py.net_debt,
+        revenue:    club.prior_year.revenue,
+        wage_ratio: club.prior_year.wage_ratio ?? null,
+        net_debt:   club.prior_year.net_debt ?? null,
       }
     : null;
-  const priorLabel          = py ? fyLabel(py.fiscal_year_end) : null;
-  const priorCompareDivision = py?.compare_division ?? compareDivision;
-  const priorCompareLabel    = DIVISION_LABELS[priorCompareDivision];
-  const priorDivData = clubs
-    .filter((c) => c.prior_year?.compare_division === priorCompareDivision)
-    .map((c) => {
-      const p = c.prior_year!;
+
+  // H2H peer list: all English + EU (filtered) + Japan clubs
+  const allH2HPeers: H2HPeer[] = [
+    ...clubs.map((c): H2HPeer => ({
+      ...toDivPeer(c),
+      country:       "England",
+      divisionLabel: DIVISION_LABELS[c.division] ?? c.division,
+      currency:      "GBP",
+    })),
+    ...euClubs
+      .filter(hasEuFinancialData)
+      .map((c): H2HPeer => {
+        const sq = squadProfiles[c.slug];
+        const st = stadiumData[c.slug];
+        const LEAGUE_DISPLAY: Record<string, string> = {
+          "norwegian-eliteserien": "Eliteserien",
+          "1. Bundesliga":         "Bundesliga",
+          "2. Bundesliga":         "2. Bundesliga",
+          "Austrian Bundesliga":   "Austrian Bundesliga",
+          "Austrian 2. Liga":      "Austrian 2. Liga",
+          "Super League":          "Swiss Super League",
+        };
+        const leagueLabel = LEAGUE_DISPLAY[c.league] ?? c.league;
+        return {
+          slug:              c.slug,
+          name:              c.name,
+          country:           c.country,
+          divisionLabel:     leagueLabel,
+          currency:          c.currency === "USD" ? "USD" : "EUR",
+          revenue:           c.financials.revenue,
+          wage_bill:         c.financials.wage_bill,
+          wage_ratio:        c.financials.wage_to_revenue_pct,
+          operating_profit:  c.financials.operating_profit ?? null,
+          pre_tax_profit:    c.financials.pre_tax_profit ?? c.financials.net_profit,
+          net_debt:          c.financials.net_debt ?? null,
+          squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+          avg_age:           sq?.avg_age ?? null,
+          expiry_0_12m_pct:  expiryPct(c.slug),
+          capacity:          st?.capacity ?? null,
+          attendance_pct:    st?.attendance_pct ?? null,
+        };
+      }),
+    ...japanClubs.map((c): H2HPeer => {
+      const sq = squadProfiles[c.slug];
+      const st = stadiumData[c.slug];
       return {
-        revenue:                  p.revenue,
-        wage_bill:                p.wage_bill,
-        wage_ratio:               p.wage_ratio,
-        operating_profit:         p.operating_profit,
-        profit_from_player_sales: p.profit_from_player_sales,
-        pre_tax_profit:           p.pre_tax_profit,
-        net_debt:                 p.net_debt,
-      } satisfies FinancialSnapshot;
-    });
+        slug:              c.slug,
+        name:              c.name,
+        country:           "Japan",
+        divisionLabel:     J_DIVISION_LABELS[c.division],
+        currency:          "USD",
+        revenue:           c.revenue,
+        wage_bill:         c.wage_bill,
+        wage_ratio:        c.wage_ratio,
+        operating_profit:  c.operating_profit,
+        pre_tax_profit:    c.pre_tax_profit,
+        net_debt:          c.net_debt,
+        squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+        avg_age:           sq?.avg_age ?? null,
+        expiry_0_12m_pct:  expiryPct(c.slug),
+        capacity:          st?.capacity ?? null,
+        attendance_pct:    st?.attendance_pct ?? null,
+      };
+    }),
+  ];
+
+  const showCompareTab = slug === "arsenal";
 
   return (
     <div className="px-6 lg:px-12 py-8">
@@ -459,7 +510,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               <span className="inline-flex items-center px-2 py-0.5 border border-[#e0e0e0] text-xs font-medium tracking-[0.1em] uppercase text-[#666666]">
                 {DIVISION_LABELS[club.division]}
               </span>
-              <ImmigrationBadge country="England" />
             </div>
             <p className="text-sm text-[#999999]">
               Financial year ending <span className="text-[#666666]">{fyDate}</span>
@@ -506,68 +556,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             key: "financials",
             label: "Financials",
             labelFull: "Financial Information",
-            content: (
-              <FinancialYearTabs
-                club={club}
-                currentData={currentData}
-                currentDivisionData={currentDivData}
-                currentLabel={currentLabel}
-                compareLabel={compareLabel}
-                breakdown={dd?.revenue_breakdown ?? null}
-                debtBreakdown={dd?.debt_breakdown ?? null}
-                extraSection={
-                  slug === "plymouth" ? <CashFlowSection /> :
-                  cf ? <ClubCashFlowSection data={cf} /> :
-                  undefined
-                }
-                priorExtraSection={
-                  slug === "plymouth" ? <CashFlowSectionSimple /> :
-                  cf ? (
-                    <ClubCashFlowSectionSimple
-                      value={cf.netOperating.prior}
-                      fyLabel={cf.priorFY}
-                      scale={Math.max(
-                        Math.abs(cf.netOperating.current / 1_000_000),
-                        Math.abs(cf.netOperating.prior / 1_000_000),
-                        1
-                      )}
-                    />
-                  ) :
-                  undefined
-                }
-                priorData={priorData}
-                priorDivisionData={priorDivData}
-                priorLabel={priorLabel}
-                priorCompareLabel={priorCompareLabel}
-                data2023={data2023Snap}
-                data2023DivisionData={data2023DivData}
-                data2023Label={data2023Label}
-                data2023CompareLabel={data2023CompareLabel}
-                data2022={data2022Snap}
-                data2022DivisionData={data2022DivData}
-                data2022Label={data2022Label}
-                data2022CompareLabel={data2022CompareLabel}
-              />
-            ),
-          },
-          {
-            key: "assets",
-            label: "Fixed Assets",
-            content: assets ? (
-              <FixedAssetsPanel
-                assets={assets}
-                division={club.division}
-                landBuildings={dd?.land_buildings ?? null}
-              />
-            ) : null,
-          },
-          {
-            key: "market",
-            label: "Market",
-            labelFull: "Market Context",
-            content: ctx ? (
-              <MarketContextPanel ctx={ctx} division={club.division} slug={slug} />
-            ) : null,
+            content: <FinancialsSection club={club} />,
           },
           {
             key: "squad",
@@ -582,6 +571,34 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 leagueLabel={compareLabel}
               />
             ),
+          },
+          {
+            key: "market",
+            label: "Market",
+            labelFull: "Market Context",
+            content: (
+              <MarketContextSection
+                slug={slug}
+                country="England"
+                leagueClubs={enMarketLeagueEntries}
+                leagueLabel={compareLabel}
+                currencySymbol="£"
+                color={DIVISION_COLORS[club.division] ?? "#3b82f6"}
+              />
+            ),
+          },
+          {
+            key: "compare",
+            label: "Compare",
+            content: showCompareTab ? (
+              <ClubCompareTab
+                slug={slug}
+                divisionLabel={compareLabel}
+                priorYear={priorYear}
+                divisionPeers={divisionPeers}
+                allH2HPeers={allH2HPeers}
+              />
+            ) : null,
           },
         ]}
       />
