@@ -56,8 +56,8 @@ const C_WIN     = "#2e7d52";
 const C_LOSE    = "#9a3030";
 const BG_WIN    = "#f2fbf5";
 const BG_LOSE   = "#fdf3f3";
-const FX_GBP    = 1.17;
-const FX_USD    = 0.92;
+const FX_GBP_TO_USD = 1.27;
+const FX_EUR_TO_USD = 1.09;
 
 const COUNTRY_FLAGS: Record<string, string> = {
   England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", France: "🇫🇷", Germany: "🇩🇪",
@@ -91,9 +91,28 @@ function fmtPct(v: number | null, digits = 1): string {
 
 function toEUR(v: number | null, currency: "GBP" | "EUR" | "USD"): number | null {
   if (v === null) return null;
-  if (currency === "GBP") return v * FX_GBP;
-  if (currency === "USD") return v * FX_USD;
+  if (currency === "GBP") return v * (FX_GBP_TO_USD / FX_EUR_TO_USD);
+  if (currency === "USD") return v / FX_EUR_TO_USD;
   return v;
+}
+
+function toUSD(v: number | null, currency: "GBP" | "EUR" | "USD"): number | null {
+  if (v === null) return null;
+  if (currency === "GBP") return v * FX_GBP_TO_USD;
+  if (currency === "EUR") return v * FX_EUR_TO_USD;
+  return v;
+}
+
+function fmtUSD(v: number | null): string {
+  if (v === null) return "—";
+  const abs = Math.abs(v);
+  return `${v < 0 ? "-" : ""}$${abs.toFixed(1)}m`;
+}
+
+function fmtNative(v: number | null, currency: "GBP" | "EUR" | "USD"): string {
+  if (currency === "GBP") return fmtGBP(v);
+  if (currency === "EUR") return fmtEUR(v);
+  return fmtUSD(v);
 }
 
 function ordinal(n: number): string {
@@ -197,7 +216,7 @@ function InlineRanking({
   if (sorted.length === 0) return null;
 
   return (
-    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", borderTop: "1px solid #e8e8e8" }}>
+    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", marginTop: "-1px" }}>
       {note && <p style={{ fontSize: "10px", color: "#aaaaaa", margin: "0 0 10px 0" }}>{note}</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {displayed.map((d, listIdx) => {
@@ -293,7 +312,7 @@ function ScoreCard({
     >
       <div style={{ display: "flex", flex: 1 }}>
         {/* Left — metric */}
-        <div style={{ flex: 1, minWidth: 0, padding: "22px 16px 18px" }}>
+        <div style={{ flex: 1, minWidth: 0, padding: "28px 20px 24px" }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "4px", marginBottom: "10px" }}>
             <p style={{
               fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
@@ -308,7 +327,7 @@ function ScoreCard({
             </svg>
           </div>
           <p style={{
-            fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 700,
+            fontSize: "clamp(28px, 4.5vw, 42px)", fontWeight: 700,
             color: "#111111", fontVariantNumeric: "tabular-nums",
             lineHeight: 1, margin: "0 0 8px 0",
           }}>
@@ -331,7 +350,7 @@ function ScoreCard({
 
         {/* Right — ranking */}
         <div style={{
-          width: "82px", flexShrink: 0, padding: "18px 10px 14px",
+          width: "100px", flexShrink: 0, padding: "22px 14px 18px",
           background: rBg, display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center", gap: "4px",
         }}>
@@ -343,7 +362,7 @@ function ScoreCard({
             League<br />ranking
           </p>
           <p style={{
-            fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 700,
+            fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700,
             color: rColor, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: 0,
           }}>
             {rank !== null ? ordinal(rank) : "—"}
@@ -604,187 +623,295 @@ function generateCallouts(main: H2HPeer, other: H2HPeer, pops: RadarPops): strin
   return results.sort((a, b) => b.gap - a.gap).slice(0, 3).map(r => r.sentence);
 }
 
-// ─── Arsenal solo stats (H2H default state) ───────────────────────────────────
+// ─── H2H Two-Column View (changes 3, 4, 5) ───────────────────────────────────
 
-function StatTile({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ border: "1px solid #eeeeee", padding: "16px 18px" }}>
-      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", margin: "0 0 6px 0" }}>
-        {label}
-      </p>
-      <p style={{ fontSize: "20px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", margin: 0 }}>
-        {value}
-      </p>
-    </div>
-  );
-}
+function H2HTwoCol({
+  main, other, query, onQueryChange, onSelect, onClear,
+}: {
+  main:          H2HPeer;
+  other:         H2HPeer | null;
+  query:         string;
+  onQueryChange: (q: string) => void;
+  onSelect:      (slug: string) => void;
+  onClear:       () => void;
+}) {
+  const [dropOpen, setDropOpen] = useState(false);
 
-function SubLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#aaaaaa", margin: "0 0 10px 0" }}>
-      {children}
-    </p>
-  );
-}
+  const sameCurrency = !other || main.currency === other.currency;
+  const targetCcy: "GBP" | "EUR" | "USD" = sameCurrency ? main.currency : "USD";
+  const ccySymbol = targetCcy === "GBP" ? "£" : targetCcy === "EUR" ? "€" : "$";
 
-function ArsenalSoloView({ peer }: { peer: H2HPeer }) {
-  const fmtMoney = (v: number | null) =>
-    peer.currency === "GBP" ? fmtGBP(v)
-    : peer.currency === "EUR" ? fmtEUR(v)
-    : fmtEUR(toEUR(v, peer.currency));
+  function displayMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD"): { str: string; converted: boolean } {
+    if (v === null) return { str: "—", converted: false };
+    if (targetCcy === "USD" && fromCcy !== "USD") {
+      const usd = toUSD(v, fromCcy);
+      return { str: fmtUSD(usd), converted: true };
+    }
+    return { str: fmtNative(v, fromCcy), converted: false };
+  }
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      <div>
-        <SubLabel>Financial</SubLabel>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <StatTile label="Revenue"        value={fmtMoney(peer.revenue)} />
-          <StatTile label="Wage Bill"      value={fmtMoney(peer.wage_bill)} />
-          <StatTile label="Wage Ratio"     value={fmtPct(peer.wage_ratio)} />
-          <StatTile label="Op. Profit"     value={fmtMoney(peer.operating_profit)} />
-          <StatTile label="Pre-tax Profit" value={fmtMoney(peer.pre_tax_profit)} />
-          <StatTile label="Net Debt"       value={fmtMoney(peer.net_debt)} />
-        </div>
-      </div>
-      <div>
-        <SubLabel>Squad</SubLabel>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <StatTile label="Squad Value" value={peer.squad_value_eur_m !== null ? `€${Math.round(peer.squad_value_eur_m)}m` : "—"} />
-          <StatTile label="Squad Size"  value={peer.squad_size !== null ? `${peer.squad_size}` : "—"} />
-          <StatTile label="Avg Age"     value={peer.avg_age !== null ? peer.avg_age.toFixed(1) : "—"} />
-          <StatTile label="Expiry Risk" value={fmtPct(peer.expiry_0_12m_pct, 0)} />
-        </div>
-      </div>
-      <div>
-        <SubLabel>Stadium</SubLabel>
-        <div className="grid grid-cols-2 gap-3">
-          <StatTile label="Capacity"    value={peer.capacity !== null ? peer.capacity.toLocaleString("en-GB") : "—"} />
-          <StatTile label="Utilisation" value={fmtPct(peer.attendance_pct)} />
-        </div>
-      </div>
-    </div>
-  );
-}
+  function displaySquadValue(v: number | null): { str: string; converted: boolean } {
+    if (v === null) return { str: "—", converted: false };
+    if (targetCcy === "USD") {
+      const usd = v * FX_EUR_TO_USD;
+      return { str: `$${usd.toFixed(1)}m`, converted: true };
+    }
+    if (targetCcy === "EUR") return { str: `€${Math.round(v)}m`, converted: false };
+    // GBP: convert from EUR
+    const gbp = v / (FX_GBP_TO_USD / FX_EUR_TO_USD);
+    return { str: `£${gbp.toFixed(1)}m`, converted: true };
+  }
 
-// ─── H2H Table ────────────────────────────────────────────────────────────────
+  function wins(mV: number | null, oV: number | null, higherBetter: boolean, agePeak = false): boolean | null {
+    if (mV === null || oV === null || other === null) return null;
+    if (agePeak) return Math.abs(mV - 26) < Math.abs(oV - 26);
+    return higherBetter ? mV > oV : mV < oV;
+  }
 
-function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
-  const mainFX  = main.currency  !== "EUR";
-  const otherFX = other.currency !== "EUR";
+  // Normalise money to target currency for comparison
+  function normMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD"): number | null {
+    if (v === null) return null;
+    if (targetCcy === "USD") return toUSD(v, fromCcy);
+    if (targetCcy === "EUR") return toEUR(v, fromCcy);
+    // GBP target
+    if (fromCcy === "GBP") return v;
+    if (fromCcy === "EUR") return v / (FX_GBP_TO_USD / FX_EUR_TO_USD);
+    return v / FX_GBP_TO_USD;
+  }
 
-  type RowDef = {
+  const VAL = "clamp(20px, 2.8vw, 28px)";
+  const LBL = { fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#aaaaaa", margin: "0 0 4px 0" };
+  const BANNER = { fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: "#aaaaaa" };
+
+  function MetricRow({
+    label, mainVal, otherVal, higherBetter, fmt, isAgePeak,
+  }: {
     label:        string;
     mainVal:      number | null;
     otherVal:     number | null;
     higherBetter: boolean;
-    isRatio?:     boolean;
-    isEURDirect?: boolean;
-    isPlain?:     boolean;
-    plainFmt?:    (v: number) => string;
+    fmt:          (v: number | null, side: "main" | "other") => { str: string; converted: boolean };
     isAgePeak?:   boolean;
-  };
-
-  function rowWinner(def: RowDef, mV: number | null, oV: number | null): boolean | null {
-    if (mV === null || oV === null) return null;
-    if (def.isAgePeak) return Math.abs(mV - 26) < Math.abs(oV - 26);
-    return def.higherBetter ? mV > oV : mV < oV;
-  }
-
-  function TableRow({ def }: { def: RowDef }) {
-    const mEur = def.isRatio || def.isPlain || def.isEURDirect ? def.mainVal  : toEUR(def.mainVal,  main.currency);
-    const oEur = def.isRatio || def.isPlain || def.isEURDirect ? def.otherVal : toEUR(def.otherVal, other.currency);
-    const mWins = rowWinner(def, mEur, oEur);
+  }) {
+    const mWins = wins(mainVal, otherVal, higherBetter, isAgePeak);
     const mBg  = mWins === true  ? BG_WIN  : mWins === false ? BG_LOSE : undefined;
     const oBg  = mWins === false ? BG_WIN  : mWins === true  ? BG_LOSE : undefined;
     const mClr = mWins === true  ? C_WIN   : mWins === false ? C_LOSE  : "#111111";
     const oClr = mWins === false ? C_WIN   : mWins === true  ? C_LOSE  : "#111111";
 
-    function display(val: number | null, isOther: boolean): string {
-      if (val === null) return "—";
-      if (def.isRatio) return fmtPct(val);
-      if (def.isPlain && def.plainFmt) return def.plainFmt(val);
-      if (def.isEURDirect) return fmtEUR(val);
-      return fmtEUR(toEUR(val, isOther ? other.currency : main.currency));
-    }
-
-    const showMFX = !def.isRatio && !def.isPlain && !def.isEURDirect && mainFX  && def.mainVal  !== null;
-    const showOFX = !def.isRatio && !def.isPlain && !def.isEURDirect && otherFX && def.otherVal !== null;
+    const mFmt = fmt(mainVal,  "main");
+    const oFmt = fmt(otherVal, "other");
 
     return (
-      <div style={{ display: "flex", borderBottom: "1px solid #f5f5f5" }}>
-        <div style={{ width: "120px", padding: "10px 14px", flexShrink: 0, display: "flex", alignItems: "center" }}>
-          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999" }}>{def.label}</span>
-        </div>
-        <div style={{ flex: 1, padding: "10px 14px", borderLeft: "1px solid #f0f0f0", background: mBg }}>
-          <span style={{ fontSize: "14px", fontWeight: 600, color: mClr, fontVariantNumeric: "tabular-nums" }}>{display(def.mainVal, false)}</span>
-          {showMFX && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "6px" }}>fx</span>}
-        </div>
-        <div style={{ flex: 1, padding: "10px 14px", borderLeft: "1px solid #f0f0f0", background: oBg }}>
-          <span style={{ fontSize: "14px", fontWeight: 600, color: oClr, fontVariantNumeric: "tabular-nums" }}>{display(def.otherVal, true)}</span>
-          {showOFX && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "6px" }}>fx</span>}
-        </div>
-      </div>
-    );
-  }
-
-  function SectionHeader({ label }: { label: string }) {
-    return (
-      <div style={{ display: "flex", background: "#f9f9f9", borderBottom: "1px solid #eeeeee" }}>
-        <div style={{ width: "120px", flexShrink: 0 }} />
-        <div style={{ flex: 2, padding: "7px 14px", borderLeft: "1px solid #eeeeee" }}>
-          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa" }}>{label}</span>
-        </div>
-      </div>
-    );
-  }
-
-  const financialRows: RowDef[] = [
-    { label: "Revenue",    mainVal: main.revenue,          otherVal: other.revenue,          higherBetter: true  },
-    { label: "Wage Bill",  mainVal: main.wage_bill,        otherVal: other.wage_bill,        higherBetter: false },
-    { label: "Wage Ratio", mainVal: main.wage_ratio,       otherVal: other.wage_ratio,       higherBetter: false, isRatio: true },
-    { label: "Op. Profit", mainVal: main.operating_profit, otherVal: other.operating_profit, higherBetter: true  },
-    { label: "Pre-tax",    mainVal: main.pre_tax_profit,   otherVal: other.pre_tax_profit,   higherBetter: true  },
-    { label: "Net Debt",   mainVal: main.net_debt,         otherVal: other.net_debt,         higherBetter: false },
-  ];
-  const squadRows: RowDef[] = [
-    { label: "Squad Value", mainVal: main.squad_value_eur_m, otherVal: other.squad_value_eur_m, higherBetter: true,  isEURDirect: true },
-    { label: "Squad Size",  mainVal: main.squad_size,        otherVal: other.squad_size,        higherBetter: true,  isPlain: true, plainFmt: v => `${Math.round(v)}` },
-    { label: "Avg Age",     mainVal: main.avg_age,           otherVal: other.avg_age,           higherBetter: false, isPlain: true, isAgePeak: true, plainFmt: v => v.toFixed(1) },
-    { label: "Expiry Risk", mainVal: main.expiry_0_12m_pct,  otherVal: other.expiry_0_12m_pct,  higherBetter: false, isRatio: true },
-  ];
-  const stadiumRows: RowDef[] = [
-    { label: "Capacity",    mainVal: main.capacity,       otherVal: other.capacity,       higherBetter: true, isPlain: true, plainFmt: v => Math.round(v).toLocaleString("en-GB") },
-    { label: "Utilisation", mainVal: main.attendance_pct, otherVal: other.attendance_pct, higherBetter: true, isRatio: true },
-  ];
-
-  return (
-    <div style={{ border: "1px solid #e0e0e0", overflow: "hidden" }}>
-      <div style={{ display: "flex", borderBottom: "2px solid #e0e0e0" }}>
-        <div style={{ width: "120px", flexShrink: 0, padding: "12px 14px" }}>
-          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#aaaaaa" }}>EUR base</span>
-        </div>
-        <div style={{ flex: 1, padding: "12px 14px", borderLeft: "1px solid #e0e0e0" }}>
-          <p style={{ fontSize: "13px", fontWeight: 700, color: HIGHLIGHT, margin: 0 }}>{main.name}</p>
-          <p style={{ fontSize: "11px", color: "#aaaaaa", margin: "2px 0 0 0" }}>{main.divisionLabel}</p>
-        </div>
-        <div style={{ flex: 1, padding: "12px 14px", borderLeft: "1px solid #e0e0e0" }}>
-          <p style={{ fontSize: "13px", fontWeight: 700, color: H2H_CLR, margin: 0 }}>{other.name}</p>
-          <p style={{ fontSize: "11px", color: "#aaaaaa", margin: "2px 0 0 0" }}>
-            {COUNTRY_FLAGS[other.country] ?? ""} {other.divisionLabel}
+      <>
+        {/* Main cell */}
+        <div style={{ padding: "14px 20px", borderBottom: "1px solid #f5f5f5", background: mBg }}>
+          <p style={LBL}>{label}</p>
+          <p style={{ fontSize: VAL, fontWeight: 700, color: mClr, fontVariantNumeric: "tabular-nums", margin: 0, lineHeight: 1.1 }}>
+            {mFmt.str}
+            {mFmt.converted && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "5px" }}>fx</span>}
           </p>
         </div>
+        {/* Other cell */}
+        <div style={{ padding: "14px 20px", borderBottom: "1px solid #f5f5f5", borderLeft: "1px solid #f0f0f0", background: oBg }}>
+          {other ? (
+            <>
+              <p style={LBL}>{label}</p>
+              <p style={{ fontSize: VAL, fontWeight: 700, color: oClr, fontVariantNumeric: "tabular-nums", margin: 0, lineHeight: 1.1 }}>
+                {oFmt.str}
+                {oFmt.converted && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "5px" }}>fx</span>}
+              </p>
+            </>
+          ) : (
+            <p style={{ fontSize: VAL, fontWeight: 300, color: "#e0e0e0", margin: 0, lineHeight: 1.1 }}>—</p>
+          )}
+        </div>
+      </>
+    );
+  }
+
+  // Search dropdown state
+  const searchPool = useMemo(() => [] as H2HPeer[], []); // populated via prop
+  const showDrop = dropOpen && query.trim().length > 0;
+  void searchPool; // declared for clarity; actual filtering happens in HeadToHeadView
+
+  // Section banner helper
+  function SectionBanner({ label }: { label: string }) {
+    return (
+      <>
+        <div style={{ padding: "8px 20px", background: "#f9f9f9", borderBottom: "1px solid #eeeeee" }}>
+          <span style={BANNER}>{label}</span>
+        </div>
+        <div style={{ padding: "8px 20px", background: "#f9f9f9", borderBottom: "1px solid #eeeeee", borderLeft: "1px solid #eeeeee" }}>
+          <span style={BANNER}>&nbsp;</span>
+        </div>
+      </>
+    );
+  }
+
+  const moneyFmt = (fromCcy: "GBP" | "EUR" | "USD") =>
+    (v: number | null) => displayMoney(v, fromCcy);
+
+  const mainMoneyFmt = (v: number | null, _side: "main" | "other") => displayMoney(v, main.currency);
+  const otherMoneyFmt = (v: number | null, _side: "main" | "other") =>
+    _side === "main" ? displayMoney(v, main.currency) : displayMoney(v, other?.currency ?? main.currency);
+
+  void moneyFmt;
+
+  return (
+    <div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", border: "1px solid #e0e0e0", overflow: "hidden" }}>
+
+        {/* ── Column headers ── */}
+        <div style={{ padding: "16px 20px", borderBottom: "2px solid #e0e0e0", background: "white" }}>
+          <p style={{ fontSize: "15px", fontWeight: 700, color: HIGHLIGHT, margin: "0 0 2px 0" }}>{main.name}</p>
+          <p style={{ fontSize: "11px", color: "#aaaaaa", margin: 0 }}>{main.divisionLabel}</p>
+        </div>
+        <div style={{ padding: "16px 20px", borderBottom: "2px solid #e0e0e0", borderLeft: "1px solid #e0e0e0", background: "white" }}>
+          {other ? (
+            <>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
+                <div>
+                  <p style={{ fontSize: "15px", fontWeight: 700, color: H2H_CLR, margin: "0 0 2px 0" }}>{other.name}</p>
+                  <p style={{ fontSize: "11px", color: "#aaaaaa", margin: 0 }}>
+                    {COUNTRY_FLAGS[other.country] ?? ""} {other.divisionLabel}
+                  </p>
+                </div>
+                <button
+                  onClick={onClear}
+                  style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "#aaaaaa", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "2px", flexShrink: 0, marginTop: "2px" }}
+                >
+                  Clear
+                </button>
+              </div>
+            </>
+          ) : (
+            <div style={{ position: "relative" }}>
+              <input
+                type="text"
+                value={query}
+                onChange={e => { onQueryChange(e.target.value); setDropOpen(true); }}
+                onFocus={() => setDropOpen(true)}
+                onBlur={() => setTimeout(() => setDropOpen(false), 150)}
+                placeholder="Search a club..."
+                autoComplete="off"
+                style={{
+                  width: "100%", border: "1px solid #d0d0d0",
+                  padding: "9px 14px", fontSize: "13px", color: "#111111",
+                  background: "white", outline: "none", fontWeight: 500,
+                  boxSizing: "border-box",
+                }}
+              />
+              {showDrop && (
+                <div style={{
+                  position: "absolute", top: "100%", left: 0,
+                  width: "280px", border: "1px solid #e0e0e0", borderTop: "none",
+                  maxHeight: "300px", overflowY: "auto",
+                  background: "white", zIndex: 20,
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                }}>
+                  <p style={{ padding: "12px 14px", fontSize: "12px", color: "#aaaaaa", margin: 0 }}>
+                    Type to search clubs…
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── Financial ── */}
+        <SectionBanner label="Financial" />
+
+        <MetricRow
+          label="Revenue" higherBetter={true}
+          mainVal={main.revenue} otherVal={other?.revenue ?? null}
+          fmt={(v, side) => displayMoney(v, side === "main" ? main.currency : (other?.currency ?? main.currency))}
+        />
+        <MetricRow
+          label="Wage Bill" higherBetter={false}
+          mainVal={main.wage_bill} otherVal={other?.wage_bill ?? null}
+          fmt={(v, side) => displayMoney(v, side === "main" ? main.currency : (other?.currency ?? main.currency))}
+        />
+        <MetricRow
+          label="Wage Ratio" higherBetter={false}
+          mainVal={main.wage_ratio} otherVal={other?.wage_ratio ?? null}
+          fmt={(v) => ({ str: fmtPct(v), converted: false })}
+        />
+        <MetricRow
+          label="Op. Profit" higherBetter={true}
+          mainVal={normMoney(main.operating_profit, main.currency)}
+          otherVal={normMoney(other?.operating_profit ?? null, other?.currency ?? main.currency)}
+          fmt={(v, side) => displayMoney(
+            side === "main" ? main.operating_profit : (other?.operating_profit ?? null),
+            side === "main" ? main.currency : (other?.currency ?? main.currency),
+          )}
+        />
+        <MetricRow
+          label="Pre-tax Profit" higherBetter={true}
+          mainVal={normMoney(main.pre_tax_profit, main.currency)}
+          otherVal={normMoney(other?.pre_tax_profit ?? null, other?.currency ?? main.currency)}
+          fmt={(v, side) => displayMoney(
+            side === "main" ? main.pre_tax_profit : (other?.pre_tax_profit ?? null),
+            side === "main" ? main.currency : (other?.currency ?? main.currency),
+          )}
+        />
+        <MetricRow
+          label="Net Debt" higherBetter={false}
+          mainVal={normMoney(main.net_debt, main.currency)}
+          otherVal={normMoney(other?.net_debt ?? null, other?.currency ?? main.currency)}
+          fmt={(v, side) => displayMoney(
+            side === "main" ? main.net_debt : (other?.net_debt ?? null),
+            side === "main" ? main.currency : (other?.currency ?? main.currency),
+          )}
+        />
+
+        {/* ── Squad ── */}
+        <SectionBanner label="Squad" />
+
+        <MetricRow
+          label={`Est. Squad Value (${ccySymbol})`} higherBetter={true}
+          mainVal={main.squad_value_eur_m} otherVal={other?.squad_value_eur_m ?? null}
+          fmt={(v) => displaySquadValue(v)}
+        />
+        <MetricRow
+          label="Squad Size" higherBetter={true}
+          mainVal={main.squad_size} otherVal={other?.squad_size ?? null}
+          fmt={(v) => ({ str: v !== null ? `${Math.round(v)}` : "—", converted: false })}
+        />
+        <MetricRow
+          label="Avg Age" higherBetter={false} isAgePeak={true}
+          mainVal={main.avg_age} otherVal={other?.avg_age ?? null}
+          fmt={(v) => ({ str: v !== null ? v.toFixed(1) : "—", converted: false })}
+        />
+        <MetricRow
+          label="Expiry Risk" higherBetter={false}
+          mainVal={main.expiry_0_12m_pct} otherVal={other?.expiry_0_12m_pct ?? null}
+          fmt={(v) => ({ str: fmtPct(v, 0), converted: false })}
+        />
+
+        {/* ── Stadium ── */}
+        <SectionBanner label="Stadium" />
+
+        <MetricRow
+          label="Capacity" higherBetter={true}
+          mainVal={main.capacity} otherVal={other?.capacity ?? null}
+          fmt={(v) => ({ str: v !== null ? Math.round(v).toLocaleString("en-GB") : "—", converted: false })}
+        />
+        <MetricRow
+          label="Utilisation" higherBetter={true}
+          mainVal={main.attendance_pct} otherVal={other?.attendance_pct ?? null}
+          fmt={(v) => ({ str: fmtPct(v), converted: false })}
+        />
+
       </div>
-      <SectionHeader label="Financial" />
-      {financialRows.map(def => <TableRow key={def.label} def={def} />)}
-      <SectionHeader label="Squad" />
-      {squadRows.map(def => <TableRow key={def.label} def={def} />)}
-      <SectionHeader label="Stadium" />
-      {stadiumRows.map(def => <TableRow key={def.label} def={def} />)}
-      <div style={{ padding: "8px 14px", background: "#fafafa", borderTop: "1px solid #eeeeee" }}>
-        <p style={{ fontSize: "10px", color: "#cccccc", margin: 0 }}>
-          EUR base · GBP ×{FX_GBP} · USD ×{FX_USD} · green = better for that metric
-        </p>
-      </div>
+
+      {/* ── Footer ── */}
+      <p style={{ fontSize: "10px", color: "#cccccc", margin: "8px 0 0 0" }}>
+        {sameCurrency
+          ? `Values shown in native currency (${ccySymbol}) · green = better for that metric`
+          : `Values shown in ${targetCcy} · GBP ×${FX_GBP_TO_USD} · EUR ×${FX_EUR_TO_USD} · green = better for that metric`
+        }
+      </p>
     </div>
   );
 }
@@ -867,10 +994,23 @@ function HeadToHeadView({
 
   const showDrop = dropOpen && query.trim().length > 0;
 
+  function handleSelect(slug: string) {
+    setSlug(slug);
+    setQuery("");
+    setDropOpen(false);
+    setView("table");
+  }
+
+  function handleClear() {
+    setSlug(null);
+    setQuery("");
+    setView("table");
+  }
+
   return (
     <div>
       {/* ── Header row ─────────────────────────────────────────────────── */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "28px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", marginBottom: "24px", flexWrap: "wrap" }}>
 
         {/* Left: identity / vs label */}
         <div>
@@ -882,12 +1022,6 @@ function HeadToHeadView({
               <span style={{ fontSize: "11px", color: "#aaaaaa" }}>
                 {COUNTRY_FLAGS[otherPeer.country] ?? ""} {otherPeer.divisionLabel}
               </span>
-              <button
-                onClick={() => { setSlug(null); setQuery(""); setView("table"); }}
-                style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "#aaaaaa", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "2px" }}
-              >
-                Clear
-              </button>
             </div>
           ) : (
             <p style={{ fontSize: "13px", color: "#888888", margin: 0 }}>
@@ -896,9 +1030,9 @@ function HeadToHeadView({
           )}
         </div>
 
-        {/* Right: view toggle + search */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-          {otherPeer && (
+        {/* Right: view toggles (when club selected) + search/change */}
+        {otherPeer && (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
             <div style={{ display: "flex" }}>
               {(["table", "radar"] as H2HView[]).map(v => (
                 <button
@@ -918,12 +1052,9 @@ function HeadToHeadView({
                 </button>
               ))}
             </div>
-          )}
-
-          <div style={{ position: "relative" }}>
-            {otherPeer ? (
+            <div style={{ position: "relative" }}>
               <button
-                onClick={() => { setSlug(null); setQuery(""); setView("table"); }}
+                onClick={handleClear}
                 style={{
                   padding: "8px 14px", fontSize: "13px", color: "#555555",
                   background: "white", border: "1px solid #e0e0e0", cursor: "pointer",
@@ -931,81 +1062,24 @@ function HeadToHeadView({
               >
                 Change club
               </button>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  value={query}
-                  onChange={e => { setQuery(e.target.value); setDropOpen(true); }}
-                  onFocus={() => setDropOpen(true)}
-                  onBlur={() => setTimeout(() => setDropOpen(false), 150)}
-                  placeholder="Compare with another club..."
-                  autoComplete="off"
-                  style={{
-                    width: "240px", border: "1px solid #d0d0d0",
-                    padding: "9px 14px", fontSize: "13px", color: "#111111",
-                    background: "white", outline: "none", fontWeight: 500,
-                  }}
-                  onFocusCapture={e => { (e.target as HTMLElement).style.borderColor = "#999"; }}
-                  onBlurCapture={e => { (e.target as HTMLElement).style.borderColor = "#d0d0d0"; }}
-                />
-                {showDrop && (
-                  <div style={{
-                    position: "absolute", top: "100%", right: 0,
-                    width: "280px", border: "1px solid #e0e0e0", borderTop: "none",
-                    maxHeight: "320px", overflowY: "auto",
-                    background: "white", zIndex: 10,
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-                  }}>
-                    {grouped.length === 0 ? (
-                      <p style={{ padding: "12px 14px", fontSize: "13px", color: "#aaaaaa", margin: 0 }}>No clubs match.</p>
-                    ) : grouped.map(([country, peers]) => (
-                      <div key={country}>
-                        <div style={{ padding: "6px 14px 4px", background: "#f9f9f9", borderBottom: "1px solid #f0f0f0" }}>
-                          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#bbbbbb" }}>
-                            {COUNTRY_FLAGS[country] ?? ""} {country}
-                          </span>
-                        </div>
-                        {peers.map(p => (
-                          <button
-                            key={p.slug}
-                            onMouseDown={() => { setSlug(p.slug); setQuery(""); setDropOpen(false); }}
-                            style={{
-                              width: "100%", textAlign: "left", padding: "9px 14px",
-                              display: "flex", alignItems: "center", justifyContent: "space-between",
-                              background: "none", border: "none", borderBottom: "1px solid #f8f8f8",
-                              cursor: "pointer", gap: "8px",
-                            }}
-                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#f5f5f5"; }}
-                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "none"; }}
-                          >
-                            <span style={{ fontSize: "13px", color: "#111111" }}>{p.name}</span>
-                            <span style={{ fontSize: "10px", color: "#aaaaaa", flexShrink: 0 }}>{p.divisionLabel}</span>
-                          </button>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
+              <div style={{ position: "absolute", top: "100%", right: 0, zIndex: 20 }}>
+                {/* Dropdown handled by H2HTwoCol header cell when no club selected */}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* ── Content ────────────────────────────────────────────────────── */}
-      {otherPeer ? (
+      {/* ── Radar view (when club selected) ─────────────────────────────── */}
+      {otherPeer && view === "radar" ? (
         <div>
-          {view === "table" && <H2HTable main={mainPeer} other={otherPeer} />}
-          {view === "radar" && (
-            <RadarChart
-              axes={radarAxes}
-              series={[
-                { name: mainPeer.name,  color: HIGHLIGHT, values: radarValues(mainPeer)  },
-                { name: otherPeer.name, color: H2H_CLR,   values: radarValues(otherPeer) },
-              ]}
-            />
-          )}
+          <RadarChart
+            axes={radarAxes}
+            series={[
+              { name: mainPeer.name,  color: HIGHLIGHT, values: radarValues(mainPeer)  },
+              { name: otherPeer.name, color: H2H_CLR,   values: radarValues(otherPeer) },
+            ]}
+          />
           {callouts.length > 0 && (
             <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
               {callouts.map((text, i) => (
@@ -1022,7 +1096,76 @@ function HeadToHeadView({
           )}
         </div>
       ) : (
-        <ArsenalSoloView peer={mainPeer} />
+        /* ── Table view — always two columns ──────────────────────────── */
+        <div>
+          {/* Global search dropdown (no club selected) */}
+          {!otherPeer && (
+            <div style={{ position: "relative", marginBottom: "0px" }}>
+              {showDrop && (
+                <div style={{
+                  position: "absolute", top: 0, right: 0,
+                  width: "280px", border: "1px solid #e0e0e0",
+                  maxHeight: "320px", overflowY: "auto",
+                  background: "white", zIndex: 20,
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                }}>
+                  {grouped.length === 0 ? (
+                    <p style={{ padding: "12px 14px", fontSize: "13px", color: "#aaaaaa", margin: 0 }}>No clubs match.</p>
+                  ) : grouped.map(([country, peers]) => (
+                    <div key={country}>
+                      <div style={{ padding: "6px 14px 4px", background: "#f9f9f9", borderBottom: "1px solid #f0f0f0" }}>
+                        <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#bbbbbb" }}>
+                          {COUNTRY_FLAGS[country] ?? ""} {country}
+                        </span>
+                      </div>
+                      {peers.map(p => (
+                        <button
+                          key={p.slug}
+                          onMouseDown={() => handleSelect(p.slug)}
+                          style={{
+                            width: "100%", textAlign: "left", padding: "9px 14px",
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                            background: "none", border: "none", borderBottom: "1px solid #f8f8f8",
+                            cursor: "pointer", gap: "8px",
+                          }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#f5f5f5"; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "none"; }}
+                        >
+                          <span style={{ fontSize: "13px", color: "#111111" }}>{p.name}</span>
+                          <span style={{ fontSize: "10px", color: "#aaaaaa", flexShrink: 0 }}>{p.divisionLabel}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          <H2HTwoCol
+            main={mainPeer}
+            other={otherPeer}
+            query={query}
+            onQueryChange={q => { setQuery(q); setDropOpen(true); }}
+            onSelect={handleSelect}
+            onClear={handleClear}
+          />
+
+          {otherPeer && callouts.length > 0 && (
+            <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              {callouts.map((text, i) => (
+                <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                  <div style={{
+                    width: "3px", flexShrink: 0, minHeight: "20px",
+                    background: i === 0 ? HIGHLIGHT : i === 1 ? H2H_CLR : "#e0e0e0",
+                    borderRadius: "2px", alignSelf: "stretch",
+                  }} />
+                  <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#333333", margin: 0 }}>{text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
