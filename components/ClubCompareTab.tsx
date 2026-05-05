@@ -237,11 +237,11 @@ function InlineRanking({
                 <span style={{
                   fontSize: "13px", fontWeight: isHL ? 700 : 400,
                   color: isHL ? HIGHLIGHT : "#444444",
-                  flex: "0 1 200px", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}>
                   {d.name}
                 </span>
-                <div style={{ flex: 1, minWidth: "40px" }}>
+                <div style={{ width: "40px", flexShrink: 0 }}>
                   <div style={{ height: "5px", background: "#e8e8e8", borderRadius: "2px", overflow: "hidden" }}>
                     <div style={{
                       height: "100%", width: `${barPct}%`,
@@ -463,9 +463,6 @@ function DivisionBenchmarkView({
   const svFmt = club.squad_value_eur_m !== null
     ? `€${Math.round(club.squad_value_eur_m).toLocaleString("en-GB")}m` : "—";
 
-  const expandedInRow1 = ROW1.includes(expanded as MetricKey) ? expanded : null;
-  const expandedInRow2 = ROW2.includes(expanded as MetricKey) ? expanded : null;
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
       <div>
@@ -473,8 +470,8 @@ function DivisionBenchmarkView({
 
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {/* Row 1 — Financial */}
-          <div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+            <div>
               <ScoreCard
                 label="Revenue" value={fmtGBP(club.revenue)}
                 yoyStr={revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null}
@@ -482,6 +479,9 @@ function DivisionBenchmarkView({
                 rank={revR.rank} total={revR.total}
                 expanded={expanded === "revenue"} onToggle={() => toggle("revenue")}
               />
+              {expanded === "revenue" && expandedPanel("revenue")}
+            </div>
+            <div>
               <ScoreCard
                 label="Wage Ratio" value={fmtPct(club.wage_ratio)}
                 yoyStr={wrYoy !== null ? `${wrYoy >= 0 ? "+" : ""}${wrYoy.toFixed(1)}pp` : null}
@@ -489,6 +489,9 @@ function DivisionBenchmarkView({
                 rank={wrR.rank} total={wrR.total} note="Lower is better"
                 expanded={expanded === "wage_ratio"} onToggle={() => toggle("wage_ratio")}
               />
+              {expanded === "wage_ratio" && expandedPanel("wage_ratio")}
+            </div>
+            <div>
               <ScoreCard
                 label="Net Debt" value={fmtGBP(club.net_debt)}
                 yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}£${Math.abs(ndYoy).toFixed(1)}m` : null}
@@ -496,19 +499,22 @@ function DivisionBenchmarkView({
                 rank={ndR.rank} total={ndR.total} note="Lower is better"
                 expanded={expanded === "net_debt"} onToggle={() => toggle("net_debt")}
               />
+              {expanded === "net_debt" && expandedPanel("net_debt")}
+            </div>
+            <div>
               <ScoreCard
                 label="Est. Squad Value" value={svFmt}
                 yoyStr={null} yoyColor="#cccccc"
                 rank={svR.rank} total={svR.total}
                 expanded={expanded === "squad_value"} onToggle={() => toggle("squad_value")}
               />
+              {expanded === "squad_value" && expandedPanel("squad_value")}
             </div>
-            {expandedInRow1 && expandedPanel(expandedInRow1)}
           </div>
 
           {/* Row 2 — Squad + Stadium */}
-          <div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+            <div>
               <ScoreCard
                 label="Squad Size"
                 value={club.squad_size !== null ? `${club.squad_size}` : "—"}
@@ -516,6 +522,9 @@ function DivisionBenchmarkView({
                 rank={ssR.rank} total={ssR.total}
                 expanded={expanded === "squad_size"} onToggle={() => toggle("squad_size")}
               />
+              {expanded === "squad_size" && expandedPanel("squad_size")}
+            </div>
+            <div>
               <ScoreCard
                 label="Average Age"
                 value={club.avg_age !== null ? club.avg_age.toFixed(1) : "—"}
@@ -523,20 +532,26 @@ function DivisionBenchmarkView({
                 rank={ageR.rank} total={ageR.total}
                 expanded={expanded === "avg_age"} onToggle={() => toggle("avg_age")}
               />
+              {expanded === "avg_age" && expandedPanel("avg_age")}
+            </div>
+            <div>
               <ScoreCard
                 label="Expiry Risk" value={fmtPct(club.expiry_0_12m_pct, 0)}
                 yoyStr={null} yoyColor="#cccccc"
                 rank={exR.rank} total={exR.total} note="Lower is better"
                 expanded={expanded === "expiry"} onToggle={() => toggle("expiry")}
               />
+              {expanded === "expiry" && expandedPanel("expiry")}
+            </div>
+            <div>
               <ScoreCard
                 label="Stadium Utilisation" value={fmtPct(club.attendance_pct)}
                 yoyStr={null} yoyColor="#cccccc"
                 rank={utilR.rank} total={utilR.total}
                 expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
               />
+              {expanded === "attendance" && expandedPanel("attendance")}
             </div>
-            {expandedInRow2 && expandedPanel(expandedInRow2)}
           </div>
         </div>
       </div>
