@@ -35,33 +35,34 @@ export type H2HPeer = DivisionPeer & {
 };
 
 type CompareMode = "benchmark" | "h2h";
-type H2HView    = "radar" | "table";
+type H2HView     = "table" | "radar";
+type MetricKey   =
+  | "revenue" | "wage_ratio" | "net_debt" | "squad_value"
+  | "squad_size" | "avg_age" | "expiry" | "attendance";
 
 // ─── Colours ─────────────────────────────────────────────────────────────────
 
-const SIG_GREEN  = "#2e7d52";
-const SIG_AMBER  = "#c47900";
-const SIG_RED    = "#9a3030";
+const SIG_GREEN = "#2e7d52";
+const SIG_AMBER = "#c47900";
+const SIG_RED   = "#9a3030";
 const SIG_BG: Record<string, string> = {
   [SIG_GREEN]: "#f2fbf5",
   [SIG_AMBER]: "#fdfaf0",
   [SIG_RED]:   "#fdf3f3",
 };
-
-const HIGHLIGHT  = "#3b82f6";
-const H2H_CLR    = "#e05252";
-const C_WIN      = "#2e7d52";
-const C_LOSE     = "#9a3030";
-const BG_WIN     = "#f2fbf5";
-const BG_LOSE    = "#fdf3f3";
-const FX_GBP     = 1.17;
-const FX_USD     = 0.92;
+const HIGHLIGHT = "#3b82f6";
+const H2H_CLR   = "#e05252";
+const C_WIN     = "#2e7d52";
+const C_LOSE    = "#9a3030";
+const BG_WIN    = "#f2fbf5";
+const BG_LOSE   = "#fdf3f3";
+const FX_GBP    = 1.17;
+const FX_USD    = 0.92;
 
 const COUNTRY_FLAGS: Record<string, string> = {
-  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", Spain: "🇪🇸", Italy: "🇮🇹",
-  France: "🇫🇷", Germany: "🇩🇪", Austria: "🇦🇹",
-  Switzerland: "🇨🇭", Denmark: "🇩🇰", Norway: "🇳🇴",
-  Sweden: "🇸🇪", Japan: "🇯🇵",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", France: "🇫🇷", Germany: "🇩🇪",
+  Austria: "🇦🇹", Switzerland: "🇨🇭", Denmark: "🇩🇰",
+  Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
 };
 
 const COUNTRY_ORDER = [
@@ -108,7 +109,6 @@ function rankColor(rank: number | null): string {
   return SIG_RED;
 }
 
-// Standard rank: sort by value, higherBetter determines order
 function divRank(
   peers: DivisionPeer[],
   slug: string,
@@ -123,20 +123,13 @@ function divRank(
   return { rank: idx === -1 ? null : idx + 1, total: valid.length };
 }
 
-// Age rank: closest to 26 = rank 1
-function divRankAge(
-  peers: DivisionPeer[],
-  slug: string,
-): { rank: number | null; total: number } {
+function divRankAge(peers: DivisionPeer[], slug: string): { rank: number | null; total: number } {
   const valid  = peers.filter(p => p.avg_age !== null);
-  const sorted = [...valid].sort((a, b) =>
-    Math.abs(a.avg_age! - 26) - Math.abs(b.avg_age! - 26),
-  );
+  const sorted = [...valid].sort((a, b) => Math.abs(a.avg_age! - 26) - Math.abs(b.avg_age! - 26));
   const idx = sorted.findIndex(p => p.slug === slug);
   return { rank: idx === -1 ? null : idx + 1, total: valid.length };
 }
 
-// Percentile rank (for callout stats)
 function pctRank(v: number, sorted: number[]): number {
   if (sorted.length === 0) return 0.5;
   let below = 0, equal = 0;
@@ -147,121 +140,44 @@ function pctRank(v: number, sorted: number[]): number {
   return (below + 0.5 * equal) / sorted.length;
 }
 
-// ─── Scorecard ────────────────────────────────────────────────────────────────
-// Split layout: left = metric value, right = league ranking panel.
-// Bottom accent bar colour-coded by rank position.
+// ─── Section heading ──────────────────────────────────────────────────────────
 
-function ScoreCard({
-  label, value, yoyStr, yoyColor,
-  rank, total,
-}: {
-  label:    string;
-  value:    string;
-  yoyStr:   string | null;
-  yoyColor: string;
-  rank:     number | null;
-  total:    number;
-}) {
-  const rColor = rankColor(rank);
-  const rBg    = SIG_BG[rColor] ?? "#fafafa";
-
+function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{
-      border:        "1px solid #eeeeee",
-      background:    "white",
-      display:       "flex",
-      flexDirection: "column",
-      overflow:      "hidden",
+    <p style={{
+      fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em",
+      textTransform: "uppercase", color: "#111111",
+      margin: "0 0 16px 0", paddingBottom: "10px", borderBottom: "2px solid #111111",
     }}>
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Left — metric */}
-        <div style={{ flex: 1, minWidth: 0, padding: "20px 16px 16px" }}>
-          <p style={{
-            fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
-            textTransform: "uppercase", color: "#888888", margin: "0 0 10px 0",
-          }}>
-            {label}
-          </p>
-          <p style={{
-            fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 700,
-            color: "#111111", fontVariantNumeric: "tabular-nums",
-            lineHeight: 1, margin: "0 0 8px 0",
-          }}>
-            {value}
-          </p>
-          {yoyStr !== null ? (
-            <p style={{ fontSize: "12px", fontWeight: 600, color: yoyColor, margin: 0, lineHeight: 1.4 }}>
-              {yoyStr} vs prior year
-            </p>
-          ) : (
-            <p style={{ fontSize: "12px", color: "#dddddd", margin: 0 }}>—</p>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div style={{ width: "1px", background: "#eeeeee", flexShrink: 0 }} />
-
-        {/* Right — ranking */}
-        <div style={{
-          width: "82px", flexShrink: 0,
-          padding: "14px 10px 12px",
-          background: rBg,
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          gap: "4px",
-        }}>
-          <p style={{
-            fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em",
-            textTransform: "uppercase", color: rColor, opacity: 0.7,
-            margin: 0, textAlign: "center", lineHeight: 1.3,
-          }}>
-            League<br />ranking
-          </p>
-          <p style={{
-            fontSize: "clamp(26px, 4vw, 34px)", fontWeight: 700,
-            color: rColor, fontVariantNumeric: "tabular-nums",
-            lineHeight: 1, margin: 0,
-          }}>
-            {rank !== null ? ordinal(rank) : "—"}
-          </p>
-          <p style={{
-            fontSize: "11px", color: rColor, opacity: 0.6, margin: 0,
-          }}>
-            of {total}
-          </p>
-        </div>
-      </div>
-
-      {/* Bottom accent bar */}
-      <div style={{ height: "3px", background: rColor, opacity: rank !== null ? 1 : 0.15 }} />
-    </div>
+      {children}
+    </p>
   );
 }
 
-// ─── Ranking Panel ────────────────────────────────────────────────────────────
-// Compact panel used in the 2-column grid. Thin 5px bars.
+// ─── InlineRanking ────────────────────────────────────────────────────────────
+// Full-width panel rendered below a scorecard row when expanded.
 
 type RankEntry = { slug: string; name: string; value: number | null };
 
-function RankingPanel({
-  title, note, data, highlightSlug, formatFn, higherBetter,
+function InlineRanking({
+  data, highlightSlug, formatFn, higherBetter, note, preSorted = false,
 }: {
-  title:         string;
-  note?:         string;
   data:          RankEntry[];
   highlightSlug: string;
   formatFn:      (v: number) => string;
   higherBetter:  boolean;
+  note?:         string;
+  preSorted?:    boolean;
 }) {
   const [showAll, setShowAll] = useState(false);
 
   const sorted = useMemo(() => {
     const valid = data.filter(d => d.value !== null);
+    if (preSorted) return valid;
     return [...valid].sort((a, b) =>
       higherBetter ? b.value! - a.value! : a.value! - b.value!,
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, higherBetter]);
+  }, [data, higherBetter, preSorted]);
 
   const maxVal = useMemo(
     () => Math.max(...sorted.map(d => Math.abs(d.value ?? 0)), 0.01),
@@ -281,74 +197,44 @@ function RankingPanel({
   if (sorted.length === 0) return null;
 
   return (
-    <div style={{ border: "1px solid #eeeeee", padding: "16px 18px 14px" }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px", gap: "8px" }}>
-        <div>
-          <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#555555", margin: 0 }}>
-            {title}
-          </p>
-          {note && (
-            <p style={{ fontSize: "10px", color: "#aaaaaa", margin: "3px 0 0 0" }}>{note}</p>
-          )}
-        </div>
-        {sorted.length > 5 && (
-          <button
-            onClick={() => setShowAll(v => !v)}
-            style={{
-              fontSize: "10px", fontWeight: 600, letterSpacing: "0.06em",
-              textTransform: "uppercase", color: "#aaaaaa", background: "none",
-              border: "none", cursor: "pointer", padding: 0, whiteSpace: "nowrap",
-              textDecoration: "underline", textUnderlineOffset: "2px", flexShrink: 0,
-            }}
-          >
-            {showAll ? "Show top 5" : `Show all ${sorted.length}`}
-          </button>
-        )}
-      </div>
-
-      {/* Rows */}
+    <div style={{ background: "#f9f9f9", padding: "16px 20px 14px", borderTop: "1px solid #e8e8e8" }}>
+      {note && <p style={{ fontSize: "10px", color: "#aaaaaa", margin: "0 0 10px 0" }}>{note}</p>}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {displayed.map((d, listIdx) => {
-          const isHL  = d.slug === highlightSlug;
-          const isFirst = listIdx === 0;
-          const showDivider = !showAll && !hlInTop5 && isHL && !isFirst;
-          const barPct = d.value !== null ? Math.min((Math.abs(d.value) / maxVal) * 100, 100) : 0;
-
+          const isHL       = d.slug === highlightSlug;
+          const showDvdr   = !showAll && !hlInTop5 && isHL && listIdx > 0;
+          const rankPos    = sorted.findIndex(x => x.slug === d.slug) + 1;
+          const barPct     = d.value !== null ? Math.min((Math.abs(d.value) / maxVal) * 100, 100) : 0;
           return (
             <div key={d.slug}>
-              {showDivider && (
-                <div style={{ borderTop: "1px dashed #e0e0e0", marginBottom: "8px" }} />
-              )}
+              {showDvdr && <div style={{ borderTop: "1px dashed #e0e0e0", marginBottom: "8px" }} />}
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                {/* Club name */}
                 <span style={{
-                  fontSize: "13px",
-                  fontWeight: isHL ? 700 : 400,
+                  fontSize: "11px", fontWeight: 700, color: "#cccccc",
+                  width: "22px", flexShrink: 0, textAlign: "right", fontVariantNumeric: "tabular-nums",
+                }}>
+                  {rankPos}
+                </span>
+                <span style={{
+                  fontSize: "13px", fontWeight: isHL ? 700 : 400,
                   color: isHL ? HIGHLIGHT : "#444444",
-                  flex: 1, minWidth: 0,
-                  overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}>
                   {d.name}
                 </span>
-                {/* Thin bar */}
-                <div style={{ width: "48px", flexShrink: 0 }}>
-                  <div style={{ height: "5px", background: "#eeeeee", borderRadius: "2px", overflow: "hidden" }}>
+                <div style={{ width: "56px", flexShrink: 0 }}>
+                  <div style={{ height: "5px", background: "#e8e8e8", borderRadius: "2px", overflow: "hidden" }}>
                     <div style={{
-                      height: "100%",
-                      width: `${barPct}%`,
-                      background: isHL ? HIGHLIGHT : "#cccccc",
-                      borderRadius: "2px",
+                      height: "100%", width: `${barPct}%`,
+                      background: isHL ? HIGHLIGHT : "#cccccc", borderRadius: "2px",
                     }} />
                   </div>
                 </div>
-                {/* Value */}
                 <span style={{
-                  fontSize: "12px",
-                  fontWeight: isHL ? 700 : 400,
+                  fontSize: "12px", fontWeight: isHL ? 700 : 400,
                   color: isHL ? HIGHLIGHT : "#777777",
                   fontVariantNumeric: "tabular-nums",
-                  width: "52px", textAlign: "right", flexShrink: 0,
+                  width: "56px", textAlign: "right", flexShrink: 0,
                 }}>
                   {d.value !== null ? formatFn(d.value) : "—"}
                 </span>
@@ -357,25 +243,127 @@ function RankingPanel({
           );
         })}
       </div>
+      {sorted.length > 5 && (
+        <button
+          onClick={() => setShowAll(v => !v)}
+          style={{
+            marginTop: "10px", fontSize: "10px", fontWeight: 600,
+            letterSpacing: "0.06em", textTransform: "uppercase",
+            color: "#aaaaaa", background: "none", border: "none",
+            cursor: "pointer", padding: 0,
+            textDecoration: "underline", textUnderlineOffset: "2px",
+          }}
+        >
+          {showAll ? "Show top 5" : `Show all ${sorted.length}`}
+        </button>
+      )}
     </div>
   );
 }
 
-// ─── Section heading ──────────────────────────────────────────────────────────
+// ─── ScoreCard ────────────────────────────────────────────────────────────────
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function ScoreCard({
+  label, value, yoyStr, yoyColor, rank, total, note, expanded, onToggle,
+}: {
+  label:    string;
+  value:    string;
+  yoyStr:   string | null;
+  yoyColor: string;
+  rank:     number | null;
+  total:    number;
+  note?:    string;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const rColor = rankColor(rank);
+  const rBg    = SIG_BG[rColor] ?? "#fafafa";
+
   return (
-    <p style={{
-      fontSize: "13px", fontWeight: 700, letterSpacing: "0.1em",
-      textTransform: "uppercase", color: "#111111",
-      margin: "0 0 16px 0", paddingBottom: "10px", borderBottom: "2px solid #111111",
-    }}>
-      {children}
-    </p>
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onToggle}
+      onKeyDown={e => { if (e.key === "Enter" || e.key === " ") onToggle(); }}
+      style={{
+        border: `1px solid ${expanded ? "#bbbbbb" : "#eeeeee"}`,
+        background: "white", display: "flex", flexDirection: "column",
+        overflow: "hidden", cursor: "pointer", userSelect: "none",
+      }}
+    >
+      <div style={{ display: "flex", flex: 1 }}>
+        {/* Left — metric */}
+        <div style={{ flex: 1, minWidth: 0, padding: "22px 16px 18px" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "4px", marginBottom: "10px" }}>
+            <p style={{
+              fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
+              textTransform: "uppercase", color: "#888888", margin: 0,
+            }}>
+              {label}
+            </p>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+              style={{ flexShrink: 0, transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.18s", marginTop: "2px" }}
+            >
+              <path d="M2 4.5L6 8L10 4.5" stroke="#cccccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <p style={{
+            fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 700,
+            color: "#111111", fontVariantNumeric: "tabular-nums",
+            lineHeight: 1, margin: "0 0 8px 0",
+          }}>
+            {value}
+          </p>
+          {yoyStr !== null ? (
+            <p style={{ fontSize: "12px", fontWeight: 600, color: yoyColor, margin: 0, lineHeight: 1.4 }}>
+              {yoyStr} vs prior year
+            </p>
+          ) : (
+            <p style={{ fontSize: "12px", color: "#dddddd", margin: 0 }}>—</p>
+          )}
+          {note && (
+            <p style={{ fontSize: "10px", color: "#bbbbbb", margin: "5px 0 0 0" }}>{note}</p>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div style={{ width: "1px", background: "#eeeeee", flexShrink: 0 }} />
+
+        {/* Right — ranking */}
+        <div style={{
+          width: "82px", flexShrink: 0, padding: "18px 10px 14px",
+          background: rBg, display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center", gap: "4px",
+        }}>
+          <p style={{
+            fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em",
+            textTransform: "uppercase", color: rColor, opacity: 0.7,
+            margin: 0, textAlign: "center", lineHeight: 1.3,
+          }}>
+            League<br />ranking
+          </p>
+          <p style={{
+            fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 700,
+            color: rColor, fontVariantNumeric: "tabular-nums", lineHeight: 1, margin: 0,
+          }}>
+            {rank !== null ? ordinal(rank) : "—"}
+          </p>
+          <p style={{ fontSize: "11px", color: rColor, opacity: 0.6, margin: 0 }}>
+            of {total}
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom accent bar */}
+      <div style={{ height: "3px", background: rColor, opacity: rank !== null ? 1 : 0.15 }} />
+    </div>
   );
 }
 
 // ─── Division Benchmark View ──────────────────────────────────────────────────
+
+const ROW1: MetricKey[] = ["revenue", "wage_ratio", "net_debt", "squad_value"];
+const ROW2: MetricKey[] = ["squad_size", "avg_age", "expiry", "attendance"];
 
 function DivisionBenchmarkView({
   slug, divisionLabel, divisionPeers, priorYear,
@@ -385,196 +373,158 @@ function DivisionBenchmarkView({
   divisionPeers: DivisionPeer[];
   priorYear:     PriorYearSnap | null;
 }) {
+  const [expanded, setExpanded] = useState<MetricKey | null>(null);
+
   const club = divisionPeers.find(p => p.slug === slug);
   if (!club) return null;
 
-  // ── Scorecard data helpers ────────────────────────────────────────────────
+  function toggle(key: MetricKey) {
+    setExpanded(prev => prev === key ? null : key);
+  }
 
-  // Revenue
-  const revR  = divRank(divisionPeers, slug, p => p.revenue, true);
-  const revYoy = priorYear?.revenue != null && club.revenue != null
-    ? ((club.revenue - priorYear.revenue) / Math.abs(priorYear.revenue)) * 100 : null;
-  const revYoyStr   = revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null;
-  const revYoyColor = revYoy === null ? "#cccccc" : revYoy >= 0 ? C_WIN : C_LOSE;
-
-  // Wage Ratio
-  const wrR   = divRank(divisionPeers, slug, p => p.wage_ratio, false);
-  const wrYoy = priorYear?.wage_ratio != null && club.wage_ratio != null
-    ? club.wage_ratio - priorYear.wage_ratio : null;
-  const wrYoyStr   = wrYoy !== null ? `${wrYoy >= 0 ? "+" : ""}${wrYoy.toFixed(1)}pp` : null;
-  const wrYoyColor = wrYoy === null ? "#cccccc" : wrYoy <= 0 ? C_WIN : C_LOSE;
-
-  // Net Debt
-  const ndR   = divRank(divisionPeers, slug, p => p.net_debt, false);
-  const ndYoy = priorYear?.net_debt != null && club.net_debt != null
-    ? club.net_debt - priorYear.net_debt : null;
-  const ndYoyStr   = ndYoy !== null
-    ? `${ndYoy >= 0 ? "+" : ""}£${Math.abs(ndYoy).toFixed(1)}m` : null;
-  const ndYoyColor = ndYoy === null ? "#cccccc" : ndYoy <= 0 ? C_WIN : C_LOSE;
-
-  // Est. Squad Value
+  // ── Ranks ──────────────────────────────────────────────────────────────────
+  const revR  = divRank(divisionPeers, slug, p => p.revenue,           true);
+  const wrR   = divRank(divisionPeers, slug, p => p.wage_ratio,        false);
+  const ndR   = divRank(divisionPeers, slug, p => p.net_debt,          false);
   const svR   = divRank(divisionPeers, slug, p => p.squad_value_eur_m, true);
+  const ssR   = divRank(divisionPeers, slug, p => p.squad_size,        true);
+  const ageR  = divRankAge(divisionPeers, slug);
+  const exR   = divRank(divisionPeers, slug, p => p.expiry_0_12m_pct,  false);
+  const utilR = divRank(divisionPeers, slug, p => p.attendance_pct,    true);
+
+  // ── YoY ────────────────────────────────────────────────────────────────────
+  const revYoy = priorYear?.revenue    != null && club.revenue    != null
+    ? ((club.revenue - priorYear.revenue) / Math.abs(priorYear.revenue)) * 100 : null;
+  const wrYoy  = priorYear?.wage_ratio != null && club.wage_ratio != null
+    ? club.wage_ratio - priorYear.wage_ratio : null;
+  const ndYoy  = priorYear?.net_debt   != null && club.net_debt   != null
+    ? club.net_debt - priorYear.net_debt : null;
+
+  // ── Ranking data per metric ─────────────────────────────────────────────────
+  const ageRankData: RankEntry[] = divisionPeers
+    .filter(p => p.avg_age !== null)
+    .sort((a, b) => Math.abs(a.avg_age! - 26) - Math.abs(b.avg_age! - 26))
+    .map(p => ({ slug: p.slug, name: p.name, value: p.avg_age }));
+
+  function expandedPanel(key: MetricKey) {
+    if (expanded !== key) return null;
+    if (key === "avg_age") {
+      return (
+        <InlineRanking
+          data={ageRankData}
+          highlightSlug={slug}
+          formatFn={v => v.toFixed(1)}
+          higherBetter={false}
+          preSorted={true}
+        />
+      );
+    }
+    const cfgs: Record<Exclude<MetricKey, "avg_age">, { data: RankEntry[]; formatFn: (v: number) => string; higherBetter: boolean; note?: string }> = {
+      revenue:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.revenue })),           formatFn: v => fmtGBP(v),                                        higherBetter: true  },
+      wage_ratio:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.wage_ratio })),        formatFn: v => fmtPct(v),                                        higherBetter: false, note: "Lower is better" },
+      net_debt:    { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.net_debt })),          formatFn: v => fmtGBP(v),                                        higherBetter: false, note: "Lower is better" },
+      squad_value: { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m })), formatFn: v => `€${Math.round(v).toLocaleString("en-GB")}m`,     higherBetter: true  },
+      squad_size:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_size })),        formatFn: v => `${Math.round(v)}`,                               higherBetter: true  },
+      expiry:      { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.expiry_0_12m_pct })),  formatFn: v => fmtPct(v, 0),                                     higherBetter: false, note: "Lower is better" },
+      attendance:  { data: divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct })), formatFn: v => fmtPct(v),   higherBetter: true  },
+    };
+    const cfg = cfgs[key as Exclude<MetricKey, "avg_age">];
+    return (
+      <InlineRanking
+        data={cfg.data}
+        highlightSlug={slug}
+        formatFn={cfg.formatFn}
+        higherBetter={cfg.higherBetter}
+        note={cfg.note}
+      />
+    );
+  }
+
   const svFmt = club.squad_value_eur_m !== null
     ? `€${Math.round(club.squad_value_eur_m).toLocaleString("en-GB")}m` : "—";
 
-  // Squad Size (Row 2, slot 1 — replaces duplicate Est. Squad Value)
-  const ssR   = divRank(divisionPeers, slug, p => p.squad_size, true);
-
-  // Avg Age (closest to 26 = rank 1)
-  const ageR  = divRankAge(divisionPeers, slug);
-
-  // Contract Expiry Risk
-  const exR   = divRank(divisionPeers, slug, p => p.expiry_0_12m_pct, false);
-
-  // Stadium Utilisation
-  const utilR = divRank(divisionPeers, slug, p => p.attendance_pct, true);
-
-  // ── Data for ranking panels ───────────────────────────────────────────────
-
-  const plRevData    = divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.revenue }));
-  const plWrData     = divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.wage_ratio }));
-  const plSvData     = divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m }));
-  const plUtilData   = divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct }));
-  const plNdData     = divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.net_debt }));
-  const plWbData     = divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.wage_bill }));
+  const expandedInRow1 = ROW1.includes(expanded as MetricKey) ? expanded : null;
+  const expandedInRow2 = ROW2.includes(expanded as MetricKey) ? expanded : null;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
-
-      {/* ── Section 1: Division Standing ─────────────────────────────── */}
       <div>
-        <SectionHeading>Division Standing</SectionHeading>
+        <SectionHeading>Division Standing · {divisionLabel}</SectionHeading>
 
-        {/* Row 1 — Financial */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-          <ScoreCard
-            label="Revenue"
-            value={fmtGBP(club.revenue)}
-            yoyStr={revYoyStr}
-            yoyColor={revYoyColor}
-            rank={revR.rank}
-            total={revR.total}
-          />
-          <ScoreCard
-            label="Wage Ratio"
-            value={fmtPct(club.wage_ratio)}
-            yoyStr={wrYoyStr}
-            yoyColor={wrYoyColor}
-            rank={wrR.rank}
-            total={wrR.total}
-          />
-          <ScoreCard
-            label="Net Debt"
-            value={fmtGBP(club.net_debt)}
-            yoyStr={ndYoyStr}
-            yoyColor={ndYoyColor}
-            rank={ndR.rank}
-            total={ndR.total}
-          />
-          <ScoreCard
-            label="Est. Squad Value"
-            value={svFmt}
-            yoyStr={null}
-            yoyColor="#cccccc"
-            rank={svR.rank}
-            total={svR.total}
-          />
-        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          {/* Row 1 — Financial */}
+          <div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <ScoreCard
+                label="Revenue" value={fmtGBP(club.revenue)}
+                yoyStr={revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null}
+                yoyColor={revYoy === null ? "#cccccc" : revYoy >= 0 ? C_WIN : C_LOSE}
+                rank={revR.rank} total={revR.total}
+                expanded={expanded === "revenue"} onToggle={() => toggle("revenue")}
+              />
+              <ScoreCard
+                label="Wage Ratio" value={fmtPct(club.wage_ratio)}
+                yoyStr={wrYoy !== null ? `${wrYoy >= 0 ? "+" : ""}${wrYoy.toFixed(1)}pp` : null}
+                yoyColor={wrYoy === null ? "#cccccc" : wrYoy <= 0 ? C_WIN : C_LOSE}
+                rank={wrR.rank} total={wrR.total} note="Lower is better"
+                expanded={expanded === "wage_ratio"} onToggle={() => toggle("wage_ratio")}
+              />
+              <ScoreCard
+                label="Net Debt" value={fmtGBP(club.net_debt)}
+                yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}£${Math.abs(ndYoy).toFixed(1)}m` : null}
+                yoyColor={ndYoy === null ? "#cccccc" : ndYoy <= 0 ? C_WIN : C_LOSE}
+                rank={ndR.rank} total={ndR.total} note="Lower is better"
+                expanded={expanded === "net_debt"} onToggle={() => toggle("net_debt")}
+              />
+              <ScoreCard
+                label="Est. Squad Value" value={svFmt}
+                yoyStr={null} yoyColor="#cccccc"
+                rank={svR.rank} total={svR.total}
+                expanded={expanded === "squad_value"} onToggle={() => toggle("squad_value")}
+              />
+            </div>
+            {expandedInRow1 && expandedPanel(expandedInRow1)}
+          </div>
 
-        {/* Row 2 — Squad + Stadium */}
-        {/* Note: Squad Size replaces duplicate Est. Squad Value in this row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <ScoreCard
-            label="Squad Size"
-            value={club.squad_size !== null ? `${club.squad_size}` : "—"}
-            yoyStr={null}
-            yoyColor="#cccccc"
-            rank={ssR.rank}
-            total={ssR.total}
-          />
-          <ScoreCard
-            label="Average Age"
-            value={club.avg_age !== null ? club.avg_age.toFixed(1) : "—"}
-            yoyStr={null}
-            yoyColor="#cccccc"
-            rank={ageR.rank}
-            total={ageR.total}
-          />
-          <ScoreCard
-            label="Expiry Risk"
-            value={fmtPct(club.expiry_0_12m_pct, 0)}
-            yoyStr={null}
-            yoyColor="#cccccc"
-            rank={exR.rank}
-            total={exR.total}
-          />
-          <ScoreCard
-            label="Stadium Utilisation"
-            value={fmtPct(club.attendance_pct)}
-            yoyStr={null}
-            yoyColor="#cccccc"
-            rank={utilR.rank}
-            total={utilR.total}
-          />
-        </div>
-      </div>
-
-      {/* ── Section 2: Rankings ───────────────────────────────────────── */}
-      <div>
-        <SectionHeading>Rankings</SectionHeading>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <RankingPanel
-            title="Revenue"
-            data={plRevData}
-            highlightSlug={slug}
-            formatFn={v => fmtGBP(v)}
-            higherBetter={true}
-          />
-          <RankingPanel
-            title="Wage Ratio"
-            note="Lower is better"
-            data={plWrData}
-            highlightSlug={slug}
-            formatFn={v => fmtPct(v)}
-            higherBetter={false}
-          />
-          <RankingPanel
-            title="Est. Squad Value"
-            data={plSvData}
-            highlightSlug={slug}
-            formatFn={v => `€${Math.round(v).toLocaleString("en-GB")}m`}
-            higherBetter={true}
-          />
-          <RankingPanel
-            title="Stadium Utilisation"
-            data={plUtilData}
-            highlightSlug={slug}
-            formatFn={v => fmtPct(v)}
-            higherBetter={true}
-          />
-          <RankingPanel
-            title="Net Debt"
-            note="Lower is better"
-            data={plNdData}
-            highlightSlug={slug}
-            formatFn={v => fmtGBP(v)}
-            higherBetter={false}
-          />
-          <RankingPanel
-            title="Wage Bill"
-            note="Lower is better"
-            data={plWbData}
-            highlightSlug={slug}
-            formatFn={v => fmtGBP(v)}
-            higherBetter={false}
-          />
+          {/* Row 2 — Squad + Stadium */}
+          <div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <ScoreCard
+                label="Squad Size"
+                value={club.squad_size !== null ? `${club.squad_size}` : "—"}
+                yoyStr={null} yoyColor="#cccccc"
+                rank={ssR.rank} total={ssR.total}
+                expanded={expanded === "squad_size"} onToggle={() => toggle("squad_size")}
+              />
+              <ScoreCard
+                label="Average Age"
+                value={club.avg_age !== null ? club.avg_age.toFixed(1) : "—"}
+                yoyStr={null} yoyColor="#cccccc"
+                rank={ageR.rank} total={ageR.total}
+                expanded={expanded === "avg_age"} onToggle={() => toggle("avg_age")}
+              />
+              <ScoreCard
+                label="Expiry Risk" value={fmtPct(club.expiry_0_12m_pct, 0)}
+                yoyStr={null} yoyColor="#cccccc"
+                rank={exR.rank} total={exR.total} note="Lower is better"
+                expanded={expanded === "expiry"} onToggle={() => toggle("expiry")}
+              />
+              <ScoreCard
+                label="Stadium Utilisation" value={fmtPct(club.attendance_pct)}
+                yoyStr={null} yoyColor="#cccccc"
+                rank={utilR.rank} total={utilR.total}
+                expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
+              />
+            </div>
+            {expandedInRow2 && expandedPanel(expandedInRow2)}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// ─── H2H callout stats ────────────────────────────────────────────────────────
+// ─── Radar populations type ───────────────────────────────────────────────────
 
 type RadarPops = {
   revenueEur: number[];
@@ -585,16 +535,15 @@ type RadarPops = {
   attendance: number[];
 };
 
+// ─── H2H callout stats ────────────────────────────────────────────────────────
+
 function generateCallouts(main: H2HPeer, other: H2HPeer, pops: RadarPops): string[] {
   type Gap = { gap: number; sentence: string };
   const results: Gap[] = [];
 
   function maybe(
-    mainRaw: number | null,
-    otherRaw: number | null,
-    pop: number[],
-    invert: boolean,
-    mkSentence: (m: number, o: number) => string,
+    mainRaw: number | null, otherRaw: number | null, pop: number[],
+    invert: boolean, mkSentence: (m: number, o: number) => string,
   ) {
     if (mainRaw === null || otherRaw === null || pop.length === 0) return;
     const sorted = [...pop].sort((a, b) => a - b);
@@ -609,61 +558,118 @@ function generateCallouts(main: H2HPeer, other: H2HPeer, pops: RadarPops): strin
   const otherRevEUR = toEUR(other.revenue, other.currency);
   maybe(mainRevEUR, otherRevEUR, pops.revenueEur, false, (m, o) => {
     const hi = Math.max(m, o), lo = Math.min(m, o);
-    const hName = m >= o ? main.name : other.name;
-    const lName = m >= o ? other.name : main.name;
-    if (lo > 0 && hi / lo >= 1.5)
-      return `${hName}'s revenue is ${(hi / lo).toFixed(1)}× ${lName}'s (€${hi.toFixed(0)}m vs €${lo.toFixed(0)}m)`;
-    return `${hName} generate €${(hi - lo).toFixed(0)}m more revenue than ${lName} annually`;
+    const hN = m >= o ? main.name : other.name;
+    const lN = m >= o ? other.name : main.name;
+    if (lo > 0 && hi / lo >= 1.5) return `${hN}'s revenue is ${(hi / lo).toFixed(1)}× ${lN}'s (€${hi.toFixed(0)}m vs €${lo.toFixed(0)}m)`;
+    return `${hN} generate €${(hi - lo).toFixed(0)}m more revenue than ${lN} annually`;
   });
 
   maybe(main.wage_ratio, other.wage_ratio, pops.wageRatio, true, (m, o) => {
     const lo = Math.min(m, o), hi = Math.max(m, o);
-    const bName = m <= o ? main.name : other.name;
-    const wName = m <= o ? other.name : main.name;
-    return `${bName} are more wage-efficient at ${lo.toFixed(1)}% of revenue, vs ${hi.toFixed(1)}% for ${wName}`;
+    const bN = m <= o ? main.name : other.name;
+    const wN = m <= o ? other.name : main.name;
+    return `${bN} are more wage-efficient at ${lo.toFixed(1)}% of revenue, vs ${hi.toFixed(1)}% for ${wN}`;
   });
 
   maybe(main.squad_value_eur_m, other.squad_value_eur_m, pops.squadValue, false, (m, o) => {
     const hi = Math.max(m, o), lo = Math.min(m, o);
-    const hName = m >= o ? main.name : other.name;
-    const lName = m >= o ? other.name : main.name;
-    if (lo > 0 && hi / lo >= 1.5)
-      return `${hName}'s squad is valued at ${(hi / lo).toFixed(1)}× ${lName}'s (€${Math.round(hi)}m vs €${Math.round(lo)}m)`;
-    return `${hName}'s squad is €${Math.round(Math.abs(m - o))}m more valuable than ${lName}'s`;
+    const hN = m >= o ? main.name : other.name;
+    const lN = m >= o ? other.name : main.name;
+    if (lo > 0 && hi / lo >= 1.5) return `${hN}'s squad is valued at ${(hi / lo).toFixed(1)}× ${lN}'s (€${Math.round(hi)}m vs €${Math.round(lo)}m)`;
+    return `${hN}'s squad is €${Math.round(Math.abs(m - o))}m more valuable than ${lN}'s`;
   });
 
-  const mAgeDev = main.avg_age !== null ? Math.abs(main.avg_age - 26) : null;
+  const mAgeDev = main.avg_age  !== null ? Math.abs(main.avg_age  - 26) : null;
   const oAgeDev = other.avg_age !== null ? Math.abs(other.avg_age - 26) : null;
   maybe(mAgeDev, oAgeDev, pops.ageDev, true, (_m, _o) => {
-    const closerClub = mAgeDev! <= oAgeDev! ? main : other;
-    const furtherClub= mAgeDev! <= oAgeDev! ? other : main;
-    return `${closerClub.name}'s average squad age (${closerClub.avg_age!.toFixed(1)}) is closer to peak than ${furtherClub.name}'s (${furtherClub.avg_age!.toFixed(1)})`;
+    const closer  = mAgeDev! <= oAgeDev! ? main  : other;
+    const further = mAgeDev! <= oAgeDev! ? other : main;
+    return `${closer.name}'s average squad age (${closer.avg_age!.toFixed(1)}) is closer to peak than ${further.name}'s (${further.avg_age!.toFixed(1)})`;
   });
 
   maybe(main.capacity, other.capacity, pops.capacity, false, (m, o) => {
     const hi = Math.max(m, o), lo = Math.min(m, o);
-    const hName = m >= o ? main.name : other.name;
-    const lName = m >= o ? other.name : main.name;
-    return `${hName}'s stadium holds ${Math.round(hi - lo).toLocaleString("en-GB")} more fans than ${lName}'s`;
+    const hN = m >= o ? main.name : other.name;
+    const lN = m >= o ? other.name : main.name;
+    return `${hN}'s stadium holds ${Math.round(hi - lo).toLocaleString("en-GB")} more fans than ${lN}'s`;
   });
 
   maybe(main.attendance_pct, other.attendance_pct, pops.attendance, false, (m, o) => {
     const hi = Math.max(m, o), lo = Math.min(m, o);
-    const hName = m >= o ? main.name : other.name;
-    const lName = m >= o ? other.name : main.name;
-    return `${hName} fill their stadium at ${hi.toFixed(1)}%, ${(hi - lo).toFixed(1)}pp ahead of ${lName} (${lo.toFixed(1)}%)`;
+    const hN = m >= o ? main.name : other.name;
+    const lN = m >= o ? other.name : main.name;
+    return `${hN} fill their stadium at ${hi.toFixed(1)}%, ${(hi - lo).toFixed(1)}pp ahead of ${lN} (${lo.toFixed(1)}%)`;
   });
 
-  return results
-    .sort((a, b) => b.gap - a.gap)
-    .slice(0, 3)
-    .map(r => r.sentence);
+  return results.sort((a, b) => b.gap - a.gap).slice(0, 3).map(r => r.sentence);
+}
+
+// ─── Arsenal solo stats (H2H default state) ───────────────────────────────────
+
+function StatTile({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ border: "1px solid #eeeeee", padding: "16px 18px" }}>
+      <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#888888", margin: "0 0 6px 0" }}>
+        {label}
+      </p>
+      <p style={{ fontSize: "20px", fontWeight: 700, color: "#111111", fontVariantNumeric: "tabular-nums", margin: 0 }}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function SubLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#aaaaaa", margin: "0 0 10px 0" }}>
+      {children}
+    </p>
+  );
+}
+
+function ArsenalSoloView({ peer }: { peer: H2HPeer }) {
+  const fmtMoney = (v: number | null) =>
+    peer.currency === "GBP" ? fmtGBP(v)
+    : peer.currency === "EUR" ? fmtEUR(v)
+    : fmtEUR(toEUR(v, peer.currency));
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      <div>
+        <SubLabel>Financial</SubLabel>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <StatTile label="Revenue"        value={fmtMoney(peer.revenue)} />
+          <StatTile label="Wage Bill"      value={fmtMoney(peer.wage_bill)} />
+          <StatTile label="Wage Ratio"     value={fmtPct(peer.wage_ratio)} />
+          <StatTile label="Op. Profit"     value={fmtMoney(peer.operating_profit)} />
+          <StatTile label="Pre-tax Profit" value={fmtMoney(peer.pre_tax_profit)} />
+          <StatTile label="Net Debt"       value={fmtMoney(peer.net_debt)} />
+        </div>
+      </div>
+      <div>
+        <SubLabel>Squad</SubLabel>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatTile label="Squad Value" value={peer.squad_value_eur_m !== null ? `€${Math.round(peer.squad_value_eur_m)}m` : "—"} />
+          <StatTile label="Squad Size"  value={peer.squad_size !== null ? `${peer.squad_size}` : "—"} />
+          <StatTile label="Avg Age"     value={peer.avg_age !== null ? peer.avg_age.toFixed(1) : "—"} />
+          <StatTile label="Expiry Risk" value={fmtPct(peer.expiry_0_12m_pct, 0)} />
+        </div>
+      </div>
+      <div>
+        <SubLabel>Stadium</SubLabel>
+        <div className="grid grid-cols-2 gap-3">
+          <StatTile label="Capacity"    value={peer.capacity !== null ? peer.capacity.toLocaleString("en-GB") : "—"} />
+          <StatTile label="Utilisation" value={fmtPct(peer.attendance_pct)} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ─── H2H Table ────────────────────────────────────────────────────────────────
 
 function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
-  const mainFX  = main.currency !== "EUR";
+  const mainFX  = main.currency  !== "EUR";
   const otherFX = other.currency !== "EUR";
 
   type RowDef = {
@@ -678,23 +684,20 @@ function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
     isAgePeak?:   boolean;
   };
 
-  function rowWinner(def: RowDef, mEur: number | null, oEur: number | null): boolean | null {
-    if (mEur === null || oEur === null) return null;
-    if (def.isAgePeak) return Math.abs(mEur - 26) < Math.abs(oEur - 26);
-    return def.higherBetter ? mEur > oEur : mEur < oEur;
+  function rowWinner(def: RowDef, mV: number | null, oV: number | null): boolean | null {
+    if (mV === null || oV === null) return null;
+    if (def.isAgePeak) return Math.abs(mV - 26) < Math.abs(oV - 26);
+    return def.higherBetter ? mV > oV : mV < oV;
   }
 
   function TableRow({ def }: { def: RowDef }) {
-    const mEur = def.isRatio || def.isPlain || def.isEURDirect
-      ? def.mainVal  : toEUR(def.mainVal,  main.currency);
-    const oEur = def.isRatio || def.isPlain || def.isEURDirect
-      ? def.otherVal : toEUR(def.otherVal, other.currency);
-
+    const mEur = def.isRatio || def.isPlain || def.isEURDirect ? def.mainVal  : toEUR(def.mainVal,  main.currency);
+    const oEur = def.isRatio || def.isPlain || def.isEURDirect ? def.otherVal : toEUR(def.otherVal, other.currency);
     const mWins = rowWinner(def, mEur, oEur);
-    const mBg   = mWins === true  ? BG_WIN  : mWins === false ? BG_LOSE : undefined;
-    const oBg   = mWins === false ? BG_WIN  : mWins === true  ? BG_LOSE : undefined;
-    const mClr  = mWins === true  ? C_WIN   : mWins === false ? C_LOSE  : "#111111";
-    const oClr  = mWins === false ? C_WIN   : mWins === true  ? C_LOSE  : "#111111";
+    const mBg  = mWins === true  ? BG_WIN  : mWins === false ? BG_LOSE : undefined;
+    const oBg  = mWins === false ? BG_WIN  : mWins === true  ? BG_LOSE : undefined;
+    const mClr = mWins === true  ? C_WIN   : mWins === false ? C_LOSE  : "#111111";
+    const oClr = mWins === false ? C_WIN   : mWins === true  ? C_LOSE  : "#111111";
 
     function display(val: number | null, isOther: boolean): string {
       if (val === null) return "—";
@@ -704,26 +707,20 @@ function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
       return fmtEUR(toEUR(val, isOther ? other.currency : main.currency));
     }
 
-    const showMFX = !def.isRatio && !def.isPlain && !def.isEURDirect && mainFX  && def.mainVal !== null;
+    const showMFX = !def.isRatio && !def.isPlain && !def.isEURDirect && mainFX  && def.mainVal  !== null;
     const showOFX = !def.isRatio && !def.isPlain && !def.isEURDirect && otherFX && def.otherVal !== null;
 
     return (
       <div style={{ display: "flex", borderBottom: "1px solid #f5f5f5" }}>
         <div style={{ width: "120px", padding: "10px 14px", flexShrink: 0, display: "flex", alignItems: "center" }}>
-          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999" }}>
-            {def.label}
-          </span>
+          <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999999" }}>{def.label}</span>
         </div>
         <div style={{ flex: 1, padding: "10px 14px", borderLeft: "1px solid #f0f0f0", background: mBg }}>
-          <span style={{ fontSize: "14px", fontWeight: 600, color: mClr, fontVariantNumeric: "tabular-nums" }}>
-            {display(def.mainVal, false)}
-          </span>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: mClr, fontVariantNumeric: "tabular-nums" }}>{display(def.mainVal, false)}</span>
           {showMFX && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "6px" }}>fx</span>}
         </div>
         <div style={{ flex: 1, padding: "10px 14px", borderLeft: "1px solid #f0f0f0", background: oBg }}>
-          <span style={{ fontSize: "14px", fontWeight: 600, color: oClr, fontVariantNumeric: "tabular-nums" }}>
-            {display(def.otherVal, true)}
-          </span>
+          <span style={{ fontSize: "14px", fontWeight: 600, color: oClr, fontVariantNumeric: "tabular-nums" }}>{display(def.otherVal, true)}</span>
           {showOFX && <span style={{ fontSize: "10px", color: "#bbbbbb", marginLeft: "6px" }}>fx</span>}
         </div>
       </div>
@@ -735,9 +732,7 @@ function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
       <div style={{ display: "flex", background: "#f9f9f9", borderBottom: "1px solid #eeeeee" }}>
         <div style={{ width: "120px", flexShrink: 0 }} />
         <div style={{ flex: 2, padding: "7px 14px", borderLeft: "1px solid #eeeeee" }}>
-          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa" }}>
-            {label}
-          </span>
+          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "#aaaaaa" }}>{label}</span>
         </div>
       </div>
     );
@@ -753,17 +748,17 @@ function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
   ];
   const squadRows: RowDef[] = [
     { label: "Squad Value", mainVal: main.squad_value_eur_m, otherVal: other.squad_value_eur_m, higherBetter: true,  isEURDirect: true },
+    { label: "Squad Size",  mainVal: main.squad_size,        otherVal: other.squad_size,        higherBetter: true,  isPlain: true, plainFmt: v => `${Math.round(v)}` },
     { label: "Avg Age",     mainVal: main.avg_age,           otherVal: other.avg_age,           higherBetter: false, isPlain: true, isAgePeak: true, plainFmt: v => v.toFixed(1) },
     { label: "Expiry Risk", mainVal: main.expiry_0_12m_pct,  otherVal: other.expiry_0_12m_pct,  higherBetter: false, isRatio: true },
   ];
   const stadiumRows: RowDef[] = [
-    { label: "Capacity",    mainVal: main.capacity,      otherVal: other.capacity,      higherBetter: true,  isPlain: true, plainFmt: v => Math.round(v).toLocaleString("en-GB") },
-    { label: "Utilisation", mainVal: main.attendance_pct,otherVal: other.attendance_pct,higherBetter: true,  isRatio: true },
+    { label: "Capacity",    mainVal: main.capacity,       otherVal: other.capacity,       higherBetter: true, isPlain: true, plainFmt: v => Math.round(v).toLocaleString("en-GB") },
+    { label: "Utilisation", mainVal: main.attendance_pct, otherVal: other.attendance_pct, higherBetter: true, isRatio: true },
   ];
 
   return (
     <div style={{ border: "1px solid #e0e0e0", overflow: "hidden" }}>
-      {/* Column headers */}
       <div style={{ display: "flex", borderBottom: "2px solid #e0e0e0" }}>
         <div style={{ width: "120px", flexShrink: 0, padding: "12px 14px" }}>
           <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#aaaaaa" }}>EUR base</span>
@@ -779,16 +774,12 @@ function H2HTable({ main, other }: { main: H2HPeer; other: H2HPeer }) {
           </p>
         </div>
       </div>
-
       <SectionHeader label="Financial" />
       {financialRows.map(def => <TableRow key={def.label} def={def} />)}
-
       <SectionHeader label="Squad" />
       {squadRows.map(def => <TableRow key={def.label} def={def} />)}
-
       <SectionHeader label="Stadium" />
       {stadiumRows.map(def => <TableRow key={def.label} def={def} />)}
-
       <div style={{ padding: "8px 14px", background: "#fafafa", borderTop: "1px solid #eeeeee" }}>
         <p style={{ fontSize: "10px", color: "#cccccc", margin: 0 }}>
           EUR base · GBP ×{FX_GBP} · USD ×{FX_USD} · green = better for that metric
@@ -807,9 +798,10 @@ function HeadToHeadView({
   mainPeer:    H2HPeer;
   allH2HPeers: H2HPeer[];
 }) {
-  const [query, setQuery]       = useState("");
-  const [selectedSlug, setSlug] = useState<string | null>(null);
-  const [view, setView]         = useState<H2HView>("radar");
+  const [query,        setQuery]   = useState("");
+  const [selectedSlug, setSlug]    = useState<string | null>(null);
+  const [view,         setView]    = useState<H2HView>("table");
+  const [dropOpen,     setDropOpen]= useState(false);
 
   const otherPeer = selectedSlug
     ? allH2HPeers.find(p => p.slug === selectedSlug) ?? null
@@ -873,156 +865,164 @@ function HeadToHeadView({
     { label: "Attendance\nRate",  invert: false, population: radarPops.attendance  },
   ];
 
-  const isSearchOpen = query.trim().length > 0;
+  const showDrop = dropOpen && query.trim().length > 0;
 
   return (
     <div>
-      {/* Club search */}
-      <div style={{ marginBottom: "24px" }}>
-        {!otherPeer && (
-          <p style={{ fontSize: "13px", color: "#888888", marginBottom: "10px" }}>
-            Search for any club in the database to compare
-          </p>
-        )}
-        <div style={{ position: "relative", display: "inline-block" }}>
+      {/* ── Header row ─────────────────────────────────────────────────── */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "28px", flexWrap: "wrap" }}>
+
+        {/* Left: identity / vs label */}
+        <div>
           {otherPeer ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: HIGHLIGHT }}>{mainPeer.name}</span>
-                <span style={{ color: "#cccccc" }}>vs</span>
-                <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: H2H_CLR }}>{otherPeer.name}</span>
-                <span style={{ fontSize: "11px", color: "#aaaaaa" }}>
-                  {COUNTRY_FLAGS[otherPeer.country] ?? ""} {otherPeer.divisionLabel}
-                </span>
-              </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+              <span style={{ fontSize: "14px", fontWeight: 700, color: HIGHLIGHT }}>{mainPeer.name}</span>
+              <span style={{ color: "#cccccc", fontSize: "12px" }}>vs</span>
+              <span style={{ fontSize: "14px", fontWeight: 700, color: H2H_CLR }}>{otherPeer.name}</span>
+              <span style={{ fontSize: "11px", color: "#aaaaaa" }}>
+                {COUNTRY_FLAGS[otherPeer.country] ?? ""} {otherPeer.divisionLabel}
+              </span>
               <button
-                onClick={() => { setSlug(null); setQuery(""); }}
+                onClick={() => { setSlug(null); setQuery(""); setView("table"); }}
                 style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "#aaaaaa", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "2px" }}
               >
-                Change
+                Clear
               </button>
             </div>
           ) : (
-            <>
-              <input
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                placeholder="Search clubs…"
-                autoComplete="off"
-                style={{
-                  width: "260px", border: "1px solid #e0e0e0",
-                  padding: "8px 12px", fontSize: "14px", color: "#111111",
-                  background: "white", outline: "none",
-                }}
-                onFocus={e => { (e.target as HTMLElement).style.borderColor = "#999"; }}
-                onBlur={e => { (e.target as HTMLElement).style.borderColor = "#e0e0e0"; }}
-              />
-              {isSearchOpen && (
-                <div style={{
-                  position: "absolute", top: "100%", left: 0, width: "260px",
-                  border: "1px solid #e0e0e0", borderTop: "none",
-                  maxHeight: "280px", overflowY: "auto",
-                  background: "white", zIndex: 10,
-                }}>
-                  {grouped.length === 0 && (
-                    <p style={{ padding: "12px 14px", fontSize: "13px", color: "#aaaaaa", margin: 0 }}>No clubs match.</p>
-                  )}
-                  {grouped.map(([country, peers]) => (
-                    <div key={country}>
-                      <div style={{ padding: "6px 14px 4px", background: "#f9f9f9", borderBottom: "1px solid #f0f0f0" }}>
-                        <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#bbbbbb" }}>
-                          {COUNTRY_FLAGS[country] ?? ""} {country}
-                        </span>
-                      </div>
-                      {peers.map(p => (
-                        <button
-                          key={p.slug}
-                          onMouseDown={() => { setSlug(p.slug); setQuery(""); }}
-                          style={{
-                            width: "100%", textAlign: "left", padding: "8px 14px",
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                            background: "none", border: "none", borderBottom: "1px solid #f8f8f8",
-                            cursor: "pointer", gap: "8px",
-                          }}
-                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#f5f5f5"; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "none"; }}
-                        >
-                          <span style={{ fontSize: "13px", color: "#111111" }}>{p.name}</span>
-                          <span style={{ fontSize: "10px", color: "#aaaaaa", flexShrink: 0 }}>{p.divisionLabel}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
+            <p style={{ fontSize: "13px", color: "#888888", margin: 0 }}>
+              {mainPeer.name} · {mainPeer.divisionLabel}
+            </p>
           )}
+        </div>
+
+        {/* Right: view toggle + search */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+          {otherPeer && (
+            <div style={{ display: "flex" }}>
+              {(["table", "radar"] as H2HView[]).map(v => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  style={{
+                    padding: "7px 16px", fontSize: "11px", fontWeight: 700,
+                    letterSpacing: "0.1em", textTransform: "uppercase",
+                    background: view === v ? "#111111" : "#ffffff",
+                    color:      view === v ? "#ffffff" : "#999999",
+                    border: "1px solid #e0e0e0",
+                    marginLeft: v === "radar" ? "-1px" : 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  {v === "table" ? "Table" : "Radar"}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div style={{ position: "relative" }}>
+            {otherPeer ? (
+              <button
+                onClick={() => { setSlug(null); setQuery(""); setView("table"); }}
+                style={{
+                  padding: "8px 14px", fontSize: "13px", color: "#555555",
+                  background: "white", border: "1px solid #e0e0e0", cursor: "pointer",
+                }}
+              >
+                Change club
+              </button>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => { setQuery(e.target.value); setDropOpen(true); }}
+                  onFocus={() => setDropOpen(true)}
+                  onBlur={() => setTimeout(() => setDropOpen(false), 150)}
+                  placeholder="Compare with another club..."
+                  autoComplete="off"
+                  style={{
+                    width: "240px", border: "1px solid #d0d0d0",
+                    padding: "9px 14px", fontSize: "13px", color: "#111111",
+                    background: "white", outline: "none", fontWeight: 500,
+                  }}
+                  onFocusCapture={e => { (e.target as HTMLElement).style.borderColor = "#999"; }}
+                  onBlurCapture={e => { (e.target as HTMLElement).style.borderColor = "#d0d0d0"; }}
+                />
+                {showDrop && (
+                  <div style={{
+                    position: "absolute", top: "100%", right: 0,
+                    width: "280px", border: "1px solid #e0e0e0", borderTop: "none",
+                    maxHeight: "320px", overflowY: "auto",
+                    background: "white", zIndex: 10,
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                  }}>
+                    {grouped.length === 0 ? (
+                      <p style={{ padding: "12px 14px", fontSize: "13px", color: "#aaaaaa", margin: 0 }}>No clubs match.</p>
+                    ) : grouped.map(([country, peers]) => (
+                      <div key={country}>
+                        <div style={{ padding: "6px 14px 4px", background: "#f9f9f9", borderBottom: "1px solid #f0f0f0" }}>
+                          <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#bbbbbb" }}>
+                            {COUNTRY_FLAGS[country] ?? ""} {country}
+                          </span>
+                        </div>
+                        {peers.map(p => (
+                          <button
+                            key={p.slug}
+                            onMouseDown={() => { setSlug(p.slug); setQuery(""); setDropOpen(false); }}
+                            style={{
+                              width: "100%", textAlign: "left", padding: "9px 14px",
+                              display: "flex", alignItems: "center", justifyContent: "space-between",
+                              background: "none", border: "none", borderBottom: "1px solid #f8f8f8",
+                              cursor: "pointer", gap: "8px",
+                            }}
+                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#f5f5f5"; }}
+                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "none"; }}
+                          >
+                            <span style={{ fontSize: "13px", color: "#111111" }}>{p.name}</span>
+                            <span style={{ fontSize: "10px", color: "#aaaaaa", flexShrink: 0 }}>{p.divisionLabel}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* View toggle — only when a club is selected */}
-      {otherPeer && (
-        <div style={{ display: "flex", gap: 0, marginBottom: "24px" }}>
-          {(["radar", "table"] as H2HView[]).map(v => (
-            <button
-              key={v}
-              onClick={() => setView(v)}
-              style={{
-                padding: "7px 18px",
-                fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
-                background: view === v ? "#111111" : "#ffffff",
-                color:      view === v ? "#ffffff" : "#999999",
-                border: "1px solid #e0e0e0",
-                marginLeft: v === "table" ? "-1px" : 0,
-                cursor: "pointer",
-                transition: "all 0.1s",
-              }}
-            >
-              {v === "radar" ? "Radar" : "Table"}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Radar view */}
-      {otherPeer && view === "radar" && (
+      {/* ── Content ────────────────────────────────────────────────────── */}
+      {otherPeer ? (
         <div>
-          <RadarChart
-            axes={radarAxes}
-            series={[
-              { name: mainPeer.name,  color: HIGHLIGHT, values: radarValues(mainPeer)  },
-              { name: otherPeer.name, color: H2H_CLR,   values: radarValues(otherPeer) },
-            ]}
-          />
+          {view === "table" && <H2HTable main={mainPeer} other={otherPeer} />}
+          {view === "radar" && (
+            <RadarChart
+              axes={radarAxes}
+              series={[
+                { name: mainPeer.name,  color: HIGHLIGHT, values: radarValues(mainPeer)  },
+                { name: otherPeer.name, color: H2H_CLR,   values: radarValues(otherPeer) },
+              ]}
+            />
+          )}
           {callouts.length > 0 && (
             <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
               {callouts.map((text, i) => (
                 <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                  <div style={{ width: "3px", flexShrink: 0, background: i === 0 ? HIGHLIGHT : i === 1 ? H2H_CLR : "#e0e0e0", borderRadius: "2px", alignSelf: "stretch" }} />
+                  <div style={{
+                    width: "3px", flexShrink: 0, minHeight: "20px",
+                    background: i === 0 ? HIGHLIGHT : i === 1 ? H2H_CLR : "#e0e0e0",
+                    borderRadius: "2px", alignSelf: "stretch",
+                  }} />
                   <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#333333", margin: 0 }}>{text}</p>
                 </div>
               ))}
             </div>
           )}
         </div>
-      )}
-
-      {/* Table view */}
-      {otherPeer && view === "table" && (
-        <H2HTable main={mainPeer} other={otherPeer} />
-      )}
-
-      {/* Empty state */}
-      {!otherPeer && !isSearchOpen && (
-        <div style={{
-          border: "1px dashed #e0e0e0",
-          padding: "40px 24px", textAlign: "center",
-        }}>
-          <p style={{ fontSize: "13px", color: "#aaaaaa", margin: 0 }}>
-            Search above to select a club and start the head-to-head comparison.
-          </p>
-        </div>
+      ) : (
+        <ArsenalSoloView peer={mainPeer} />
       )}
     </div>
   );
@@ -1053,11 +1053,7 @@ function ModeTab({ label, active, onClick }: { label: string; active: boolean; o
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
 export default function ClubCompareTab({
-  slug,
-  divisionLabel,
-  priorYear,
-  divisionPeers,
-  allH2HPeers,
+  slug, divisionLabel, priorYear, divisionPeers, allH2HPeers,
 }: {
   slug:          string;
   divisionLabel: string;
