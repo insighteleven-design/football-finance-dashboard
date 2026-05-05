@@ -237,11 +237,11 @@ function InlineRanking({
                 <span style={{
                   fontSize: "13px", fontWeight: isHL ? 700 : 400,
                   color: isHL ? HIGHLIGHT : "#444444",
-                  flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  flex: "0 1 200px", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}>
                   {d.name}
                 </span>
-                <div style={{ width: "56px", flexShrink: 0 }}>
+                <div style={{ flex: 1, minWidth: "40px" }}>
                   <div style={{ height: "5px", background: "#e8e8e8", borderRadius: "2px", overflow: "hidden" }}>
                     <div style={{
                       height: "100%", width: `${barPct}%`,
