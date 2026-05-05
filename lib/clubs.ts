@@ -16,6 +16,7 @@ export interface PriorYearFinancials extends FinancialSnapshot {
   fiscal_year_end: string;
   /** Which division to use for vs-average comparison in the prior year tab */
   compare_division?: Division;
+  data_notes?: string;
 }
 
 export interface ClubFinancials {
@@ -35,6 +36,7 @@ export interface ClubFinancials {
   wage_ratio: number | null;
   /** "high" = web-validated, "medium" = extracted from accounts, "low" = abbreviated/no data, "abridged" = abridged accounts filed */
   data_confidence: DataConfidence;
+  data_notes?: string;
   prior_year?: PriorYearFinancials | null;
   data2023?: PriorYearFinancials | null;
   data2022?: PriorYearFinancials | null;
@@ -83,10 +85,13 @@ const plRaw: Record<string, RawEntry> = {
     prior_year: { fiscal_year_end: "2023-07-31", revenue:   64.9, wage_bill:   57.6, wage_ratio:  89, operating_profit:  -40.7, profit_from_player_sales:   11.4, pre_tax_profit:   -36.0, net_debt:    81.3, compare_division: "championship" },
     data2023:   { fiscal_year_end: "2023-07-31", revenue:   64.9, wage_bill:   53.7, wage_ratio:  83, operating_profit:  -18.6, profit_from_player_sales:   11.4, pre_tax_profit:   -36.0, net_debt:    49.5, compare_division: "championship" },
     data2022:   { fiscal_year_end: "2022-07-31", revenue:  123.4, wage_bill:   92.0, wage_ratio:  75, operating_profit:   12.7, profit_from_player_sales:   54.3, pre_tax_profit:    36.3, net_debt:    32.1, compare_division: "premier-league" } },
-  chelsea:        { revenue: 490.86, wage_bill: 359.27, operating_profit: -308.16, profit_from_player_sales:  57.91, pre_tax_profit: -262.44, net_debt:  -49.01, cash:   49.009, fiscal_year_end: "2025-06-30", data_confidence: "high",
-    prior_year: { fiscal_year_end: "2024-06-30", revenue:  468.5, wage_bill:  338.0, wage_ratio:  72, operating_profit: -213.0, profit_from_player_sales:  152.5, pre_tax_profit:   128.4, net_debt:   267.2, compare_division: "premier-league" },
-    data2023:   { fiscal_year_end: "2023-06-30", revenue:  512.5, wage_bill:  404.0, wage_ratio:  79, operating_profit:  -14.7, profit_from_player_sales:   62.9, pre_tax_profit:   -90.1, net_debt:    null, compare_division: "premier-league" },
-    data2022:   { fiscal_year_end: "2022-06-30", revenue:  481.3, wage_bill:  340.2, wage_ratio:  71, operating_profit:   null, profit_from_player_sales:  123.2, pre_tax_profit:  -121.4, net_debt:    null, compare_division: "premier-league" } },
+  chelsea:        { revenue: 536.535, wage_bill: 370.983, operating_profit: -628.720, profit_from_player_sales:  71.047, pre_tax_profit: -700.815, net_debt: 1261.361, cash:  128.781, fiscal_year_end: "2025-06-30", data_confidence: "high",
+    data_notes: "Financials are for 22 HoldCo, Chelsea's parent operating entity. The 2023 figures cover a 14-month period. Operating losses are significantly inflated by acquisition accounting — £284m player registration amortisation and large interest costs on £1.4bn acquisition debt. Not directly comparable to other clubs.",
+    prior_year: { fiscal_year_end: "2024-06-30", revenue:  523.124, wage_bill:  327.637, wage_ratio:  63, operating_profit: -452.878, profit_from_player_sales:   84.044, pre_tax_profit:  -473.220, net_debt:  1094.095, compare_division: "premier-league" },
+    data2023:   { fiscal_year_end: "2023-06-30", revenue:  534.702, wage_bill:  385.633, wage_ratio:  72, operating_profit: -624.882, profit_from_player_sales:  -21.267, pre_tax_profit:  -678.179, net_debt:   398.271, compare_division: "premier-league",
+      data_notes: "14-month reporting period — not directly comparable to 12-month figures for other years" },
+    data2022:   { fiscal_year_end: "2022-06-30", revenue:  481.3, wage_bill:  340.2, wage_ratio:  71, operating_profit:   null, profit_from_player_sales:  123.2, pre_tax_profit:  -121.4, net_debt:    null, compare_division: "premier-league",
+      data_notes: "* Chelsea FC OpCo figures (12 months ended June 2022). No HoldCo P&L exists for this period — not comparable to FY2023–25 HoldCo figures above." } },
   "crystal-palace": { revenue: 195.30, wage_bill: 145.48, operating_profit:  -42.72, profit_from_player_sales:  66.08, pre_tax_profit:    8.07, net_debt:  140.18, cash:   13.69, fiscal_year_end: "2025-06-30", data_confidence: "high",
     prior_year: { fiscal_year_end: "2024-06-30", revenue:  190.20, wage_bill:  133.70, wage_ratio:  70, operating_profit:  -20.70, profit_from_player_sales:    1.30, pre_tax_profit:   -32.90, net_debt:   148.90, compare_division: "premier-league" },
     data2023:   { fiscal_year_end: "2023-06-30", revenue:  179.5, wage_bill:  129.7, wage_ratio:  72, operating_profit:  -19.6, profit_from_player_sales:    0.3, pre_tax_profit:   -27.2, net_debt:    -8.1, compare_division: "premier-league" },
