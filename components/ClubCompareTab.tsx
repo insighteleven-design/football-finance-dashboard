@@ -371,13 +371,15 @@ const ROW1: MetricKey[] = ["revenue", "wage_ratio", "net_debt", "squad_value"];
 const ROW2: MetricKey[] = ["squad_size", "avg_age", "expiry", "attendance"];
 
 function DivisionBenchmarkView({
-  slug, divisionLabel, divisionPeers, priorYear,
+  slug, divisionLabel, divisionPeers, priorYear, currency,
 }: {
   slug:          string;
   divisionLabel: string;
   divisionPeers: DivisionPeer[];
   priorYear:     PriorYearSnap | null;
+  currency:      "GBP" | "EUR" | "USD";
 }) {
+  const ccySymbol = currency === "GBP" ? "£" : currency === "EUR" ? "€" : "$";
   const [expanded, setExpanded] = useState<MetricKey | null>(null);
 
   const club = divisionPeers.find(p => p.slug === slug);
@@ -425,9 +427,9 @@ function DivisionBenchmarkView({
       );
     }
     const cfgs: Record<Exclude<MetricKey, "avg_age">, { data: RankEntry[]; formatFn: (v: number) => string; higherBetter: boolean; note?: string }> = {
-      revenue:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.revenue })),           formatFn: v => fmtGBP(v),                                        higherBetter: true  },
+      revenue:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.revenue })),           formatFn: v => fmtNative(v, currency),                           higherBetter: true  },
       wage_ratio:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.wage_ratio })),        formatFn: v => fmtPct(v),                                        higherBetter: false, note: "Lower is better" },
-      net_debt:    { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.net_debt })),          formatFn: v => fmtGBP(v),                                        higherBetter: false, note: "Lower is better" },
+      net_debt:    { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.net_debt })),          formatFn: v => fmtNative(v, currency),                           higherBetter: false, note: "Lower is better" },
       squad_value: { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m })), formatFn: v => `€${Math.round(v).toLocaleString("en-GB")}m`,     higherBetter: true  },
       squad_size:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_size })),        formatFn: v => `${Math.round(v)}`,                               higherBetter: true  },
       expiry:      { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.expiry_0_12m_pct })),  formatFn: v => fmtPct(v, 0),                                     higherBetter: false, note: "Lower is better" },
@@ -458,7 +460,7 @@ function DivisionBenchmarkView({
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
             <div>
               <ScoreCard
-                label="Revenue" value={fmtGBP(club.revenue)}
+                label="Revenue" value={fmtNative(club.revenue, currency)}
                 yoyStr={revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null}
                 yoyColor={revYoy === null ? "#cccccc" : revYoy >= 0 ? C_WIN : C_LOSE}
                 rank={revR.rank} total={revR.total}
@@ -478,8 +480,8 @@ function DivisionBenchmarkView({
             </div>
             <div>
               <ScoreCard
-                label="Net Debt" value={fmtGBP(club.net_debt)}
-                yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}£${Math.abs(ndYoy).toFixed(1)}m` : null}
+                label="Net Debt" value={fmtNative(club.net_debt, currency)}
+                yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}${ccySymbol}${Math.abs(ndYoy).toFixed(1)}m` : null}
                 yoyColor={ndYoy === null ? "#cccccc" : ndYoy <= 0 ? C_WIN : C_LOSE}
                 rank={ndR.rank} total={ndR.total} note="Lower is better"
                 expanded={expanded === "net_debt"} onToggle={() => toggle("net_debt")}
@@ -1197,13 +1199,14 @@ function ModeTab({ label, active, onClick }: { label: string; active: boolean; o
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
 export default function ClubCompareTab({
-  slug, divisionLabel, priorYear, divisionPeers, allH2HPeers,
+  slug, divisionLabel, priorYear, divisionPeers, allH2HPeers, currency,
 }: {
   slug:          string;
   divisionLabel: string;
   priorYear:     PriorYearSnap | null;
   divisionPeers: DivisionPeer[];
   allH2HPeers:   H2HPeer[];
+  currency:      "GBP" | "EUR" | "USD";
 }) {
   const [mode, setMode] = useState<CompareMode>("benchmark");
   const mainPeer = allH2HPeers.find(p => p.slug === slug) ?? null;
@@ -1221,6 +1224,7 @@ export default function ClubCompareTab({
           divisionLabel={divisionLabel}
           divisionPeers={divisionPeers}
           priorYear={priorYear}
+          currency={currency}
         />
       )}
 

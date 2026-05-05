@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { clubs, getClub, type ClubFinancials } from "@/lib/clubs";
 import { euClubs, getEuClub, type EUClub } from "@/lib/euClubs";
-import { japanClubs, getJapanClub, J_DIVISION_LABELS } from "@/lib/japanClubs";
+import { japanClubs, getJapanClub, J_DIVISION_LABELS, type JapanClub } from "@/lib/japanClubs";
 import ClubProfileTabs from "@/components/ClubProfileTabs";
 import MarketContextSection, { type MarketLeagueEntry } from "@/components/MarketContextSection";
 import EUFinancialsSection from "@/components/EUFinancialsSection";
@@ -66,6 +66,114 @@ const JAPAN_DIVISION_COLORS: Record<string, string> = {
   "j3": "#d97706",
 };
 
+// ─── Shared league display map (EU + H2H) ────────────────────────────────────
+const LEAGUE_DISPLAY: Record<string, string> = {
+  "norwegian-eliteserien": "Eliteserien",
+  "1. Bundesliga":         "Bundesliga",
+  "2. Bundesliga":         "2. Bundesliga",
+  "Austrian Bundesliga":   "Austrian Bundesliga",
+  "Austrian 2. Liga":      "Austrian 2. Liga",
+  "Super League":          "Swiss Super League",
+};
+
+// ─── Module-level peer helpers ────────────────────────────────────────────────
+
+function expiryPct(s: string): number | null {
+  const sq = squadProfiles[s];
+  if (!sq?.contract_expiry) return null;
+  const ex = sq.contract_expiry;
+  const total = (ex["0-12m"] ?? 0) + (ex["12-24m"] ?? 0) + (ex["24m+"] ?? 0);
+  if (total === 0) return null;
+  return Math.round((ex["0-12m"] / total) * 100);
+}
+
+function toDivPeer(c: ClubFinancials): DivisionPeer {
+  const sq = squadProfiles[c.slug];
+  const st = stadiumData[c.slug];
+  return {
+    slug:              c.slug,
+    name:              c.name,
+    revenue:           c.revenue,
+    wage_bill:         c.wage_bill,
+    wage_ratio:        c.wage_ratio,
+    operating_profit:  c.operating_profit,
+    pre_tax_profit:    c.pre_tax_profit,
+    net_debt:          c.net_debt,
+    squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+    squad_size:        sq?.squad_size ?? null,
+    avg_age:           sq?.avg_age ?? null,
+    expiry_0_12m_pct:  expiryPct(c.slug),
+    capacity:          st?.capacity ?? null,
+    attendance_pct:    st?.attendance_pct ?? null,
+  };
+}
+
+function euToDivPeer(c: EUClub): DivisionPeer {
+  const sq = squadProfiles[c.slug];
+  const st = stadiumData[c.slug];
+  return {
+    slug:              c.slug,
+    name:              c.name,
+    revenue:           c.financials.revenue,
+    wage_bill:         c.financials.wage_bill,
+    wage_ratio:        c.financials.wage_to_revenue_pct,
+    operating_profit:  c.financials.operating_profit ?? null,
+    pre_tax_profit:    c.financials.pre_tax_profit ?? c.financials.net_profit,
+    net_debt:          c.financials.net_debt ?? null,
+    squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+    squad_size:        sq?.squad_size ?? null,
+    avg_age:           sq?.avg_age ?? null,
+    expiry_0_12m_pct:  expiryPct(c.slug),
+    capacity:          st?.capacity ?? null,
+    attendance_pct:    st?.attendance_pct ?? null,
+  };
+}
+
+function jpToDivPeer(c: JapanClub): DivisionPeer {
+  const sq = squadProfiles[c.slug];
+  const st = stadiumData[c.slug];
+  return {
+    slug:              c.slug,
+    name:              c.name,
+    revenue:           c.revenue,
+    wage_bill:         c.wage_bill,
+    wage_ratio:        c.wage_ratio,
+    operating_profit:  c.operating_profit,
+    pre_tax_profit:    c.pre_tax_profit,
+    net_debt:          c.net_debt,
+    squad_value_eur_m: sq?.squad_value_eur_m ?? null,
+    squad_size:        sq?.squad_size ?? null,
+    avg_age:           sq?.avg_age ?? null,
+    expiry_0_12m_pct:  expiryPct(c.slug),
+    capacity:          st?.capacity ?? null,
+    attendance_pct:    st?.attendance_pct ?? null,
+  };
+}
+
+// Pre-built once at module init — covers all 337 clubs across three regions
+const ALL_H2H_PEERS: H2HPeer[] = [
+  ...clubs.map((c): H2HPeer => ({
+    ...toDivPeer(c),
+    country:       "England",
+    divisionLabel: DIVISION_LABELS[c.division] ?? c.division,
+    currency:      "GBP",
+  })),
+  ...euClubs
+    .filter(hasEuFinancialData)
+    .map((c): H2HPeer => ({
+      ...euToDivPeer(c),
+      country:       c.country,
+      divisionLabel: LEAGUE_DISPLAY[c.league] ?? c.league,
+      currency:      c.currency === "USD" ? "USD" : "EUR",
+    })),
+  ...japanClubs.map((c): H2HPeer => ({
+    ...jpToDivPeer(c),
+    country:       "Japan",
+    divisionLabel: J_DIVISION_LABELS[c.division],
+    currency:      "USD",
+  })),
+];
+
 function HealthBadges({ club }: { club: ClubFinancials }) {
   const issues: string[] = [];
   const positives: string[] = [];
@@ -104,14 +212,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   if (euClub) {
     if (!hasEuFinancialData(euClub)) notFound();
 
-    const LEAGUE_DISPLAY: Record<string, string> = {
-      "norwegian-eliteserien": "Eliteserien",
-      "1. Bundesliga":         "Bundesliga",
-      "2. Bundesliga":         "2. Bundesliga",
-      "Austrian Bundesliga":   "Austrian Bundesliga",
-      "Austrian 2. Liga":      "Austrian 2. Liga",
-      "Super League":          "Swiss Super League",
-    };
     const leagueLabel = LEAGUE_DISPLAY[euClub.league] ?? euClub.league;
 
     // League peers with financial data (for "vs league avg" comparison)
@@ -140,6 +240,21 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     const idx = visibleEuClubs.findIndex((c) => c.slug === slug);
     const nextEu = visibleEuClubs[(idx + 1) % visibleEuClubs.length];
     const prevEu = visibleEuClubs[(idx - 1 + visibleEuClubs.length) % visibleEuClubs.length];
+
+    // ── EU Compare tab data ────────────────────────────────────────────────
+    const euDivPeers: DivisionPeer[] = euClubs
+      .filter(c => c.league === euClub.league && c.country === euClub.country && hasEuFinancialData(c))
+      .map(euToDivPeer);
+
+    const euPriorYear: PriorYearSnap | null = euClub.prior_year
+      ? {
+          revenue:    euClub.prior_year.revenue,
+          wage_ratio: euClub.prior_year.wage_to_revenue_pct ?? null,
+          net_debt:   euClub.prior_year.net_debt ?? null,
+        }
+      : null;
+
+    const euCurrency: "EUR" | "USD" = euClub.currency === "USD" ? "USD" : "EUR";
 
     return (
       <div className="px-6 lg:px-12 py-8">
@@ -221,6 +336,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 />
               ),
             },
+            {
+              key: "compare",
+              label: "Compare",
+              content: (
+                <ClubCompareTab
+                  slug={slug}
+                  divisionLabel={leagueLabel}
+                  priorYear={euPriorYear}
+                  divisionPeers={euDivPeers}
+                  allH2HPeers={ALL_H2H_PEERS}
+                  currency={euCurrency}
+                />
+              ),
+            },
           ]}
         />
       </div>
@@ -260,6 +389,19 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     if (japanClub.wage_ratio !== null && japanClub.wage_ratio > 100) issues.push("Wages exceed revenue");
     else if (japanClub.wage_ratio !== null && japanClub.wage_ratio > 80) issues.push("High wage ratio");
     if (japanClub.wage_ratio !== null && japanClub.wage_ratio < 60) positives.push("Lean wage bill");
+
+    // ── Japan Compare tab data ─────────────────────────────────────────────
+    const jpDivPeers: DivisionPeer[] = japanClubs
+      .filter(c => c.division === japanClub.division)
+      .map(jpToDivPeer);
+
+    const jpPriorYear: PriorYearSnap | null = japanClub.prior_year
+      ? {
+          revenue:    japanClub.prior_year.revenue,
+          wage_ratio: japanClub.prior_year.wage_ratio ?? null,
+          net_debt:   japanClub.prior_year.net_debt ?? null,
+        }
+      : null;
 
     return (
       <div className="px-6 lg:px-12 py-8">
@@ -351,6 +493,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
                 />
               ),
             },
+            {
+              key: "compare",
+              label: "Compare",
+              content: (
+                <ClubCompareTab
+                  slug={slug}
+                  divisionLabel={divisionLabel}
+                  priorYear={jpPriorYear}
+                  divisionPeers={jpDivPeers}
+                  allH2HPeers={ALL_H2H_PEERS}
+                  currency="USD"
+                />
+              ),
+            },
           ]}
         />
       </div>
@@ -388,37 +544,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
     .map(c => ({ name: c.name, slug: c.slug, profile: squadProfiles[c.slug] }))
     .filter((e): e is { name: string; slug: string; profile: SquadProfile } => e.profile != null);
 
-  // ─── Compare tab data (Arsenal only for initial build) ───────────────────────
-  function expiryPct(s: string): number | null {
-    const sq = squadProfiles[s];
-    if (!sq?.contract_expiry) return null;
-    const ex = sq.contract_expiry;
-    const total = (ex["0-12m"] ?? 0) + (ex["12-24m"] ?? 0) + (ex["24m+"] ?? 0);
-    if (total === 0) return null;
-    return Math.round((ex["0-12m"] / total) * 100);
-  }
-
-  function toDivPeer(c: ClubFinancials): DivisionPeer {
-    const sq = squadProfiles[c.slug];
-    const st = stadiumData[c.slug];
-    return {
-      slug:              c.slug,
-      name:              c.name,
-      revenue:           c.revenue,
-      wage_bill:         c.wage_bill,
-      wage_ratio:        c.wage_ratio,
-      operating_profit:  c.operating_profit,
-      pre_tax_profit:    c.pre_tax_profit,
-      net_debt:          c.net_debt,
-      squad_value_eur_m: sq?.squad_value_eur_m ?? null,
-      squad_size:        sq?.squad_size ?? null,
-      avg_age:           sq?.avg_age ?? null,
-      expiry_0_12m_pct:  expiryPct(c.slug),
-      capacity:          st?.capacity ?? null,
-      attendance_pct:    st?.attendance_pct ?? null,
-    };
-  }
-
   const divisionPeers: DivisionPeer[] = clubs
     .filter(c => c.division === compareDivision)
     .map(toDivPeer);
@@ -430,75 +555,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         net_debt:   club.prior_year.net_debt ?? null,
       }
     : null;
-
-  // H2H peer list: all English + EU (filtered) + Japan clubs
-  const allH2HPeers: H2HPeer[] = [
-    ...clubs.map((c): H2HPeer => ({
-      ...toDivPeer(c),
-      country:       "England",
-      divisionLabel: DIVISION_LABELS[c.division] ?? c.division,
-      currency:      "GBP",
-    })),
-    ...euClubs
-      .filter(hasEuFinancialData)
-      .map((c): H2HPeer => {
-        const sq = squadProfiles[c.slug];
-        const st = stadiumData[c.slug];
-        const LEAGUE_DISPLAY: Record<string, string> = {
-          "norwegian-eliteserien": "Eliteserien",
-          "1. Bundesliga":         "Bundesliga",
-          "2. Bundesliga":         "2. Bundesliga",
-          "Austrian Bundesliga":   "Austrian Bundesliga",
-          "Austrian 2. Liga":      "Austrian 2. Liga",
-          "Super League":          "Swiss Super League",
-        };
-        const leagueLabel = LEAGUE_DISPLAY[c.league] ?? c.league;
-        return {
-          slug:              c.slug,
-          name:              c.name,
-          country:           c.country,
-          divisionLabel:     leagueLabel,
-          currency:          c.currency === "USD" ? "USD" : "EUR",
-          revenue:           c.financials.revenue,
-          wage_bill:         c.financials.wage_bill,
-          wage_ratio:        c.financials.wage_to_revenue_pct,
-          operating_profit:  c.financials.operating_profit ?? null,
-          pre_tax_profit:    c.financials.pre_tax_profit ?? c.financials.net_profit,
-          net_debt:          c.financials.net_debt ?? null,
-          squad_value_eur_m: sq?.squad_value_eur_m ?? null,
-          squad_size:        sq?.squad_size ?? null,
-          avg_age:           sq?.avg_age ?? null,
-          expiry_0_12m_pct:  expiryPct(c.slug),
-          capacity:          st?.capacity ?? null,
-          attendance_pct:    st?.attendance_pct ?? null,
-        };
-      }),
-    ...japanClubs.map((c): H2HPeer => {
-      const sq = squadProfiles[c.slug];
-      const st = stadiumData[c.slug];
-      return {
-        slug:              c.slug,
-        name:              c.name,
-        country:           "Japan",
-        divisionLabel:     J_DIVISION_LABELS[c.division],
-        currency:          "USD",
-        revenue:           c.revenue,
-        wage_bill:         c.wage_bill,
-        wage_ratio:        c.wage_ratio,
-        operating_profit:  c.operating_profit,
-        pre_tax_profit:    c.pre_tax_profit,
-        net_debt:          c.net_debt,
-        squad_value_eur_m: sq?.squad_value_eur_m ?? null,
-        squad_size:        sq?.squad_size ?? null,
-        avg_age:           sq?.avg_age ?? null,
-        expiry_0_12m_pct:  expiryPct(c.slug),
-        capacity:          st?.capacity ?? null,
-        attendance_pct:    st?.attendance_pct ?? null,
-      };
-    }),
-  ];
-
-  const showCompareTab = slug === "arsenal";
 
   return (
     <div className="px-6 lg:px-12 py-8">
@@ -593,15 +649,16 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           {
             key: "compare",
             label: "Compare",
-            content: showCompareTab ? (
+            content: (
               <ClubCompareTab
                 slug={slug}
                 divisionLabel={compareLabel}
                 priorYear={priorYear}
                 divisionPeers={divisionPeers}
-                allH2HPeers={allH2HPeers}
+                allH2HPeers={ALL_H2H_PEERS}
+                currency="GBP"
               />
-            ) : null,
+            ),
           },
         ]}
       />
