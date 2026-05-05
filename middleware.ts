@@ -1,13 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// All 20 Premier League clubs for 2025/26 — full access, no gate
-const PL_SLUGS = new Set([
-  "arsenal", "aston-villa", "bournemouth", "brentford", "brighton",
-  "burnley", "chelsea", "crystal-palace", "everton", "fulham",
-  "leeds", "liverpool", "man-city", "man-united", "newcastle",
-  "nottm-forest", "sunderland", "tottenham", "west-ham", "wolves",
-]);
-
 function hasValidAccess(request: NextRequest): boolean {
   const ownerCode   = process.env.OWNER_ACCESS_CODE;
   const accessCodes = (process.env.ACCESS_CODES ?? "")
@@ -32,22 +24,29 @@ function gateRedirect(request: NextRequest): NextResponse {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const valid  = hasValidAccess(request);
+  const isProd = process.env.NODE_ENV === "production";
 
-  // Always gate /rankings and /compare
+  // Full-page gate — redirect users without access
   if (pathname === "/rankings" || pathname === "/compare") {
-    if (!hasValidAccess(request)) return gateRedirect(request);
-    return;
+    if (!valid) return gateRedirect(request);
   }
 
-  // Gate /clubs/[slug] for non-Premier League clubs only
-  if (pathname.startsWith("/clubs/")) {
-    const slug = pathname.split("/")[2];
-    if (slug && !PL_SLUGS.has(slug)) {
-      if (!hasValidAccess(request)) return gateRedirect(request);
-    }
+  // Backfill the non-httpOnly UI cookie for owner-code holders so client
+  // components can detect access without reading the httpOnly cookie.
+  if (valid && !request.cookies.has("intelligence_unlocked")) {
+    const res = NextResponse.next();
+    res.cookies.set("intelligence_unlocked", "1", {
+      httpOnly: false,
+      secure:   isProd,
+      maxAge:   60 * 60 * 24 * 365,
+      path:     "/",
+      sameSite: "lax",
+    });
+    return res;
   }
 }
 
 export const config = {
-  matcher: ["/clubs/:path*", "/rankings", "/compare"],
+  matcher: ["/clubs/:path*", "/directory", "/rankings", "/compare"],
 };

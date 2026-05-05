@@ -308,7 +308,11 @@ function ClubsView({
       {clubList.map((club, i) => (
         <Link
           key={club.slug}
-          href={`/clubs/${club.slug}`}
+          href={
+            showUnlocked
+              ? `/clubs/${club.slug}`
+              : `/request-access?from=${encodeURIComponent(`/clubs/${club.slug}`)}`
+          }
           className="flex items-center justify-between group py-5 sm:py-6"
           style={{
             borderTop: i === 0 ? "1px solid #1a1a1a" : undefined,

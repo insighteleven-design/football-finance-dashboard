@@ -13,8 +13,6 @@ import FinancialsSection from "@/components/FinancialsSection";
 import { squadProfiles, type SquadProfile } from "@/lib/squadProfile";
 import { stadiumData } from "@/lib/stadiumData";
 import ClubCompareTab, { type DivisionPeer, type PriorYearSnap, type H2HPeer } from "@/components/ClubCompareTab";
-import SummaryTab from "@/components/SummaryTab";
-
 function hasEuFinancialData(club: EUClub): boolean {
   const f = club.financials;
   return (
@@ -301,17 +299,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           </div>
         </div>
         <ClubProfileTabs
+          requestAccessHref={`/request-access?from=/clubs/${slug}`}
           tabs={[
             {
-              key: "financials",
-              label: "Financials",
+              key:     "financials",
+              label:   "Financials",
               labelFull: "Financial Information",
+              gated:   true,
               content: <EUFinancialsSection club={euClub} leagueClubs={leagueClubs} leagueLabel={leagueLabel} />,
             },
             {
-              key: "squad",
-              label: "Squad",
+              key:     "squad",
+              label:   "Squad",
               labelFull: "Squad Profile",
+              gated:   true,
               content: (
                 <SquadProfileSection
                   currentSlug={slug}
@@ -323,9 +324,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               ),
             },
             {
-              key: "market",
-              label: "Market",
+              key:     "market",
+              label:   "Market",
               labelFull: "Market Context",
+              gated:   true,
               content: (
                 <MarketContextSection
                   slug={slug}
@@ -338,8 +340,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               ),
             },
             {
-              key: "compare",
-              label: "Compare",
+              key:     "compare",
+              label:   "Compare",
+              gated:   true,
               content: (
                 <ClubCompareTab
                   slug={slug}
@@ -458,17 +461,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           </div>
         </div>
         <ClubProfileTabs
+          requestAccessHref={`/request-access?from=/clubs/${slug}`}
           tabs={[
             {
-              key: "financials",
-              label: "Financials",
+              key:     "financials",
+              label:   "Financials",
               labelFull: "Financial Information",
+              gated:   true,
               content: <JapanFinancialsSection club={japanClub} leagueClubs={leagueClubs} />,
             },
             {
-              key: "squad",
-              label: "Squad",
+              key:     "squad",
+              label:   "Squad",
               labelFull: "Squad Profile",
+              gated:   true,
               content: (
                 <SquadProfileSection
                   currentSlug={slug}
@@ -480,9 +486,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               ),
             },
             {
-              key: "market",
-              label: "Market",
+              key:     "market",
+              label:   "Market",
               labelFull: "Market Context",
+              gated:   true,
               content: (
                 <MarketContextSection
                   slug={slug}
@@ -495,8 +502,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               ),
             },
             {
-              key: "compare",
-              label: "Compare",
+              key:     "compare",
+              label:   "Compare",
+              gated:   true,
               content: (
                 <ClubCompareTab
                   slug={slug}
@@ -611,23 +619,20 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       </div>
 
       <ClubProfileTabs
+        requestAccessHref={`/request-access?from=/clubs/${slug}`}
         tabs={[
-          ...(slug === "arsenal" ? [{
-            key: "summary",
-            label: "Summary",
-            labelFull: "Club Summary",
-            content: <SummaryTab club={club} />,
-          }] : []),
           {
-            key: "financials",
-            label: "Financials",
+            key:     "financials",
+            label:   "Financials",
             labelFull: "Financial Information",
+            gated:   club.division !== "premier-league",
             content: <FinancialsSection club={club} />,
           },
           {
-            key: "squad",
-            label: "Squad",
+            key:     "squad",
+            label:   "Squad",
             labelFull: "Squad Profile",
+            gated:   true,
             content: (
               <SquadProfileSection
                 currentSlug={slug}
@@ -639,9 +644,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             ),
           },
           {
-            key: "market",
-            label: "Market",
+            key:     "market",
+            label:   "Market",
             labelFull: "Market Context",
+            gated:   true,
             content: (
               <MarketContextSection
                 slug={slug}
@@ -654,8 +660,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             ),
           },
           {
-            key: "compare",
-            label: "Compare",
+            key:     "compare",
+            label:   "Compare",
+            gated:   true,
             content: (
               <ClubCompareTab
                 slug={slug}

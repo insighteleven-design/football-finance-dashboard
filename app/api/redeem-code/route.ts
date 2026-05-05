@@ -28,13 +28,28 @@ export async function POST(request: NextRequest) {
       path:     "/",
       sameSite: "lax",
     });
+    // Non-httpOnly UI signal so client components can detect owner access
+    res.cookies.set("intelligence_unlocked", "1", {
+      httpOnly: false,
+      secure:   isProd,
+      maxAge:   ONE_YEAR,
+      path:     "/",
+      sameSite: "lax",
+    });
     return res;
   }
 
   if (isValidAccessCode(code)) {
     const res = NextResponse.json({ ok: true });
     res.cookies.set("intelligence_access", code, {
-      httpOnly: false, // readable by client JS for UI purposes
+      httpOnly: false,
+      secure:   isProd,
+      maxAge:   THIRTY_DAYS,
+      path:     "/",
+      sameSite: "lax",
+    });
+    res.cookies.set("intelligence_unlocked", "1", {
+      httpOnly: false,
       secure:   isProd,
       maxAge:   THIRTY_DAYS,
       path:     "/",
