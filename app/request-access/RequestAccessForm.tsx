@@ -159,20 +159,10 @@ export default function RequestAccessForm({ from }: { from: string }) {
                 fontWeight:  300,
                 letterSpacing: "-0.02em",
                 lineHeight:  1.25,
-                marginBottom: "14px",
-              }}
-            >
-              Request access to Intelligence
-            </p>
-            <p
-              style={{
-                color:        "#666666",
-                fontSize:     "15px",
-                lineHeight:   1.65,
                 marginBottom: "clamp(36px, 5vh, 52px)",
               }}
             >
-              Full access covers 300+ clubs across 14 countries.
+              Get full access to football club data for 300+ clubs across 11 countries
             </p>
 
             {/* ── Request form ── */}
