@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { type ComparableClub, fmtVal } from "@/lib/comparable";
+import { type ComparableClub, toUSD, fmtUSD } from "@/lib/comparable";
 import RadarChart from "@/components/RadarChart";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -105,7 +105,7 @@ function fmtLeagueVal(league: LeagueData, key: keyof LeagueData): string {
   const val = league[key] as number | null;
   if (val === null) return "—";
   if (key === "pctProfitable" || key === "avgWageRatio") return `${val.toFixed(1)}%`;
-  return fmtVal(val, false, league.currency);
+  return fmtUSD(toUSD(val, league.currency));
 }
 
 // ─── League slot ──────────────────────────────────────────────────────────────
@@ -247,9 +247,12 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
         ))}
       </div>
 
-      {/* Metric rows */}
-      {LEAGUE_METRICS.map((metric, mi) => {
-        const values = leagues.map((l) => l[metric.key] as number | null);
+      {/* Metric rows — only shown where all leagues have data */}
+      {LEAGUE_METRICS.filter((m) => leagues.every((l) => l[m.key] !== null)).map((metric, mi) => {
+        const values = leagues.map((l) => {
+          const v = l[metric.key] as number | null;
+          return metric.isRatio ? v : toUSD(v, l.currency);
+        });
         const valid  = values.filter((v): v is number => v !== null);
         const best   = valid.length && metric.higherBetter !== null
           ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid))
@@ -260,10 +263,11 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
               {metric.shortLabel}
             </div>
             {leagues.map((league, i) => {
-              const val    = league[metric.key] as number | null;
-              const isBest = val !== null && valid.length > 1 && best !== null && val === best;
+              const rawVal  = league[metric.key] as number | null;
+              const normVal = metric.isRatio ? rawVal : toUSD(rawVal, league.currency);
+              const isBest  = normVal !== null && valid.length > 1 && best !== null && normVal === best;
               return (
-                <div key={league.id} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : val !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
+                <div key={league.id} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : normVal !== null ? SLOT_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
                   {fmtLeagueVal(league, metric.key)}
                 </div>
               );
@@ -274,7 +278,7 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
 
       {leagues.length > 1 && (
         <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.875rem", letterSpacing: "0.04em" }}>
-          Green = best in comparison · Averages exclude clubs with missing data
+          Monetary values normalised to USD (GBP ×1.27 · EUR ×1.09) · green = best in comparison · averages exclude clubs with missing data
         </p>
       )}
     </div>
@@ -284,6 +288,7 @@ function LeagueStatsView({ leagues }: { leagues: LeagueData[] }) {
 // ─── Charts view ──────────────────────────────────────────────────────────────
 
 function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
+  const visibleMetrics = LEAGUE_METRICS.filter((m) => leagues.every((l) => l[m.key] !== null));
   return (
     <div>
       {/* Legend */}
@@ -296,12 +301,15 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
           </div>
         ))}
         <span style={{ fontSize: "13px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
-          Diverging: left = loss/debt · right = profit/cash
+          Values in USD · Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
 
-      {LEAGUE_METRICS.map((metric) => {
-        const vals   = leagues.map((l) => l[metric.key] as number | null);
+      {visibleMetrics.map((metric) => {
+        const vals = leagues.map((l) => {
+          const v = l[metric.key] as number | null;
+          return metric.isRatio ? v : toUSD(v, l.currency);
+        });
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
           <div key={metric.key as string} style={{ padding: "2.25rem 0", borderBottom: "1px solid #f0f0f0" }}>
@@ -310,8 +318,9 @@ function LeagueChartsView({ leagues }: { leagues: LeagueData[] }) {
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
               {leagues.map((league, i) => {
-                const value = league[metric.key] as number | null;
-                const color = SLOT_COLORS[i];
+                const rawVal = league[metric.key] as number | null;
+                const value  = metric.isRatio ? rawVal : toUSD(rawVal, league.currency);
+                const color  = SLOT_COLORS[i];
                 const displayVal = fmtLeagueVal(league, metric.key);
 
                 if (metric.diverging) {
@@ -381,16 +390,19 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
   ];
 
   const radarPopulations = useMemo(() => {
-    function pop(key: keyof LeagueData) {
+    function popMoney(key: keyof LeagueData) {
+      return allLeagues.map((l) => toUSD(l[key] as number | null, l.currency)).filter((v): v is number => v !== null);
+    }
+    function popRatio(key: keyof LeagueData) {
       return allLeagues.map((l) => l[key] as number | null).filter((v): v is number => v !== null);
     }
     return {
-      avgRevenue:         pop("avgRevenue"),
-      avgWageRatio:       pop("avgWageRatio"),
-      avgOperatingProfit: pop("avgOperatingProfit"),
-      avgPreTaxProfit:    pop("avgPreTaxProfit"),
-      pctProfitable:      pop("pctProfitable"),
-      avgNetDebt:         pop("avgNetDebt"),
+      avgRevenue:         popMoney("avgRevenue"),
+      avgWageRatio:       popRatio("avgWageRatio"),
+      avgOperatingProfit: popMoney("avgOperatingProfit"),
+      avgPreTaxProfit:    popMoney("avgPreTaxProfit"),
+      pctProfitable:      popRatio("pctProfitable"),
+      avgNetDebt:         popMoney("avgNetDebt"),
     };
   }, [allLeagues]);
 
@@ -406,7 +418,14 @@ export default function LeagueVsLeague({ allClubs }: { allClubs: ComparableClub[
   const radarSeries = selectedLeagues.map((league, i) => ({
     name:   league.displayName,
     color:  SLOT_COLORS[i],
-    values: [league.avgRevenue, league.avgWageRatio, league.avgOperatingProfit, league.avgPreTaxProfit, league.pctProfitable, league.avgNetDebt],
+    values: [
+      toUSD(league.avgRevenue, league.currency),
+      league.avgWageRatio,
+      toUSD(league.avgOperatingProfit, league.currency),
+      toUSD(league.avgPreTaxProfit, league.currency),
+      league.pctProfitable,
+      toUSD(league.avgNetDebt, league.currency),
+    ],
   }));
 
   return (
