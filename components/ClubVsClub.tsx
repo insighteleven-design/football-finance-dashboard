@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type ComparableClub, fmtVal } from "@/lib/comparable";
+import { type ComparableClub, fmtVal, toUSD, fmtUSD } from "@/lib/comparable";
 import RadarChart from "@/components/RadarChart";
 import { getImmigrationRating } from "@/lib/immigrationRatings";
 
@@ -211,9 +211,12 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
         ))}
       </div>
 
-      {/* Metric rows */}
-      {COMPARE_METRICS.map((metric, mi) => {
-        const values = clubs.map((c) => c[metric.key] as number | null);
+      {/* Metric rows — only shown where all clubs have data */}
+      {COMPARE_METRICS.filter((m) => clubs.every((c) => c[m.key] !== null)).map((metric, mi) => {
+        const values = clubs.map((c) => {
+          const v = c[metric.key] as number | null;
+          return metric.isRatio ? v : toUSD(v, c.currency);
+        });
         const valid  = values.filter((v): v is number => v !== null);
         const best   = valid.length ? (metric.higherBetter ? Math.max(...valid) : Math.min(...valid)) : null;
         return (
@@ -222,11 +225,12 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
               {metric.shortLabel}
             </div>
             {clubs.map((club, i) => {
-              const val    = club[metric.key] as number | null;
-              const isBest = val !== null && valid.length > 1 && val === best;
+              const rawVal  = club[metric.key] as number | null;
+              const normVal = metric.isRatio ? rawVal : toUSD(rawVal, club.currency);
+              const isBest  = normVal !== null && valid.length > 1 && normVal === best;
               return (
-                <div key={club.slug} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : val !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
-                  {fmtVal(val, metric.isRatio, club.currency)}
+                <div key={club.slug} style={{ flex: 1, padding: "1.75rem 1rem 1.75rem 1.5rem", fontSize: "22px", fontWeight: isBest ? 700 : 600, fontVariantNumeric: "tabular-nums", color: isBest ? "#059669" : normVal !== null ? CLUB_COLORS[i] : "#cccccc", backgroundColor: isBest ? "#ecfdf5" : "transparent", minWidth: 0 }}>
+                  {metric.isRatio ? fmtVal(rawVal, true) : fmtUSD(normVal)}
                 </div>
               );
             })}
@@ -260,7 +264,7 @@ function StatsView({ clubs }: { clubs: ComparableClub[] }) {
 
       {clubs.length > 1 && (
         <p style={{ fontSize: "12px", color: "#cccccc", marginTop: "0.875rem", letterSpacing: "0.04em" }}>
-          Green = best in comparison for that metric
+          Monetary values normalised to USD (GBP ×1.27 · EUR ×1.09) · green = best in comparison for that metric
         </p>
       )}
     </div>
@@ -277,7 +281,7 @@ function StandardBarRow({ club, value, pct, clubColor, isRatio }: { club: Compar
         <div style={{ height: "100%", width: `${pct}%`, backgroundColor: clubColor, opacity: 0.85 }} />
       </div>
       <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color: clubColor }}>
-        {fmtVal(value, isRatio, club.currency)}
+        {isRatio ? fmtVal(value, true) : fmtUSD(value)}
       </span>
     </div>
   );
@@ -299,13 +303,14 @@ function DivergingBarRow({ club, value, scale, clubColor, isRatio }: { club: Com
         </div>
       </div>
       <span style={{ fontSize: "18px", fontWeight: 500, fontVariantNumeric: "tabular-nums", width: "6rem", textAlign: "right", flexShrink: 0, color: value !== null ? clubColor : "#aaaaaa" }}>
-        {fmtVal(value, isRatio, club.currency)}
+        {isRatio ? fmtVal(value, true) : fmtUSD(value)}
       </span>
     </div>
   );
 }
 
 function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
+  const visibleMetrics = COMPARE_METRICS.filter((m) => clubs.every((c) => c[m.key] !== null));
   return (
     <div>
       {/* Legend */}
@@ -317,11 +322,14 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
           </div>
         ))}
         <span style={{ fontSize: "13px", color: "#cccccc", marginLeft: "auto", alignSelf: "center", letterSpacing: "0.04em" }}>
-          Diverging: left = loss/debt · right = profit/cash
+          Values in USD · Diverging: left = loss/debt · right = profit/cash
         </span>
       </div>
-      {COMPARE_METRICS.map((metric) => {
-        const vals   = clubs.map((c) => c[metric.key] as number | null);
+      {visibleMetrics.map((metric) => {
+        const vals   = clubs.map((c) => {
+          const v = c[metric.key] as number | null;
+          return metric.isRatio ? v : toUSD(v, c.currency);
+        });
         const absMax = Math.max(...vals.filter((v): v is number => v !== null).map(Math.abs), 0.01);
         return (
           <div key={metric.key as string} style={{ padding: "2.25rem 0", borderBottom: "1px solid #f0f0f0" }}>
@@ -330,8 +338,9 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
               {clubs.map((club, i) => {
-                const value = club[metric.key] as number | null;
-                const color = CLUB_COLORS[i];
+                const rawVal = club[metric.key] as number | null;
+                const value  = metric.isRatio ? rawVal : toUSD(rawVal, club.currency);
+                const color  = CLUB_COLORS[i];
                 if (metric.diverging) return <DivergingBarRow key={club.slug} club={club} value={value} scale={absMax} clubColor={color} isRatio={metric.isRatio} />;
                 const pct = value !== null ? Math.min((Math.abs(value) / absMax) * 100, 100) : 0;
                 return <StandardBarRow key={club.slug} club={club} value={value} pct={pct} clubColor={color} isRatio={metric.isRatio} />;
@@ -377,23 +386,31 @@ function ChartsView({ clubs }: { clubs: ComparableClub[] }) {
 function generateInsights(clubs: ComparableClub[]): string[] {
   const out: string[] = [];
 
-  const withRev = [...clubs].filter((c) => c.revenue !== null).sort((a, b) => b.revenue! - a.revenue!);
+  const withRev = [...clubs]
+    .filter((c) => c.revenue !== null)
+    .sort((a, b) => toUSD(b.revenue, b.currency)! - toUSD(a.revenue, a.currency)!);
   if (withRev.length >= 2) {
     const top = withRev[0], bot = withRev[withRev.length - 1];
-    const ratio = top.revenue! / bot.revenue!;
+    const topUSD = toUSD(top.revenue, top.currency)!;
+    const botUSD = toUSD(bot.revenue, bot.currency)!;
+    const ratio = topUSD / botUSD;
     if (ratio > 2) {
-      out.push(`${top.name} generate ${ratio.toFixed(1)}× more revenue than ${bot.name} (${fmtVal(top.revenue, false, top.currency)} vs ${fmtVal(bot.revenue, false, bot.currency)}), pointing to a fundamental difference in commercial scale and league context.`);
+      out.push(`${top.name} generate ${ratio.toFixed(1)}× more revenue than ${bot.name} (${fmtUSD(topUSD)} vs ${fmtUSD(botUSD)}), pointing to a fundamental difference in commercial scale and league context.`);
     } else {
-      const pct = Math.round(((top.revenue! - bot.revenue!) / bot.revenue!) * 100);
+      const pct = Math.round(((topUSD - botUSD) / botUSD) * 100);
       out.push(`${top.name} and ${bot.name} are closely matched on revenue — within ${pct}% of each other — making wage efficiency and cost discipline the more decisive financial battleground.`);
     }
   }
 
-  const profitable = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit > 0).sort((a, b) => b.pre_tax_profit! - a.pre_tax_profit!);
-  const lossMaking = clubs.filter((c) => c.pre_tax_profit !== null && c.pre_tax_profit < 0).sort((a, b) => a.pre_tax_profit! - b.pre_tax_profit!);
+  const profitable = clubs
+    .filter((c) => c.pre_tax_profit !== null && toUSD(c.pre_tax_profit, c.currency)! > 0)
+    .sort((a, b) => toUSD(b.pre_tax_profit, b.currency)! - toUSD(a.pre_tax_profit, a.currency)!);
+  const lossMaking = clubs
+    .filter((c) => c.pre_tax_profit !== null && toUSD(c.pre_tax_profit, c.currency)! < 0)
+    .sort((a, b) => toUSD(a.pre_tax_profit, a.currency)! - toUSD(b.pre_tax_profit, b.currency)!);
   if (profitable.length > 0 && lossMaking.length > 0) {
-    const profStr = profitable.map((c) => `${c.name} (${fmtVal(c.pre_tax_profit, false, c.currency)})`).join(", ");
-    const lossStr = lossMaking.map((c) => `${c.name} (${fmtVal(c.pre_tax_profit, false, c.currency)})`).join(", ");
+    const profStr = profitable.map((c) => `${c.name} (${fmtUSD(toUSD(c.pre_tax_profit, c.currency))})`).join(", ");
+    const lossStr = lossMaking.map((c) => `${c.name} (${fmtUSD(toUSD(c.pre_tax_profit, c.currency))})`).join(", ");
     out.push(`The profitability divide is clear: ${profStr} ${profitable.length === 1 ? "is" : "are"} profitable at the pre-tax level, while ${lossStr} ${lossMaking.length === 1 ? "is" : "are"} loss-making.`);
   } else if (profitable.length === clubs.filter((c) => c.pre_tax_profit !== null).length && profitable.length > 0) {
     out.push(`All clubs in this comparison are profitable at the pre-tax level — a relatively rare outcome at the top of European football.`);
@@ -409,24 +426,29 @@ function generateInsights(clubs: ComparableClub[]): string[] {
     }
   }
 
-  const withDebt = [...clubs].filter((c) => c.net_debt !== null).sort((a, b) => b.net_debt! - a.net_debt!);
+  const withDebt = [...clubs]
+    .filter((c) => c.net_debt !== null)
+    .sort((a, b) => toUSD(b.net_debt, b.currency)! - toUSD(a.net_debt, a.currency)!);
   if (withDebt.length >= 1) {
     const mostIndebted = withDebt[0];
-    if (mostIndebted.net_debt! > 50) {
-      out.push(`${mostIndebted.name} carry ${fmtVal(mostIndebted.net_debt, false, mostIndebted.currency)} in net debt — a balance sheet constraint that limits transfer investment and increases financial risk.`);
+    const mostIndebtedUSD = toUSD(mostIndebted.net_debt, mostIndebted.currency)!;
+    if (mostIndebtedUSD > 60) {
+      out.push(`${mostIndebted.name} carry ${fmtUSD(mostIndebtedUSD)} in net debt — a balance sheet constraint that limits transfer investment and increases financial risk.`);
     }
-    const cashClubs = withDebt.filter((c) => c.net_debt! < 0);
+    const cashClubs = withDebt.filter((c) => toUSD(c.net_debt, c.currency)! < 0);
     if (cashClubs.length > 0) {
-      const cashStr = cashClubs.map((c) => `${c.name} (${fmtVal(c.net_debt, false, c.currency)} net cash)`).join(", ");
+      const cashStr = cashClubs.map((c) => `${c.name} (${fmtUSD(toUSD(c.net_debt, c.currency))} net cash)`).join(", ");
       out.push(`${cashStr} ${cashClubs.length === 1 ? "holds" : "hold"} a net cash position, providing structural flexibility that ${clubs.filter((c) => !cashClubs.includes(c)).map((c) => c.name).join(", ")} ${clubs.length - cashClubs.length === 1 ? "lacks" : "lack"}.`);
     }
   }
 
   const scored = clubs.map((c) => {
     let s = 0;
-    if (c.pre_tax_profit !== null) s += c.pre_tax_profit > 0 ? 3 : c.pre_tax_profit > -20 ? 1 : 0;
-    if (c.wage_ratio !== null)     s += c.wage_ratio < 65 ? 3 : c.wage_ratio < 80 ? 1 : 0;
-    if (c.net_debt !== null)       s += c.net_debt < 0 ? 3 : c.net_debt < 50 ? 1 : 0;
+    const ptpUSD = toUSD(c.pre_tax_profit, c.currency);
+    const ndUSD  = toUSD(c.net_debt, c.currency);
+    if (ptpUSD !== null) s += ptpUSD > 0 ? 3 : ptpUSD > -25 ? 1 : 0;
+    if (c.wage_ratio !== null) s += c.wage_ratio < 65 ? 3 : c.wage_ratio < 80 ? 1 : 0;
+    if (ndUSD !== null)  s += ndUSD < 0 ? 3 : ndUSD < 60 ? 1 : 0;
     return { club: c, score: s };
   }).sort((a, b) => b.score - a.score);
 
@@ -509,15 +531,18 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
   ];
 
   const radarPopulations = useMemo(() => {
-    function pop(key: keyof ComparableClub) {
+    function popMoney(key: keyof ComparableClub) {
+      return allClubs.map((c) => toUSD(c[key] as number | null, c.currency)).filter((v): v is number => v !== null);
+    }
+    function popRatio(key: keyof ComparableClub) {
       return allClubs.map((c) => c[key] as number | null).filter((v): v is number => v !== null);
     }
     return {
-      revenue:          pop("revenue"),
-      wage_ratio:       pop("wage_ratio"),
-      operating_profit: pop("operating_profit"),
-      pre_tax_profit:   pop("pre_tax_profit"),
-      net_debt:         pop("net_debt"),
+      revenue:          popMoney("revenue"),
+      wage_ratio:       popRatio("wage_ratio"),
+      operating_profit: popMoney("operating_profit"),
+      pre_tax_profit:   popMoney("pre_tax_profit"),
+      net_debt:         popMoney("net_debt"),
     };
   }, [allClubs]);
 
@@ -532,7 +557,13 @@ export default function ClubVsClub({ allClubs }: { allClubs: ComparableClub[] })
   const radarSeries = selectedClubs.map((club, i) => ({
     name:   club.name,
     color:  CLUB_COLORS[i],
-    values: [club.revenue, club.wage_ratio, club.operating_profit, club.pre_tax_profit, club.net_debt],
+    values: [
+      toUSD(club.revenue, club.currency),
+      club.wage_ratio,
+      toUSD(club.operating_profit, club.currency),
+      toUSD(club.pre_tax_profit, club.currency),
+      toUSD(club.net_debt, club.currency),
+    ],
   }));
 
   function copyLink() {

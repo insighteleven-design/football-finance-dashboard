@@ -1,5 +1,6 @@
 import { clubs } from "@/lib/clubs";
 import { euClubs, EU_COUNTRY_CONFIG } from "@/lib/euClubs";
+import { japanClubs } from "@/lib/japanClubs";
 import SearchBar from "@/components/SearchBar";
 import HomeNav from "@/components/HomeNav";
 
@@ -14,8 +15,8 @@ function hasEuFinancialData(club: (typeof euClubs)[0]): boolean {
 
 export default function Home() {
   const visibleEuClubs = euClubs.filter(hasEuFinancialData);
-  const totalClubs = clubs.length + visibleEuClubs.length;
-  const totalCountries = 1 + EU_COUNTRY_CONFIG.filter((c) =>
+  const totalClubs = clubs.length + visibleEuClubs.length + japanClubs.length;
+  const totalCountries = 1 + 1 + EU_COUNTRY_CONFIG.filter((c) =>
     euClubs.some((cl) => cl.country === c.country && hasEuFinancialData(cl))
   ).length;
 

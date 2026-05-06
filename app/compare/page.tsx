@@ -106,7 +106,7 @@ export default function ComparePage() {
           className="mb-6 sm:mb-8"
           style={{ color: "#999999", fontSize: "clamp(14px, 2vw, 20px)", letterSpacing: "0.01em" }}
         >
-          Head-to-head financial benchmarking across clubs and leagues
+          Head-to-head financial benchmarking across 329 clubs and 11 countries
         </p>
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <Suspense fallback={<div className="text-sm" style={{ color: "#999999" }}>Loading…</div>}>
