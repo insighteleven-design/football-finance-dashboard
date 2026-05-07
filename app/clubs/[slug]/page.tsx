@@ -399,11 +399,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       .filter(c => c.division === japanClub.division)
       .map(jpToDivPeer);
 
-    const jpPriorYear: PriorYearSnap | null = japanClub.prior_year
+    const _jpPy = japanClub.prior_years[0] ?? null;
+    const jpPriorYear: PriorYearSnap | null = _jpPy
       ? {
-          revenue:    japanClub.prior_year.revenue,
-          wage_ratio: japanClub.prior_year.wage_ratio ?? null,
-          net_debt:   japanClub.prior_year.net_debt ?? null,
+          revenue:    _jpPy.revenue,
+          wage_ratio: _jpPy.wage_ratio ?? null,
+          net_debt:   _jpPy.net_debt ?? null,
         }
       : null;
 

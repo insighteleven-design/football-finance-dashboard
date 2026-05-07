@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { JapanClub } from "@/lib/japanClubs";
+import type { JapanClub, JapanPriorYear } from "@/lib/japanClubs";
 import { fmtJpy, J_DIVISION_LABELS } from "@/lib/japanClubs";
 
 // ─── Signal colours + tints ───────────────────────────────────────────────────
@@ -43,7 +43,7 @@ function snapFromClub(c: JapanClub): Snap {
   };
 }
 
-function snapFromPrior(py: NonNullable<JapanClub["prior_year"]>): Snap {
+function snapFromPrior(py: JapanPriorYear): Snap {
   return {
     revenue: py.revenue, wage_bill: py.wage_bill, wage_ratio: py.wage_ratio,
     operating_profit: py.operating_profit, profit_from_player_sales: py.profit_from_player_sales,
@@ -421,13 +421,22 @@ function JapanTrendChart({
 
 // ─── League average snaps ─────────────────────────────────────────────────────
 
+const NULL_SNAP: Snap = { revenue: null, wage_bill: null, wage_ratio: null, operating_profit: null, profit_from_player_sales: null, pre_tax_profit: null, net_debt: null };
+
 function buildLeagueAvgSnaps(clubSnaps: YearSnap[], leagueClubs: JapanClub[]): YearSnap[] {
-  const hasPrior = clubSnaps.length > 1;
+  const n = clubSnaps.length;
   return clubSnaps.map((ys, i) => {
-    const isPriorSlot = hasPrior && i === 0;
-    const snapList: Snap[] = isPriorSlot
-      ? leagueClubs.filter((c) => c.prior_year !== null).map((c) => snapFromPrior(c.prior_year!))
-      : leagueClubs.map(snapFromClub);
+    const isCurrentSlot = i === n - 1;
+    const isImmediatePrior = i === n - 2;
+
+    let snapList: Snap[];
+    if (isCurrentSlot) {
+      snapList = leagueClubs.map(snapFromClub);
+    } else if (isImmediatePrior) {
+      snapList = leagueClubs.filter((c) => c.prior_years.length > 0).map((c) => snapFromPrior(c.prior_years[0]));
+    } else {
+      return { label: ys.label, snap: NULL_SNAP };
+    }
 
     const avg = (key: keyof Snap): number | null => {
       const vals = snapList.map((s) => s[key]).filter((v): v is number => v !== null && isFinite(v));
@@ -454,11 +463,13 @@ function JapanYoYSection({
   leagueClubs: JapanClub[];
   view?: "all" | "table" | "chart";
 }) {
-  const py = club.prior_year;
-  if (!py) return <p className="text-sm text-[#aaaaaa] italic">No prior year data available.</p>;
+  if (club.prior_years.length === 0) return <p className="text-sm text-[#aaaaaa] italic">No prior year data available.</p>;
 
   const clubSnaps: YearSnap[] = [
-    { label: fyLabel(py.fiscal_year_end), snap: snapFromPrior(py) },
+    ...club.prior_years.slice().reverse().map((py) => ({
+      label: fyLabel(py.fiscal_year_end),
+      snap: snapFromPrior(py),
+    })),
     { label: fyLabel(club.fiscal_year_end), snap: snapFromClub(club) },
   ];
 
@@ -641,7 +652,7 @@ export default function JapanFinancialsSection({
   club: JapanClub;
   leagueClubs: JapanClub[];
 }) {
-  const py = club.prior_year;
+  const py = club.prior_years[0] ?? null;
   const [fullView, setFullView] = useState<"table" | "chart">("table");
 
   // ── Trend dots ────────────────────────────────────────────────────────────
