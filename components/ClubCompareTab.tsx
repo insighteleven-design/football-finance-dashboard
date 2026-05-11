@@ -6,20 +6,22 @@ import RadarChart from "@/components/RadarChart";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type DivisionPeer = {
-  slug:              string;
-  name:              string;
-  revenue:           number | null;
-  wage_bill:         number | null;
-  wage_ratio:        number | null;
-  operating_profit:  number | null;
-  pre_tax_profit:    number | null;
-  net_debt:          number | null;
-  squad_value_eur_m: number | null;
-  squad_size:        number | null;
-  avg_age:           number | null;
-  expiry_0_12m_pct:  number | null;
-  capacity:          number | null;
-  attendance_pct:    number | null;
+  slug:                     string;
+  name:                     string;
+  revenue:                  number | null;
+  wage_bill:                number | null;
+  wage_ratio:               number | null;
+  operating_profit:         number | null;
+  pre_tax_profit:           number | null;
+  net_debt:                 number | null;
+  squad_value_eur_m:        number | null;
+  squad_size:               number | null;
+  avg_age:                  number | null;
+  expiry_0_12m_pct:         number | null;
+  capacity:                 number | null;
+  attendance_pct:           number | null;
+  transfer_net_5yr_eur_m:   number | null;
+  transfer_spend_5yr_eur_m: number | null;
 };
 
 export type PriorYearSnap = {
@@ -31,14 +33,15 @@ export type PriorYearSnap = {
 export type H2HPeer = DivisionPeer & {
   country:       string;
   divisionLabel: string;
-  currency:      "GBP" | "EUR" | "USD";
+  currency:      "GBP" | "EUR" | "USD" | "BRL";
 };
 
 type CompareMode = "benchmark" | "h2h";
 type H2HView     = "table" | "radar";
 type MetricKey   =
   | "revenue" | "wage_ratio" | "net_debt" | "squad_value"
-  | "squad_size" | "avg_age" | "expiry" | "attendance";
+  | "squad_size" | "avg_age" | "expiry" | "attendance"
+  | "transfer_net" | "transfer_spend";
 
 // ─── Colours ─────────────────────────────────────────────────────────────────
 
@@ -58,16 +61,18 @@ const BG_WIN    = "#f2fbf5";
 const BG_LOSE   = "#fdf3f3";
 const FX_GBP_TO_USD = 1.27;
 const FX_EUR_TO_USD = 1.09;
+// BRL stored in thousands; 1 BRL_thousand = 1/5.8 USD ≈ 0.1724 USD million
+const FX_BRL_THOU_TO_USD = 1 / 5.8;
 
 const COUNTRY_FLAGS: Record<string, string> = {
   England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", France: "🇫🇷", Germany: "🇩🇪",
   Austria: "🇦🇹", Switzerland: "🇨🇭", Denmark: "🇩🇰",
-  Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
+  Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵", Brazil: "🇧🇷",
 };
 
 const COUNTRY_ORDER = [
   "England", "Spain", "Italy", "Germany", "France",
-  "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan",
+  "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan", "Brazil",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -89,17 +94,19 @@ function fmtPct(v: number | null, digits = 1): string {
   return `${v.toFixed(digits)}%`;
 }
 
-function toEUR(v: number | null, currency: "GBP" | "EUR" | "USD"): number | null {
+function toEUR(v: number | null, currency: "GBP" | "EUR" | "USD" | "BRL"): number | null {
   if (v === null) return null;
   if (currency === "GBP") return v * (FX_GBP_TO_USD / FX_EUR_TO_USD);
   if (currency === "USD") return v / FX_EUR_TO_USD;
+  if (currency === "BRL") return v * FX_BRL_THOU_TO_USD / FX_EUR_TO_USD;
   return v;
 }
 
-function toUSD(v: number | null, currency: "GBP" | "EUR" | "USD"): number | null {
+function toUSD(v: number | null, currency: "GBP" | "EUR" | "USD" | "BRL"): number | null {
   if (v === null) return null;
   if (currency === "GBP") return v * FX_GBP_TO_USD;
   if (currency === "EUR") return v * FX_EUR_TO_USD;
+  if (currency === "BRL") return v * FX_BRL_THOU_TO_USD;
   return v;
 }
 
@@ -109,9 +116,19 @@ function fmtUSD(v: number | null): string {
   return `${v < 0 ? "-" : ""}$${abs.toFixed(1)}m`;
 }
 
-function fmtNative(v: number | null, currency: "GBP" | "EUR" | "USD"): string {
+function fmtBRL(v: number | null): string {
+  if (v === null) return "—";
+  // v is in BRL thousands — display as BRL millions
+  const millions = v / 1000;
+  const abs = Math.abs(millions);
+  const str = abs >= 1000 ? `${(abs / 1000).toFixed(1)}bn` : `${abs.toFixed(0)}m`;
+  return `${millions < 0 ? "-" : ""}R$${str}`;
+}
+
+function fmtNative(v: number | null, currency: "GBP" | "EUR" | "USD" | "BRL"): string {
   if (currency === "GBP") return fmtGBP(v);
   if (currency === "EUR") return fmtEUR(v);
+  if (currency === "BRL") return fmtBRL(v);
   return fmtUSD(v);
 }
 
@@ -377,9 +394,9 @@ function DivisionBenchmarkView({
   divisionLabel: string;
   divisionPeers: DivisionPeer[];
   priorYear:     PriorYearSnap | null;
-  currency:      "GBP" | "EUR" | "USD";
+  currency:      "GBP" | "EUR" | "USD" | "BRL";
 }) {
-  const ccySymbol = currency === "GBP" ? "£" : currency === "EUR" ? "€" : "$";
+  const ccySymbol = currency === "GBP" ? "£" : currency === "EUR" ? "€" : currency === "BRL" ? "R$" : "$";
   const [expanded, setExpanded] = useState<MetricKey | null>(null);
 
   const club = divisionPeers.find(p => p.slug === slug);
@@ -393,11 +410,13 @@ function DivisionBenchmarkView({
   const revR  = divRank(divisionPeers, slug, p => p.revenue,           true);
   const wrR   = divRank(divisionPeers, slug, p => p.wage_ratio,        false);
   const ndR   = divRank(divisionPeers, slug, p => p.net_debt,          false);
-  const svR   = divRank(divisionPeers, slug, p => p.squad_value_eur_m, true);
-  const ssR   = divRank(divisionPeers, slug, p => p.squad_size,        true);
+  const svR   = divRank(divisionPeers, slug, p => p.squad_value_eur_m,        true);
+  const ssR   = divRank(divisionPeers, slug, p => p.squad_size,               true);
   const ageR  = divRankAge(divisionPeers, slug);
-  const exR   = divRank(divisionPeers, slug, p => p.expiry_0_12m_pct,  false);
-  const utilR = divRank(divisionPeers, slug, p => p.attendance_pct,    true);
+  const exR   = divRank(divisionPeers, slug, p => p.expiry_0_12m_pct,         false);
+  const utilR = divRank(divisionPeers, slug, p => p.attendance_pct,           true);
+  const tnR   = divRank(divisionPeers, slug, p => p.transfer_net_5yr_eur_m,   true);
+  const tsR   = divRank(divisionPeers, slug, p => p.transfer_spend_5yr_eur_m, false);
 
   // ── YoY ────────────────────────────────────────────────────────────────────
   const revYoy = priorYear?.revenue    != null && club.revenue    != null
@@ -430,10 +449,12 @@ function DivisionBenchmarkView({
       revenue:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.revenue })),           formatFn: v => fmtNative(v, currency),                           higherBetter: true  },
       wage_ratio:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.wage_ratio })),        formatFn: v => fmtPct(v),                                        higherBetter: false, note: "Lower is better" },
       net_debt:    { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.net_debt })),          formatFn: v => fmtNative(v, currency),                           higherBetter: false, note: "Lower is better" },
-      squad_value: { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m })), formatFn: v => `€${Math.round(v).toLocaleString("en-GB")}m`,     higherBetter: true  },
-      squad_size:  { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_size })),        formatFn: v => `${Math.round(v)}`,                               higherBetter: true  },
-      expiry:      { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.expiry_0_12m_pct })),  formatFn: v => fmtPct(v, 0),                                     higherBetter: false, note: "Lower is better" },
-      attendance:  { data: divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct })), formatFn: v => fmtPct(v),   higherBetter: true  },
+      squad_value:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m })),        formatFn: v => `€${Math.round(v).toLocaleString("en-GB")}m`,                              higherBetter: true  },
+      squad_size:      { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_size })),               formatFn: v => `${Math.round(v)}`,                                                        higherBetter: true  },
+      expiry:          { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.expiry_0_12m_pct })),         formatFn: v => fmtPct(v, 0),                                                              higherBetter: false, note: "Lower is better" },
+      attendance:      { data: divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct })), formatFn: v => fmtPct(v),                                   higherBetter: true  },
+      transfer_net:    { data: divisionPeers.filter(p => p.transfer_net_5yr_eur_m !== null).map(p => ({ slug: p.slug, name: p.name, value: p.transfer_net_5yr_eur_m })),   formatFn: v => `${v >= 0 ? "+" : "-"}€${Math.abs(v).toFixed(0)}m`, higherBetter: true,  note: "Higher = net seller" },
+      transfer_spend:  { data: divisionPeers.filter(p => p.transfer_spend_5yr_eur_m !== null).map(p => ({ slug: p.slug, name: p.name, value: p.transfer_spend_5yr_eur_m })), formatFn: v => `€${Math.round(v)}m`,                             higherBetter: false, note: "Lower is better" },
     };
     const cfg = cfgs[key as Exclude<MetricKey, "avg_age">];
     return (
@@ -496,6 +517,36 @@ function DivisionBenchmarkView({
                 expanded={expanded === "squad_value"} onToggle={() => toggle("squad_value")}
               />
               {expanded === "squad_value" && expandedPanel("squad_value")}
+            </div>
+          </div>
+
+          {/* Row 3 — Transfer Activity */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+            <div>
+              <ScoreCard
+                label="Net Transfer (5yr)" value={
+                  club.transfer_net_5yr_eur_m !== null
+                    ? `${club.transfer_net_5yr_eur_m >= 0 ? "+" : ""}${fmtEUR(club.transfer_net_5yr_eur_m)}`
+                    : "—"
+                }
+                yoyStr={null} yoyColor="#cccccc"
+                rank={tnR.rank} total={tnR.total} note="Higher = net seller"
+                expanded={expanded === "transfer_net"} onToggle={() => toggle("transfer_net")}
+              />
+              {expanded === "transfer_net" && expandedPanel("transfer_net")}
+            </div>
+            <div>
+              <ScoreCard
+                label="Gross Spend (5yr)" value={
+                  club.transfer_spend_5yr_eur_m !== null
+                    ? `€${Math.round(club.transfer_spend_5yr_eur_m)}m`
+                    : "—"
+                }
+                yoyStr={null} yoyColor="#cccccc"
+                rank={tsR.rank} total={tsR.total} note="Lower is better"
+                expanded={expanded === "transfer_spend"} onToggle={() => toggle("transfer_spend")}
+              />
+              {expanded === "transfer_spend" && expandedPanel("transfer_spend")}
             </div>
           </div>
 
@@ -641,10 +692,11 @@ function H2HTwoCol({
   const [dropOpen, setDropOpen] = useState(false);
 
   const sameCurrency = !other || main.currency === other.currency;
-  const targetCcy: "GBP" | "EUR" | "USD" = sameCurrency ? main.currency : "USD";
-  const ccySymbol = targetCcy === "GBP" ? "£" : targetCcy === "EUR" ? "€" : "$";
+  // Always fall back to USD for cross-currency H2H (including BRL)
+  const targetCcy: "GBP" | "EUR" | "USD" | "BRL" = sameCurrency ? main.currency : "USD";
+  const ccySymbol = targetCcy === "GBP" ? "£" : targetCcy === "EUR" ? "€" : targetCcy === "BRL" ? "R$" : "$";
 
-  function displayMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD"): { str: string; converted: boolean } {
+  function displayMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD" | "BRL"): { str: string; converted: boolean } {
     if (v === null) return { str: "—", converted: false };
     if (targetCcy === "USD" && fromCcy !== "USD") {
       const usd = toUSD(v, fromCcy);
@@ -660,6 +712,10 @@ function H2HTwoCol({
       return { str: `$${usd.toFixed(1)}m`, converted: true };
     }
     if (targetCcy === "EUR") return { str: `€${Math.round(v)}m`, converted: false };
+    if (targetCcy === "BRL") {
+      const usd = v * FX_EUR_TO_USD;
+      return { str: `$${usd.toFixed(1)}m`, converted: true };
+    }
     // GBP: convert from EUR
     const gbp = v / (FX_GBP_TO_USD / FX_EUR_TO_USD);
     return { str: `£${gbp.toFixed(1)}m`, converted: true };
@@ -672,10 +728,11 @@ function H2HTwoCol({
   }
 
   // Normalise money to target currency for comparison
-  function normMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD"): number | null {
+  function normMoney(v: number | null, fromCcy: "GBP" | "EUR" | "USD" | "BRL"): number | null {
     if (v === null) return null;
     if (targetCcy === "USD") return toUSD(v, fromCcy);
     if (targetCcy === "EUR") return toEUR(v, fromCcy);
+    if (targetCcy === "BRL") return fromCcy === "BRL" ? v : toUSD(v, fromCcy);
     // GBP target
     if (fromCcy === "GBP") return v;
     if (fromCcy === "EUR") return v / (FX_GBP_TO_USD / FX_EUR_TO_USD);
@@ -752,7 +809,7 @@ function H2HTwoCol({
     );
   }
 
-  const moneyFmt = (fromCcy: "GBP" | "EUR" | "USD") =>
+  const moneyFmt = (fromCcy: "GBP" | "EUR" | "USD" | "BRL") =>
     (v: number | null) => displayMoney(v, fromCcy);
 
   const mainMoneyFmt = (v: number | null, _side: "main" | "other") => displayMoney(v, main.currency);
@@ -890,6 +947,16 @@ function H2HTwoCol({
           label="Expiry Risk" higherBetter={false}
           mainVal={main.expiry_0_12m_pct} otherVal={other?.expiry_0_12m_pct ?? null}
           fmt={(v) => ({ str: fmtPct(v, 0), converted: false })}
+        />
+        <MetricRow
+          label="Net Transfer (5yr €)" higherBetter={true}
+          mainVal={main.transfer_net_5yr_eur_m} otherVal={other?.transfer_net_5yr_eur_m ?? null}
+          fmt={(v) => ({ str: v !== null ? `${v >= 0 ? "+" : "-"}€${Math.abs(v).toFixed(0)}m` : "—", converted: false })}
+        />
+        <MetricRow
+          label="Gross Spend (5yr €)" higherBetter={false}
+          mainVal={main.transfer_spend_5yr_eur_m} otherVal={other?.transfer_spend_5yr_eur_m ?? null}
+          fmt={(v) => ({ str: v !== null ? `€${Math.round(v)}m` : "—", converted: false })}
         />
 
         {/* ── Stadium ── */}
@@ -1206,7 +1273,7 @@ export default function ClubCompareTab({
   priorYear:     PriorYearSnap | null;
   divisionPeers: DivisionPeer[];
   allH2HPeers:   H2HPeer[];
-  currency:      "GBP" | "EUR" | "USD";
+  currency:      "GBP" | "EUR" | "USD" | "BRL";
 }) {
   const [mode, setMode] = useState<CompareMode>("benchmark");
   const mainPeer = allH2HPeers.find(p => p.slug === slug) ?? null;
