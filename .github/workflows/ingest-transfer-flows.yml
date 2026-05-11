@@ -1,0 +1,86 @@
+name: Ingest Transfer Flows Data
+
+on:
+  schedule:
+    # After summer transfer window closes: 1 September at 06:00 UTC
+    - cron: '0 6 1 9 *'
+    # After winter transfer window closes: 1 February at 06:00 UTC
+    - cron: '0 6 1 2 *'
+  workflow_dispatch:
+    inputs:
+      club:
+        description: 'Single club slug to ingest (leave blank for all 96 clubs)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry-run: fetch data but write nothing to Supabase'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  ingest:
+    name: Ingest Transfer Flows squad data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install requests python-dotenv
+
+      - name: Check transfermarkt-api is reachable
+        run: |
+          echo "Checking transfermarkt-api.fly.dev..."
+          for i in $(seq 1 10); do
+            if curl -sf --max-time 10 https://transfermarkt-api.fly.dev/openapi.json > /dev/null; then
+              echo "API reachable (attempt $i)"
+              exit 0
+            fi
+            echo "  attempt $i/10 — retrying in 5s..."
+            sleep 5
+          done
+          echo "ERROR: transfermarkt-api not reachable after 10 attempts"
+          exit 1
+
+      - name: Run Transfer Flows ingest
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          ARGS="--api-url https://transfermarkt-api.fly.dev"
+          if [ -n "${{ github.event.inputs.club }}" ]; then
+            ARGS="$ARGS --club ${{ github.event.inputs.club }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/ingest_transfer_flows.py $ARGS
+
+      - name: Ingest summary
+        if: always()
+        run: |
+          echo "### Transfer Flows Ingest Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Run date | $(date -u +%Y-%m-%d) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| API | transfermarkt-api.fly.dev |" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ github.event.inputs.club }}" ]; then
+            echo "| Club filter | ${{ github.event.inputs.club }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "| Mode | Dry-run (nothing written) |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Mode | Live write to Supabase |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See the **Run Transfer Flows ingest** step log for per-club details." >> $GITHUB_STEP_SUMMARY

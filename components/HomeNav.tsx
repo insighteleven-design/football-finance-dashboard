@@ -25,6 +25,12 @@ const ITEMS = [
     href: "/rankings",
     tagline: () => "See which clubs perform best and worst across each metric",
   },
+  {
+    id: "transfer-flows",
+    title: "Transfer Flows",
+    href: "/transfer-flows",
+    tagline: () => "Which countries send players to Europe's top five leagues",
+  },
 ];
 
 export default function HomeNav({ totalClubs, totalCountries }: Props) {
