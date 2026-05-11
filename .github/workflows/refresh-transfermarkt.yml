@@ -1,0 +1,107 @@
+name: Refresh Transfermarkt Data
+
+on:
+  schedule:
+    # Every Sunday at 02:00 UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      club:
+        description: 'Single club slug to refresh (leave blank for all clubs)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry-run: fetch + compare but write nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # needed to commit + push updated data files
+
+jobs:
+  refresh:
+    name: Refresh Transfermarkt squad data
+    runs-on: ubuntu-latest
+
+    # Start the transfermarkt-api as a sidecar container.
+    # The API scrapes transfermarkt.com — no auth required.
+    services:
+      transfermarkt-api:
+        image: ghcr.io/felipeall/transfermarkt-api:latest
+        ports:
+          - 8000:8000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install requests
+
+      - name: Wait for transfermarkt-api to be ready
+        run: |
+          echo "Waiting for transfermarkt-api..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/openapi.json > /dev/null 2>&1; then
+              echo "API ready (attempt $i)"
+              exit 0
+            fi
+            echo "  attempt $i/30 — retrying in 3s..."
+            sleep 3
+          done
+          echo "ERROR: transfermarkt-api did not become ready within 90 seconds"
+          exit 1
+
+      - name: Run Transfermarkt refresh
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.club }}" ]; then
+            ARGS="$ARGS --club ${{ github.event.inputs.club }}"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/refresh_transfermarkt.py $ARGS
+
+      - name: Commit updated data files
+        # Always run so we commit partial updates even if some clubs errored.
+        if: always() && github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          TODAY=$(date -u +%Y-%m-%d)
+
+          git add lib/squadProfile.ts scripts/enrichment_cache.json
+
+          if git diff --cached --quiet; then
+            echo "No data changed — nothing to commit."
+          else
+            CHANGED_FILES=$(git diff --cached --name-only | tr '\n' ' ')
+            git commit -m "chore: weekly Transfermarkt refresh [$TODAY]
+
+Changed files: $CHANGED_FILES"
+            git push
+            echo "Committed and pushed updated data files."
+          fi
+
+      - name: Refresh summary
+        if: always()
+        run: |
+          echo "### Transfermarkt Refresh Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Run date | $(date -u +%Y-%m-%d) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ github.event.inputs.club }}" ]; then
+            echo "| Club filter | ${{ github.event.inputs.club }} |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See the **Run Transfermarkt refresh** step log for per-club change details." >> $GITHUB_STEP_SUMMARY

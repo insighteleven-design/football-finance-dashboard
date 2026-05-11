@@ -1505,8 +1505,8 @@
     "country": "Germany"
   },
   "1-fc-union-berlin": {
-    "tm_id": "21099",
-    "tm_name": "1.FC Union Berlin U17",
+    "tm_id": "89",
+    "tm_name": "1.FC Union Berlin",
     "confidence": "high",
     "region": "eu",
     "country": "Germany"
@@ -1554,8 +1554,8 @@
     "country": "Germany"
   },
   "fc-bayern-muenchen": {
-    "tm_id": "18936",
-    "tm_name": "FC Bayern München Youth",
+    "tm_id": "27",
+    "tm_name": "FC Bayern München",
     "confidence": "high",
     "region": "eu",
     "country": "Germany"
@@ -1701,8 +1701,8 @@
     "country": "Germany"
   },
   "sc-preussen-muenster": {
-    "tm_id": "7019",
-    "tm_name": "Preußen Münster II",
+    "tm_id": "91",
+    "tm_name": "Preußen Münster",
     "confidence": "high",
     "region": "eu",
     "country": "Germany"
