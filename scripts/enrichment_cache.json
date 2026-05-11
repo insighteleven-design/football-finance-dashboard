@@ -11267,14 +11267,21 @@
     }
   },
   "1-fc-union-berlin": {
-    "avg_age": 16.8,
-    "squad_value_eur_m": null,
-    "squad_size": 22,
+    "avg_age": 27.1,
+    "squad_value_eur_m": 123.8,
+    "squad_size": 26,
     "contract_expiry": {
-      "0-12m": 3,
-      "12-24m": 5,
-      "24m+": 6,
-      "unknown": 8
+      "0-12m": 4,
+      "12-24m": 4,
+      "24m+": 4,
+      "unknown": 14
+    },
+    "age_bands": {
+      "under_21": 2,
+      "age_21_23": 6,
+      "age_24_26": 2,
+      "age_27_29": 10,
+      "over_30": 6
     },
     "transfer_activity": [
       {
@@ -11309,15 +11316,8 @@
       }
     ],
     "league_positions": [],
-    "data_as_of": "2026-05-04",
-    "tm_id": "21099",
-    "age_bands": {
-      "under_21": 21,
-      "age_21_23": 0,
-      "age_24_26": 0,
-      "age_27_29": 0,
-      "over_30": 0
-    }
+    "data_as_of": "2026-05-11",
+    "tm_id": "89"
   },
   "1-fsv-mainz-05": {
     "avg_age": 27.3,
@@ -11635,14 +11635,20 @@
     }
   },
   "fc-bayern-muenchen": {
-    "avg_age": 15.7,
-    "squad_value_eur_m": null,
-    "squad_size": 21,
+    "avg_age": 27.0,
+    "squad_value_eur_m": 969.0,
+    "squad_size": 25,
     "contract_expiry": {
-      "0-12m": 0,
+      "0-12m": 6,
       "12-24m": 3,
-      "24m+": 6,
-      "unknown": 12
+      "24m+": 16
+    },
+    "age_bands": {
+      "under_21": 5,
+      "age_21_23": 3,
+      "age_24_26": 5,
+      "age_27_29": 4,
+      "over_30": 8
     },
     "transfer_activity": [
       {
@@ -11677,15 +11683,8 @@
       }
     ],
     "league_positions": [],
-    "data_as_of": "2026-05-04",
-    "tm_id": "18936",
-    "age_bands": {
-      "under_21": 21,
-      "age_21_23": 0,
-      "age_24_26": 0,
-      "age_27_29": 0,
-      "over_30": 0
-    }
+    "data_as_of": "2026-05-11",
+    "tm_id": "27"
   },
   "fc-st-pauli": {
     "avg_age": 26.3,
@@ -12741,14 +12740,21 @@
     }
   },
   "sc-preussen-muenster": {
-    "avg_age": 22.5,
-    "squad_value_eur_m": null,
-    "squad_size": 22,
+    "avg_age": 27.4,
+    "squad_value_eur_m": 20.4,
+    "squad_size": 30,
     "contract_expiry": {
-      "0-12m": 10,
-      "12-24m": 1,
+      "0-12m": 13,
+      "12-24m": 3,
       "24m+": 0,
-      "unknown": 11
+      "unknown": 14
+    },
+    "age_bands": {
+      "under_21": 0,
+      "age_21_23": 8,
+      "age_24_26": 5,
+      "age_27_29": 10,
+      "over_30": 7
     },
     "transfer_activity": [
       {
@@ -12783,15 +12789,8 @@
       }
     ],
     "league_positions": [],
-    "data_as_of": "2026-05-04",
-    "tm_id": "7019",
-    "age_bands": {
-      "under_21": 9,
-      "age_21_23": 10,
-      "age_24_26": 0,
-      "age_27_29": 1,
-      "over_30": 2
-    }
+    "data_as_of": "2026-05-11",
+    "tm_id": "91"
   },
   "sv-07-elversberg": {
     "avg_age": 26.8,

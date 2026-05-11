@@ -167,12 +167,12 @@ export const squadProfiles: Record<string, SquadProfile> = {
   },
 
   "1-fc-union-berlin": {
-    tm_id:             "21099",
-    avg_age:           16.8,
-    squad_value_eur_m: null,
-    squad_size:        22,
-    contract_expiry:   { "0-12m": 3, "12-24m": 5, "24m+": 6 , unknown: 8 },
-    age_bands:         { under_21: 21, age_21_23: 0, age_24_26: 0, age_27_29: 0, over_30: 0 },
+    tm_id:             "89",
+    avg_age:           27.1,
+    squad_value_eur_m: 123.8,
+    squad_size:        26,
+    contract_expiry:   { "0-12m": 4, "12-24m": 4, "24m+": 4 , unknown: 14 },
+    age_bands:         { under_21: 2, age_21_23: 6, age_24_26: 2, age_27_29: 10, over_30: 6 },
     transfer_activity: [
       { season: "25/26", gross_spend_eur_m: 18.1, gross_income_eur_m: 18.4, net_eur_m: 0.3 },
       { season: "24/25", gross_spend_eur_m: 17.5, gross_income_eur_m: 26.3, net_eur_m: 8.8 },
@@ -187,7 +187,7 @@ export const squadProfiles: Record<string, SquadProfile> = {
       { season: "2023/24", league_name: "Bundesliga", tier: 1, position: 15 },
       { season: "2024/25", league_name: "Bundesliga", tier: 1, position: 13 },
     ],
-    data_as_of:        "2026-05-04",
+    data_as_of:        "2026-05-11",
   },
 
   "1-fsv-mainz-05": {
@@ -2071,12 +2071,12 @@ export const squadProfiles: Record<string, SquadProfile> = {
   },
 
   "fc-bayern-muenchen": {
-    tm_id:             "18936",
-    avg_age:           15.7,
-    squad_value_eur_m: null,
-    squad_size:        21,
-    contract_expiry:   { "0-12m": 0, "12-24m": 3, "24m+": 6 , unknown: 12 },
-    age_bands:         { under_21: 21, age_21_23: 0, age_24_26: 0, age_27_29: 0, over_30: 0 },
+    tm_id:             "27",
+    avg_age:           27.0,
+    squad_value_eur_m: 969.0,
+    squad_size:        25,
+    contract_expiry:   { "0-12m": 6, "12-24m": 3, "24m+": 16 },
+    age_bands:         { under_21: 5, age_21_23: 3, age_24_26: 5, age_27_29: 4, over_30: 8 },
     transfer_activity: [
       { season: "25/26", gross_spend_eur_m: 88.8, gross_income_eur_m: 101.7, net_eur_m: 12.9 },
       { season: "24/25", gross_spend_eur_m: 149.0, gross_income_eur_m: 84.35, net_eur_m: -64.65 },
@@ -2091,7 +2091,7 @@ export const squadProfiles: Record<string, SquadProfile> = {
       { season: "2023/24", league_name: "Bundesliga", tier: 1, position: 3 },
       { season: "2024/25", league_name: "Bundesliga", tier: 1, position: 1 },
     ],
-    data_as_of:        "2026-05-04",
+    data_as_of:        "2026-05-11",
   },
 
   "fc-blau-weiss-linz": {
@@ -5985,12 +5985,12 @@ export const squadProfiles: Record<string, SquadProfile> = {
   },
 
   "sc-preussen-muenster": {
-    tm_id:             "7019",
-    avg_age:           22.5,
-    squad_value_eur_m: null,
-    squad_size:        22,
-    contract_expiry:   { "0-12m": 10, "12-24m": 1, "24m+": 0 , unknown: 11 },
-    age_bands:         { under_21: 9, age_21_23: 10, age_24_26: 0, age_27_29: 1, over_30: 2 },
+    tm_id:             "91",
+    avg_age:           27.4,
+    squad_value_eur_m: 20.4,
+    squad_size:        30,
+    contract_expiry:   { "0-12m": 13, "12-24m": 3, "24m+": 0 , unknown: 14 },
+    age_bands:         { under_21: 0, age_21_23: 8, age_24_26: 5, age_27_29: 10, over_30: 7 },
     transfer_activity: [
       { season: "25/26", gross_spend_eur_m: 1.9, gross_income_eur_m: 0.0, net_eur_m: -1.9 },
       { season: "24/25", gross_spend_eur_m: 0.4, gross_income_eur_m: 0.35, net_eur_m: -0.05 },
@@ -6001,7 +6001,7 @@ export const squadProfiles: Record<string, SquadProfile> = {
     league_positions:  [
       { season: "2024/25", league_name: "2. Bundesliga", tier: 2, position: 15 },
     ],
-    data_as_of:        "2026-05-04",
+    data_as_of:        "2026-05-11",
   },
 
   "scr-altach": {
