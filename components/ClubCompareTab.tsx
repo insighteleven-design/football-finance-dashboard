@@ -68,12 +68,12 @@ const FX_BRL_THOU_TO_USD = 1 / 5.8;
 const COUNTRY_FLAGS: Record<string, string> = {
   England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", France: "🇫🇷", Germany: "🇩🇪",
   Austria: "🇦🇹", Switzerland: "🇨🇭", Denmark: "🇩🇰",
-  Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵", Brazil: "🇧🇷",
+  Norway: "🇳🇴", Sweden: "🇸🇪", Japan: "🇯🇵",
 };
 
 const COUNTRY_ORDER = [
   "England", "Spain", "Italy", "Germany", "France",
-  "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan", "Brazil",
+  "Austria", "Switzerland", "Denmark", "Norway", "Sweden", "Japan",
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
