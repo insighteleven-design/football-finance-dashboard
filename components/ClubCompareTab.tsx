@@ -471,126 +471,143 @@ function DivisionBenchmarkView({
   const svFmt = club.squad_value_eur_m !== null
     ? `€${Math.round(club.squad_value_eur_m).toLocaleString("en-GB")}m` : "—";
 
+  const groupLabel = (text: string) => (
+    <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#aaaaaa", margin: "0 0 8px 0" }}>
+      {text}
+    </p>
+  );
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
       <div>
         <SectionHeading>Division Standing · {divisionLabel}</SectionHeading>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {/* Row 1 — Financial */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
-            <div>
-              <ScoreCard
-                label="Revenue" value={fmtNative(club.revenue, currency)}
-                yoyStr={revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null}
-                yoyColor={revYoy === null ? "#cccccc" : revYoy >= 0 ? C_WIN : C_LOSE}
-                rank={revR.rank} total={revR.total}
-                expanded={expanded === "revenue"} onToggle={() => toggle("revenue")}
-              />
-              {expanded === "revenue" && expandedPanel("revenue")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Wage Ratio" value={fmtPct(club.wage_ratio)}
-                yoyStr={wrYoy !== null ? `${wrYoy >= 0 ? "+" : ""}${wrYoy.toFixed(1)}pp` : null}
-                yoyColor={wrYoy === null ? "#cccccc" : wrYoy <= 0 ? C_WIN : C_LOSE}
-                rank={wrR.rank} total={wrR.total} note="Lower is better"
-                expanded={expanded === "wage_ratio"} onToggle={() => toggle("wage_ratio")}
-              />
-              {expanded === "wage_ratio" && expandedPanel("wage_ratio")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Net Debt" value={fmtNative(club.net_debt, currency)}
-                yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}${ccySymbol}${Math.abs(ndYoy).toFixed(1)}m` : null}
-                yoyColor={ndYoy === null ? "#cccccc" : ndYoy <= 0 ? C_WIN : C_LOSE}
-                rank={ndR.rank} total={ndR.total} note="Lower is better"
-                expanded={expanded === "net_debt"} onToggle={() => toggle("net_debt")}
-              />
-              {expanded === "net_debt" && expandedPanel("net_debt")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Est. Squad Value" value={svFmt}
-                yoyStr={null} yoyColor="#cccccc"
-                rank={svR.rank} total={svR.total}
-                expanded={expanded === "squad_value"} onToggle={() => toggle("squad_value")}
-              />
-              {expanded === "squad_value" && expandedPanel("squad_value")}
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+
+          {/* ── Financial ──────────────────────────────────────────────────── */}
+          <div>
+            {groupLabel("Financial")}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+              <div>
+                <ScoreCard
+                  label="Revenue" value={fmtNative(club.revenue, currency)}
+                  yoyStr={revYoy !== null ? `${revYoy >= 0 ? "+" : ""}${revYoy.toFixed(1)}%` : null}
+                  yoyColor={revYoy === null ? "#cccccc" : revYoy >= 0 ? C_WIN : C_LOSE}
+                  rank={revR.rank} total={revR.total}
+                  expanded={expanded === "revenue"} onToggle={() => toggle("revenue")}
+                />
+                {expanded === "revenue" && expandedPanel("revenue")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Wage Ratio" value={fmtPct(club.wage_ratio)}
+                  yoyStr={wrYoy !== null ? `${wrYoy >= 0 ? "+" : ""}${wrYoy.toFixed(1)}pp` : null}
+                  yoyColor={wrYoy === null ? "#cccccc" : wrYoy <= 0 ? C_WIN : C_LOSE}
+                  rank={wrR.rank} total={wrR.total} note="Lower is better"
+                  expanded={expanded === "wage_ratio"} onToggle={() => toggle("wage_ratio")}
+                />
+                {expanded === "wage_ratio" && expandedPanel("wage_ratio")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Net Debt" value={fmtNative(club.net_debt, currency)}
+                  yoyStr={ndYoy !== null ? `${ndYoy >= 0 ? "+" : ""}${ccySymbol}${Math.abs(ndYoy).toFixed(1)}m` : null}
+                  yoyColor={ndYoy === null ? "#cccccc" : ndYoy <= 0 ? C_WIN : C_LOSE}
+                  rank={ndR.rank} total={ndR.total} note="Lower is better"
+                  expanded={expanded === "net_debt"} onToggle={() => toggle("net_debt")}
+                />
+                {expanded === "net_debt" && expandedPanel("net_debt")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Est. Squad Value" value={svFmt}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={svR.rank} total={svR.total}
+                  expanded={expanded === "squad_value"} onToggle={() => toggle("squad_value")}
+                />
+                {expanded === "squad_value" && expandedPanel("squad_value")}
+              </div>
             </div>
           </div>
 
-          {/* Row 3 — Transfer Activity */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
-            <div>
-              <ScoreCard
-                label="Net Transfer (5yr)" value={
-                  club.transfer_net_5yr_eur_m !== null
-                    ? `${club.transfer_net_5yr_eur_m >= 0 ? "+" : ""}${fmtEUR(club.transfer_net_5yr_eur_m)}`
-                    : "—"
-                }
-                yoyStr={null} yoyColor="#cccccc"
-                rank={tnR.rank} total={tnR.total} note="Higher = net seller"
-                expanded={expanded === "transfer_net"} onToggle={() => toggle("transfer_net")}
-              />
-              {expanded === "transfer_net" && expandedPanel("transfer_net")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Gross Spend (5yr)" value={
-                  club.transfer_spend_5yr_eur_m !== null
-                    ? `€${Math.round(club.transfer_spend_5yr_eur_m)}m`
-                    : "—"
-                }
-                yoyStr={null} yoyColor="#cccccc"
-                rank={tsR.rank} total={tsR.total} note="Lower is better"
-                expanded={expanded === "transfer_spend"} onToggle={() => toggle("transfer_spend")}
-              />
-              {expanded === "transfer_spend" && expandedPanel("transfer_spend")}
+          {/* ── Squad & Contracts ───────────────────────────────────────────── */}
+          <div>
+            {groupLabel("Squad & Contracts")}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+              <div>
+                <ScoreCard
+                  label="Squad Size"
+                  value={club.squad_size !== null ? `${club.squad_size}` : "—"}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={ssR.rank} total={ssR.total}
+                  expanded={expanded === "squad_size"} onToggle={() => toggle("squad_size")}
+                />
+                {expanded === "squad_size" && expandedPanel("squad_size")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Average Age"
+                  value={club.avg_age !== null ? club.avg_age.toFixed(1) : "—"}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={ageR.rank} total={ageR.total}
+                  expanded={expanded === "avg_age"} onToggle={() => toggle("avg_age")}
+                />
+                {expanded === "avg_age" && expandedPanel("avg_age")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Expiry Risk" value={fmtPct(club.expiry_0_12m_pct, 0)}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={exR.rank} total={exR.total} note="Lower is better"
+                  expanded={expanded === "expiry"} onToggle={() => toggle("expiry")}
+                />
+                {expanded === "expiry" && expandedPanel("expiry")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Stadium Utilisation" value={fmtPct(club.attendance_pct)}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={utilR.rank} total={utilR.total}
+                  expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
+                />
+                {expanded === "attendance" && expandedPanel("attendance")}
+              </div>
             </div>
           </div>
 
-          {/* Row 2 — Squad + Stadium */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
-            <div>
-              <ScoreCard
-                label="Squad Size"
-                value={club.squad_size !== null ? `${club.squad_size}` : "—"}
-                yoyStr={null} yoyColor="#cccccc"
-                rank={ssR.rank} total={ssR.total}
-                expanded={expanded === "squad_size"} onToggle={() => toggle("squad_size")}
-              />
-              {expanded === "squad_size" && expandedPanel("squad_size")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Average Age"
-                value={club.avg_age !== null ? club.avg_age.toFixed(1) : "—"}
-                yoyStr={null} yoyColor="#cccccc"
-                rank={ageR.rank} total={ageR.total}
-                expanded={expanded === "avg_age"} onToggle={() => toggle("avg_age")}
-              />
-              {expanded === "avg_age" && expandedPanel("avg_age")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Expiry Risk" value={fmtPct(club.expiry_0_12m_pct, 0)}
-                yoyStr={null} yoyColor="#cccccc"
-                rank={exR.rank} total={exR.total} note="Lower is better"
-                expanded={expanded === "expiry"} onToggle={() => toggle("expiry")}
-              />
-              {expanded === "expiry" && expandedPanel("expiry")}
-            </div>
-            <div>
-              <ScoreCard
-                label="Stadium Utilisation" value={fmtPct(club.attendance_pct)}
-                yoyStr={null} yoyColor="#cccccc"
-                rank={utilR.rank} total={utilR.total}
-                expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
-              />
-              {expanded === "attendance" && expandedPanel("attendance")}
+          {/* ── Transfer Activity ───────────────────────────────────────────── */}
+          <div>
+            {groupLabel("Transfer Activity · 5-Season Totals (€)")}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+              <div>
+                <ScoreCard
+                  label="Net Position" value={
+                    club.transfer_net_5yr_eur_m !== null
+                      ? `${club.transfer_net_5yr_eur_m >= 0 ? "+" : ""}${fmtEUR(club.transfer_net_5yr_eur_m)}`
+                      : "—"
+                  }
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={tnR.rank} total={tnR.total} note="Higher = net seller"
+                  expanded={expanded === "transfer_net"} onToggle={() => toggle("transfer_net")}
+                />
+                {expanded === "transfer_net" && expandedPanel("transfer_net")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Gross Spend" value={
+                    club.transfer_spend_5yr_eur_m !== null
+                      ? `€${Math.round(club.transfer_spend_5yr_eur_m)}m`
+                      : "—"
+                  }
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={tsR.rank} total={tsR.total} note="Lower is better"
+                  expanded={expanded === "transfer_spend"} onToggle={() => toggle("transfer_spend")}
+                />
+                {expanded === "transfer_spend" && expandedPanel("transfer_spend")}
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -948,13 +965,17 @@ function H2HTwoCol({
           mainVal={main.expiry_0_12m_pct} otherVal={other?.expiry_0_12m_pct ?? null}
           fmt={(v) => ({ str: fmtPct(v, 0), converted: false })}
         />
+
+        {/* ── Transfers ── */}
+        <SectionBanner label="Transfers (5yr, €)" />
+
         <MetricRow
-          label="Net Transfer (5yr €)" higherBetter={true}
+          label="Net Position" higherBetter={true}
           mainVal={main.transfer_net_5yr_eur_m} otherVal={other?.transfer_net_5yr_eur_m ?? null}
           fmt={(v) => ({ str: v !== null ? `${v >= 0 ? "+" : "-"}€${Math.abs(v).toFixed(0)}m` : "—", converted: false })}
         />
         <MetricRow
-          label="Gross Spend (5yr €)" higherBetter={false}
+          label="Gross Spend" higherBetter={false}
           mainVal={main.transfer_spend_5yr_eur_m} otherVal={other?.transfer_spend_5yr_eur_m ?? null}
           fmt={(v) => ({ str: v !== null ? `€${Math.round(v)}m` : "—", converted: false })}
         />
