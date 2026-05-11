@@ -8,8 +8,16 @@ on:
     - cron: '0 6 1 2 *'
   workflow_dispatch:
     inputs:
+      from_season:
+        description: 'Start season year (e.g. 2015 for the 10-year backfill, or 2024 for latest only)'
+        required: false
+        default: '2024'
+      to_season:
+        description: 'End season year (e.g. 2024)'
+        required: false
+        default: '2024'
       club:
-        description: 'Single club slug to ingest (leave blank for all 96 clubs)'
+        description: 'Single Transfermarkt club ID to ingest (leave blank for all clubs)'
         required: false
         default: ''
       dry_run:
@@ -20,8 +28,9 @@ on:
 
 jobs:
   ingest:
-    name: Ingest Transfer Flows squad data
+    name: Ingest Transfer Flows data
     runs-on: ubuntu-latest
+    timeout-minutes: 360
 
     steps:
       - name: Checkout repository
@@ -56,6 +65,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           ARGS="--api-url https://transfermarkt-api.fly.dev"
+          ARGS="$ARGS --from-season ${{ github.event.inputs.from_season || '2024' }}"
+          ARGS="$ARGS --to-season ${{ github.event.inputs.to_season || '2024' }}"
           if [ -n "${{ github.event.inputs.club }}" ]; then
             ARGS="$ARGS --club ${{ github.event.inputs.club }}"
           fi
@@ -73,6 +84,7 @@ jobs:
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
           echo "| Run date | $(date -u +%Y-%m-%d) |" >> $GITHUB_STEP_SUMMARY
           echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Seasons | ${{ github.event.inputs.from_season || '2024' }}–${{ github.event.inputs.to_season || '2024' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| API | transfermarkt-api.fly.dev |" >> $GITHUB_STEP_SUMMARY
           if [ -n "${{ github.event.inputs.club }}" ]; then
             echo "| Club filter | ${{ github.event.inputs.club }} |" >> $GITHUB_STEP_SUMMARY

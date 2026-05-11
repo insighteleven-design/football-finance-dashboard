@@ -1,42 +1,19 @@
 #!/usr/bin/env python3
 """
-ingest_transfer_flows.py
+Ingest transfer events for Europe's top 5 leagues (2015-16 to 2024-25).
 
-Ingests squad data for the top 5 European leagues into Supabase.
-Sources:
-  - transfermarkt-api (localhost:8000 by default) for squad/player data
-  - transfermarkt_mapping.json for club slug → tm_id mapping
-
-Competitions ingested:
-  GB1  Premier League
-  L1   Bundesliga
-  ES1  La Liga
-  IT1  Serie A
-  FR1  Ligue 1
+For each club × season:
+  1. Fetch squad — identify new arrivals (joinedOn within that season)
+  2. Call /players/{id}/transfers to get origin club ID + market value at transfer
+  3. Call /clubs/{id}/profile to get origin club country (cached to disk)
+  4. Upsert to transfer_events table in Supabase
 
 Usage:
-    # Full ingest (all 5 leagues):
-    python scripts/ingest_transfer_flows.py
-
-    # Single club (for testing):
-    python scripts/ingest_transfer_flows.py --club arsenal
-
-    # Dry-run (fetch + log, write nothing to Supabase):
-    python scripts/ingest_transfer_flows.py --dry-run
-
-    # Use live API instead of local Docker:
-    python scripts/ingest_transfer_flows.py --api-url https://transfermarkt-api.fly.dev
-
-    # Skip transfer-flows API data check:
-    python scripts/ingest_transfer_flows.py --no-transfers
-
-Requirements:
-    pip install requests python-dotenv
-    Supabase credentials in .env.local (or shell env):
-        NEXT_PUBLIC_SUPABASE_URL
-        SUPABASE_SERVICE_ROLE_KEY
-    transfermarkt-api running:
-        docker run -p 8000:8000 ghcr.io/felipeall/transfermarkt-api:latest
+    python scripts/ingest_transfer_flows.py                    # all clubs, 2015-2024
+    python scripts/ingest_transfer_flows.py --from-season 2022 # recent seasons only
+    python scripts/ingest_transfer_flows.py --season 2024      # single season
+    python scripts/ingest_transfer_flows.py --club 281         # single club ID (debug)
+    python scripts/ingest_transfer_flows.py --dry-run          # log only, no writes
 """
 
 import argparse
@@ -46,357 +23,261 @@ import sys
 import time
 from datetime import date, datetime
 from pathlib import Path
-from typing import Optional
 
-try:
-    import requests
-except ImportError:
-    print("ERROR: 'requests' not installed. Run: pip install requests")
-    sys.exit(1)
+import requests
+from dotenv import load_dotenv
 
-# Load .env.local so credentials can be stored there without exporting to shell
-try:
-    from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent.parent / ".env.local")
-except ImportError:
-    pass  # fall back to shell environment variables
+load_dotenv(Path(__file__).parent.parent / ".env.local")
 
-# ─── Config ───────────────────────────────────────────────────────────────────
-
-SCRIPT_DIR   = Path(__file__).parent
-MAPPING_PATH = SCRIPT_DIR / "transfermarkt_mapping.json"
-SEASON       = "2024-25"
-DELAY_TM     = 1.5   # delay between transfermarkt-api calls
-DELAY_SB     = 0.1   # delay between Supabase upserts
-
-COMPETITIONS = {
-    "GB1": {"name": "Premier League",  "country": "England", "tier": 1},
-    "L1":  {"name": "Bundesliga",      "country": "Germany", "tier": 1},
-    "ES1": {"name": "La Liga",         "country": "Spain",   "tier": 1},
-    "IT1": {"name": "Serie A",         "country": "Italy",   "tier": 1},
-    "FR1": {"name": "Ligue 1",         "country": "France",  "tier": 1},
+API_BASE = "https://transfermarkt-api.fly.dev"
+SUPABASE_URL = os.environ["NEXT_PUBLIC_SUPABASE_URL"]
+SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+SUPABASE_HEADERS = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": f"Bearer {SUPABASE_KEY}",
+    "Content-Type": "application/json",
 }
 
-# ─── Supabase REST client ─────────────────────────────────────────────────────
+COMPETITIONS = {
+    "GB1": "Premier League",
+    "L1":  "Bundesliga",
+    "ES1": "La Liga",
+    "IT1": "Serie A",
+    "FR1": "Ligue 1",
+}
 
-class SupabaseClient:
-    def __init__(self, url: str, service_key: str, dry_run: bool = False):
-        self.base   = url.rstrip("/")
-        self.key    = service_key
-        self.dry_run = dry_run
-        self._session = requests.Session()
-        self._session.headers.update({
-            "apikey":        service_key,
-            "Authorization": f"Bearer {service_key}",
-            "Content-Type":  "application/json",
-        })
+ALL_SEASONS = [str(y) for y in range(2015, 2025)]  # 2015-16 through 2024-25
 
-    def upsert(self, table: str, rows: list) -> None:
-        if not rows:
-            return
-        if self.dry_run:
-            print(f"      [dry-run] would upsert {len(rows)} row(s) → {table}")
-            return
-        url = f"{self.base}/rest/v1/{table}"
-        resp = self._session.post(
-            url,
-            json=rows,
-            headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
-            timeout=30,
-        )
-        if not resp.ok:
-            print(f"      ERROR [{resp.status_code}] {table}: {resp.text[:200]}")
-            resp.raise_for_status()
-        time.sleep(DELAY_SB)
+SEASON_LABEL = {str(y): f"{y}-{str(y + 1)[2:]}" for y in range(2015, 2025)}
 
-    def delete_squad_season(self, club_id: str, season: str) -> None:
-        """Remove stale squad_players rows before re-inserting a fresh roster."""
-        if self.dry_run:
-            return
-        url = f"{self.base}/rest/v1/squad_players"
-        resp = self._session.delete(
-            url,
-            params={"club_id": f"eq.{club_id}", "season": f"eq.{season}"},
-            headers={"Prefer": "return=minimal"},
-            timeout=15,
-        )
-        if not resp.ok:
-            print(f"      WARN: could not delete stale squad rows for {club_id}: {resp.text[:100]}")
+CACHE_FILE = Path(__file__).parent / "club_country_cache.json"
 
-# ─── Transfermarkt-API client ─────────────────────────────────────────────────
+_session = requests.Session()
+_session.headers.update({"User-Agent": "football-finance-dashboard/1.0"})
 
-class TMClient:
-    def __init__(self, base_url: str):
-        self._session = requests.Session()
-        self._session.headers["User-Agent"] = "InsightEleven-Ingest/1.0 (non-commercial research)"
-        self.base = base_url.rstrip("/")
 
-    def get(self, path: str) -> Optional[dict]:
-        url = f"{self.base}{path}"
+# ── API helpers ───────────────────────────────────────────────────────────────
+
+def api_get(path: str, retries: int = 3) -> dict | None:
+    url = f"{API_BASE}{path}"
+    for attempt in range(retries):
         try:
-            r = self._session.get(url, timeout=20)
+            r = _session.get(url, timeout=20)
+            if r.status_code == 404:
+                return None
             r.raise_for_status()
+            time.sleep(0.5)
             return r.json()
-        except requests.exceptions.Timeout:
-            print(f"      ERROR [timeout] {url}")
-        except requests.exceptions.HTTPError as e:
-            print(f"      ERROR [HTTP {e.response.status_code}] {url}")
-        except requests.exceptions.ConnectionError:
-            print(f"      ERROR [connection refused] {url}")
-        except Exception as e:
-            print(f"      ERROR [{type(e).__name__}] {url}: {e}")
-        return None
+        except Exception as exc:
+            if attempt == retries - 1:
+                print(f"  ✗ GET {path}: {exc}", file=sys.stderr)
+                return None
+            time.sleep(1.5 * (attempt + 1))
+    return None
 
-    def is_reachable(self) -> bool:
-        try:
-            r = self._session.get(f"{self.base}/openapi.json", timeout=8)
-            return r.status_code == 200
-        except Exception:
-            return False
 
-    def get_competition_clubs(self, comp_id: str) -> list:
-        data = self.get(f"/competitions/{comp_id}/clubs")
-        time.sleep(DELAY_TM)
-        return data.get("clubs", []) if data else []
+def load_cache() -> dict:
+    return json.loads(CACHE_FILE.read_text()) if CACHE_FILE.exists() else {}
 
-    def get_club_players(self, tm_id: str) -> list:
-        data = self.get(f"/clubs/{tm_id}/players")
-        time.sleep(DELAY_TM)
-        return data.get("players", []) if data else []
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
+def save_cache(cache: dict):
+    CACHE_FILE.write_text(json.dumps(cache, indent=2))
 
-def parse_date(s: Optional[str]) -> Optional[str]:
-    if not s:
-        return None
+
+# ── Domain helpers ────────────────────────────────────────────────────────────
+
+def season_date_range(season_id: str) -> tuple[date, date]:
+    y = int(season_id)
+    return date(y, 6, 1), date(y + 1, 5, 31)
+
+
+def is_new_arrival(joined_on_str: str, season_id: str) -> bool:
+    if not joined_on_str:
+        return False
     try:
-        datetime.strptime(s, "%Y-%m-%d")
-        return s
+        joined = datetime.strptime(joined_on_str, "%Y-%m-%d").date()
     except ValueError:
+        return False
+    start, end = season_date_range(season_id)
+    return start <= joined <= end
+
+
+def get_club_country(club_id: str, cache: dict) -> str | None:
+    if club_id in cache:
+        return cache[club_id]
+    data = api_get(f"/clubs/{club_id}/profile")
+    country = (data or {}).get("league", {}).get("countryName")
+    cache[club_id] = country
+    save_cache(cache)
+    return country
+
+
+def find_transfer_record(player_id: str, to_club_id: str, season_id: str) -> dict | None:
+    """Return the transfer event matching this club + season from player history."""
+    data = api_get(f"/players/{player_id}/transfers")
+    if not data:
         return None
 
+    start, end = season_date_range(season_id)
+    candidates = []
 
-def build_player_row(p: dict) -> dict:
-    return {
-        "id":                     p["id"],
-        "name":                   p.get("name") or "Unknown",
-        "date_of_birth":          parse_date(p.get("dateOfBirth")),
-        "place_of_birth_country": None,
-        "position_main":          p.get("position"),
-        "market_value_eur":       p.get("marketValue"),
-        "updated_at":             datetime.utcnow().isoformat() + "Z",
-    }
+    for t in data.get("transfers", []):
+        if t.get("upcoming"):
+            continue
+        if t.get("clubTo", {}).get("id") != to_club_id:
+            continue
+        raw_date = t.get("date", "")
+        try:
+            td = datetime.strptime(raw_date, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if start <= td <= end:
+            return t
+        candidates.append(t)
 
-
-def build_nationality_rows(player_id: str, nationalities: list) -> list:
-    rows = []
-    for i, nat in enumerate(nationalities or []):
-        if nat and isinstance(nat, str):
-            rows.append({
-                "player_id":  player_id,
-                "nationality": nat.strip(),
-                "is_primary": i == 0,
-            })
-    return rows
+    # Fallback: most recent transfer to this club regardless of date
+    return candidates[-1] if candidates else None
 
 
-def build_squad_row(club_id: str, p: dict, season: str) -> dict:
-    return {
-        "club_id":          club_id,
-        "player_id":        p["id"],
-        "season":           season,
-        "position":         p.get("position"),
-        "age":              p.get("age"),
-        "signed_from":      p.get("signedFrom"),
-        "joined_on":        parse_date(p.get("joinedOn")),
-        "contract_expires": parse_date(p.get("contract")),
-        "market_value_eur": p.get("marketValue"),
-    }
+# ── Supabase writes ───────────────────────────────────────────────────────────
 
-# ─── Main ─────────────────────────────────────────────────────────────────────
-
-def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Ingest Transfer Flows squad data into Supabase."
+def upsert_competition(comp_id: str, name: str, dry_run: bool):
+    if dry_run:
+        return
+    _session.post(
+        f"{SUPABASE_URL}/rest/v1/competitions",
+        headers={**SUPABASE_HEADERS, "Prefer": "resolution=merge-duplicates,return=minimal"},
+        json=[{"id": comp_id, "name": name}],
     )
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Fetch data but write nothing to Supabase.")
-    parser.add_argument("--club", metavar="SLUG",
-                        help="Process only this club slug (for testing).")
-    parser.add_argument("--api-url", default="http://localhost:8000",
-                        help="Base URL for the transfermarkt-api (default: http://localhost:8000).")
-    args = parser.parse_args()
 
-    run_ts = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    print(f"Transfer Flows ingest — {run_ts}")
-    print(f"  Season:  {SEASON}")
-    print(f"  API:     {args.api_url}")
-    print(f"  Dry-run: {args.dry_run}")
-    print("=" * 60)
 
-    # ── Credentials ──────────────────────────────────────────────
-    supabase_url = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
-    service_key  = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+def upsert_club(club_id: str, name: str, comp_id: str, dry_run: bool):
+    if dry_run:
+        return
+    _session.post(
+        f"{SUPABASE_URL}/rest/v1/clubs",
+        headers={**SUPABASE_HEADERS, "Prefer": "resolution=merge-duplicates,return=minimal"},
+        json=[{"id": club_id, "name": name, "competition_id": comp_id}],
+    )
 
-    if not supabase_url or not service_key:
-        print("ERROR: Supabase credentials not found.")
-        print("  Add to .env.local (or export to shell):")
-        print("    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co")
-        print("    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key")
-        sys.exit(1)
 
-    # ── Init clients ──────────────────────────────────────────────
-    tm = TMClient(args.api_url)
-    sb = SupabaseClient(supabase_url, service_key, dry_run=args.dry_run)
+def upsert_transfer_event(row: dict, dry_run: bool) -> bool:
+    if dry_run:
+        print(
+            f"    [DRY] {row['player_name']}: {row['from_club_name']} "
+            f"({row['from_country']}) → {row['to_competition_id']} {row['season']}"
+        )
+        return True
+    r = _session.post(
+        f"{SUPABASE_URL}/rest/v1/transfer_events",
+        headers={**SUPABASE_HEADERS, "Prefer": "resolution=merge-duplicates,return=minimal"},
+        json=[row],
+    )
+    return r.status_code in (200, 201)
 
-    if not tm.is_reachable():
-        print(f"\nERROR: transfermarkt-api not reachable at {args.api_url}")
-        if args.api_url == "http://localhost:8000":
-            print("  Start it with:")
-            print("    docker run -p 8000:8000 ghcr.io/felipeall/transfermarkt-api:latest")
-            print("  Or use the live API:")
-            print("    python scripts/ingest_transfer_flows.py --api-url https://transfermarkt-api.fly.dev")
-        sys.exit(1)
 
-    print(f"\ntransfermarkt-api reachable at {args.api_url}\n")
+# ── Core ingestion ────────────────────────────────────────────────────────────
 
-    # ── Load slug → tm_id mapping ──────────────────────────────────
-    mapping: dict = json.loads(MAPPING_PATH.read_text())
-    tm_id_to_slug = {
-        meta["tm_id"]: slug
-        for slug, meta in mapping.items()
-        if meta.get("tm_id")
-    }
+def ingest_club_season(
+    club_id: str,
+    club_name: str,
+    comp_id: str,
+    season_id: str,
+    cache: dict,
+    dry_run: bool,
+) -> int:
+    squad = api_get(f"/clubs/{club_id}/players?season_id={season_id}")
+    if not squad:
+        return 0
 
-    # ── Seed competition rows ──────────────────────────────────────
-    competition_rows = [
-        {"id": comp_id, "name": meta["name"], "country": meta["country"], "tier": meta["tier"]}
-        for comp_id, meta in COMPETITIONS.items()
-    ]
-    sb.upsert("competitions", competition_rows)
-    print(f"Competitions: {len(competition_rows)} upserted")
-
-    # ── Build work list ─────────────────────────────────────────────
-    # Maps club_tm_id → {competition_id, name}
-    work: dict[str, dict] = {}
-
-    if args.club:
-        # Single-club mode: look up which competition it belongs to
-        if args.club not in mapping:
-            print(f"ERROR: slug '{args.club}' not found in transfermarkt_mapping.json")
-            sys.exit(1)
-        meta   = mapping[args.club]
-        tm_id  = meta["tm_id"]
-        # Determine competition by fetching profile (not required for --club flag —
-        # we'll ask the user to specify if needed; for now default to first match)
-        country_to_comp = {
-            "England": "GB1", "Germany": "L1",
-            "Spain":   "ES1", "Italy":   "IT1", "France": "FR1",
-        }
-        comp_id = country_to_comp.get(meta.get("country", ""))
-        if not comp_id:
-            print(f"ERROR: Cannot determine competition for '{args.club}' (country={meta.get('country')})")
-            sys.exit(1)
-        work[tm_id] = {"competition_id": comp_id, "name": meta["tm_name"]}
-        print(f"Single-club mode: {args.club} (tm_id={tm_id}, comp={comp_id})\n")
-    else:
-        # Full mode: fetch each competition's current club list from the TM API
-        print("Fetching competition club lists…")
-        for comp_id in COMPETITIONS:
-            clubs_in_comp = tm.get_competition_clubs(comp_id)
-            for club in clubs_in_comp:
-                cid  = str(club.get("id", ""))
-                name = club.get("name", f"Club {cid}")
-                if cid:
-                    work[cid] = {"competition_id": comp_id, "name": name}
-            print(f"  {comp_id} ({COMPETITIONS[comp_id]['name']}): {len(clubs_in_comp)} clubs")
-        print(f"Total clubs to ingest: {len(work)}\n")
-
-    # ── Per-club ingest ─────────────────────────────────────────────
-    stats = {
-        "clubs_ok":    0,
-        "clubs_err":   0,
-        "players_new": 0,
-        "nats_new":    0,
-        "squad_rows":  0,
-        "errors":      [],
-    }
-
-    for i, (tm_id, club_meta) in enumerate(work.items()):
-        comp_id  = club_meta["competition_id"]
-        slug     = tm_id_to_slug.get(tm_id, f"club-{tm_id}")
-        name     = club_meta["name"]
-        prefix   = f"  [{i+1:>3}/{len(work)}] {name} (tm_id={tm_id})"
-        print(prefix)
-
-        # Upsert club row
-        sb.upsert("clubs", [{
-            "id":             tm_id,
-            "name":           name,
-            "competition_id": comp_id,
-            "country":        COMPETITIONS[comp_id]["country"],
-            "updated_at":     datetime.utcnow().isoformat() + "Z",
-        }])
-
-        # Fetch players
-        players = tm.get_club_players(tm_id)
-        if not players:
-            print(f"      WARN: no players returned — skipping")
-            stats["clubs_err"] += 1
-            stats["errors"].append(f"{name} (tm_id={tm_id}): no players")
+    arrivals = 0
+    for player in squad.get("players", []):
+        joined_on = player.get("joinedOn", "")
+        if not is_new_arrival(joined_on, season_id):
+            continue
+        if not player.get("signedFrom"):
             continue
 
-        # Build rows
-        player_rows    = []
-        nat_rows       = []
-        squad_rows     = []
-        seen_player_ids = set()
+        player_id = str(player["id"])
+        transfer = find_transfer_record(player_id, club_id, season_id)
 
-        for p in players:
-            pid = str(p.get("id", ""))
-            if not pid:
-                continue
-            if pid in seen_player_ids:
-                continue
-            seen_player_ids.add(pid)
+        from_club_id   = (transfer or {}).get("clubFrom", {}).get("id")
+        from_club_name = (transfer or {}).get("clubFrom", {}).get("name") or player.get("signedFrom", "")
+        market_value   = (transfer or {}).get("marketValue") or player.get("marketValue")
+        from_country   = get_club_country(from_club_id, cache) if from_club_id else None
 
-            player_rows.append(build_player_row(p))
-            nat_rows.extend(build_nationality_rows(pid, p.get("nationality") or []))
-            squad_rows.append(build_squad_row(tm_id, p, SEASON))
+        if not from_country:
+            continue  # skip if origin country unknown
 
-        # Upsert in dependency order: players → nationalities → squad_players
-        sb.upsert("players", player_rows)
-        # Delete stale squad rows before reinserting (handles departures)
-        sb.delete_squad_season(tm_id, SEASON)
-        sb.upsert("player_nationalities", nat_rows)
-        sb.upsert("squad_players", squad_rows)
+        row = {
+            "season":           SEASON_LABEL[season_id],
+            "player_id":        player_id,
+            "player_name":      player["name"],
+            "to_club_id":       club_id,
+            "to_competition_id": comp_id,
+            "from_club_id":     from_club_id,
+            "from_club_name":   from_club_name,
+            "from_country":     from_country,
+            "market_value_eur": market_value,
+            "transfer_date":    joined_on or None,
+        }
 
-        stats["clubs_ok"]    += 1
-        stats["players_new"] += len(player_rows)
-        stats["nats_new"]    += len(nat_rows)
-        stats["squad_rows"]  += len(squad_rows)
+        if upsert_transfer_event(row, dry_run):
+            print(f"    ✓ {player['name']}: {from_club_name} ({from_country})")
+            arrivals += 1
 
-        nat_count = len([r for r in nat_rows if r["is_primary"]])
-        print(f"      {len(player_rows)} players | {nat_count} nationalities | {len(squad_rows)} squad rows")
+    return arrivals
 
-    # ── Summary ─────────────────────────────────────────────────────
-    print()
-    print("=" * 60)
-    print(f"Ingest complete — {run_ts}")
-    print(f"  Clubs ingested:       {stats['clubs_ok']}")
-    print(f"  Clubs errored:        {stats['clubs_err']}")
-    print(f"  Players inserted:     {stats['players_new']}")
-    print(f"  Nationalities stored: {stats['nats_new']}")
-    print(f"  Squad rows written:   {stats['squad_rows']}")
 
-    if args.dry_run:
-        print("\n  Dry-run — nothing written to Supabase.")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api-url",      default=API_BASE)
+    parser.add_argument("--dry-run",      action="store_true")
+    parser.add_argument("--club",         default="", help="Single Transfermarkt club ID")
+    parser.add_argument("--season",       default="", help="Single season year e.g. 2024")
+    parser.add_argument("--from-season",  default="2015", help="Start year (inclusive)")
+    parser.add_argument("--to-season",    default="2024", help="End year (inclusive)")
+    args = parser.parse_args()
 
-    if stats["errors"]:
-        print(f"\nErrors ({len(stats['errors'])}):")
-        for e in stats["errors"]:
-            print(f"  {e}")
-        sys.exit(1)
+    global API_BASE
+    API_BASE = args.api_url
+
+    if args.season:
+        seasons = [args.season]
+    else:
+        seasons = [str(y) for y in range(int(args.from_season), int(args.to_season) + 1)]
+
+    cache = load_cache()
+    total = 0
+
+    for comp_id, comp_name in COMPETITIONS.items():
+        print(f"\n── {comp_id}: {comp_name} ──────────────────────────────")
+        upsert_competition(comp_id, comp_name, args.dry_run)
+
+        data = api_get(f"/competitions/{comp_id}/clubs?season_id={seasons[-1]}")
+        if not data:
+            print(f"  Could not fetch clubs for {comp_id}")
+            continue
+
+        clubs = data.get("clubs", [])
+        if args.club:
+            clubs = [c for c in clubs if str(c["id"]) == args.club]
+
+        for club in clubs:
+            club_id   = str(club["id"])
+            club_name = club["name"]
+            upsert_club(club_id, club_name, comp_id, args.dry_run)
+            print(f"\n  {club_name} ({club_id})")
+
+            for season_id in seasons:
+                label = SEASON_LABEL[season_id]
+                count = ingest_club_season(club_id, club_name, comp_id, season_id, cache, args.dry_run)
+                if count:
+                    print(f"    → {count} transfers in {label}")
+                total += count
+
+    mode = "DRY RUN — " if args.dry_run else ""
+    print(f"\n{mode}Done. Total transfer events: {total}")
 
 
 if __name__ == "__main__":
