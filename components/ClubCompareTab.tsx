@@ -40,7 +40,8 @@ type CompareMode = "benchmark" | "h2h";
 type H2HView     = "table" | "radar";
 type MetricKey   =
   | "revenue" | "wage_ratio" | "net_debt" | "squad_value"
-  | "squad_size" | "avg_age" | "expiry" | "attendance"
+  | "squad_size" | "avg_age" | "expiry"
+  | "capacity" | "attendance"
   | "transfer_net" | "transfer_spend";
 
 // ─── Colours ─────────────────────────────────────────────────────────────────
@@ -414,6 +415,7 @@ function DivisionBenchmarkView({
   const ssR   = divRank(divisionPeers, slug, p => p.squad_size,               true);
   const ageR  = divRankAge(divisionPeers, slug);
   const exR   = divRank(divisionPeers, slug, p => p.expiry_0_12m_pct,         false);
+  const capR  = divRank(divisionPeers, slug, p => p.capacity,                 true);
   const utilR = divRank(divisionPeers, slug, p => p.attendance_pct,           true);
   const tnR   = divRank(divisionPeers, slug, p => p.transfer_net_5yr_eur_m,   true);
   const tsR   = divRank(divisionPeers, slug, p => p.transfer_spend_5yr_eur_m, false);
@@ -452,7 +454,8 @@ function DivisionBenchmarkView({
       squad_value:     { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_value_eur_m })),        formatFn: v => `€${Math.round(v).toLocaleString("en-GB")}m`,                              higherBetter: true  },
       squad_size:      { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.squad_size })),               formatFn: v => `${Math.round(v)}`,                                                        higherBetter: true  },
       expiry:          { data: divisionPeers.map(p => ({ slug: p.slug, name: p.name, value: p.expiry_0_12m_pct })),         formatFn: v => fmtPct(v, 0),                                                              higherBetter: false, note: "Lower is better" },
-      attendance:      { data: divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct })), formatFn: v => fmtPct(v),                                   higherBetter: true  },
+      capacity:        { data: divisionPeers.filter(p => p.capacity !== null).map(p => ({ slug: p.slug, name: p.name, value: p.capacity })),             formatFn: v => Math.round(v).toLocaleString("en-GB"),              higherBetter: true  },
+      attendance:      { data: divisionPeers.filter(p => p.attendance_pct !== null).map(p => ({ slug: p.slug, name: p.name, value: p.attendance_pct })),   formatFn: v => fmtPct(v),                                          higherBetter: true  },
       transfer_net:    { data: divisionPeers.filter(p => p.transfer_net_5yr_eur_m !== null).map(p => ({ slug: p.slug, name: p.name, value: p.transfer_net_5yr_eur_m })),   formatFn: v => `${v >= 0 ? "+" : "-"}€${Math.abs(v).toFixed(0)}m`, higherBetter: true,  note: "Higher = net seller" },
       transfer_spend:  { data: divisionPeers.filter(p => p.transfer_spend_5yr_eur_m !== null).map(p => ({ slug: p.slug, name: p.name, value: p.transfer_spend_5yr_eur_m })), formatFn: v => `€${Math.round(v)}m`,                             higherBetter: false, note: "Lower is better" },
     };
@@ -563,15 +566,6 @@ function DivisionBenchmarkView({
                 />
                 {expanded === "expiry" && expandedPanel("expiry")}
               </div>
-              <div>
-                <ScoreCard
-                  label="Stadium Utilisation" value={fmtPct(club.attendance_pct)}
-                  yoyStr={null} yoyColor="#cccccc"
-                  rank={utilR.rank} total={utilR.total}
-                  expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
-                />
-                {expanded === "attendance" && expandedPanel("attendance")}
-              </div>
             </div>
           </div>
 
@@ -604,6 +598,32 @@ function DivisionBenchmarkView({
                   expanded={expanded === "transfer_spend"} onToggle={() => toggle("transfer_spend")}
                 />
                 {expanded === "transfer_spend" && expandedPanel("transfer_spend")}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Stadium ────────────────────────────────────────────────────── */}
+          <div>
+            {groupLabel("Stadium")}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ alignItems: "start" }}>
+              <div>
+                <ScoreCard
+                  label="Capacity"
+                  value={club.capacity !== null ? Math.round(club.capacity).toLocaleString("en-GB") : "—"}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={capR.rank} total={capR.total}
+                  expanded={expanded === "capacity"} onToggle={() => toggle("capacity")}
+                />
+                {expanded === "capacity" && expandedPanel("capacity")}
+              </div>
+              <div>
+                <ScoreCard
+                  label="Utilisation" value={fmtPct(club.attendance_pct)}
+                  yoyStr={null} yoyColor="#cccccc"
+                  rank={utilR.rank} total={utilR.total}
+                  expanded={expanded === "attendance"} onToggle={() => toggle("attendance")}
+                />
+                {expanded === "attendance" && expandedPanel("attendance")}
               </div>
             </div>
           </div>
