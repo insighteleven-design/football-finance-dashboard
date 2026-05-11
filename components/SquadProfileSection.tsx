@@ -253,6 +253,83 @@ function ContractRiskPanel({ profile }: { profile: SquadProfile }) {
   );
 }
 
+// ─── Transfer Activity ────────────────────────────────────────────────────────
+
+function TransferActivityPanel({ profile }: { profile: SquadProfile }) {
+  const ta = profile.transfer_activity;
+
+  if (!ta || ta.length === 0) {
+    return (
+      <div>
+        <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+          Transfer Activity
+        </p>
+        <p className="text-sm text-[#aaaaaa]">No transfer data available.</p>
+      </div>
+    );
+  }
+
+  const rows = [...ta].sort((a, b) => b.season.localeCompare(a.season));
+
+  const totalNet    = rows.reduce((s, r) => s + (r.net_eur_m          ?? 0), 0);
+  const totalIncome = rows.reduce((s, r) => s + (r.gross_income_eur_m ?? 0), 0);
+  const totalSpend  = rows.reduce((s, r) => s + (r.gross_spend_eur_m  ?? 0), 0);
+
+  const netColor = (n: number) =>
+    n >  0.5 ? "#4a9a6a" :
+    n < -0.5 ? "#9a4a4a" : "#888888";
+
+  const fmtNet = (n: number) =>
+    `${n >= 0 ? "+" : "-"}€${Math.abs(n).toFixed(1)}m`;
+
+  return (
+    <div>
+      <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
+        Transfer Activity
+      </p>
+      <div className="border border-[#e0e0e0] overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-[#e0e0e0] bg-[#fafafa]">
+              <th className="px-4 py-2.5 text-left   font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Season</th>
+              <th className="px-4 py-2.5 text-right  font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Income</th>
+              <th className="px-4 py-2.5 text-right  font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Spend</th>
+              <th className="px-4 py-2.5 text-right  font-semibold tracking-[0.04em] uppercase text-[#999999] text-xs">Net</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => {
+              const net = r.net_eur_m ?? 0;
+              return (
+                <tr key={r.season} className={i < rows.length - 1 ? "border-b border-[#f0f0f0]" : ""}>
+                  <td className="px-4 py-2.5 tabular-nums text-[#555555]">{r.season}</td>
+                  <td className="px-4 py-2.5 text-right tabular-nums text-[#555555]">
+                    €{(r.gross_income_eur_m ?? 0).toFixed(1)}m
+                  </td>
+                  <td className="px-4 py-2.5 text-right tabular-nums text-[#555555]">
+                    €{(r.gross_spend_eur_m ?? 0).toFixed(1)}m
+                  </td>
+                  <td className="px-4 py-2.5 text-right tabular-nums font-semibold" style={{ color: netColor(net) }}>
+                    {fmtNet(net)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="px-4 py-3 border-t border-[#e0e0e0] bg-[#fafafa] flex items-center justify-between gap-4">
+          <p className="text-xs text-[#bbbbbb]">
+            Source: Transfermarkt · {rows.length} seasons: €{totalIncome.toFixed(0)}m in / €{totalSpend.toFixed(0)}m out
+          </p>
+          <p className="text-sm tabular-nums font-semibold shrink-0" style={{ color: netColor(totalNet) }}>
+            Net: {fmtNet(totalNet)}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── League Value Ranking ─────────────────────────────────────────────────────
 
 function LeagueValueRankingPanel({
@@ -460,7 +537,10 @@ export default function SquadProfileSection({
       {/* ── Section 2: Contract Risk ──────────────────────────────────────── */}
       <ContractRiskPanel profile={profile} />
 
-      {/* ── Section 3: League Value Ranking ──────────────────────────────── */}
+      {/* ── Section 3: Transfer Activity ─────────────────────────────────── */}
+      <TransferActivityPanel profile={profile} />
+
+      {/* ── Section 5: League Value Ranking ──────────────────────────────── */}
       <div>
         <p className="text-base font-semibold tracking-[0.04em] uppercase text-[#555555] mb-4">
           Est. Squad Value — {leagueLabel} Ranking
@@ -472,7 +552,7 @@ export default function SquadProfileSection({
         />
       </div>
 
-      {/* ── Section 4: League Performance ────────────────────────────────── */}
+      {/* ── Section 6: League Performance ────────────────────────────────── */}
       <LeaguePerformancePanel positions={profile.league_positions} />
 
     </div>
